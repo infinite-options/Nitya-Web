@@ -1,20 +1,25 @@
-.NavbarItems {
+.navbar {
   color: #8d6f1a;
-  height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   text-decoration: none;
   background-color: #ffffff;
   position: sticky;
   top: 0;
+  width: 100%;
+  z-index: 2;
+  cursor: pointer;
 }
-
+.nav-center {
+  width: 100%;
+  display: flex;
+}
 .navbar-logo {
   justify-self: start;
-  margin-left: 20px;
   cursor: pointer;
+  margin-left: 150px;
 }
 
 .nav-menu {
@@ -27,38 +32,32 @@
   margin-right: 2rem;
   justify-content: start;
   color: #8d6f1a;
+  margin-top: 3.5rem;
 }
 
 .log-in {
   color: #8d6f1a;
   display: grid;
   grid-template-columns: repeat(3, auto);
-  grid-gap: 30px;
   list-style: none;
   justify-content: end;
   width: 100%;
   margin-right: 2rem;
+  margin-top: 3.5rem;
 }
 .login {
   margin-top: 10px;
 }
+
 .nav-links a {
   color: #8d6f1a;
   text-decoration: none;
   padding: 0.5rem 1rem;
-  justify-content: space-around;
-}
-.icons {
-  color: #8d6f1a;
-  text-decoration: none;
 }
 
 .nav-links a:hover {
   color: #d3a625;
   text-decoration: none;
-}
-.icons:hover {
-  color: #d3a625;
 }
 
 .nav-links a:active {

@@ -1,6 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "font-awesome/css/font-awesome.min.css";
 import App from "./App";
-
-ReactDOM.render(<App />, document.getElementById("root"));
+import { BrowserRouter as Router } from "react-router-dom";
+ReactDOM.render(
+  <Router>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Router>,
+  document.getElementById("root")
+);

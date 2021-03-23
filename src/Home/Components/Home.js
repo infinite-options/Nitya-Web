@@ -1,62 +1,65 @@
 import React, { Component } from "react";
-import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Button,
-  Row,
-  Col,
-} from "reactstrap";
+import { Button, Row, Col } from "reactstrap";
 import Img from "../../card1.jpg";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-  row: {
-    float: "center",
-  },
-  root: {
-    display: "flex",
-    flexDirection: "row",
+  container: {
+    position: "relative",
+    top: "70px",
+    marginBottom: "120px",
+    left: "220px",
+    right: "80px",
+    height: "750px",
+    width: "1310px",
     backgroundColor: "white",
-    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
-    height: "600px",
-    margin: "30px 80px",
-    paddingTop: "40px",
+    alignItems: "center",
   },
+
   title: {
-    fontSize: "80px",
-    color: "#d3a625",
     textAlign: "center",
+    fontFamily: "DidoteTextW01-Italic",
+    fontStyle: "italic",
+    fontSize: "4.5rem",
+    wordWrap: "break-word",
+    color: "#d3a625",
+    lineHeight: "1.5",
   },
-  btn: {},
+
+  btn: {
+    fontSize: "1.8rem",
+    backgroundColor: "#d3a625",
+    border: "1px solid #d3a625",
+    marginLeft: "120px",
+    marginTop: "40px",
+    padding: "0px 60px",
+  },
+
+  img: {
+    width: "600px",
+    height: "450px",
+  },
 });
 
 export default function Home() {
   const classes = useStyles();
 
   return (
-    <Row id="home">
-      <Card className={classes.root}>
-        <CardBody>
-          <CardTitle className={classes.title}>
-            Helping your body heal itself
-          </CardTitle>
-          <Button className={classes.btn}>Book a Session</Button>
-        </CardBody>
-        <CardImg
-          src={Img}
-          alt="Card image cap"
-          style={{
-            width: "700px",
-            height: "500px",
-            padding: "30px",
-          }}
-        />
-      </Card>
-    </Row>
+    <div className="home" id="home">
+      <div className={classes.container}>
+        <Row className={classes.rows}>
+          <Col>
+            <p className={classes.title}>Helping your body heal itself</p>
+            <Button className={classes.btn}>Book a Session</Button>
+          </Col>
+          <Col>
+            <img src={Img} className={classes.img} />
+          </Col>
+        </Row>
+      </div>
+    </div>
   );
 }
