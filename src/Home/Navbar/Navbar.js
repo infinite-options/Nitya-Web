@@ -1,112 +1,145 @@
-import React, { useState } from "react";
-import { MenuItems } from "./MenuItems";
-import { Link } from "react-router-dom";
-import Logo from "../../nitya_logo.png";
+import React, { Component } from "react";
+import { NavHashLink } from "react-router-hash-link";
+import {
+  Link,
+  Element,
+  Events,
+  animateScroll as scroll,
+  scrollSpy,
+  scroller,
+} from "react-scroll";
+import PersonIcon from "@material-ui/icons/Person";
 import InstagramIcon from "@material-ui/icons/Instagram";
-import PersonOutline from "@material-ui/icons/PersonOutline";
-import { animateScroll as scroll } from "react-scroll";
-
+import logo from "../../nitya_logo.png";
 import "./Navbar.css";
-function Navbar() {
-  const toggleHome = () => {
-    scroll.scrollToTop();
-  };
+export default class Navbar extends Component {
+  render() {
+    return (
+      <nav className="navbar">
+        <div className="nav-center">
+          <div className="navbar-logo">
+            <Link
+              spy={true}
+              smooth={true}
+              duration={1000}
+              onClick={() => scroll.scrollToTop()}
+            >
+              <img src={logo} style={{ width: 200, height: 150 }} />
+            </Link>
+          </div>
+          <ul className="nav-menu">
+            <li className="nav-links">
+              <Link
+                to="home"
+                spy={true}
+                smooth={true}
+                offset={-150}
+                duration={1000}
+              >
+                Home
+              </Link>
+            </li>
+            <li className="nav-links">
+              <Link
+                to="about"
+                spy={true}
+                smooth={true}
+                offset={-150}
+                duration={1000}
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="services"
+                className="nav-links"
+                spy={true}
+                smooth={true}
+                offset={-250}
+                duration={1000}
+              >
+                Services
+              </Link>
+            </li>
+            <li className="nav-links">
+              <Link
+                to="blog"
+                spy={true}
+                smooth={true}
+                offset={-150}
+                duration={1000}
+              >
+                Blog
+              </Link>
+            </li>
+            <li className="nav-links">
+              <Link
+                to="contact"
+                spy={true}
+                smooth={true}
+                offset={-150}
+                duration={1000}
+              >
+                Contact
+              </Link>
+            </li>
+          </ul>
 
-  return (
-    <>
-      <nav className="NavbarItems">
-        <h1 className="navbar-logo">
-          <img
-            src={Logo}
-            onClick={toggleHome}
-            style={{ width: 300, height: 200 }}
-          />
-        </h1>
-        <ul className="nav-menu">
-          <li className="nav-links">
-            <Link
-              to="/Home"
-              spy={true}
-              smooth={true}
-              offset={50}
-              duration={500}
-            >
-              <span>Home</span>
-            </Link>
-          </li>
-          <li className="nav-links">
-            <Link
-              to="/About"
-              spy={true}
-              smooth={true}
-              offset={50}
-              duration={500}
-            >
-              <span>About</span>
-            </Link>
-          </li>
-          <li className="nav-links">
-            <Link
-              to="/Services"
-              spy={true}
-              smooth={true}
-              offset={50}
-              duration={500}
-            >
-              <span>Services</span>
-            </Link>
-          </li>
-          <li className="nav-links">
-            <Link
-              to="/Blog"
-              spy={true}
-              smooth={true}
-              offset={50}
-              duration={500}
-            >
-              <span>Blog</span>
-            </Link>
-          </li>
-          <li className="nav-links">
-            <Link
-              to="/Contact"
-              spy={true}
-              smooth={true}
-              offset={50}
-              duration={500}
-            >
-              <span>Contact</span>
-            </Link>
-          </li>
-        </ul>
-        <ul className="log-in">
-          <li className="icons">
-            <PersonOutline
-              fontSize="large"
-              aria-hidden="false"
-              aria-label="Instagram"
-            />
-          </li>
-          <li className="login" className="nav-links">
-            <Link to="/">
-              <span>Log In</span>
-            </Link>
-          </li>
-          <li className="icons">
-            <InstagramIcon
-              fontSize="large"
-              onClick={(event) =>
-                (window.location.href =
-                  "https://www.instagram.com/nityaayurveda/")
-              }
-              aria-hidden="false"
-              aria-label="Instagram"
-            />
-          </li>
-        </ul>
+          <ul className="log-in">
+            <li className="nav-links">
+              <Link
+                to="LogIn"
+                className="nav-links"
+                spy={true}
+                smooth={true}
+                offset={-150}
+                duration={1000}
+              >
+                <PersonIcon
+                  fontSize="medium"
+                  aria-hidden="false"
+                  aria-label="Facebook"
+                  style={{ color: "#8d6f1a" }}
+                />
+              </Link>
+            </li>
+            <li className="nav-links">
+              <Link
+                to="LogIn"
+                className="nav-links"
+                spy={true}
+                smooth={true}
+                offset={-150}
+                duration={1000}
+              >
+                Log In
+              </Link>
+            </li>
+            <li className="nav-links">
+              <Link
+                to="LogIn"
+                className="nav-links"
+                spy={true}
+                smooth={true}
+                offset={-150}
+                duration={1000}
+              >
+                <InstagramIcon
+                  fontSize="medoum"
+                  onClick={(event) =>
+                    (window.location.href =
+                      "https://www.instagram.com/nityaayurveda/")
+                  }
+                  aria-hidden="false"
+                  aria-label="Instagram"
+                  style={{ color: "8d6f1a" }}
+                />
+              </Link>
+            </li>
+          </ul>
+        </div>
       </nav>
-    </>
-  );
+    );
+  }
 }
-
-export default Navbar;

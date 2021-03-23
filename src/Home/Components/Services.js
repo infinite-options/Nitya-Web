@@ -1,62 +1,72 @@
-import React, { Component } from "react";
-import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Button,
-  Row,
-  Col,
-} from "reactstrap";
-import Img from "../../card1.jpg";
+import React, { useState } from "react";
+import { Button, ButtonGroup } from "reactstrap";
+import Consulting from "./Consulting";
+import Treatments from "./Treatments";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
-  row: {
-    float: "center",
-  },
-  root: {
-    display: "flex",
-    flexDirection: "row",
-    backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "600px",
-    margin: "30px 80px",
-    paddingTop: "40px",
-  },
-  title: {
-    fontSize: "80px",
-    color: "#d3a625",
-    textAlign: "center",
-  },
-  btn: {},
-});
-
-export default function Services() {
+const Services = (props) => {
+  const useStyles = makeStyles({
+    container: {
+      position: "relative",
+      top: "40px",
+      marginBottom: "100px",
+      left: "220px",
+      right: "80px",
+      height: "1650px",
+      width: "1310px",
+      backgroundColor: "white",
+      paddingTop: 0,
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    ButtonGroup: {
+      top: 0,
+    },
+    btn1: {
+      backgroundColor: "#88898a",
+      border: "1px solid #88898a",
+      borderRadius: "0px",
+      color: "#e9d9ac",
+      fontSize: "1.5rem",
+      marginRight: "20px",
+    },
+    btn2: {
+      backgroundColor: "#d3a625",
+      border: "1px solid #d3a625",
+      borderRadius: "0px",
+      color: "#88898a",
+      fontSize: "1.5rem",
+    },
+  });
   const classes = useStyles();
 
+  const [rSelected, setRSelected] = useState(<Consulting />);
+
   return (
-    <Row id="services">
-      <Card className={classes.root}>
-        <CardBody>
-          <CardTitle className={classes.title}>
-            Helping your body heal itself
-          </CardTitle>
-          <Button className={classes.btn}>Book a Session</Button>
-        </CardBody>
-        <CardImg
-          src={Img}
-          alt="Card image cap"
-          style={{
-            width: "700px",
-            height: "500px",
-            padding: "30px",
-          }}
-        />
-      </Card>
-    </Row>
+    <div className="services" id="services">
+      <div className={classes.container}>
+        <ButtonGroup>
+          <Button
+            className={classes.btn1}
+            onClick={() => setRSelected(<Consulting />)}
+            active={rSelected === <Consulting />}
+          >
+            Consulting
+          </Button>
+          <Button
+            className={classes.btn2}
+            onClick={() => setRSelected(<Treatments />)}
+            active={rSelected === <Treatments />}
+          >
+            Treatments
+          </Button>
+        </ButtonGroup>
+        <p>{rSelected}</p>
+      </div>
+    </div>
   );
-}
+};
+
+export default Services;

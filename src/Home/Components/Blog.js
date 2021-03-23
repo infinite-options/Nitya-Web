@@ -14,49 +14,65 @@ import Img from "../../card1.jpg";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-  row: {
-    float: "center",
-  },
-  root: {
-    display: "flex",
-    flexDirection: "row",
+  content: {
+    /* position: "relative",
+    top: "30px",
+    marginBottom: "100px",
+    left: "180px",
+    right: "80px",
+    minHeight: "40vw",
+    width: "80vw",
     backgroundColor: "white",
-    alignItems: "center",
-    justifyContent: "center",
-    height: "600px",
-    margin: "30px 80px",
-    paddingTop: "40px",
+    boxShadow: "0px 8px 16px 0px rgba(0, 0, 0, 0.2)", */
+    display: "grid",
+    backgroundColor: "#ffffff",
+    gridTemplateColumns: "repeat(2, auto)",
+    gridAutoRows: " 30%",
+    gridColumnGap: "3%",
+    gridRowGap: "30%",
+    position: "relative",
+    top: 250,
+    bottom: 150,
   },
+
   title: {
-    fontSize: "80px",
-    color: "#d3a625",
     textAlign: "center",
+    fontFamily: "'Dancing Script', cursive",
+    fontStyle: "italic",
+    fontSize: "7rem",
+    wordWrap: "break-word",
+    color: "#d3a625",
   },
-  btn: {},
+  btn: {
+    fontSize: "2rem",
+    backgroundColor: "#d3a625",
+    border: "1px solid #d3a625",
+    wordWrap: "break-word",
+    margin: " 50px 150px",
+  },
+  img: {
+    width: "600px",
+    height: "500px",
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
 });
 
-export default function Blog() {
+export default function Home() {
   const classes = useStyles();
 
   return (
-    <Row id="blog">
-      <Card className={classes.root}>
-        <CardBody>
-          <CardTitle className={classes.title}>
-            Helping your body heal itself
-          </CardTitle>
+    <div className="home" id="home">
+      <Row className={classes.content}>
+        <Col className={classes.col}>
+          <p className={classes.title}>Helping your body heal itself</p>
           <Button className={classes.btn}>Book a Session</Button>
-        </CardBody>
-        <CardImg
-          src={Img}
-          alt="Card image cap"
-          style={{
-            width: "700px",
-            height: "500px",
-            padding: "30px",
-          }}
-        />
-      </Card>
-    </Row>
+        </Col>
+        <Col className={classes.col}>
+          <img src={Img} className={classes.img} />
+        </Col>
+      </Row>
+    </div>
   );
 }
