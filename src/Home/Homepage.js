@@ -27,7 +27,7 @@ class Homepage extends Component {
               lineHeight: "0",
             }}
           >
-            Services
+             Services {/*This piece of text is flexible, and does not remain stationary */}
           </p>
           <Services />
           <Contact />
