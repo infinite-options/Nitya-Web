@@ -7,22 +7,23 @@ import "./ServiceCard.css";
 // There are two files with very similar names: Services.js and Services.jsx
 // The js file is responsible for rendering the services as they appear on the landing/home pageXOffset
 // The jsx file is responsible for rendering the services as they appear on the "learn more" feature
-export default function Service(props) {
+export default function Service(treatment_uid) {
   const temp = {
-    name: "Returning Client (Online)",
-    description:
-      "Continued fine tuning of your diet, herbs, and lifestyle practices",
-    duration: "25",
-    price: "200",
-    imageSource:
-      "https://static.wixstatic.com/media/b88f2d5da73042e2b86399ab9f21367f.jpg/v1/fill/w_1000,h_618,al_c,q_85/b88f2d5da73042e2b86399ab9f21367f.webp",
+    name: "",
+    description: "",
+    duration: "",
+    price: "",
+    imageSource: "",
+    treatment_notes: "",
   };
 
+  // const localTreatment_uid = { treatment_uid };
+
   const url =
-    "https://kfc19k33sc.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatment";
+    "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
   const [servicesLoaded, setServicesLoaded] = useState(false);
   const [elementToBeRendered, setElementToBeRendered] = useState(temp);
-  const localTreatment_uid = "330-000001";
+  const localTreatment_uid = "330-000004";
 
   const [serviceArr, setServiceArr] = useState([]);
 
@@ -84,10 +85,12 @@ export default function Service(props) {
           style={{
             width: "700px",
             height: "500px",
+            padding: "20px",
           }} //Need to ensure that the aspect ratio of the original image does not change
-          src={elementToBeRendered.imageSource}
+          src={elementToBeRendered.image_url}
         ></img>
-
+        <div className="desc">{elementToBeRendered.treatment_notes}</div>
+        Gotta fix the formatting
         <ContactInfo />
       </div>
     </div>
