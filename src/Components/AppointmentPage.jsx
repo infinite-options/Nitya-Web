@@ -224,9 +224,9 @@ export default function AppointmentPage(props) {
   );
 }
 
-//Things to improve
-
 /**
+ * Things to work on
+ *
  * 1. The axios call happens everytime a new date is clicked on the calendar. That's overkill.
  * Instead figure out a way to load the information retrieved from the endpoint into an array.
  *
