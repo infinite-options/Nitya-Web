@@ -7,19 +7,16 @@ import { makeStyles } from "@material-ui/core/styles";
 const Services = (props) => {
   const useStyles = makeStyles({
     container: {
-      position: "relative",
-      top: "40px",
-      marginBottom: "100px",
-      left: "220px",
-      right: "80px",
-      height: "1650px",
-      width: "1310px",
-      backgroundColor: "white",
-      paddingTop: 0,
+      //from home.js
       display: "flex",
-      flexDirection: "column",
       justifyContent: "center",
+      padding: "40px 40px 20px 20px",
+    },
+    block: {
+      backgroundColor: "white",
       alignItems: "center",
+      width: "1310px",
+      padding: "40px 40px 20px 20px",
     },
     ButtonGroup: {
       top: 0,
@@ -39,6 +36,16 @@ const Services = (props) => {
       color: "#88898a",
       fontSize: "1.5rem",
     },
+    title: {
+      marginTop: "-40px",
+      textAlign: "center",
+      fontFamily: "DidoteTextW01-Italic",
+      fontStyle: "italic",
+      fontSize: "4rem",
+      wordWrap: "break-word",
+      color: "#d3a625",
+      lineHeight: "2",
+    },
   });
   const classes = useStyles();
 
@@ -47,23 +54,26 @@ const Services = (props) => {
   return (
     <div className="services" id="services">
       <div className={classes.container}>
-        <ButtonGroup>
-          <Button
-            className={classes.btn1}
-            onClick={() => setRSelected(<Consulting />)}
-            active={rSelected === <Consulting />}
-          >
-            Consulting
-          </Button>
-          <Button
-            className={classes.btn2}
-            onClick={() => setRSelected(<Treatments />)}
-            active={rSelected === <Treatments />}
-          >
-            Treatments
-          </Button>
-        </ButtonGroup>
-        <p>{rSelected}</p>
+        <div className={classes.block}>
+          <p className={classes.title}>Services</p>
+          <ButtonGroup>
+            <Button
+              className={classes.btn1}
+              onClick={() => setRSelected(<Consulting />)}
+              active={rSelected === <Consulting />}
+            >
+              Consulting
+            </Button>
+            <Button
+              className={classes.btn2}
+              onClick={() => setRSelected(<Treatments />)}
+              active={rSelected === <Treatments />}
+            >
+              Treatments
+            </Button>
+          </ButtonGroup>
+          <p>{rSelected}</p>
+        </div>
       </div>
     </div>
   );

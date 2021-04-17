@@ -5,20 +5,27 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   container: {
-    position: "relative",
-    top: "70px",
-    marginBottom: "120px",
-    left: "220px",
-    right: "80px",
-    height: "750px",
-    width: "1310px",
-    backgroundColor: "white",
+    //position: "relative",
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    padding: "40px 40px 20px 20px",
+    // top: "70px",
+    // marginBottom: "120px",
+    // left: "220px",
+    // right: "80px",
+    // height: "750px",
+    // paddingbottom: "",
+    // paddingleft: "",
+    // paddingright: "",
+    // flexDirection: "column",
+    // alignItems: "center",
   },
-
+  block: {
+    backgroundColor: "white",
+    alignItems: "center",
+    width: "1310px",
+    padding: "40px 40px 20px 20px",
+  },
   title: {
     textAlign: "center",
     fontFamily: "DidoteTextW01-Italic",
@@ -50,15 +57,17 @@ export default function Home() {
   return (
     <div className="home" id="home">
       <div className={classes.container}>
-        <Row className={classes.rows}>
-          <Col>
-            <p className={classes.title}>Helping your body heal itself</p>
-            <Button className={classes.btn}>Book a Session</Button>
-          </Col>
-          <Col>
-            <img src={Img} className={classes.img} />
-          </Col>
-        </Row>
+        <div className={classes.block}>
+          <Row className={classes.rows}>
+            <Col>
+              <p className={classes.title}>Helping your body heal itself</p>
+              <Button className={classes.btn}>Book a Session</Button>
+            </Col>
+            <Col>
+              <img src={Img} className={classes.img} />
+            </Col>
+          </Row>
+        </div>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ class Homepage extends Component {
           <Navbar />
           <Home />
           <About />
-          <p
+          {/* <p
             style={{
               textAlign: "center",
               fontFamily: "DidoteTextW01-Italic",
@@ -28,7 +28,7 @@ class Homepage extends Component {
             }}
           >
             Services
-          </p>
+          </p> */}
           <Services />
           <Contact />
           <Footer />
