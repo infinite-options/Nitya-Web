@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 
 import Navbar from "./Navbar/Navbar";
-import Home from "./Components/Home";
-import About from "./Components/About";
-import Services from "./Components/Services";
-import Blog from "./Components/Blog";
-import Contact from "./Components/Contact";
+import Home from "./Home/Home";
+import About from "./Home/About";
+import Services from "./Home/Services";
+import Blog from "./Home/Blog";
+import Contact from "./Home/Contact";
 import Footer from "./Footer/Footer";
+// import Footer from "./src/Footer/Footer";
 
 class Homepage extends Component {
   render() {
