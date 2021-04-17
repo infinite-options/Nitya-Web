@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Button, Row, Col } from "reactstrap";
 import Img from "../../card1.jpg";
 import { makeStyles } from "@material-ui/core/styles";
@@ -56,7 +56,7 @@ export default function Home() {
             <Button className={classes.btn}>Book a Session</Button>
           </Col>
           <Col>
-            <img src={Img} className={classes.img} />
+            <img src={Img} className={classes.img} alt="spices" />
           </Col>
         </Row>
       </div>

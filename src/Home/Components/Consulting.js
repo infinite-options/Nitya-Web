@@ -1,12 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   Card,
   Button,
   CardImg,
   CardTitle,
   CardText,
-  CardGroup,
-  CardSubtitle,
   CardBody,
   Row,
   Col,

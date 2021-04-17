@@ -25,11 +25,10 @@
 .nav-menu {
   display: grid;
   grid-template-columns: repeat(5, auto);
-  grid-gap: 10px;
+  grid-gap: 15px;
   list-style: none;
   text-align: center;
   width: 100%;
-  margin-right: 2rem;
   justify-content: start;
   color: #8d6f1a;
   margin-top: 3.5rem;

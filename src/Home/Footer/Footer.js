@@ -48,6 +48,7 @@ function Footer() {
                     height: "200px",
                     float: "center",
                   }}
+                  alt="namacb"
                 />
               </li>
             </ui>
