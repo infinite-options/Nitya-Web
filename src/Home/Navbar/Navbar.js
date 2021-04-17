@@ -1,35 +1,31 @@
 import React, { Component } from "react";
-import { NavHashLink } from "react-router-hash-link";
-import {
-  Link,
-  Element,
-  Events,
-  animateScroll as scroll,
-  scrollSpy,
-  scroller,
-} from "react-scroll";
+import { Link } from "react-router-dom";
+import Scroll from "react-scroll";
 import PersonIcon from "@material-ui/icons/Person";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import logo from "../../nitya_logo.png";
 import "./Navbar.css";
+
+const ScollLink = Scroll.Link;
 export default class Navbar extends Component {
   render() {
     return (
       <nav className="navbar">
         <div className="nav-center">
           <div className="navbar-logo">
-            <Link
+            <ScollLink
+              to="home"
               spy={true}
               smooth={true}
               duration={1000}
-              onClick={() => scroll.scrollToTop()}
+              offset={-150}
             >
-              <img src={logo} style={{ width: 200, height: 150 }} />
-            </Link>
+              <img src={logo} style={{ width: 200, height: 150 }} alt="logo" />
+            </ScollLink>
           </div>
           <ul className="nav-menu">
             <li className="nav-links">
-              <Link
+              <ScollLink
                 to="home"
                 spy={true}
                 smooth={true}
@@ -37,10 +33,10 @@ export default class Navbar extends Component {
                 duration={1000}
               >
                 Home
-              </Link>
+              </ScollLink>
             </li>
             <li className="nav-links">
-              <Link
+              <ScollLink
                 to="about"
                 spy={true}
                 smooth={true}
@@ -48,10 +44,10 @@ export default class Navbar extends Component {
                 duration={1000}
               >
                 About
-              </Link>
+              </ScollLink>
             </li>
             <li>
-              <Link
+              <ScollLink
                 to="services"
                 className="nav-links"
                 spy={true}
@@ -60,21 +56,13 @@ export default class Navbar extends Component {
                 duration={1000}
               >
                 Services
-              </Link>
+              </ScollLink>
             </li>
             <li className="nav-links">
-              <Link
-                to="blog"
-                spy={true}
-                smooth={true}
-                offset={-150}
-                duration={1000}
-              >
-                Blog
-              </Link>
+              <Link to="/blog">Blog</Link>
             </li>
             <li className="nav-links">
-              <Link
+              <ScollLink
                 to="contact"
                 spy={true}
                 smooth={true}
@@ -82,7 +70,7 @@ export default class Navbar extends Component {
                 duration={1000}
               >
                 Contact
-              </Link>
+              </ScollLink>
             </li>
           </ul>
 

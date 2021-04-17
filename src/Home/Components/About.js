@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Button, Row, Col } from "reactstrap";
+import React from "react";
+import { Row, Col } from "reactstrap";
 import Img from "../../card2.png";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -72,7 +72,7 @@ export default function Home() {
             ​
           </Col>
           <Col>
-            <img src={Img} className={classes.img} />
+            <img src={Img} className={classes.img} alt="leena" />
           </Col>
         </Row>
       </div>

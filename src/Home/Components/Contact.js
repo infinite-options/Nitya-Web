@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React from "react";
 import { Row, Col } from "reactstrap";
-import { Button, Form, FormGroup, Label, Input, FormText } from "reactstrap";
+import { Button, Form, FormGroup, Input } from "reactstrap";
 import MapSection from "./Map";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import FacebookIcon from "@material-ui/icons/Facebook";

@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 
-import Navbar from "./Navbar/Navbar";
+//import Navbar from "./Navbar/Navbar";
+//import Footer from "./Footer/Footer";
 import Home from "./Components/Home";
 import About from "./Components/About";
 import Services from "./Components/Services";
-import Blog from "./Components/Blog";
 import Contact from "./Components/Contact";
-import Footer from "./Footer/Footer";
 
 class Homepage extends Component {
   render() {
     return (
       <>
         <div className="page-container ">
-          <Navbar />
           <Home />
           <About />
           <p
@@ -31,7 +29,6 @@ class Homepage extends Component {
           </p>
           <Services />
           <Contact />
-          <Footer />
         </div>
       </>
     );
