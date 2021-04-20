@@ -5,6 +5,7 @@ import Navbar from "./Navbar/Navbar";
 import Calendar from "react-calendar";
 import { Button } from "reactstrap";
 import Box from "@material-ui/core/Box";
+import Form from "./Appointment/Form";
 
 // The following react component is based on the youtube tutorial provided by Syncfusion, Inc. at the url below:
 
@@ -23,6 +24,8 @@ export default function AppointmentPage(props) {
   //For Axios.Post
   const [purchaseDate, setPurchaseDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
+
+  const [fName, setfName] = useState("");
 
   const dateChange = (date) => {
     setDate(date);
@@ -100,6 +103,23 @@ export default function AppointmentPage(props) {
     ));
   }
 
+  function renderAvailableApptsVertical() {
+    return timeSlots.map((element) => (
+      <div className="row">
+        <Button onClick={() => selectApptTime(element)}>{element}</Button>{" "}
+      </div>
+    ));
+  }
+  function renderAvailableApptsHorizontal() {
+    return timeSlots.map((element) => (
+      <div className="row">
+        <div className="col">
+          <Button onClick={() => selectApptTime(element)}>{element}</Button>{" "}
+        </div>
+      </div>
+    ));
+  }
+
   function selectApptTime(element) {
     setSelectedTime(element);
   }
@@ -166,7 +186,7 @@ export default function AppointmentPage(props) {
               {/* How do I put a space here? */}
               {date.toString().substring(0, 15)}
               <br></br>
-              {renderAvailableAppts()}
+              {renderAvailableApptsHorizontal()}
             </Box>
           </div>
           <div className="col">
@@ -206,13 +226,8 @@ export default function AppointmentPage(props) {
             </Box>
           </div>
           <div className="col">
-            <form>
-              <label>
-                Name:
-                <input type="text" name="name" />
-              </label>
-              <input type="submit" value="Submit" />
-            </form>
+            Below is a form component for determining the identity of the client
+            <Form />
           </div>
         </div>
 
