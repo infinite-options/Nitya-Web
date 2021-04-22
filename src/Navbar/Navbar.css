@@ -65,3 +65,6 @@
 .nav-links a:target {
   color: #d3a625;
 }
+.active a:hover {
+  color: #d3a625;
+}

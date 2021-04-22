@@ -1,20 +1,20 @@
 import React, { Component } from "react";
 
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "typeface-raleway";
 import Blogpage from "./Blogpage";
-class Blog extends Component {
-  render() {
-    return (
-      <div className="page-container ">
+import ScrollToTop from "./ScrollToTop";
+function Blog() {
+  return (
+    <>
+      <div id="blog" className="page-container ">
         <div className="content-wrap">
-          <Router>
-            <Blogpage />
-          </Router>
+          <ScrollToTop />
+          <Blogpage />
         </div>
       </div>
-    );
-  }
+    </>
+  );
 }
 
 export default Blog;

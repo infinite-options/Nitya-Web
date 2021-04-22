@@ -1,76 +1,81 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import Scroll from "react-scroll";
+import { animateScroll as scroll } from "react-scroll";
 import PersonIcon from "@material-ui/icons/Person";
 import InstagramIcon from "@material-ui/icons/Instagram";
-import logo from "../../nitya_logo.png";
+import logo from "../nitya_logo.png";
 import "./Navbar.css";
 
-const ScollLink = Scroll.Link;
-export default class Navbar extends Component {
-  render() {
-    return (
+const scrollToTop = () => {
+  scroll.scrollToTop();
+};
+export default function Navbar() {
+  return (
+    <>
       <nav className="navbar">
         <div className="nav-center">
           <div className="navbar-logo">
-            <ScollLink
-              to="home"
-              spy={true}
-              smooth={true}
-              duration={1000}
-              offset={-150}
-            >
-              <img src={logo} style={{ width: 200, height: 150 }} alt="logo" />
-            </ScollLink>
+            <img
+              src={logo}
+              style={{ width: 200, height: 150 }}
+              alt="logo"
+              onClick={scrollToTop}
+            />
           </div>
           <ul className="nav-menu">
             <li className="nav-links">
-              <ScollLink
-                to="home"
+              <Link
+                to="/home"
                 spy={true}
                 smooth={true}
                 offset={-150}
                 duration={1000}
+                activeClass="active"
               >
                 Home
-              </ScollLink>
+              </Link>
             </li>
             <li className="nav-links">
-              <ScollLink
-                to="about"
+              <Link
+                to="/about"
+                activeClass="active"
                 spy={true}
                 smooth={true}
                 offset={-150}
                 duration={1000}
               >
                 About
-              </ScollLink>
+              </Link>
             </li>
-            <li>
-              <ScollLink
-                to="services"
-                className="nav-links"
+            <li className="nav-links">
+              <Link
+                to="/services"
+                activeClass="active"
                 spy={true}
                 smooth={true}
                 offset={-250}
                 duration={1000}
               >
                 Services
-              </ScollLink>
+              </Link>
             </li>
             <li className="nav-links">
-              <Link to="/blog">Blog</Link>
+              <Link to="/blog" activeClass="active" spy={true}>
+                Blog
+              </Link>
             </li>
             <li className="nav-links">
-              <ScollLink
-                to="contact"
+              <Link
+                to="/contact"
+                activeClass="active"
                 spy={true}
                 smooth={true}
                 offset={-150}
                 duration={1000}
               >
                 Contact
-              </ScollLink>
+              </Link>
             </li>
           </ul>
 
@@ -128,6 +133,6 @@ export default class Navbar extends Component {
           </ul>
         </div>
       </nav>
-    );
-  }
+    </>
+  );
 }
