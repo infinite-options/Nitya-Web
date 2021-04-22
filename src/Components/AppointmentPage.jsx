@@ -6,6 +6,7 @@ import Calendar from "react-calendar";
 import { Button } from "reactstrap";
 import Box from "@material-ui/core/Box";
 import Form from "./Appointment/Form";
+import SimpleForm from "./Appointment/simpleForm";
 
 // The following react component is based on the youtube tutorial provided by Syncfusion, Inc. at the url below:
 
@@ -25,7 +26,40 @@ export default function AppointmentPage(props) {
   const [purchaseDate, setPurchaseDate] = useState(new Date());
   const [selectedTime, setSelectedTime] = useState(null);
 
-  const [fName, setfName] = useState("");
+  // this.state = { fName: "" };
+  const [fName, setFName] = useState("");
+  const [lName, setLName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+
+  const handleFirstNameChange = (newFName) => {
+    // this.setState({ fName: newFName });
+    setFName(newFName);
+  };
+
+  const handleLastNameChange = (newLName) => {
+    // this.setState({ fName: newFName });
+    setLName(newLName);
+  };
+
+  const handleEmailChange = (newEmail) => {
+    // this.setState({ fName: newFName });
+    setEmail(newEmail);
+  };
+
+  const handlePhoneNumChange = (newPhoneNum) => {
+    // this.setState({ fName: newFName });
+    setPhoneNum(newPhoneNum);
+  };
+
+  // handleSubmit(event) {
+  //   const { variable } = this.state;
+  //   event.preventDefault();
+  //   alert(`
+  //      ____Your Details____\n
+  //      ${this.props.field} : ${variable}
+  //    `);
+  // }
 
   const dateChange = (date) => {
     setDate(date);
@@ -125,48 +159,49 @@ export default function AppointmentPage(props) {
   }
 
   function bookAppt() {
+    console.log(fName);
+    console.log(lName);
+    console.log(email);
+    console.log(phoneNum);
+
     const postURL =
-      "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createappointment";
+      "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
     axios
       .post(postURL, {
-        // appt_customer_uid: "100-000092",
+        // {
+
+        // first_name: "Prashant",
+        // last_name: "Marathay",
+        // email: "pmarathay@gmail.com",
+        // phone_no: "4084760001",
         // appt_treatment_uid: "330-000001",
         // notes: "NULL",
-        // appt_date: "2021:05:04",
+        // appt_date: "05/30/2021",
         // appt_time: "14:00:00",
         // purchase_price: "$175",
-        // purchase_date: "04/04/2020",
+        // purchase_date: "04/04/2021",
 
-        // appt_customer_uid: "100-000092",
-        // firstName: "",
-        // lastName: "",
-        // email: "",
-        // phoneNum: "",
+        // first_name: fName,
+        // last_name: lName,
+        // email: email,
+        // phone_no: phoneNum,
+        // appt_treatment_uid: "330-000001",
+        // notes: "NULL",
+        // appt_date: "05/30/2021",
+        // appt_time: "14:00:00",
+        // purchase_price: "$175",
+        // purchase_date: "04/04/2021",
+
+        first_name: fName,
+        last_name: lName,
+        email: email,
+        phone_no: phoneNum,
         appt_treatment_uid: treatment_uid,
         notes: "NULL",
         appt_date: dateFormat1(date),
         appt_time: selectedTime,
         purchase_price: "$100",
         purchase_date: dateFormat1(date),
-
-        //Put some room between the buttons
-        //Be flexible with horizontal vs vertical arrangement of the buttons
-
-        //What is still hardcoded?
-        //1. Customer UID
-        //2. Service ID & Price
-        //3. Notes
-
-        //We might choose not to let the user login
-        //Instead of using a customer_uid, we can use an emailID.
-        //If we use the login ---> program holds their profile info
-        //If we use just the email --> user input is used as a customer_uid
-
-        //Create a profile info form (get user input) to book the appt.
-        //Include first name, last name, email address, and phone number
-        //Include Notes
-
-        //Create a four field form that takes in those four variables and does the post?
       })
       .then((res) => console.log(res));
   }
@@ -186,7 +221,8 @@ export default function AppointmentPage(props) {
               {/* How do I put a space here? */}
               {date.toString().substring(0, 15)}
               <br></br>
-              {renderAvailableApptsHorizontal()}
+              {/* {renderAvailableApptsHorizontal()} */}
+              {renderAvailableAppts()}
             </Box>
           </div>
           <div className="col">
@@ -226,14 +262,37 @@ export default function AppointmentPage(props) {
             </Box>
           </div>
           <div className="col">
-            Below is a form component for determining the identity of the client
-            <Form />
+            Below is my simple form
+            <br></br>
+            <br></br>
+            <SimpleForm
+              field="First Name"
+              onHandleChange={handleFirstNameChange}
+            />
+            Your first Name is {fName}
+            <br></br>
+            <br></br>
+            <SimpleForm
+              field="Last Name"
+              onHandleChange={handleLastNameChange}
+            />
+            Your Last Name is {lName}
+            <br></br>
+            <br></br>
+            <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
+            Your Email is {email}
+            <br></br>
+            <br></br>
+            <SimpleForm
+              field="Phone Number"
+              onHandleChange={handlePhoneNumChange}
+            />
+            Your Phone Num is {phoneNum}
           </div>
         </div>
-
         <br></br>
-
         <Footer />
+        <br></br>
       </div>
     </>
   );

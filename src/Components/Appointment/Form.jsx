@@ -1,5 +1,6 @@
 /**
- * This form component was lifted directly from Geeks for Geeks
+ * This form component is based on the code provided by the following Geeks for Geeks article:
+ * https://www.geeksforgeeks.org/reactjs-forms/
  **/
 
 import React, { Component } from "react";
@@ -7,21 +8,21 @@ import React, { Component } from "react";
 class Form extends Component {
   constructor(props) {
     super(props);
-    this.state = { email: "", fName: "", lName: "", address: "", phoneNo: "" };
+    this.state = { email: "", fName: "", lName: "", notes: "", phoneNo: "" };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // Form submitting logic, prevent default page refresh
   handleSubmit(event) {
-    const { email, fName, lName, address, phoneNo } = this.state;
+    const { email, fName, lName, notes, phoneNo } = this.state;
     event.preventDefault();
     alert(`
       ____Your Details____\n
       Email : ${email}
       First Name : ${fName}
       Last Name : ${lName}
-      Address : ${address}
+      Notes : ${notes}
       Phone No : ${phoneNo}
     `);
   }
@@ -71,15 +72,7 @@ class Form extends Component {
             onChange={this.handleChange}
           />
         </div>
-        <div>
-          <label htmlFor="address">Address</label>
-          <input
-            name="address"
-            placeholder="Address"
-            value={this.state.address}
-            onChange={this.handleChange}
-          />
-        </div>
+
         <div>
           <label htmlFor="phoneNo">Phone Number</label>
           <input
@@ -89,8 +82,20 @@ class Form extends Component {
             onChange={this.handleChange}
           />
         </div>
+
         <div>
-          <button>Create Account</button>
+          <label htmlFor="address">Notes</label>
+          <input
+            name="notes"
+            placeholder="Notes for practicioner"
+            value={this.state.notes}
+            onChange={this.handleChange}
+          />
+        </div>
+        <br></br>
+
+        <div>
+          <button> Submit Information</button>
         </div>
       </form>
     );
