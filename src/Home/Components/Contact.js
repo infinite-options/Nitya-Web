@@ -7,6 +7,7 @@ import FacebookIcon from "@material-ui/icons/Facebook";
 import TwitterIcon from "@material-ui/icons/Twitter";
 import PinterestIcon from "@material-ui/icons/Pinterest";
 import { makeStyles } from "@material-ui/core/styles";
+import ScrollToTop from "../../Blog/ScrollToTop";
 
 const useStyles = makeStyles({
   container: {
@@ -72,111 +73,114 @@ export default function Contact() {
 
   return (
     <div className="contact" id="contact">
-      <div className={classes.container}>
-        <Row>
-          <Col>
-            <p className={classes.title}>Contact Us</p>
-            <p className={classes.content}>
-              6055 Meridian Ave #40, San Jose, CA 95120, USA <br />
-              Office: 408 471 7004
-            </p>
-            <MapSection location={location} zoomLevel={13} />​
-          </Col>
-          <Col className={classes.form} s>
-            <Form>
-              <Row form>
-                <Col md={6}>
-                  <FormGroup>
-                    <Input
-                      type="text"
-                      name="name"
-                      id="name"
-                      placeholder="Name"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md={6}>
-                  <FormGroup>
-                    <Input
-                      type="email"
-                      name="email"
-                      id="email"
-                      placeholder="Email"
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <FormGroup>
-                <Input
-                  type="text"
-                  name="subject"
-                  id="subject"
-                  placeholder="Subject"
-                />
-              </FormGroup>
+      <div className="page-container ">
+        <div className={classes.container}>
+          <ScrollToTop />
+          <Row>
+            <Col>
+              <p className={classes.title}>Contact Us</p>
+              <p className={classes.content}>
+                6055 Meridian Ave #40, San Jose, CA 95120, USA <br />
+                Office: 408 471 7004
+              </p>
+              <MapSection location={location} zoomLevel={13} />​
+            </Col>
+            <Col className={classes.form} s>
+              <Form>
+                <Row form>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Input
+                        type="text"
+                        name="name"
+                        id="name"
+                        placeholder="Name"
+                      />
+                    </FormGroup>
+                  </Col>
+                  <Col md={6}>
+                    <FormGroup>
+                      <Input
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Email"
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <FormGroup>
+                  <Input
+                    type="text"
+                    name="subject"
+                    id="subject"
+                    placeholder="Subject"
+                  />
+                </FormGroup>
 
-              <FormGroup>
-                <Input
-                  type="textarea"
-                  name="text"
-                  id="exampleText"
-                  placeholder="Type your message here"
-                />
-              </FormGroup>
+                <FormGroup>
+                  <Input
+                    type="textarea"
+                    name="text"
+                    id="exampleText"
+                    placeholder="Type your message here"
+                  />
+                </FormGroup>
 
-              <Button className={classes.btn}>Submit</Button>
-            </Form>
-            <ul
-              className="list-icons "
-              style={{ color: "#ffffff", paddingTop: "100px" }}
-            >
-              <li>
-                <FacebookIcon
-                  fontSize="large"
-                  onClick={(event) =>
-                    (window.location.href =
-                      "https://www.instagram.com/nityaayurveda/")
-                  }
-                  aria-hidden="false"
-                  aria-label="Facebook"
-                />
-              </li>
-              <li>
-                <TwitterIcon
-                  fontSize="large"
-                  onClick={(event) =>
-                    (window.location.href =
-                      "https://www.instagram.com/nityaayurveda/")
-                  }
-                  aria-hidden="false"
-                  aria-label="Twitter"
-                />
-              </li>
-              <li>
-                <PinterestIcon
-                  fontSize="large"
-                  onClick={(event) =>
-                    (window.location.href =
-                      "https://www.instagram.com/nityaayurveda/")
-                  }
-                  aria-hidden="false"
-                  aria-label="Pinterest"
-                />
-              </li>
-              <li>
-                <InstagramIcon
-                  fontSize="large"
-                  onClick={(event) =>
-                    (window.location.href =
-                      "https://www.instagram.com/nityaayurveda/")
-                  }
-                  aria-hidden="false"
-                  aria-label="Instagram"
-                />
-              </li>
-            </ul>
-          </Col>
-        </Row>
+                <Button className={classes.btn}>Submit</Button>
+              </Form>
+              <ul
+                className="list-icons "
+                style={{ color: "#ffffff", paddingTop: "100px" }}
+              >
+                <li>
+                  <FacebookIcon
+                    fontSize="large"
+                    onClick={(event) =>
+                      (window.location.href =
+                        "https://www.instagram.com/nityaayurveda/")
+                    }
+                    aria-hidden="false"
+                    aria-label="Facebook"
+                  />
+                </li>
+                <li>
+                  <TwitterIcon
+                    fontSize="large"
+                    onClick={(event) =>
+                      (window.location.href =
+                        "https://www.instagram.com/nityaayurveda/")
+                    }
+                    aria-hidden="false"
+                    aria-label="Twitter"
+                  />
+                </li>
+                <li>
+                  <PinterestIcon
+                    fontSize="large"
+                    onClick={(event) =>
+                      (window.location.href =
+                        "https://www.instagram.com/nityaayurveda/")
+                    }
+                    aria-hidden="false"
+                    aria-label="Pinterest"
+                  />
+                </li>
+                <li>
+                  <InstagramIcon
+                    fontSize="large"
+                    onClick={(event) =>
+                      (window.location.href =
+                        "https://www.instagram.com/nityaayurveda/")
+                    }
+                    aria-hidden="false"
+                    aria-label="Instagram"
+                  />
+                </li>
+              </ul>
+            </Col>
+          </Row>
+        </div>
       </div>
     </div>
   );

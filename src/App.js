@@ -1,32 +1,36 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Navbar from "./Home/Navbar/Navbar";
-import Footer from "./Home/Footer/Footer";
+import Navbar from "./Navbar/Navbar";
+import Footer from "./Footer/Footer";
 import Homepage from "./Home/Homepage";
+import Home from "./Home/Components/Home";
+import About from "./Home/Components/About";
+import Services from "./Home/Components/Services";
+import Contact from "./Home/Components/Contact";
 import Blog from "./Blog/Blog";
-
+import FullBlog from "./Blog/FullBlog";
+import AddPost from "./Blog/AddPost";
 function App() {
   return (
-    <div className="App">
-      <Router>
-        <Navbar />
-        <div>
-          <Switch>
-            <Route exact path="/">
-              <Homepage />
-            </Route>
-            <Route path="/blog">
-              <Blog />
-            </Route>
-          </Switch>
-          {/*  <Route exact path="/" component={} />
+    <Router>
+      <Navbar />
+
+      <Switch>
+        <Route exact path="/" component={Homepage} />
+        <Route path="/home" component={Homepage} />
+        <Route path="/about" component={About} />
+        <Route path="/blog" component={Blog} />
+        <Route path="/:blog_uid/fullblog" component={FullBlog} />
+        <Route path="/addpost" component={AddPost} />
+        <Route path="/services" component={Services} />
+        <Route path="/contact" component={Contact} />
+      </Switch>
+      {/*  <Route exact path="/" component={} />
           <Route exact path="/blog" component={} /> */}
-        </div>
-        <Footer />
-      </Router>
-      ,
-    </div>
+
+      <Footer />
+    </Router>
   );
 }
 

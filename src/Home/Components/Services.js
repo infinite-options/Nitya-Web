@@ -3,6 +3,7 @@ import { Button, ButtonGroup } from "reactstrap";
 import Consulting from "./Consulting";
 import Treatments from "./Treatments";
 import { makeStyles } from "@material-ui/core/styles";
+import ScrollToTop from "../../Blog/ScrollToTop";
 
 const Services = (props) => {
   const useStyles = makeStyles({
@@ -46,24 +47,27 @@ const Services = (props) => {
 
   return (
     <div className="services" id="services">
-      <div className={classes.container}>
-        <ButtonGroup>
-          <Button
-            className={classes.btn1}
-            onClick={() => setRSelected(<Consulting />)}
-            active={rSelected === <Consulting />}
-          >
-            Consulting
-          </Button>
-          <Button
-            className={classes.btn2}
-            onClick={() => setRSelected(<Treatments />)}
-            active={rSelected === <Treatments />}
-          >
-            Treatments
-          </Button>
-        </ButtonGroup>
-        <p>{rSelected}</p>
+      <div className="page-container ">
+        <div className={classes.container}>
+          <ScrollToTop />
+          <ButtonGroup>
+            <Button
+              className={classes.btn1}
+              onClick={() => setRSelected(<Consulting />)}
+              active={rSelected === <Consulting />}
+            >
+              Consulting
+            </Button>
+            <Button
+              className={classes.btn2}
+              onClick={() => setRSelected(<Treatments />)}
+              active={rSelected === <Treatments />}
+            >
+              Treatments
+            </Button>
+          </ButtonGroup>
+          <p>{rSelected}</p>
+        </div>
       </div>
     </div>
   );

@@ -2,7 +2,10 @@ import React from "react";
 import { Button, Row, Col } from "reactstrap";
 import Img from "../../card1.jpg";
 import { makeStyles } from "@material-ui/core/styles";
-
+import About from "./About";
+import Services from "./Services";
+import Contact from "./Contact";
+import ScrollToTop from "../../Blog/ScrollToTop";
 const useStyles = makeStyles({
   container: {
     position: "relative",
@@ -48,18 +51,21 @@ export default function Home() {
   const classes = useStyles();
 
   return (
-    <div className="home" id="home">
-      <div className={classes.container}>
-        <Row className={classes.rows}>
-          <Col>
-            <p className={classes.title}>Helping your body heal itself</p>
-            <Button className={classes.btn}>Book a Session</Button>
-          </Col>
-          <Col>
-            <img src={Img} className={classes.img} alt="spices" />
-          </Col>
-        </Row>
+    <>
+      <div className="home" id="home">
+        <div className={classes.container}>
+          <ScrollToTop />
+          <Row className={classes.rows}>
+            <Col>
+              <p className={classes.title}>Helping your body heal itself</p>
+              <Button className={classes.btn}>Book a Session</Button>
+            </Col>
+            <Col>
+              <img src={Img} className={classes.img} alt="spices" />
+            </Col>
+          </Row>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
