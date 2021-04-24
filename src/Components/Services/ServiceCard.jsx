@@ -3,6 +3,9 @@ import ContactInfo from "./ContactInfo";
 import { Button } from "reactstrap";
 import axios from "axios";
 import "./ServiceCard.css";
+import BookNowBtn from "../Appointment/BookNowBtn";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 // There are two files with very similar names: Services.js and Services.jsx
 // The js file is responsible for rendering the services as they appear on the landing/home pageXOffset
@@ -23,7 +26,7 @@ export default function Service(treatment_uid) {
     "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
   const [servicesLoaded, setServicesLoaded] = useState(false);
   const [elementToBeRendered, setElementToBeRendered] = useState(temp);
-  const localTreatment_uid = "330-000004";
+  const localTreatment_uid = "330-000002";
 
   const [serviceArr, setServiceArr] = useState([]);
 
@@ -77,7 +80,11 @@ export default function Service(treatment_uid) {
         >
           {elementToBeRendered.duration} | {elementToBeRendered.cost}
         </div>
-        <Button>Book Now</Button>
+        {/* <Button>Book Now</Button> */}
+        <Button>
+          <Link to={`/${localTreatment_uid}/appt`}>sup</Link>
+        </Button>
+        This is the treatment ID we are about to pass {localTreatment_uid}
         {/* make some room between the button and the image */}
         <br></br>
         <br></br>

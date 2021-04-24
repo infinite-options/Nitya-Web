@@ -13,18 +13,18 @@ class Form extends Component {
     // this.state = { variable: "", field: this.props.field };
     this.state = { field: this.props.field };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    // this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   // Form submitting logic, prevent default page refresh
-  handleSubmit(event) {
-    const { variable } = this.state;
-    event.preventDefault();
-    alert(`
-       ____Your Details____\n
-       ${this.props.field} : ${variable}
-     `);
-  }
+  // handleSubmit(event) {
+  //   const { variable } = this.state;
+  //   event.preventDefault();
+  //   alert(`
+  //      ____Your Details____\n
+  //      ${this.props.field} : ${variable}
+  //    `);
+  // }
 
   // Method causes to store all the values of the
   // input field in react state single method handle
