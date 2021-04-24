@@ -1,5 +1,8 @@
 /**
- * This form component was lifted directly from Geeks for Geeks
+ * This form component is based on the code provided by the following Geeks for Geeks article:
+ * https://www.geeksforgeeks.org/reactjs-forms/
+ *
+ * I have modified it down so that the form only has one label + input pair.
  **/
 
 import React, { Component } from "react";
