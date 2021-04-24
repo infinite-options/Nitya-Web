@@ -9,9 +9,7 @@ class ServicePage extends Component {
     return (
       <>
         <div className="page-container ">
-          <Navbar />
           <ServiceCard />
-          <Footer />
         </div>
       </>
     );

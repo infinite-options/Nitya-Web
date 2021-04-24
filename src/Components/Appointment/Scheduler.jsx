@@ -9,9 +9,12 @@ import Form from "./Form";
 import SimpleForm from "./simpleForm";
 import { render } from "@testing-library/react";
 
-export default function Scheduler() {
+//STG, I didn't know I could pass in props to a function. Super cool.
+export default function Scheduler(props) {
   //For Calendar
-  const treatment_uid = "330-000006";
+  // const treatment_uid = "330-000006";
+  const treatment_uid = props.treatmentID;
+  // const { treatment_uid } = useParams();
 
   //For Axios.Get
   const [date, setDate] = useState(new Date());
@@ -29,6 +32,7 @@ export default function Scheduler() {
   const [lName, setLName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
+  const [notes, setNotes] = useState("");
 
   const handleFirstNameChange = (newFName) => {
     // this.setState({ fName: newFName });
@@ -48,6 +52,10 @@ export default function Scheduler() {
   const handlePhoneNumChange = (newPhoneNum) => {
     // this.setState({ fName: newFName });
     setPhoneNum(newPhoneNum);
+  };
+
+  const handleNotesChange = (newNotes) => {
+    setNotes(newNotes);
   };
 
   const dateChange = (date) => {
@@ -157,45 +165,20 @@ export default function Scheduler() {
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
     axios
       .post(postURL, {
-        // {
-
-        // first_name: "Prashant",
-        // last_name: "Marathay",
-        // email: "pmarathay@gmail.com",
-        // phone_no: "4084760001",
-        // appt_treatment_uid: "330-000001",
-        // notes: "NULL",
-        // appt_date: "05/30/2021",
-        // appt_time: "14:00:00",
-        // purchase_price: "$175",
-        // purchase_date: "04/04/2021",
-
-        // first_name: fName,
-        // last_name: lName,
-        // email: email,
-        // phone_no: phoneNum,
-        // appt_treatment_uid: "330-000001",
-        // notes: "NULL",
-        // appt_date: "05/30/2021",
-        // appt_time: "14:00:00",
-        // purchase_price: "$175",
-        // purchase_date: "04/04/2021",
-
-        //We need a notes input
-        //
-
         first_name: fName,
         last_name: lName,
         email: email,
         phone_no: phoneNum,
-        appt_treatment_uid: treatment_uid,
-        notes: "NULL",
+        appt_treatment_uid: treatment_uid, //TREATMENT INFO #1
+        notes: notes,
         appt_date: dateFormat1(date),
         appt_time: selectedTime,
-        purchase_price: "$100",
+        purchase_price: "$100", //TREATMENT INFO #2
         purchase_date: dateFormat1(purchaseDate),
       })
       .then((res) => console.log(res));
+
+    //We oughta figure out how to get those pieces of treatment info into our post call
   }
 
   return (
@@ -215,6 +198,7 @@ export default function Scheduler() {
       </div>
       <div className="col">
         <Box>
+          <br></br>
           Customer id
           <br></br>
           <br></br>
@@ -270,6 +254,11 @@ export default function Scheduler() {
           onHandleChange={handlePhoneNumChange}
         />
         Your Phone Num is {phoneNum}
+        <br></br>
+        <br></br>
+        <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
+        Your Notes are {notes}
+        <br></br>
       </div>
     </div>
   );
