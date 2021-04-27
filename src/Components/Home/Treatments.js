@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   Button,
@@ -10,24 +10,23 @@ import {
   CardBody,
 } from "reactstrap";
 import { NavHashLink } from "react-router-hash-link";
-import Img1 from "../../treatment1.jpg";
-import Img2 from "../../treatment2.jpg";
-import Img3 from "../../treatment3.jpg";
+
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   card: {
-    width: "78rem",
-    height: "28rem",
+    minWidth: "1200px",
+    width: "auto",
+    height: "400px",
     backgroundColor: "#dbdbdb",
     outline: "none",
   },
   img: {
-    width: "39rem",
-    height: "28rem",
+    height: "400px",
+    objectFit: "cover",
   },
   body: {
-    width: "39rem",
+    minWidth: "600px",
     float: "right",
     textAlign: "center",
     color: "#594d2c",
@@ -45,85 +44,62 @@ const useStyles = makeStyles({
     borderRadius: "0px",
     color: "#ffffff",
     fontSize: "1.4rem",
-    padding: "10px 40px",
+    minHeight: "40px",
   },
 });
 
 export default function Treatments() {
   const classes = useStyles();
-
+  const [data, setData] = useState([]);
+  const fetchData = async () => {
+    const res = await fetch(
+      "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments"
+    );
+    const json = await res.json();
+    return json.result;
+  };
+  useEffect(() => {
+    fetchData().then((data) => {
+      setData(data);
+    });
+  }, []);
   return (
     <div className="treatments" id="treatments">
       <br />
-      <Card className={classes.card}>
-        <Row className="no-gutters">
-          <Col md={5} lg={5}>
-            <CardImg className={classes.img} variant="top" src={Img1} />
-          </Col>
-          <Col>
-            <CardBody className={classes.body}>
-              <CardTitle className={classes.title}>
-                Abhyanga (not available at this point)
-              </CardTitle>
-              <CardText className={classes.text}>
-                Nourishing and strengthening the body with oil application.
-                <br />
-                <NavHashLink to="#home">Learn More</NavHashLink> <br />
-              </CardText>
-              <Button className={classes.btn} variant="primary">
-                Book Now
-              </Button>
-            </CardBody>
-          </Col>
-        </Row>
-      </Card>
-      <br />
-      <br />
-      <Card className={classes.card}>
-        <Row className="no-gutters">
-          <Col md={5} lg={5}>
-            <CardImg className={classes.img} variant="top" src={Img2} />
-          </Col>
-          <Col>
-            <CardBody className={classes.body}>
-              <CardTitle className={classes.title}>
-                Kati Basti (not available at this point)
-              </CardTitle>
-              <CardText className={classes.text}>
-                Treatment for nourishing and treating lower back pain. <br />
-                <NavHashLink to="#home">Learn More</NavHashLink> <br />
-              </CardText>
-              <Button className={classes.btn} variant="primary">
-                Book Now
-              </Button>
-            </CardBody>
-          </Col>
-        </Row>
-      </Card>
-      <br />
-      <br />
-      <Card className={classes.card}>
-        <Row className="no-gutters">
-          <Col md={5} lg={5}>
-            <CardImg className={classes.img} variant="top" src={Img3} />
-          </Col>
-          <Col>
-            <CardBody className={classes.body}>
-              <CardTitle className={classes.title}>
-                Hrud Basti (not available at this point)
-              </CardTitle>
-              <CardText className={classes.text}>
-                Treatment for nourishing and opening the heart chakra. <br />
-                <NavHashLink to="#home">Learn More</NavHashLink> <br />
-              </CardText>
-              <Button className={classes.btn} variant="primary">
-                Book Now
-              </Button>
-            </CardBody>
-          </Col>
-        </Row>
-      </Card>
-      <br />
+      <div className={classes.container}>
+        {data
+          .filter((service) => service.category === "Treatment")
+          .map((filteredService) => (
+            <div>
+              <Card className={classes.card}>
+                <Row className="no-gutters">
+                  <Col className="d-none d-sm-block d-md-block">
+                    <CardImg
+                      className={classes.img}
+                      variant="top"
+                      src={filteredService.image_url}
+                    />
+                  </Col>
+                  <Col style={{ display: "flex", justifyContent: "center" }}>
+                    <CardBody className={classes.body}>
+                      <CardTitle className={classes.title}>
+                        {filteredService.title}
+                      </CardTitle>
+                      <CardText className={classes.text}>
+                        {filteredService.description} <br />
+                        <NavHashLink to="#home">Learn More</NavHashLink> <br />
+                      </CardText>
+                      <Button className={classes.btn} variant="primary">
+                        Book Now
+                      </Button>
+                    </CardBody>
+                  </Col>
+                </Row>
+              </Card>
+              <br />
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

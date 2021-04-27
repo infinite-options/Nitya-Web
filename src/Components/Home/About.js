@@ -6,18 +6,18 @@ import ScrollToTop from "../../Blog/ScrollToTop";
 
 const useStyles = makeStyles({
   container: {
-    position: "relative",
-    top: "70px",
-    marginBottom: "255px",
-    left: "220px",
-    right: "80px",
-    height: "810px",
-    width: "1310px",
-    backgroundColor: "white",
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    position: "relative",
+    top: "70px",
+    marginBottom: "150px",
+    minHeight: "710px",
+    minWidth: "600px",
+    height: "auto",
+    width: "auto",
+    padding: "50px",
+    backgroundColor: "white",
   },
 
   title: {
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
     textAlign: "center",
     fontFamily: "DidoteTextW01-Italic",
     fontStyle: "italic",
-    fontSize: "4rem",
+    fontSize: "3.5rem",
     wordWrap: "break-word",
     color: "#d3a625",
     lineHeight: "2",
@@ -41,6 +41,7 @@ const useStyles = makeStyles({
   img: {
     width: "600px",
     height: "630px",
+    objectFit: "cover",
   },
 });
 
@@ -48,8 +49,8 @@ export default function Home() {
   const classes = useStyles();
 
   return (
-    <div className="about" id="about">
-      <div className="page-container ">
+    <div className="page-container ">
+      <div className="about" id="about">
         <div className={classes.container}>
           <ScrollToTop />
           <Row className={classes.rows}>
@@ -75,7 +76,7 @@ export default function Home() {
               </p>
               ​
             </Col>
-            <Col>
+            <Col style={{ display: "flex", justifyContent: "center" }}>
               <img src={Img} className={classes.img} alt="leena" />
             </Col>
           </Row>
