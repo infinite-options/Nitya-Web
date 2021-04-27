@@ -14,6 +14,7 @@ import FullBlog from "./Blog/FullBlog";
 import AddPost from "./Blog/AddPost";
 import ServicePage from "./Components/ServicePage";
 import AppointmentPage from "./Components/AppointmentPage";
+import SignUp from "./Components/Home/SignUp";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/contact" component={Contact} />
         <Route exact path="/service" component={ServicePage} />
         <Route exact path="/appt" component={AppointmentPage} />
+        <Route exact path="/signup" component={SignUp} />
       </Switch>
       {/*  <Route exact path="/" component={} />
           <Route exact path="/blog" component={} /> */}

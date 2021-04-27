@@ -8,18 +8,18 @@ import Contact from "./Contact";
 import ScrollToTop from "../../Blog/ScrollToTop";
 const useStyles = makeStyles({
   container: {
-    position: "relative",
-    top: "70px",
-    marginBottom: "120px",
-    left: "220px",
-    right: "80px",
-    height: "750px",
-    width: "1310px",
-    backgroundColor: "white",
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    position: "relative",
+    top: "70px",
+    marginBottom: "150px",
+    minHeight: "710px",
+    minWidth: "600px",
+    height: "auto",
+    width: "auto",
+    padding: "100px",
+    backgroundColor: "white",
   },
 
   title: {
@@ -33,17 +33,20 @@ const useStyles = makeStyles({
   },
 
   btn: {
-    fontSize: "1.8rem",
+    fontSize: "1.2rem",
+    color: "#ffffff",
     backgroundColor: "#d3a625",
     border: "1px solid #d3a625",
-    marginLeft: "120px",
     marginTop: "40px",
-    padding: "0px 60px",
+    marginBottom: "20px",
+
+    minHeight: "60px",
   },
 
   img: {
     width: "600px",
-    height: "450px",
+    height: "530px",
+    objectFit: "cover",
   },
 });
 
@@ -56,11 +59,17 @@ export default function Home() {
         <div className={classes.container}>
           <ScrollToTop />
           <Row className={classes.rows}>
-            <Col>
+            <Col
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
               <p className={classes.title}>Helping your body heal itself</p>
               <Button className={classes.btn}>Book a Session</Button>
             </Col>
-            <Col>
+            <Col style={{ display: "flex", justifyContent: "center" }}>
               <img src={Img} className={classes.img} alt="spices" />
             </Col>
           </Row>

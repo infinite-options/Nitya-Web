@@ -99,7 +99,7 @@ export default function Navbar() {
             </li>
             <li className="nav-links">
               <Link
-                to="LogIn"
+                to="/signup"
                 className="nav-links"
                 spy={true}
                 smooth={true}
@@ -111,7 +111,7 @@ export default function Navbar() {
             </li>
             <li className="nav-links">
               <Link
-                to="LogIn"
+                to="/signup"
                 className="nav-links"
                 spy={true}
                 smooth={true}
