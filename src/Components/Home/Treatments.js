@@ -14,6 +14,10 @@ import Img1 from "../../treatment1.jpg";
 import Img2 from "../../treatment2.jpg";
 import Img3 from "../../treatment3.jpg";
 import { makeStyles } from "@material-ui/core/styles";
+import BookApptBtn from "../Appointment/BookNowBtn";
+import { Link } from "react-router-dom";
+import LearnMoreBTN  from "../Services/LearnMoreBtn";
+import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({
   card: {
@@ -68,10 +72,14 @@ export default function Treatments() {
               <CardText className={classes.text}>
                 Nourishing and strengthening the body with oil application.
                 <br />
+                 {/* LearnMoreButton here */}
+                 <LearnMoreBTN apptID="330-000001" />
                 <NavHashLink to="#home">Learn More</NavHashLink> <br />
               </CardText>
               <Button className={classes.btn} variant="primary">
                 Book Now
+                {/* BookNowButton here */}
+                <BookNowBTN apptID="330-000001" /> 
               </Button>
             </CardBody>
           </Col>
@@ -91,10 +99,14 @@ export default function Treatments() {
               </CardTitle>
               <CardText className={classes.text}>
                 Treatment for nourishing and treating lower back pain. <br />
+                 {/* LearnMoreButton here */}
+                 <LearnMoreBTN apptID="330-000002" />
                 <NavHashLink to="#home">Learn More</NavHashLink> <br />
               </CardText>
               <Button className={classes.btn} variant="primary">
-                Book Now
+                Book Now 
+                {/* BookNowButton here */}
+                <BookNowBTN apptID="330-000002" /> 
               </Button>
             </CardBody>
           </Col>
@@ -114,14 +126,26 @@ export default function Treatments() {
               </CardTitle>
               <CardText className={classes.text}>
                 Treatment for nourishing and opening the heart chakra. <br />
+                 {/* LearnMoreButton here */}
+                 
+                 {/* <Button>
+                  <Link to={`/330-000006/service`}>
+                    what's good, click here to learn more about this appt
+                  </Link>
+                </Button> */}
+                <LearnMoreBTN apptID="330-000003" /> 
+
                 <NavHashLink to="#home">Learn More</NavHashLink> <br />
               </CardText>
               <Button className={classes.btn} variant="primary">
                 Book Now
+                {/* BookNowButton here */}
+                <BookNowBTN apptID="330-000003" /> 
               </Button>
             </CardBody>
           </Col>
         </Row>
+        {/* {App.state.temp} */}
       </Card>
       <br />
     </div>

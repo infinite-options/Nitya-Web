@@ -1,6 +1,6 @@
-import React from "react";
+//import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useContext } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import Homepage from "./Components/Homepage";
@@ -15,8 +15,18 @@ import AddPost from "./Blog/AddPost";
 import ServicePage from "./Components/ServicePage";
 import AppointmentPage from "./Components/AppointmentPage";
 
-function App() {
+import React, { useState } from "react";
+import ReactDOM from "react-dom";
+
+export const MyContext = React.createContext();
+
+export default function App() {
+  const [temp, setTemp] = useState("WubbaLubbaDubDub");
+  const [darkTheme, setDarkTheme] = useState(true);
+
+
   return (
+    <MyContext.Provider value={temp}>
     <Router>
       <Navbar />
 
@@ -37,7 +47,7 @@ function App() {
 
       <Footer />
     </Router>
+    </MyContext.Provider>
   );
 }
 
-export default App;

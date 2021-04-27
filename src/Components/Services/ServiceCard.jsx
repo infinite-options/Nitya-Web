@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 // There are two files with very similar names: Services.js and Services.jsx
 // The js file is responsible for rendering the services as they appear on the landing/home pageXOffset
 // The jsx file is responsible for rendering the services as they appear on the "learn more" feature
-export default function Service(treatment_uid) {
+export default function Service(props) {
   const temp = {
     name: "",
     description: "",
@@ -26,7 +26,9 @@ export default function Service(treatment_uid) {
     "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
   const [servicesLoaded, setServicesLoaded] = useState(false);
   const [elementToBeRendered, setElementToBeRendered] = useState(temp);
-  const localTreatment_uid = "330-000002";
+  // const localTreatment_uid = "330-000003";
+  const { treatmentID } = useParams();
+  const localTreatment_uid = treatmentID;
 
   const [serviceArr, setServiceArr] = useState([]);
 
@@ -80,10 +82,10 @@ export default function Service(treatment_uid) {
         >
           {elementToBeRendered.duration} | {elementToBeRendered.cost}
         </div>
-        {/* <Button>Book Now</Button> */}
-        <Button>
+        {/* <Button>
           <Link to={`/${localTreatment_uid}/appt`}>sup</Link>
-        </Button>
+        </Button> */}
+        <BookNowBtn apptID={localTreatment_uid} />
         This is the treatment ID we are about to pass {localTreatment_uid}
         {/* make some room between the button and the image */}
         <br></br>

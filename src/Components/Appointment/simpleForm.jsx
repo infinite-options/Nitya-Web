@@ -2,6 +2,11 @@
  * This form component is based on the code provided by the following Geeks for Geeks article:
  * https://www.geeksforgeeks.org/reactjs-forms/
  *
+ * Separate tutorial on how to lift state up to ancestor component:
+ * https://www.youtube.com/watch?v=dQw4w9WgXcQ
+ *
+ * https://reactjs.org/docs/lifting-state-up.html
+ *
  * I have modified it down so that the form only has one label + input pair.
  **/
 
