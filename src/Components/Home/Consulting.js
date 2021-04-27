@@ -14,6 +14,8 @@ import Img1 from "../../consulting1.jpg";
 import Img2 from "../../consulting2.jpg";
 import Img3 from "../../consulting3.jpg";
 import { makeStyles } from "@material-ui/core/styles";
+import LearnMoreBTN  from "../Services/LearnMoreBtn";
+import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({
   card: {
@@ -70,10 +72,14 @@ export default function Consulting() {
               <CardText className={classes.text}>
                 Personalized Ayurvedic health plan, starts herbs and a 30 min
                 flup. <br />
+                {/* LearnMoreButton here */}
+                <LearnMoreBTN apptID="330-000004" />
                 <NavHashLink to="#home">Learn More</NavHashLink> <br />
               </CardText>
               <Button className={classes.btn} variant="primary">
                 Book Now
+                {/* BookNowButton here */}
+                <BookNowBTN apptID="330-000004" /> 
               </Button>
             </CardBody>
           </Col>
@@ -97,9 +103,13 @@ export default function Consulting() {
                 Continued fine tuning of your diet, herbs and lifestyle
                 practices. <br />
                 <NavHashLink to="#home">Learn More</NavHashLink> <br />
+                {/* LearnMoreButton here */}
+                <LearnMoreBTN apptID="330-000005" />
               </CardText>
               <Button className={classes.btn} variant="primary">
                 Book Now
+                {/* BookNowButton here */}
+                <BookNowBTN apptID="330-000005" /> 
               </Button>
             </CardBody>
           </Col>
@@ -121,9 +131,13 @@ export default function Consulting() {
                 Support and guidance for established clients to achieve health
                 goals. <br />
                 <NavHashLink to="#home">Learn More</NavHashLink> <br />
+                {/* LearnMoreButton here */}
+                <LearnMoreBTN apptID="330-000006" />
               </CardText>
               <Button className={classes.btn} variant="primary">
                 Book Now
+                {/* BookNowButton here */}
+                <BookNowBTN apptID="330-000006" /> 
               </Button>
             </CardBody>
           </Col>
