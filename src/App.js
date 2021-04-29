@@ -18,15 +18,15 @@ import AppointmentPage from "./Components/AppointmentPage";
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
+
+
+const count = "supercool";
 export const MyContext = React.createContext();
 
 export default function App() {
-  const [temp, setTemp] = useState("WubbaLubbaDubDub");
-  const [darkTheme, setDarkTheme] = useState(true);
-
-
+   
   return (
-    <MyContext.Provider value={temp}>
+   
     <Router>
       <Navbar />
 
@@ -40,14 +40,16 @@ export default function App() {
         <Route path="/services" component={Services} />
         <Route path="/contact" component={Contact} />
         <Route exact path="/:treatmentID/service/" component={ServicePage} />
-        <Route exact path="/:treatmentID/appt/" component={AppointmentPage} />
+        <MyContext.Provider value = {count} >
+          <Route exact path="/:treatmentID/appt/" component={AppointmentPage} />
+        </MyContext.Provider>
       </Switch>
       {/*  <Route exact path="/" component={} />
           <Route exact path="/blog" component={} /> */}
 
       <Footer />
     </Router>
-    </MyContext.Provider>
+    
   );
 }
 

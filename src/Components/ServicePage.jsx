@@ -1,19 +1,22 @@
-import React, { Component, useContext } from "react";
+import React, { useContext } from "react";
 
 import ServiceCard from "./Services/ServiceCard.jsx";
-import Footer from "../Footer/Footer";
-import Navbar from "../Navbar/Navbar";
+
 import MyContext from "../App";
 
-export default function ServicePage() {
-  const darkTheme = useContext(MyContext);
+const temp = "zooweemama";
 
+export const otherContext = React.createContext();
+
+export default function ServicePage() {
   return (
     <>
-      <div className="page-container ">
-        hello {darkTheme}
-        <ServiceCard />
-      </div>
+      <otherContext.Provider value={temp}>
+        <div className="page-container ">
+          hello
+          <ServiceCard />
+        </div>
+      </otherContext.Provider>
     </>
   );
 }

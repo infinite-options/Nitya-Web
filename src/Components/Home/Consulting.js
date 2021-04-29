@@ -74,13 +74,15 @@ export default function Consulting() {
                 flup. <br />
                 {/* LearnMoreButton here */}
                 <LearnMoreBTN apptID="330-000004" />
-                <NavHashLink to="#home">Learn More</NavHashLink> <br />
+                {/* <NavHashLink to="#home">Learn More</NavHashLink> <br /> */}
               </CardText>
-              <Button className={classes.btn} variant="primary">
+              {/* <Button className={classes.btn} variant="primary">
                 Book Now
-                {/* BookNowButton here */}
-                <BookNowBTN apptID="330-000004" /> 
-              </Button>
+                
+                
+              </Button> */}
+
+              <BookNowBTN apptID="330-000004" /> 
             </CardBody>
           </Col>
         </Row>

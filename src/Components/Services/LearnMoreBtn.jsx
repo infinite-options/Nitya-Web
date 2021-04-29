@@ -11,11 +11,11 @@ class BookNowBTN extends Component {
 
   render() {
     return (
-      <Button>
-        <Link to={`/${this.state.tID}/service`}>
-          what's good, click here to learn more about this appt
-        </Link>
-      </Button>
+      <div>
+        <Button>
+          <Link to={`/${this.state.tID}/service`}>Learn More</Link>
+        </Button>
+      </div>
     );
   }
 }

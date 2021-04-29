@@ -1,16 +1,20 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import ContactInfo from "./ContactInfo";
-import { Button } from "reactstrap";
+
 import axios from "axios";
 import "./ServiceCard.css";
 import BookNowBtn from "../Appointment/BookNowBtn";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
+
+import ScrollToTop from "../../Blog/ScrollToTop";
+import { otherContext } from "../ServicePage";
 
 // There are two files with very similar names: Services.js and Services.jsx
 // The js file is responsible for rendering the services as they appear on the landing/home pageXOffset
 // The jsx file is responsible for rendering the services as they appear on the "learn more" feature
 export default function Service(props) {
+  const testContext = useContext(otherContext);
+
   const temp = {
     name: "",
     description: "",
@@ -61,6 +65,7 @@ export default function Service(props) {
   // render() {
   return (
     <div className="background">
+      <ScrollToTop />
       {/* {this.loadServices} */}
       <div
         className="background"
@@ -91,6 +96,7 @@ export default function Service(props) {
         <br></br>
         <br></br>
         <img
+          alt="service"
           style={{
             width: "700px",
             height: "500px",
@@ -99,7 +105,7 @@ export default function Service(props) {
           src={elementToBeRendered.image_url}
         ></img>
         <div className="desc">{elementToBeRendered.treatment_notes}</div>
-        Gotta fix the formatting
+        Gotta fix the formatting {testContext}
         <ContactInfo />
       </div>
     </div>
