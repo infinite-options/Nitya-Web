@@ -1,13 +1,13 @@
-import React, { useEffect, useState, Component } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Footer from "../../Footer/Footer";
-import Navbar from "../../Navbar/Navbar";
 import Calendar from "react-calendar";
-import { Button } from "reactstrap";
+import { Button, Row, Col } from "reactstrap";
 import Box from "@material-ui/core/Box";
-// import Form from "./Form";
+// import "react-calendar/dist/Calendar.css";
+import "./Calendar2.css";
 import SimpleForm from "./simpleForm";
-import { render } from "@testing-library/react";
+
+import { makeStyles } from "@material-ui/core/styles";
 
 //STG, I didn't know I could pass in props to a function. Super cool.
 export default function Scheduler(props) {
@@ -35,22 +35,18 @@ export default function Scheduler(props) {
   const [notes, setNotes] = useState("");
 
   const handleFirstNameChange = (newFName) => {
-    // this.setState({ fName: newFName });
     setFName(newFName);
   };
 
   const handleLastNameChange = (newLName) => {
-    // this.setState({ fName: newFName });
     setLName(newLName);
   };
 
   const handleEmailChange = (newEmail) => {
-    // this.setState({ fName: newFName });
     setEmail(newEmail);
   };
 
   const handlePhoneNumChange = (newPhoneNum) => {
-    // this.setState({ fName: newFName });
     setPhoneNum(newPhoneNum);
   };
 
@@ -136,20 +132,20 @@ export default function Scheduler(props) {
 
   function renderAvailableApptsVertical() {
     return timeSlots.map((element) => (
-      <div className="row">
+      <Row>
         <Button onClick={() => selectApptTime(element)}>{element}</Button>{" "}
-      </div>
+      </Row>
     ));
   }
-  function renderAvailableApptsHorizontal() {
-    return timeSlots.map((element) => (
-      <div className="row">
-        <div className="col">
-          <Button onClick={() => selectApptTime(element)}>{element}</Button>{" "}
-        </div>
-      </div>
-    ));
-  }
+  // function renderAvailableApptsHorizontal() {
+  //   return timeSlots.map((element) => (
+  //     <div className="row">
+  //       <div className="col">
+  //         <Button onClick={() => selectApptTime(element)}>{element}</Button>{" "}
+  //       </div>
+  //     </div>
+  //   ));
+  // }
 
   function selectApptTime(element) {
     setSelectedTime(element);
@@ -181,85 +177,159 @@ export default function Scheduler(props) {
     //We oughta figure out how to get those pieces of treatment info into our post call
   }
 
+  const useStyles = makeStyles({
+    container: {
+      position: "relative",
+      // top: "50px",
+      // marginBottom: "100px",
+      // left: "50px",
+      // right: "80px",
+      height: "700px",
+      width: "500px",
+      backgroundColor: "#323c47",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+    },
+
+    title: {
+      marginTop: "-40px",
+      textAlign: "center",
+      fontFamily: "DidoteTextW01-Italic",
+      fontStyle: "italic",
+      fontSize: "2rem",
+      wordWrap: "break-word",
+      color: "#d3a625",
+      lineHeight: "2",
+    },
+    content: {
+      fontSize: "1.5rem",
+      fontFamily: "'Open Sans', sans-serif",
+      wordWrap: "break-word",
+      color: "#8d6f19",
+      lineHeight: "1.4",
+      textAlign: "center",
+    },
+    form: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: "#dbdbdb",
+      paddingTop: "12rem",
+      paddingBottom: "10rem",
+    },
+    btn: {
+      backgroundColor: "#d3a625",
+      color: "#ffffff",
+      border: "1px solid #ffffff",
+      fontSize: "2rem",
+      textAlign: "center",
+      padding: "5px 150px",
+      marginLeft: "40px",
+    },
+  });
+
+  const classes = useStyles();
+
   return (
-    <div className="row">
-      <div className="col">
-        <Calendar calendarType="US" onClickDay={dateChange} value={date} />
+    <Box>
+      <div className="row">
+        <Col>
+          <Box className={classes.container}>
+            <p className={classes.title}>Find a time to meet with Nitya </p>
+            <Calendar
+              backgroundColor="#d3a625"
+              calendarType="US"
+              onClickDay={dateChange}
+              value={date}
+            />
+          </Box>
+        </Col>
+        <Col>
+          <Box className={classes.container}>
+            {renderAvailableApptsVertical()}
+          </Box>
+        </Col>
+
+        <Col>
+          <Box className={classes.container}>
+            <p className={classes.title}>
+              Please fill out the information and notes below
+            </p>
+            <br></br>
+            <br></br>
+            <SimpleForm
+              field="First Name"
+              onHandleChange={handleFirstNameChange}
+            />
+            {/* Your first Name is {fName} */}
+            <br></br>
+            <br></br>
+            <SimpleForm
+              field="Last Name"
+              onHandleChange={handleLastNameChange}
+            />
+            {/* Your Last Name is {lName} */}
+            <br></br>
+            <br></br>
+            <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
+            {/* Your Email is {email} */}
+            <br></br>
+            <br></br>
+            <SimpleForm
+              field="Phone Number"
+              onHandleChange={handlePhoneNumChange}
+            />
+            {/* Your Phone Num is {phoneNum} */}
+            <br></br>
+            <br></br>
+            <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
+            {/* Your Notes are {notes} */}
+            <br></br>
+            <br></br>
+            <Button on onClick={bookAppt}>
+              Book Appt Now
+            </Button>
+          </Box>
+        </Col>
       </div>
-      <div className="col">
-        <Box>
-          These are the available appointments
-          {/* How do I put a space here? */}
-          {date.toString().substring(0, 15)}
-          <br></br>
-          {/* {renderAvailableApptsHorizontal()} */}
-          {renderAvailableAppts()}
-        </Box>
-      </div>
-      <div className="col">
-        <Box>
-          <br></br>
-          Customer id
-          <br></br>
-          <br></br>
-          Treatment id
-          <br></br>
-          {treatment_uid}
-          <br></br>
-          <br></br>
-          notes: (Null)
-          <br></br>
-          <br></br>
-          Appt Date
-          <br></br>
-          {/* {date.toString().substring(0, 15)} */}
-          {dateFormat1(date)}
-          <br></br>
-          <br></br>
-          Appt Time
-          <br></br>
-          {selectedTime}
-          <br></br>
-          <br></br>
-          Purchase Price
-          <br></br>
-          <br></br>
-          Purchase Date
-          <br></br>
-          {dateFormat1(purchaseDate)}
-          <br></br>
-          <Button on onClick={bookAppt}>
-            Book Appt Now
-          </Button>
-        </Box>
-      </div>
-      <div className="col">
-        Below is my simple form
-        <br></br>
-        <br></br>
-        <SimpleForm field="First Name" onHandleChange={handleFirstNameChange} />
-        Your first Name is {fName}
-        <br></br>
-        <br></br>
-        <SimpleForm field="Last Name" onHandleChange={handleLastNameChange} />
-        Your Last Name is {lName}
-        <br></br>
-        <br></br>
-        <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
-        Your Email is {email}
-        <br></br>
-        <br></br>
-        <SimpleForm
-          field="Phone Number"
-          onHandleChange={handlePhoneNumChange}
-        />
-        Your Phone Num is {phoneNum}
-        <br></br>
-        <br></br>
-        <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
-        Your Notes are {notes}
-        <br></br>
-      </div>
-    </div>
+    </Box>
   );
 }
+// {
+//   /* <div className="col">
+//         <Box>
+//           <br></br>
+//           Customer id
+//           <br></br>
+//           <br></br>
+//           Treatment id
+//           <br></br>
+//           {treatment_uid}
+//           <br></br>
+//           <br></br>
+//           notes: (Null)
+//           <br></br>
+//           <br></br>
+//           Appt Date
+//           <br></br>
+//           {dateFormat1(date)}
+//           <br></br>
+//           <br></br>
+//           Appt Time
+//           <br></br>
+//           {selectedTime}
+//           <br></br>
+//           <br></br>
+//           Purchase Price
+//           <br></br>
+//           <br></br>
+//           Purchase Date
+//           <br></br>
+//           {dateFormat1(purchaseDate)}
+//           <br></br>
+//         </Box>
+//       </div> */
+// }

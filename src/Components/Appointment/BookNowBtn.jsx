@@ -11,9 +11,7 @@ class BookNowBTN extends Component {
   render() {
     return (
       <Button>
-        <Link to={`/${this.state.tID}/appt`}>
-          what's good, click here to book now
-        </Link>
+        <Link to={`/${this.state.tID}/appt`}>Book Now</Link>
       </Button>
     );
   }

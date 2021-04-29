@@ -1,23 +1,20 @@
-import React, { useEffect, useState, Component } from "react";
-import axios from "axios";
-import Footer from "../Footer/Footer";
-import Navbar from "../Navbar/Navbar";
-import Calendar from "react-calendar";
-import { Button } from "reactstrap";
-import Box from "@material-ui/core/Box";
-// import Form from "./Appointment/Form";
-import SimpleForm from "./Appointment/simpleForm";
+import React, { useContext } from "react";
 import Scheduler from "./Appointment/Scheduler";
 import { useParams } from "react-router";
+import ScrollToTop from "../Blog/ScrollToTop";
+import MyContext from "../App";
+
 // The following react component is based on the youtube tutorial provided by Syncfusion, Inc. at the url below:
 
 export default function AppointmentPage(props) {
   const { treatmentID } = useParams();
+  const count = useContext(MyContext);
 
   return (
     <>
       <div className="page-container ">
-        This is the treatment ID we have received {treatmentID}
+        <ScrollToTop />
+        This is the {count} treatment ID we have received {treatmentID}
         <Scheduler treatmentID={treatmentID} />
       </div>
     </>
