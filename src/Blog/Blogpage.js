@@ -15,7 +15,6 @@ import {
   MenuItem,
   Button,
 } from "@material-ui/core";
-import CardMedia from "@material-ui/core/CardMedia";
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";

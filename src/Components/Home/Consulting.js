@@ -14,7 +14,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   card: {
-    minWidth: "1200px",
+    maxWidth: "1200px",
     width: "auto",
     height: "400px",
     backgroundColor: "#dbdbdb",
@@ -26,6 +26,7 @@ const useStyles = makeStyles({
   },
   body: {
     minWidth: "600px",
+
     float: "right",
     textAlign: "center",
     color: "#594d2c",

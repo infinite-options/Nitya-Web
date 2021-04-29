@@ -2,9 +2,7 @@ import React from "react";
 import { Button, Row, Col } from "reactstrap";
 import Img from "../../card1.jpg";
 import { makeStyles } from "@material-ui/core/styles";
-import About from "./About";
-import Services from "./Services";
-import Contact from "./Contact";
+
 import ScrollToTop from "../../Blog/ScrollToTop";
 const useStyles = makeStyles({
   container: {
