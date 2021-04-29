@@ -38,8 +38,8 @@ export default function App() {
         <Route path="/addpost" component={AddPost} />
         <Route path="/services" component={Services} />
         <Route path="/contact" component={Contact} />
-        <Route exact path="/service" component={ServicePage} />
-        <Route exact path="/appt" component={AppointmentPage} />
+        <Route exact path="/:treatmentID/service/" component={ServicePage} />
+        <Route exact path="/:treatmentID/appt/" component={AppointmentPage} />
         <Route exact path="/signup" component={SignUp} />
       </Switch>
       {/*  <Route exact path="/" component={} />
