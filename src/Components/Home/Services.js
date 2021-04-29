@@ -10,13 +10,13 @@ const Services = (props) => {
     container: {
       position: "relative",
       top: "40px",
-      marginBottom: "100px",
-      left: "220px",
-      right: "80px",
-      height: "1650px",
-      width: "1310px",
+      marginBottom: "150px",
+      minHeight: "710px",
+      minWidth: "600px",
+      height: "auto",
+      width: "auto",
+      padding: "50px",
       backgroundColor: "white",
-      paddingTop: 0,
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
@@ -32,6 +32,13 @@ const Services = (props) => {
       color: "#e9d9ac",
       fontSize: "1.5rem",
       marginRight: "20px",
+      padding: "5px 40px",
+      minHeight: "60px",
+      "&:hover": {
+        backgroundColor: "#e9d9ac",
+        color: "#88898a",
+        border: "#88898a",
+      },
     },
     btn2: {
       backgroundColor: "#d3a625",
@@ -39,6 +46,12 @@ const Services = (props) => {
       borderRadius: "0px",
       color: "#88898a",
       fontSize: "1.5rem",
+      minHeight: "60px",
+      "&:hover": {
+        backgroundColor: "#88898a",
+        color: "#d3a625",
+        border: "#88898a",
+      },
     },
   });
   const classes = useStyles();
@@ -46,8 +59,8 @@ const Services = (props) => {
   const [rSelected, setRSelected] = useState(<Consulting />);
 
   return (
-    <div className="services" id="services">
-      <div className="page-container ">
+    <div className="page-container">
+      <div className="services" id="services">
         <div className={classes.container}>
           <ScrollToTop />
           <ButtonGroup>

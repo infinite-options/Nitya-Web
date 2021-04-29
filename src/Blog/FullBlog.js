@@ -26,14 +26,14 @@ import ScrollToTop from "./ScrollToTop";
 const useStyles = makeStyles((theme) => ({
   container: {
     position: "relative",
-    marginTop: "100px",
-    marginBottom: "100px",
-    left: "200px",
-    right: "80px",
-    maxheight: "auto",
-    width: "1430px",
+    top: "170px",
+    marginBottom: "150px",
+    minHeight: "710px",
+    minWidth: "600px",
+    height: "auto",
+    width: "auto",
+    padding: "100px",
     backgroundColor: "white",
-    paddingTop: 0,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
@@ -127,7 +127,6 @@ const useStyles = makeStyles((theme) => ({
   img: {
     display: "flex",
     justifyContent: "center",
-    maxWidth: "100%",
   },
   content: {
     fontSize: "1.8rem",
@@ -168,7 +167,6 @@ function FullBlog(props) {
   const classes = useStyles();
   const [getBlogId, setBlogId] = useState([]);
   const { blog_uid } = useParams();
-
   const getDataById = async () => {
     const res = await fetch(
       `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/fullBlog/${blog_uid}`
@@ -204,137 +202,144 @@ function FullBlog(props) {
 
   return (
     <div className="page-container ">
-      <ScrollToTop />
-      <AppBar className={classes.appbar} position="static">
-        <Toolbar>
-          <Container maxWidth="md" className={classes.navbarDisplayFlex}>
-            <List
-              component="nav"
-              aria-labelledby="main navigation"
-              className={classes.navDisplayFlex}
-            >
-              {navLinks.map(({ title, path }) => (
-                <a
-                  href={path}
-                  key={title}
-                  className={classes.linkText}
-                  style={{ textDecoration: "none" }}
-                >
-                  <ListItem button>
-                    <ListItemText primary={title} />
-                  </ListItem>
-                </a>
-              ))}
-            </List>
-          </Container>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <form onSubmit={submitSearch}>
-              <input
-                type="text"
-                className={classes.inputInput}
-                placeholder="Search..."
-              />
-            </form>
-          </div>
-        </Toolbar>
-      </AppBar>
-      <div className={classes.container}>
-        {getBlogId.map((post) => (
-          <div className="blogPostContainer">
-            <Card className={classes.card}>
-              <div>
-                <div className={classes.header}>
-                  <span>
-                    <IconButton
-                      size="medium"
-                      onClick={handleClick}
-                      aria-label="click to share post"
-                    >
-                      <AuthorIcon />
-                    </IconButton>
-                    &nbsp;&nbsp; &nbsp;&nbsp;
-                    {post.author} &nbsp;&nbsp; {post.postedOn}{" "}
-                  </span>
-                  <IconButton
-                    onClick={handleClick}
-                    style={{ float: "right" }}
-                    aria-label="click to share post"
+      <div className="fullblog" id="fullblog">
+        <ScrollToTop />
+        <AppBar className={classes.appbar} position="static">
+          <Toolbar>
+            <Container maxWidth="md" className={classes.navbarDisplayFlex}>
+              <List
+                component="nav"
+                aria-labelledby="main navigation"
+                className={classes.navDisplayFlex}
+              >
+                {navLinks.map(({ title, path }) => (
+                  <a
+                    href={path}
+                    key={title}
+                    className={classes.linkText}
+                    style={{ textDecoration: "none" }}
                   >
-                    <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                    elevation={0}
-                    getContentAnchorEl={null}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "center",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "center",
-                    }}
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleClose}
-                  >
-                    <MenuItem
-                      style={{
-                        color: "#594d2c",
-                        width: "200px",
-                        height: "50px",
-                        padding: "0",
-                        fontSize: "1.5rem",
-                      }}
-                      position="bottom"
-                      onClick={handleClose}
-                    >
+                    <ListItem button>
+                      <ListItemText primary={title} />
+                    </ListItem>
+                  </a>
+                ))}
+              </List>
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                <form onSubmit={submitSearch}>
+                  <input
+                    type="text"
+                    className={classes.inputInput}
+                    placeholder="Search..."
+                  />
+                </form>
+              </div>
+            </Container>
+          </Toolbar>
+        </AppBar>
+        <div className={classes.container}>
+          {getBlogId.map((post) => (
+            <div className="blogPostContainer">
+              <Card className={classes.card}>
+                <div>
+                  <div className={classes.header}>
+                    <span>
                       <IconButton
-                        fontSize="small"
+                        size="medium"
+                        onClick={handleClick}
                         aria-label="click to share post"
                       >
-                        <ShareOutline />
+                        <AuthorIcon />
                       </IconButton>
-                      Share Post
-                    </MenuItem>
-                  </Menu>
-                </div>
-
-                <div className={classes.title}>
-                  <p>{post.blogTitle}</p>
-                </div>
-                {!!post.blogImage && (
-                  <div className={classes.img}>
-                    <img
-                      src={post.blogImage}
-                      style={{
-                        width: "1000px",
-                        height: "600px",
+                      &nbsp;&nbsp; &nbsp;&nbsp;
+                      {post.author} &nbsp;&nbsp; {post.postedOn}{" "}
+                    </span>
+                    <IconButton
+                      onClick={handleClick}
+                      style={{ float: "right" }}
+                      aria-label="click to share post"
+                    >
+                      <MoreVertIcon />
+                    </IconButton>
+                    <Menu
+                      elevation={0}
+                      getContentAnchorEl={null}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center",
                       }}
-                      onError={(e) => (e.target.style.display = "none")}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "center",
+                      }}
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem
+                        style={{
+                          color: "#594d2c",
+                          width: "200px",
+                          height: "50px",
+                          padding: "0",
+                          fontSize: "1.5rem",
+                        }}
+                        position="bottom"
+                        onClick={handleClose}
+                      >
+                        <IconButton
+                          fontSize="small"
+                          aria-label="click to share post"
+                        >
+                          <ShareOutline />
+                        </IconButton>
+                        Share Post
+                      </MenuItem>
+                    </Menu>
+                  </div>
+
+                  <div className={classes.title}>
+                    <p>{post.blogTitle}</p>
+                  </div>
+                  {!!post.blogImage && (
+                    <div className={classes.img}>
+                      <img
+                        src={post.blogImage}
+                        style={{
+                          height: "500px",
+                          objectFit: "cover",
+                          objectPosition: "50% 50%",
+                        }}
+                        onError={(e) => (e.target.style.display = "none")}
+                      />
+                    </div>
+                  )}
+                  <div className={classes.content}>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: post.blogText,
+                      }}
                     />
                   </div>
-                )}
-                <div className={classes.content}>
-                  <p>{post.blogText}</p>
-                </div>
 
-                <hr style={{ color: "#8d6f19" }}></hr>
-                <div className={classes.cardActions}>
-                  <Typography>Views &nbsp;&nbsp; Comments</Typography>
+                  <hr style={{ color: "#8d6f19" }}></hr>
+                  <div className={classes.cardActions}>
+                    <Typography>Views &nbsp;&nbsp; Comments</Typography>
 
-                  <IconButton className={classes.icon}>
-                    <FavoriteBorderIcon />
-                  </IconButton>
+                    <IconButton className={classes.icon}>
+                      <FavoriteBorderIcon />
+                    </IconButton>
+                  </div>
                 </div>
-              </div>
-            </Card>
-          </div>
-        ))}
+              </Card>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
