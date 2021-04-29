@@ -167,7 +167,6 @@ function FullBlog(props) {
   const classes = useStyles();
   const [getBlogId, setBlogId] = useState([]);
   const { blog_uid } = useParams();
-  const { htmlToText } = require("html-to-text");
   const getDataById = async () => {
     const res = await fetch(
       `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/fullBlog/${blog_uid}`
