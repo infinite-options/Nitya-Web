@@ -12,12 +12,13 @@ import ScrollToTop from "../../Blog/ScrollToTop";
 const useStyles = makeStyles({
   container: {
     position: "relative",
-    top: "50px",
-    marginBottom: "255px",
-    left: "220px",
-    right: "80px",
-    height: "810px",
-    width: "1310px",
+    top: "70px",
+    marginBottom: "200px",
+    minHeight: "710px",
+    minWidth: "600px",
+    height: "auto",
+    width: "auto",
+    padding: "50px",
     backgroundColor: "white",
     display: "flex",
     flexDirection: "column",
@@ -51,6 +52,7 @@ const useStyles = makeStyles({
     backgroundColor: "#dbdbdb",
     paddingTop: "12rem",
     paddingBottom: "10rem",
+    border: "1px solid #ffffff",
   },
   btn: {
     backgroundColor: "#d3a625",
@@ -60,6 +62,7 @@ const useStyles = makeStyles({
     textAlign: "center",
     padding: "5px 150px",
     marginLeft: "40px",
+    minHeight: "60px",
   },
 });
 
@@ -72,8 +75,8 @@ export default function Contact() {
   const classes = useStyles();
 
   return (
-    <div className="contact" id="contact">
-      <div className="page-container ">
+    <div className="page-container ">
+      <div className="contact" id="contact">
         <div className={classes.container}>
           <ScrollToTop />
           <Row>
@@ -85,7 +88,10 @@ export default function Contact() {
               </p>
               <MapSection location={location} zoomLevel={13} />​
             </Col>
-            <Col className={classes.form} s>
+            <Col
+              className={classes.form}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
               <Form>
                 <Row form>
                   <Col md={6}>

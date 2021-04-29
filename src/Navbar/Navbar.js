@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import Scroll from "react-scroll";
 import { animateScroll as scroll } from "react-scroll";
 import PersonIcon from "@material-ui/icons/Person";
 import InstagramIcon from "@material-ui/icons/Instagram";
@@ -99,7 +98,7 @@ export default function Navbar() {
             </li>
             <li className="nav-links">
               <Link
-                to="LogIn"
+                to="/signup"
                 className="nav-links"
                 spy={true}
                 smooth={true}
@@ -111,7 +110,7 @@ export default function Navbar() {
             </li>
             <li className="nav-links">
               <Link
-                to="LogIn"
+                to="/signup"
                 className="nav-links"
                 spy={true}
                 smooth={true}

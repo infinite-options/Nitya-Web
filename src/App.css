@@ -8,7 +8,42 @@
 .Homepage {
   margin: 30px;
 }
-
+.about {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.home {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.contact {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.services {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.blog {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.blogpage {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.fullblog {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.consulting {
+  margin-left: 200px;
+  margin-right: 200px;
+}
+.treatments {
+  margin-left: 200px;
+  margin-right: 200px;
+}
 .page-container {
   background-color: #dbdbdb;
   display: flex;

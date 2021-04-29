@@ -1,23 +1,13 @@
 import React, { Component } from "react";
-// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { BrowserRouter } from "react-router-dom";
-//import Navbar from "./Navbar/Navbar";
-//import Footer from "./Footer/Footer";
-// import Home from "./Components/Home";
-// import About from "./Components/About";
-// import Services from "./Components/Services";
-// import Contact from "./Components/Contact";
+
 import ScrollToTop from "../Blog/ScrollToTop";
 
 
 import Home from "./Home/Home";
 import About from "./Home/About";
 import Services from "./Home/Services";
-// import Blog from "./Home/Blog";
 import Contact from "./Home/Contact";
-// import Footer from "./Footer/Footer";
-
-// import Footer from "./src/Footer/Footer";
 
 class Homepage extends Component {
   render() {
