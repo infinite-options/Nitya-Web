@@ -25,10 +25,8 @@ export const MyContext = React.createContext();
 export default function App() {
    
   return (
-   
     <Router>
       <Navbar />
-
       <Switch>
         <Route exact path="/" component={Homepage} />
         <Route path="/home" component={Homepage} />
@@ -42,12 +40,8 @@ export default function App() {
         <Route exact path="/:treatmentID/appt/" component={AppointmentPage} />
         <Route exact path="/signup" component={SignUp} />
       </Switch>
-      {/*  <Route exact path="/" component={} />
-          <Route exact path="/blog" component={} /> */}
-
       <Footer />
     </Router>
-    
   );
 }
 
