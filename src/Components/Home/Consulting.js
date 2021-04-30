@@ -90,12 +90,14 @@ export default function Consulting() {
                         {filteredService.title}
                       </CardTitle>
                       <CardText className={classes.text}>
-                        {filteredService.description} <br />
-                        <NavHashLink to="#home">Learn More</NavHashLink> <br />
+                        {filteredService.description} <br/>
+                        {/* <NavHashLink to="#home">Learn More</NavHashLink> <br /> */}
+                        <LearnMoreBTN apptID = {filteredService.treatment_uid}/>
                       </CardText>
-                      <Button className={classes.btn} variant="primary">
+                      {/* <Button className={classes.btn} variant="primary">
                         Book Now
-                      </Button>
+                      </Button> */}
+                      <BookNowBTN apptID = {filteredService.treatment_uid}/>
                     </CardBody>
                   </Col>
                 </Row>
