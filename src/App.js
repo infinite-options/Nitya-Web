@@ -1,6 +1,6 @@
 //import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, useContext } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import Homepage from "./Components/Homepage";
@@ -14,15 +14,30 @@ import ServicePage from "./Components/ServicePage";
 import AppointmentPage from "./Components/AppointmentPage";
 import SignUp from "./Components/Home/SignUp";
 
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+// import ReactDOM from "react-dom";
 
 
-
-const count = "supercool";
 export const MyContext = React.createContext();
 
+
 export default function App() {
+
+  const url =
+  "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
+  const [servicesLoaded, setServicesLoaded] = useState(false);
+  const [serviceArr, setServiceArr] = useState([]);
+
+
+useEffect(() => {
+  if (!servicesLoaded) {
+    axios.get(url).then((res) => {
+      setServiceArr(res.data.result);
+      setServicesLoaded(true);
+    });
+  }
+});
    
   return (
     <Router>
@@ -36,8 +51,26 @@ export default function App() {
         <Route path="/addpost" component={AddPost} />
         <Route path="/services" component={Services} />
         <Route path="/contact" component={Contact} />
-        <Route exact path="/:treatmentID/service/" component={ServicePage} />
-        <Route exact path="/:treatmentID/appt/" component={AppointmentPage} />
+
+
+        {/* Mayukh: Until I find a better way, I will layer the components in this manner to implement the useContext Hook */}
+
+        <Route exact path = "/:treatmentID/service/">
+          <MyContext.Provider value = {{serviceArr, servicesLoaded}}>
+            <ServicePage/>
+          </MyContext.Provider>
+        </Route>
+        
+        {/* <Route exact path="/:treatmentID/service/" component={ServicePage} /> */}
+
+        <Route exact path = "/:treatmentID/appt/">
+          <MyContext.Provider value = {{serviceArr, servicesLoaded}}>
+            <AppointmentPage/>
+          </MyContext.Provider>
+        </Route>
+
+        {/* <Route exact path="/:treatmentID/appt/" component={AppointmentPage} /> */}
+
         <Route exact path="/signup" component={SignUp} />
       </Switch>
       <Footer />

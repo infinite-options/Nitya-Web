@@ -1,20 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Scheduler from "./Appointment/Scheduler";
 import { useParams } from "react-router";
 import ScrollToTop from "../Blog/ScrollToTop";
-import MyContext from "../App";
+import {MyContext} from "../App";
 
 // The following react component is based on the youtube tutorial provided by Syncfusion, Inc. at the url below:
 
 export default function AppointmentPage(props) {
   const { treatmentID } = useParams();
-  const count = useContext(MyContext);
+  // const {serviceArr, servicesLoaded} = useContext(MyContext);
+  // const [info, setInfo] = useState("");
+
+
+  // function conditionalPrint(){
+  //   if(servicesLoaded){
+  //     serviceArr.forEach((element) => {
+  //       if (element.treatment_uid === treatmentID) {
+  //         console.log("The following element does match with what we are looking for" + element.title);
+  //         // setElementToBeRendered(element);
+  //         //setInfo(element.title);
+  //       }
+  //     })
+  //   }
+  // }
+  //   // console.log(servicesLoaded);
 
   return (
     <>
       <div className="page-container ">
         <ScrollToTop />
-        This is the {count} treatment ID we have received {treatmentID}
+       
         <Scheduler treatmentID={treatmentID} />
       </div>
     </>
