@@ -51,7 +51,10 @@ export default function Home() {
   return (
     <div className="page-container ">
       <div className="about" id="about">
-        <div className={classes.container}>
+        <div
+          className={classes.container}
+          aria-label="Counselor Introduction Block"
+        >
           <ScrollToTop />
           <Row className={classes.rows}>
             <Col>
@@ -77,7 +80,11 @@ export default function Home() {
               ​
             </Col>
             <Col style={{ display: "flex", justifyContent: "center" }}>
-              <img src={Img} className={classes.img} alt="leena" />
+              <img
+                src={Img}
+                className={classes.img}
+                alt="An image of Leena Marathay"
+              />
             </Col>
           </Row>
         </div>

@@ -12,13 +12,13 @@ const scrollToTop = () => {
 export default function Navbar() {
   return (
     <>
-      <nav className="navbar">
+      <nav className="navbar" role="navigation">
         <div className="nav-center">
           <div className="navbar-logo">
             <img
               src={logo}
               style={{ width: 200, height: 150 }}
-              alt="logo"
+              alt=" Nitya Ayurveda’s Logo"
               onClick={scrollToTop}
             />
           </div>
