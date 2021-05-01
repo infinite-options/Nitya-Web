@@ -48,7 +48,7 @@ function Footer() {
                     height: "200px",
                     float: "center",
                   }}
-                  alt="namacb"
+                  alt="An Image of NAMACB CAP"
                 />
               </li>
             </ui>
