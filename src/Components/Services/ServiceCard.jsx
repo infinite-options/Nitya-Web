@@ -7,29 +7,19 @@ import BookNowBtn from "../Appointment/BookNowBtn";
 import { useParams } from "react-router";
 
 import ScrollToTop from "../../Blog/ScrollToTop";
-import { otherContext } from "../ServicePage";
 
 // There are two files with very similar names: Services.js and Services.jsx
 // The js file is responsible for rendering the services as they appear on the landing/home pageXOffset
 // The jsx file is responsible for rendering the services as they appear on the "learn more" feature
-export default function Service(props) {
-  const testContext = useContext(otherContext);
-
-  const temp = {
-    name: "",
-    description: "",
-    duration: "",
-    price: "",
-    imageSource: "",
-    treatment_notes: "",
-  };
+export default function ServiceCard(props) {
+  
 
   // const localTreatment_uid = { treatment_uid };
 
   const url =
     "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
   const [servicesLoaded, setServicesLoaded] = useState(false);
-  const [elementToBeRendered, setElementToBeRendered] = useState(temp);
+  const [elementToBeRendered, setElementToBeRendered] = useState([]);
   // const localTreatment_uid = "330-000003";
   const { treatmentID } = useParams();
   const localTreatment_uid = treatmentID;
@@ -91,7 +81,7 @@ export default function Service(props) {
           <Link to={`/${localTreatment_uid}/appt`}>sup</Link>
         </Button> */}
         <BookNowBtn apptID={localTreatment_uid} />
-        This is the treatment ID we are about to pass {localTreatment_uid}
+        {/* This is the treatment ID we are about to pass {localTreatment_uid} */}
         {/* make some room between the button and the image */}
         <br></br>
         <br></br>
@@ -105,7 +95,7 @@ export default function Service(props) {
           src={elementToBeRendered.image_url}
         ></img>
         <div className="desc">{elementToBeRendered.treatment_notes}</div>
-        Gotta fix the formatting {testContext}
+        {/* Gotta fix the formatting {testContext} */}
         <ContactInfo />
       </div>
     </div>

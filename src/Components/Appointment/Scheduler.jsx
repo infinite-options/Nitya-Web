@@ -1,20 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import Calendar from "react-calendar";
 import { Button, Row, Col } from "reactstrap";
 import Box from "@material-ui/core/Box";
-// import "react-calendar/dist/Calendar.css";
-import "./Calendar2.css";
+
+// import "./Calendar2.css";
+import "./Scheduler.css";
 import SimpleForm from "./simpleForm";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-//STG, I didn't know I could pass in props to a function. Super cool.
+import {MyContext} from "../../App";
+
 export default function Scheduler(props) {
+  //import the Context from the App
+  const {serviceArr, servicesLoaded} = useContext(MyContext);
+  
+
+  const [elementToBeRendered, setElementToBeRendered] = useState([]);
+
   //For Calendar
   // const treatment_uid = "330-000006";
   const treatment_uid = props.treatmentID;
   // const { treatment_uid } = useParams();
+
+  useEffect(() => {
+    if(servicesLoaded){
+      serviceArr.forEach((element) => {
+        if (element.treatment_uid === treatment_uid) {
+          console.log("The following element does match with what we are looking for" + element.title);
+          setElementToBeRendered(element);
+        }
+      })
+    }
+  });
 
   //For Axios.Get
   const [date, setDate] = useState(new Date());
@@ -94,17 +113,7 @@ export default function Scheduler(props) {
 
     setApiDateString(dateFormat2(date));
 
-    //For some reason, I am unable to use the correct date immediately after calling setApiDateString
-
-    setDateHasBeenChanged(true); //After the date String has been changed, modify the timeSlots Array
-
-    //The axios call used to be here
-
-    //According to the debugger, the state is holding the correct date, but somehow we are printing the wrong date.
-    //Any ideas why?
-
-    // console.log("datestring has been modified to " + dateString);
-    // console.log("apidatestring has been modified to " + apiDateString);
+    setDateHasBeenChanged(true);
   };
 
   useEffect(() => {
@@ -152,10 +161,10 @@ export default function Scheduler(props) {
   }
 
   function bookAppt() {
-    console.log(fName);
-    console.log(lName);
-    console.log(email);
-    console.log(phoneNum);
+    // console.log(fName);
+    // console.log(lName);
+    // console.log(email);
+    // console.log(phoneNum);
 
     const postURL =
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
@@ -174,23 +183,25 @@ export default function Scheduler(props) {
       })
       .then((res) => console.log(res));
 
-    //We oughta figure out how to get those pieces of treatment info into our post call
+    
   }
 
   const useStyles = makeStyles({
     container: {
-      position: "relative",
+      // position: "relative",
       // top: "50px",
       // marginBottom: "100px",
       // left: "50px",
       // right: "80px",
-      height: "700px",
+      height: "1000px",
       width: "500px",
       backgroundColor: "#323c47",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+      paddingLeft: "0px",
+      paddingRight: "0px",
     },
 
     title: {
@@ -236,7 +247,7 @@ export default function Scheduler(props) {
   return (
     <Box>
       <div className="row">
-        <Col>
+        <div className ="col">
           <Box className={classes.container}>
             <p className={classes.title}>Find a time to meet with Nitya </p>
             <Calendar
@@ -246,12 +257,23 @@ export default function Scheduler(props) {
               value={date}
             />
           </Box>
-        </Col>
-        <Col>
+        </div>
+        <div className ="col">
           <Box className={classes.container}>
+            <p className={classes.title}>
+              {elementToBeRendered.title} 
+              <br></br> 
+              Duration: ({elementToBeRendered.duration})
+              <br></br>
+              Price: {elementToBeRendered.cost}
+            </p>
+
             {renderAvailableApptsVertical()}
+
+            Selected Date
+            Selected Timeslot
           </Box>
-        </Col>
+        </div>
 
         <Col>
           <Box className={classes.container}>
