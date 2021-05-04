@@ -98,6 +98,7 @@ function AddPost() {
           <div className="col-md-5">
             <div className="form-area">
               <form onSubmit={(e) => submit(e)}>
+                <label for="blogTitle">Blog Title</label>
                 <input
                   onChange={(e) => handle(e)}
                   id="blogTitle"
@@ -108,6 +109,7 @@ function AddPost() {
                 ></input>
                 <br></br>
                 <br></br>
+                <label for="blogText">Blog Content</label>
                 <CKEditor
                   name="blogText"
                   data={data.blogText}
@@ -121,7 +123,7 @@ function AddPost() {
                 ></CKEditor>
                 <br></br>
                 <br></br>
-
+                <label for="blogCategory">Blog Category</label>
                 <input
                   onChange={(e) => handle(e)}
                   id="blogCategory"
@@ -132,6 +134,7 @@ function AddPost() {
                 ></input>
                 <br></br>
                 <br></br>
+                <label for="author">Author</label>
                 <input
                   onChange={(e) => handle(e)}
                   id="author"
@@ -142,6 +145,7 @@ function AddPost() {
                 ></input>
                 <br></br>
                 <br></br>
+                <label for="postedOn">Blog post date</label>
                 <input
                   onChange={(e) => handle(e)}
                   id="postedOn"

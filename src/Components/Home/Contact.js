@@ -112,9 +112,9 @@ export default function Contact() {
                 <Row form>
                   <Col md={6}>
                     <FormGroup>
-                      <label className={classes.label} for="name">
+                      {/* <label className={classes.label} for="name">
                         Name
-                      </label>
+                      </label> */}
                       <Input
                         type="text"
                         name="name"
@@ -125,9 +125,9 @@ export default function Contact() {
                   </Col>
                   <Col md={6}>
                     <FormGroup>
-                      <label className={classes.label} for="email">
+                      {/* <label className={classes.label} for="email">
                         Email
-                      </label>
+                      </label> */}
                       <Input
                         type="email"
                         name="email"
@@ -138,9 +138,9 @@ export default function Contact() {
                   </Col>
                 </Row>
                 <FormGroup>
-                  <label className={classes.label} for="subject">
+                  {/* <label className={classes.label} for="subject">
                     Subject
-                  </label>
+                  </label> */}
                   <Input
                     type="text"
                     name="subject"
@@ -150,9 +150,9 @@ export default function Contact() {
                 </FormGroup>
 
                 <FormGroup>
-                  <label className={classes.label} for="exampleText">
+                  {/* <label className={classes.label} for="exampleText">
                     Type your message here
-                  </label>
+                  </label> */}
                   <Input
                     type="textarea"
                     name="text"

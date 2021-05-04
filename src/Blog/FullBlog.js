@@ -225,7 +225,10 @@ function FullBlog(props) {
                   </a>
                 ))}
               </List>
-              <div className={classes.search}>
+              <div
+                className={classes.search}
+                aria-label={"Enter text to search blog content"}
+              >
                 <div className={classes.searchIcon}>
                   <SearchIcon />
                 </div>
@@ -242,7 +245,10 @@ function FullBlog(props) {
         </AppBar>
         <div className={classes.container}>
           {getBlogId.map((post) => (
-            <div className="blogPostContainer">
+            <div
+              className="blogPostContainer"
+              aria-label={"blog post" + post.blogTitle}
+            >
               <Card className={classes.card}>
                 <div>
                   <div className={classes.header}>
@@ -316,6 +322,7 @@ function FullBlog(props) {
                           objectPosition: "50% 50%",
                         }}
                         onError={(e) => (e.target.style.display = "none")}
+                        aria-label={"an image of " + post.blogTitle}
                       />
                     </div>
                   )}
@@ -331,7 +338,10 @@ function FullBlog(props) {
                   <div className={classes.cardActions}>
                     <Typography>Views &nbsp;&nbsp; Comments</Typography>
 
-                    <IconButton className={classes.icon}>
+                    <IconButton
+                      className={classes.icon}
+                      aria-label={"click icon to like the post"}
+                    >
                       <FavoriteBorderIcon />
                     </IconButton>
                   </div>
