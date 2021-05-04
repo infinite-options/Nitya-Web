@@ -37,7 +37,6 @@ const useStyles = makeStyles({
     border: "1px solid #d3a625",
     marginTop: "40px",
     marginBottom: "20px",
-
     minHeight: "60px",
   },
 
@@ -54,7 +53,7 @@ export default function Home() {
   return (
     <>
       <div className="home" id="home">
-        <div className={classes.container}>
+        <div className={classes.container} aria-label="Home block">
           <ScrollToTop />
           <Row className={classes.rows}>
             <Col
@@ -65,12 +64,20 @@ export default function Home() {
               }}
             >
               <p className={classes.title}>Helping your body heal itself</p>
-              <Button className={classes.btn} href="/services">
-                Book a Session
-              </Button>
+
+              <div
+                aria-label={"click button to book a session."}
+                style={{ textAlign: "center" }}
+              >
+                <Button className={classes.btn} href="/services">Book a Session</Button>
+              </div>
             </Col>
             <Col style={{ display: "flex", justifyContent: "center" }}>
-              <img src={Img} className={classes.img} alt="spices" />
+              <img
+                src={Img}
+                className={classes.img}
+                alt="An spices image for home block"
+              />
             </Col>
           </Row>
         </div>
