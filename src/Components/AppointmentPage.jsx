@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import Scheduler from "./Appointment/Scheduler";
 import { useParams } from "react-router";
 import ScrollToTop from "../Blog/ScrollToTop";
-import {MyContext} from "../App";
+
 
 // The following react component is based on the youtube tutorial provided by Syncfusion, Inc. at the url below:
 

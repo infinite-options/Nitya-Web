@@ -124,3 +124,61 @@
   
 
 /* Below are the immediate stylings for everything else in the Scheduler */
+
+/* .container {
+    height: "1000px";
+    width: "500px";
+    background-color: #323c47;
+  }
+
+.col{
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+}
+
+
+.title {
+    margin-top: "-40px";
+    text-align: "center";
+    font-family: "DidoteTextW01-Italic";
+    font-style: "italic";
+    font-size: "2rem";
+    word-wrap: "break-word";
+    color:  #ffffff;
+    line-height: "2";
+  }
+  
+.content {
+    font-size: "1.5rem";
+    font-family: "'Open Sans', sans-serif";
+    word-wrap: "break-word";
+    color: "#8d6f19";
+    line-height: "1.4";
+    text-align: "center";
+  }
+.form {
+    display: "flex";
+    flex-direction: "column";
+    justify-content: "center";
+    align-items: "center";
+    background-color: "#dbdbdb";
+    padding-top: "12rem";
+    padding-bottom: "10rem";
+  }
+.btn {
+    background-color:  #ffffff;
+    color: "#ffffff";
+    border: "5px solid #ffffff";
+    font-size: "2rem";
+    text-align: "center";
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    margin-left: "20px";
+    margin-right: "20px";
+    margin-top: "20px";
+    margin-bottom: "20px";
+} */

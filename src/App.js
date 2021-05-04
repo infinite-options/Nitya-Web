@@ -14,12 +14,34 @@ import ServicePage from "./Components/ServicePage";
 import AppointmentPage from "./Components/AppointmentPage";
 import SignUp from "./Components/Home/SignUp";
 
+//Below is everything for Stripe
+import CheckoutForm from "./Components/Stripe/CheckoutForm";
+// import React, { useState } from "react";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  CardElement,
+  Elements,
+  useElements,
+  useStripe
+} from "@stripe/react-stripe-js";
+// import "./styles.css";
+
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 // import ReactDOM from "react-dom";
 
 
 export const MyContext = React.createContext();
+const ELEMENTS_OPTIONS = {
+  fonts: [
+    {
+      cssSrc: "https://fonts.googleapis.com/css?family=Roboto"
+    }
+  ]
+};
+const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
 
 export default function App() {
@@ -70,6 +92,15 @@ useEffect(() => {
         </Route>
 
         {/* <Route exact path="/:treatmentID/appt/" component={AppointmentPage} /> */}
+
+        <Route exact path = "/:treatmentID/appt/stripe">
+          <MyContext.Provider value = {{serviceArr, servicesLoaded}}>
+            <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
+              <CheckoutForm />
+            </Elements>
+          </MyContext.Provider>
+        </Route>
+        
 
         <Route exact path="/signup" component={SignUp} />
       </Switch>

@@ -3,32 +3,29 @@ import axios from "axios";
 import Calendar from "react-calendar";
 import { Button, Row, Col } from "reactstrap";
 import Box from "@material-ui/core/Box";
-
-// import "./Calendar2.css";
 import "./Scheduler.css";
 import SimpleForm from "./simpleForm";
 
 import { makeStyles } from "@material-ui/core/styles";
 
 import {MyContext} from "../../App";
+/**
+ * This Web Dev Simplified tutorial was crucial to my understanding of useContext:
+ * https://www.youtube.com/watch?v=5LrDIWkK_Bc&ab_channel=WebDevSimplified 
+ */
 
 export default function Scheduler(props) {
   //import the Context from the App
   const {serviceArr, servicesLoaded} = useContext(MyContext);
-  
-
   const [elementToBeRendered, setElementToBeRendered] = useState([]);
 
-  //For Calendar
-  // const treatment_uid = "330-000006";
+
   const treatment_uid = props.treatmentID;
-  // const { treatment_uid } = useParams();
 
   useEffect(() => {
     if(servicesLoaded){
       serviceArr.forEach((element) => {
         if (element.treatment_uid === treatment_uid) {
-          console.log("The following element does match with what we are looking for" + element.title);
           setElementToBeRendered(element);
         }
       })
@@ -319,39 +316,79 @@ export default function Scheduler(props) {
       </div>
     </Box>
   );
+  // return (
+  //   <Box>
+  //     <div className="row">
+  //       <div className ="col">
+  //         <Box className= "container">
+  //           <p className="title">Find a time to meet with Nitya </p>
+  //           <Calendar
+  //             backgroundColor="#d3a625"
+  //             calendarType="US"
+  //             onClickDay={dateChange}
+  //             value={date}
+  //           />
+  //         </Box>
+  //       </div>
+  //       <div className ="col">
+  //         <Box className="container">
+  //           <p className="title">
+  //             {elementToBeRendered.title} 
+  //             <br></br> 
+  //             Duration: ({elementToBeRendered.duration})
+  //             <br></br>
+  //             Price: {elementToBeRendered.cost}
+  //           </p>
+
+  //           {renderAvailableApptsVertical()}
+
+  //           Selected Date
+  //           Selected Timeslot
+  //         </Box>
+  //       </div>
+
+  //       <Col>
+  //         <Box className="container">
+  //           <p className="title">
+  //             Please fill out the information and notes below
+  //           </p>
+  //           <br></br>
+  //           <br></br>
+  //           <SimpleForm
+  //             field="First Name"
+  //             onHandleChange={handleFirstNameChange}
+  //           />
+  //           {/* Your first Name is {fName} */}
+  //           <br></br>
+  //           <br></br>
+  //           <SimpleForm
+  //             field="Last Name"
+  //             onHandleChange={handleLastNameChange}
+  //           />
+  //           {/* Your Last Name is {lName} */}
+  //           <br></br>
+  //           <br></br>
+  //           <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
+  //           {/* Your Email is {email} */}
+  //           <br></br>
+  //           <br></br>
+  //           <SimpleForm
+  //             field="Phone Number"
+  //             onHandleChange={handlePhoneNumChange}
+  //           />
+  //           {/* Your Phone Num is {phoneNum} */}
+  //           <br></br>
+  //           <br></br>
+  //           <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
+  //           {/* Your Notes are {notes} */}
+  //           <br></br>
+  //           <br></br>
+  //           <Button on onClick={bookAppt}>
+  //             Book Appt Now
+  //           </Button>
+  //         </Box>
+  //       </Col>
+  //     </div>
+  //   </Box>
+  // );
 }
-// {
-//   /* <div className="col">
-//         <Box>
-//           <br></br>
-//           Customer id
-//           <br></br>
-//           <br></br>
-//           Treatment id
-//           <br></br>
-//           {treatment_uid}
-//           <br></br>
-//           <br></br>
-//           notes: (Null)
-//           <br></br>
-//           <br></br>
-//           Appt Date
-//           <br></br>
-//           {dateFormat1(date)}
-//           <br></br>
-//           <br></br>
-//           Appt Time
-//           <br></br>
-//           {selectedTime}
-//           <br></br>
-//           <br></br>
-//           Purchase Price
-//           <br></br>
-//           <br></br>
-//           Purchase Date
-//           <br></br>
-//           {dateFormat1(purchaseDate)}
-//           <br></br>
-//         </Box>
-//       </div> */
-// }
