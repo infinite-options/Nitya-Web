@@ -263,7 +263,10 @@ function Blogpage(props) {
                 ))}
               </List>
             </Container>
-            <div className={classes.search}>
+            <div
+              className={classes.search}
+              aria-label={"Enter text to search blog content"}
+            >
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -290,7 +293,11 @@ function Blogpage(props) {
             }
           })
           .map((post, key) => (
-            <div className="blogPostContainer" key={key}>
+            <div
+              className="blogPostContainer"
+              key={key}
+              aria-label={"blog post" + post.blogTitle}
+            >
               <Card className={classes.card}>
                 <Row>
                   <div>
@@ -307,6 +314,7 @@ function Blogpage(props) {
                             objectPosition: "center -20px",
                           }}
                           onError={(e) => (e.target.style.display = "none")}
+                          aria-label={"an image of " + post.blogTitle}
                         />
                       )}
                     </Col>
@@ -382,7 +390,10 @@ function Blogpage(props) {
                         <span>Views &nbsp;&nbsp; Comments</span>
                       </p>
 
-                      <IconButton style={{ color: "red", float: "right" }}>
+                      <IconButton
+                        style={{ color: "red", float: "right" }}
+                        aria-label={"click icon to like the post"}
+                      >
                         <FavoriteBorderIcon />
                       </IconButton>
                     </div>
@@ -392,9 +403,14 @@ function Blogpage(props) {
             </div>
           ))}
         <div style={{ paddingBottom: "30px" }}>
-          <Button variant="contained" className={classes.btn} href="/addpost">
-            Add Blog Entry
-          </Button>
+          <div
+            aria-label={"click button to add a blog entry"}
+            style={{ padding: 10 }}
+          >
+            <Button variant="contained" className={classes.btn} href="/addpost">
+              Add Blog Entry
+            </Button>
+          </div>
         </div>
       </div>
     </div>
