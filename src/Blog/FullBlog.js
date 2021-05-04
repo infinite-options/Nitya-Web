@@ -27,88 +27,27 @@ const useStyles = makeStyles((theme) => ({
   container: {
     position: "relative",
     top: "170px",
-    marginBottom: "150px",
+    marginBottom: "250px",
     minHeight: "710px",
     minWidth: "600px",
     height: "auto",
     width: "auto",
-    padding: "100px",
     backgroundColor: "white",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },
-  appbar: {
-    backgroundColor: "#ffffff",
-    boxShadow: "none",
-    paddingBottom: "10px",
-    paddingLeft: "300px",
-    paddingRight: "80px",
-    position: "fixed",
-  },
-  navbarDisplayFlex: {
-    display: "flex",
-    marginLeft: 0,
-    justifyContent: "space-between",
-  },
-  navDisplayFlex: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  linkText: {
-    textDecoration: "none",
-    textTransform: "capitalize",
-    color: "#594d2c",
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 0),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#594d2c",
-  },
-  inputRoot: {
-    color: "#594d2cs",
-  },
-  inputInput: {
-    boxShadow: "none",
-    outline: "none",
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
-    },
-  },
+
   card: {
     display: "flex",
     boxShadow: "none",
     maxWidth: "auto",
-    paddingLeft: "160px",
-    paddingRight: "160px",
+    paddingLeft: "60px",
+    paddingRight: "60px",
+    ["@media (max-width:1000px)"]: {
+      padding: "10px",
+    },
   },
   header: {
     display: "flex-inline",
@@ -188,58 +127,11 @@ function FullBlog(props) {
     setanchorEl(null);
   };
 
-  const submitSearch = (e) => {
-    e.preventDefault();
-    alert("Searched");
-  };
-
-  const navLinks = [
-    { title: `all posts`, path: `/all posts` },
-    { title: `healthy tips`, path: `/healthy tips` },
-    { title: `recipes`, path: `/recipes` },
-    { title: `living well`, path: `/living well` },
-  ];
-
   return (
     <div className="page-container ">
       <div className="fullblog" id="fullblog">
         <ScrollToTop />
-        <AppBar className={classes.appbar} position="static">
-          <Toolbar>
-            <Container maxWidth="md" className={classes.navbarDisplayFlex}>
-              <List
-                component="nav"
-                aria-labelledby="main navigation"
-                className={classes.navDisplayFlex}
-              >
-                {navLinks.map(({ title, path }) => (
-                  <a
-                    href={path}
-                    key={title}
-                    className={classes.linkText}
-                    style={{ textDecoration: "none" }}
-                  >
-                    <ListItem button>
-                      <ListItemText primary={title} />
-                    </ListItem>
-                  </a>
-                ))}
-              </List>
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon />
-                </div>
-                <form onSubmit={submitSearch}>
-                  <input
-                    type="text"
-                    className={classes.inputInput}
-                    placeholder="Search..."
-                  />
-                </form>
-              </div>
-            </Container>
-          </Toolbar>
-        </AppBar>
+
         <div className={classes.container}>
           {getBlogId.map((post) => (
             <div className="blogPostContainer">

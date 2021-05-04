@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
-
 import { fade } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
-import { Row, Col, CardImg } from "reactstrap";
+import { Row, Col } from "reactstrap";
 import { Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
   IconButton,
   List,
-  ListItem,
-  ListItemText,
   Menu,
   MenuItem,
-  Button,
 } from "@material-ui/core";
+import Hidden from "@material-ui/core/Hidden";
+
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ShareOutline from "@material-ui/icons/ShareOutlined";
 import SearchIcon from "@material-ui/icons/Search";
+import BlogEntries from "./BlogEntries";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -33,15 +32,12 @@ const useStyles = makeStyles((theme) => ({
     width: "auto",
     padding: "100px",
     backgroundColor: "white",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
   },
   appbar: {
     backgroundColor: "#ffffff",
     boxShadow: "none",
     paddingBottom: "30px",
+    color: "#000000",
   },
   navbarDisplayFlex: {
     display: "flex",
@@ -52,11 +48,14 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
   },
-  linkText: {
-    textDecoration: "none",
-    textTransform: "capitalize",
-    color: "#594d2c",
+  menuBtns: {
+    backgroundColor: "#d3a625",
+    color: "#ffffff",
+    boxShadow: "none",
+    border: "1px solid #d3a625",
+    margin: "10px",
   },
+
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
@@ -99,14 +98,19 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  blogPostContainer: {
+    display: "flex",
+    alignItems: "flex-end",
+  },
 
   card: {
-    display: "flex",
+    width: "100%",
     boxShadow: "none",
-    maxWidth: "auto",
-    height: "500px",
-    paddingLeft: "30px",
-    paddingRight: "30px",
+    alignItems: "stretch",
+    minHeight: "500px",
+  },
+  blog_image: {
+    ["@media (max-height:900px)"]: { img: { display: "none !important" } },
   },
   header: {
     display: "flex-inline",
@@ -116,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "10px",
   },
   desc: {
-    marginLeft: "-50px",
+    marginLeft: "-20px",
   },
   title: {
     fontFamily: "DidoteTextW01-Italic",
@@ -136,7 +140,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardActions: {
     display: "flex",
-    margin: "0 10px",
+    margin: "0 5px",
     justifyContent: "space-between",
     boxShadow: "none",
     fontSize: "1.2rem",
@@ -164,8 +168,7 @@ function Blogpage(props) {
   const classes = useStyles();
   const [data, setData] = useState([]);
   const [searchTerm, setSerchTerm] = useState("");
-  const [filteredPosts, setFilteredPosts] = useState("");
-  const [posts, setPosts] = useState("");
+  const [catName, setCatName] = useState("");
   const fetchData = async () => {
     const res = await fetch(
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/truncatedBlog"
@@ -186,45 +189,8 @@ function Blogpage(props) {
   const handleClose = () => {
     setanchorEl(null);
   };
-  /* const onResetArray = () => {
-    setFilteredPosts({ filteredPosts: [] });
-  };
 
-  const healthyTips = () => {
-    const { posts } = data;
-    const healthyTips = posts.filter((post) =>
-      posts.blogCategory.includes("healthy tips")
-    );
-    // const fordAutos = autoData.filter( (auto) => auto.title.includes("Ford"));
-
-    setFilteredPosts({ filteredPosts: healthyTips });
-  };
-
-  const recipes = () => {
-    const { posts } = data;
-    const recipes = posts.filter((post) =>
-      posts.blogCategory.includes("recipes")
-    );
-    // const chevyAutos = autoData.filter( (auto) => auto.title.includes("Chevrolet"));
-
-    setFilteredPosts({ filteredPosts: recipes });
-  };
-
-  const livingWell = () => {
-    const { posts } = data;
-    const livingWell = posts.filter((post) =>
-      posts.blogCategory.includes("living well")
-    );
-    // const jeepAutos = autoData.filter( (auto) => auto.title.includes("Jeep"));
-    setFilteredPosts({ filteredPosts: livingWell });
-  }; */
-
-  const navLinks = [
-    { title: `all posts`, path: `/all posts` },
-    { title: `healthy tips`, path: `/healthy tips` },
-    { title: `recipes`, path: `/recipes` },
-    { title: `living well`, path: `/living well` },
-  ];
+  const cats = [...new Set(data.map((q) => q.blogCategory))];
 
   return (
     <div className="blogpage" id="blogpage">
@@ -249,17 +215,22 @@ function Blogpage(props) {
                 aria-labelledby="main navigation"
                 className={classes.navDisplayFlex}
               >
-                {navLinks.map(({ title, path }) => (
-                  <a
-                    href={path}
-                    key={title}
-                    className={classes.linkText}
-                    style={{ textDecoration: "none" }}
+                <div className={classes.navDisplayFlex}>
+                  <button
+                    className={classes.menuBtns}
+                    onClick={() => setCatName(cats)}
                   >
-                    <ListItem button>
-                      <ListItemText primary={title} />
-                    </ListItem>
-                  </a>
+                    All Posts
+                  </button>
+                </div>
+                {cats.map((title, i) => (
+                  <button
+                    className={classes.menuBtns}
+                    key={i}
+                    onClick={() => setCatName(title)}
+                  >
+                    {title}
+                  </button>
                 ))}
               </List>
             </Container>
@@ -278,123 +249,248 @@ function Blogpage(props) {
             </div>
           </Toolbar>
         </AppBar>
+        <div>
+          {data
+            .filter((val) => {
+              if (searchTerm == "") {
+                return val;
+              } else if (
+                val.blogTitle.toLowerCase().includes(searchTerm.toLowerCase())
+              ) {
+                return val;
+              }
+            })
 
-        {data
-          .filter((val) => {
-            if (searchTerm == "") {
-              return val;
-            } else if (
-              val.blogTitle.toLowerCase().includes(searchTerm.toLowerCase())
-            ) {
-              return val;
-            }
-          })
-          .map((post, key) => (
-            <div className="blogPostContainer" key={key}>
-              <Card className={classes.card}>
-                <Row>
-                  <div>
-                    <Col className="d-none d-sm-block">
-                      {!!post.blogImage && (
-                        <CardImg
-                          className={classes.img}
-                          variant="top"
-                          src={post.blogImage}
-                          style={{
-                            width: "550px",
-                            height: "450px",
-                            objectFit: "cover",
-                            objectPosition: "center -20px",
-                          }}
-                          onError={(e) => (e.target.style.display = "none")}
-                        />
-                      )}
-                    </Col>
-                  </div>
-                  <Col className={classes.desc}>
-                    <div className={classes.header}>
-                      {post.postedOn}
-                      <IconButton
-                        onClick={handleClick}
-                        style={{ float: "right" }}
-                        aria-label="click to share post"
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
-                      <Menu
-                        elevation={0}
-                        getContentAnchorEl={null}
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "center",
-                        }}
-                        transformOrigin={{
-                          vertical: "top",
-                          horizontal: "center",
-                        }}
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl)}
-                        onClose={handleClose}
-                      >
-                        <MenuItem
-                          style={{
-                            color: "#594d2c",
-                            width: "200px",
-                            height: "50px",
-                            padding: "0",
-                            fontSize: "1.5rem",
-                          }}
-                          position="bottom"
-                          onClick={handleClose}
-                        >
+            .map((post, key) => {
+              return catName === post.blogCategory ? (
+                <div className={classes.blogPostContainer} key={key}>
+                  <Card className={classes.card}>
+                    <Row>
+                      <Hidden only={["xs", "sm", "md"]}>
+                        <div>
+                          <Col>
+                            {!!post.blogImage && (
+                              <img
+                                className={classes.img}
+                                id="blogImage"
+                                variant="top"
+                                src={post.blogImage}
+                                style={{
+                                  width: "550px",
+                                  height: "450px",
+                                  objectFit: "cover",
+                                  objectPosition: "center -20px",
+                                }}
+                                onError={(e) =>
+                                  (e.target.style.display = "none")
+                                }
+                              />
+                            )}
+                          </Col>
+                        </div>
+                      </Hidden>
+                      <Col className={classes.desc}>
+                        <div className={classes.header}>
+                          {post.postedOn}
                           <IconButton
-                            fontSize="small"
+                            onClick={handleClick}
+                            style={{ float: "right" }}
                             aria-label="click to share post"
                           >
-                            <ShareOutline />
+                            <MoreVertIcon />
                           </IconButton>
-                          Share
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                    <Link
-                      to={`/${post.blog_uid}/fullblog`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <div>
-                        <div className={classes.title}>
-                          <p>{post.blogTitle}</p>
-                        </div>
-                        <div className={classes.content}>
-                          <p
-                            dangerouslySetInnerHTML={{
-                              __html: post.blogText,
+                          <Menu
+                            elevation={0}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "center",
                             }}
-                          />
+                            transformOrigin={{
+                              vertical: "top",
+                              horizontal: "center",
+                            }}
+                            id="simple-menu"
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={Boolean(anchorEl)}
+                            onClose={handleClose}
+                          >
+                            <MenuItem
+                              style={{
+                                color: "#594d2c",
+                                width: "200px",
+                                height: "50px",
+                                padding: "0",
+                                fontSize: "1.5rem",
+                              }}
+                              position="bottom"
+                              onClick={handleClose}
+                            >
+                              <IconButton
+                                fontSize="small"
+                                aria-label="click to share post"
+                              >
+                                <ShareOutline />
+                              </IconButton>
+                              Share
+                            </MenuItem>
+                          </Menu>
                         </div>
-                      </div>
-                    </Link>
-                    <hr style={{ color: "#8d6f19" }}></hr>
-                    <div className={classes.cardActions}>
-                      <p>
-                        <span>Views &nbsp;&nbsp; Comments</span>
-                      </p>
+                        <Link
+                          to={`/${post.blog_uid}/fullblog`}
+                          style={{ textDecoration: "none" }}
+                        >
+                          <div>
+                            <div className={classes.title}>
+                              <p>{post.blogTitle}</p>
+                            </div>
+                            <div className={classes.content}>
+                              <p
+                                dangerouslySetInnerHTML={{
+                                  __html: post.blogText,
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </Link>
+                        <hr style={{ color: "#8d6f19" }}></hr>
+                        <div className={classes.cardActions}>
+                          <p>
+                            <span>Views &nbsp;&nbsp; Comments</span>
+                          </p>
 
-                      <IconButton style={{ color: "red", float: "right" }}>
-                        <FavoriteBorderIcon />
-                      </IconButton>
-                    </div>
-                  </Col>
-                </Row>
-              </Card>
-            </div>
-          ))}
-        <div style={{ paddingBottom: "30px" }}>
-          <Button variant="contained" className={classes.btn} href="/addpost">
-            Add Blog Entry
-          </Button>
+                          <IconButton style={{ color: "red", float: "right" }}>
+                            <FavoriteBorderIcon />
+                          </IconButton>
+                        </div>
+                      </Col>
+                    </Row>
+                  </Card>
+                </div>
+              ) : null;
+            })}
+        </div>
+        <div>
+          {data
+            .filter((val) => {
+              if (searchTerm == "") {
+                return val;
+              } else if (
+                val.blogTitle.toLowerCase().includes(searchTerm.toLowerCase())
+              ) {
+                return val;
+              }
+            })
+            .map((post, key) => (
+              <div className={classes.blogPostContainer} key={key}>
+                <Card className={classes.card}>
+                  <Row>
+                    <Hidden only={["xs", "sm", "md"]}>
+                      <div>
+                        <Col>
+                          {!!post.blogImage && (
+                            <img
+                              className={classes.img}
+                              id="blogImage"
+                              variant="top"
+                              src={post.blogImage}
+                              style={{
+                                width: "550px",
+                                height: "450px",
+                                objectFit: "cover",
+                                objectPosition: "center -20px",
+                              }}
+                              onError={(e) => (e.target.style.display = "none")}
+                            />
+                          )}
+                        </Col>
+                      </div>
+                    </Hidden>
+
+                    <Col className={classes.desc}>
+                      <div className={classes.header}>
+                        {post.postedOn}
+                        <IconButton
+                          onClick={handleClick}
+                          style={{ float: "right" }}
+                          aria-label="click to share post"
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                          elevation={0}
+                          getContentAnchorEl={null}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center",
+                          }}
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "center",
+                          }}
+                          id="simple-menu"
+                          anchorEl={anchorEl}
+                          keepMounted
+                          open={Boolean(anchorEl)}
+                          onClose={handleClose}
+                        >
+                          <MenuItem
+                            style={{
+                              color: "#594d2c",
+                              width: "200px",
+                              height: "50px",
+                              padding: "0",
+                              fontSize: "1.5rem",
+                            }}
+                            position="bottom"
+                            onClick={handleClose}
+                          >
+                            <IconButton
+                              fontSize="small"
+                              aria-label="click to share post"
+                            >
+                              <ShareOutline />
+                            </IconButton>
+                            Share
+                          </MenuItem>
+                        </Menu>
+                      </div>
+                      <Link
+                        to={`/${post.blog_uid}/fullblog`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <div>
+                          <div className={classes.title}>
+                            <p>{post.blogTitle}</p>
+                          </div>
+                          <div className={classes.content}>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: post.blogText,
+                              }}
+                            />
+                          </div>
+                        </div>
+                      </Link>
+                      <hr style={{ color: "#8d6f19" }}></hr>
+                      <div className={classes.cardActions}>
+                        <p>
+                          <span>Views &nbsp;&nbsp; Comments</span>
+                        </p>
+
+                        <IconButton style={{ color: "red", float: "right" }}>
+                          <FavoriteBorderIcon />
+                        </IconButton>
+                      </div>
+                    </Col>
+                  </Row>
+                </Card>
+              </div>
+            ))}
+        </div>
+        <div>
+          <BlogEntries />
         </div>
       </div>
     </div>

@@ -11,7 +11,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     position: "relative",
     top: "70px",
-    marginBottom: "150px",
     minHeight: "710px",
     minWidth: "600px",
     height: "auto",
