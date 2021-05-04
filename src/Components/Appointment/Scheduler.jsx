@@ -237,7 +237,7 @@ export default function Scheduler(props) {
     <Box>
       <div className="row">
         <Col>
-          <Box className={classes.container}>
+          <Box className={classes.container} aria-label={"find a day to meet"}>
             <p className={classes.title}>Find a time to meet with Nitya </p>
             <Calendar
               backgroundColor="#d3a625"
@@ -248,7 +248,7 @@ export default function Scheduler(props) {
           </Box>
         </Col>
         <Col>
-          <Box className={classes.container}>
+          <Box className={classes.container} aria-label={"find a time to meet"}>
             {renderAvailableApptsVertical()}
           </Box>
         </Col>
@@ -289,9 +289,11 @@ export default function Scheduler(props) {
             {/* Your Notes are {notes} */}
             <br></br>
             <br></br>
-            <Button on onClick={bookAppt}>
-              Book Appt Now
-            </Button>
+            <div aria-label={"click button to book your appointment"}>
+              <Button on onClick={bookAppt}>
+                Book Appt Now
+              </Button>
+            </div>
           </Box>
         </Col>
       </div>

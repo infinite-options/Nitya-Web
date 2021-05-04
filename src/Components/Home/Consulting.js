@@ -67,7 +67,11 @@ export default function Consulting() {
   }, []);
 
   return (
-    <div className="consulting" id="consulting">
+    <div
+      className="consulting"
+      id="consulting"
+      aria-label={"consulting section"}
+    >
       <br />
       <div className={classes.container}>
         {data
@@ -81,6 +85,7 @@ export default function Consulting() {
                       className={classes.img}
                       variant="top"
                       src={filteredService.image_url}
+                      alt={"An image of" + filteredService.title}
                     />
                   </Col>
                   <Col style={{ display: "flex", justifyContent: "center" }}>
@@ -91,10 +96,15 @@ export default function Consulting() {
                       <CardText className={classes.text}>
                         {filteredService.description} <br />
                         <NavHashLink to="#home">Learn More</NavHashLink> <br />
+                        <div aria-label={"click button to book a session."}>
+                          <Button className={classes.btn} variant="primary">
+                            Book Now
+                          </Button>
+                        </div>
                       </CardText>
-                      <Button className={classes.btn} variant="primary">
-                        Book Now
-                      </Button>
+                      {/*  */}
+
+                      {/*  */}
                     </CardBody>
                   </Col>
                 </Row>
