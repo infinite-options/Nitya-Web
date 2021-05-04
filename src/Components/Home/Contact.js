@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Axios from "axios";
 import { Row, Col } from "reactstrap";
 import { Button, Form, FormGroup, Input } from "reactstrap";
 import MapSection from "./Map";
@@ -73,7 +74,35 @@ const location = {
 };
 export default function Contact() {
   const classes = useStyles();
+  const url =
+    "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addContact";
+  const [data, setData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
+  function submit(e) {
+    e.preventDefault();
+    Axios.post(url, {
+      name: data.name,
+      email: data.email,
+      subject: data.subject,
+      message: data.message,
+    })
+      .catch((error) => {
+        console.log(error.message);
+      })
+      .then((response) => {
+        console.log(response);
+      });
+  }
+  function handle(e) {
+    const newData = { ...data };
+    newData[e.target.id] = e.target.value;
+    setData(newData);
+  }
   return (
     <div className="page-container ">
       <div className="contact" id="contact">
@@ -92,7 +121,7 @@ export default function Contact() {
               className={classes.form}
               style={{ display: "flex", justifyContent: "center" }}
             >
-              <Form>
+              <Form onSubmit={(e) => submit(e)}>
                 <Row form>
                   <Col md={6}>
                     <FormGroup>
@@ -101,6 +130,8 @@ export default function Contact() {
                         name="name"
                         id="name"
                         placeholder="Name"
+                        onChange={(e) => handle(e)}
+                        value={data.name}
                       />
                     </FormGroup>
                   </Col>
@@ -111,6 +142,8 @@ export default function Contact() {
                         name="email"
                         id="email"
                         placeholder="Email"
+                        onChange={(e) => handle(e)}
+                        value={data.email}
                       />
                     </FormGroup>
                   </Col>
@@ -121,6 +154,8 @@ export default function Contact() {
                     name="subject"
                     id="subject"
                     placeholder="Subject"
+                    onChange={(e) => handle(e)}
+                    value={data.subject}
                   />
                 </FormGroup>
 
@@ -128,13 +163,16 @@ export default function Contact() {
                   <Input
                     type="textarea"
                     name="text"
-                    id="exampleText"
+                    id="message"
                     placeholder="Type your message here"
+                    onChange={(e) => handle(e)}
+                    value={data.message}
                   />
                 </FormGroup>
 
                 <Button className={classes.btn}>Submit</Button>
               </Form>
+
               <ul
                 className="list-icons "
                 style={{ color: "#ffffff", paddingTop: "100px" }}

@@ -3,7 +3,6 @@ import { BrowserRouter } from "react-router-dom";
 
 import ScrollToTop from "../Blog/ScrollToTop";
 
-
 import Home from "./Home/Home";
 import About from "./Home/About";
 import Services from "./Home/Services";
@@ -27,7 +26,7 @@ class Homepage extends Component {
                 wordWrap: "break-word",
                 color: "#d3a625",
                 lineHeight: "0",
-                paddingBottom: "30px",
+                paddingBottom: "20px",
               }}
             >
               Services

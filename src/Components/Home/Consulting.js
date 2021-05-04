@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import { NavHashLink } from "react-router-hash-link";
 import { makeStyles } from "@material-ui/core/styles";
-import LearnMoreBTN  from "../Services/LearnMoreBtn";
+import LearnMoreBTN from "../Services/LearnMoreBtn";
 import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({
@@ -28,7 +28,6 @@ const useStyles = makeStyles({
   },
   body: {
     minWidth: "600px",
-
     float: "right",
     textAlign: "center",
     color: "#594d2c",

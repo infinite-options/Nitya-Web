@@ -65,7 +65,9 @@ export default function Home() {
               }}
             >
               <p className={classes.title}>Helping your body heal itself</p>
-              <Button className={classes.btn}>Book a Session</Button>
+              <Button className={classes.btn} href="/services">
+                Book a Session
+              </Button>
             </Col>
             <Col style={{ display: "flex", justifyContent: "center" }}>
               <img src={Img} className={classes.img} alt="spices" />
