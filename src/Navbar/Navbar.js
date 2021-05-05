@@ -1,9 +1,8 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { animateScroll as scroll } from "react-scroll";
 import logo from "../nitya_logo.png";
 import LoginNavBar from "./LoginNavBar";
@@ -45,21 +44,15 @@ function useOutsideAlerter(ref) {
 const Navbar = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [clicked, setClicked] = useState(false);
-  // Toggles for the login and signup box to be passed in as props to the Landing Nav Bar
   const [isLoginShown, setIsLoginShown] = useState(false); // checks if user is logged in
   const [isSignUpShown, setIsSignUpShown] = useState(false);
 
   const loginWrapperRef = useRef(null);
   useOutsideAlerter(loginWrapperRef, setIsLoginShown);
+
   const signupWrapperRef = useRef(null);
   useOutsideAlerter(signupWrapperRef, setIsSignUpShown);
 
-  const handleClose = () => {
-    console.log("close");
-    setIsLoginShown(false);
-    setIsSignUpShown(false);
-  };
   const handleClick = () => {
     setOpen(!open);
   };
@@ -67,6 +60,7 @@ const Navbar = () => {
   const closeMenu = () => {
     setOpen(false);
   };
+
   const scrollToTop = () => {
     scroll.scrollToTop();
   };
@@ -114,6 +108,8 @@ const Navbar = () => {
             Contact
           </Link>
         </li>
+      </ul>
+      <ul className={"nav-log"}>
         <li className="nav-item" className="nav-link" className="log-in">
           <LoginNavBar
             isLoginShown={isLoginShown}

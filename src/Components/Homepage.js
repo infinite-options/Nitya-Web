@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter } from "react-router-dom";
-
 import ScrollToTop from "../Blog/ScrollToTop";
-
 import Home from "./Home/Home";
 import About from "./Home/About";
 import Services from "./Home/Services";

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { withStyles } from "@material-ui/styles";
-import TextField from "@material-ui/core/TextField";
 import { Box, Button } from "@material-ui/core";
 import { withRouter } from "react-router";
 import Paper from "@material-ui/core/Paper";
@@ -95,9 +93,12 @@ class Signup extends Component {
                 }
               )
               .then((res) => {
+                this.setState({
+                  message: "success",
+                });
+                console.log(res);
                 let customerInfo = res.data.result;
                 console.log(customerInfo);
-
                 if (res.data.code === 200) {
                   axios
                     .post(

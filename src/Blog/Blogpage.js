@@ -12,7 +12,6 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import Hidden from "@material-ui/core/Hidden";
-
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
@@ -109,9 +108,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "stretch",
     minHeight: "500px",
   },
-  blog_image: {
-    ["@media (max-height:900px)"]: { img: { display: "none !important" } },
-  },
+
   header: {
     display: "flex-inline",
     fontFamily: "'Open Sans', sans-serif",
@@ -252,7 +249,7 @@ function Blogpage(props) {
         <div>
           {data
             .filter((val) => {
-              if (searchTerm == "") {
+              if (searchTerm === "") {
                 return val;
               } else if (
                 val.blogTitle.toLowerCase().includes(searchTerm.toLowerCase())
@@ -374,7 +371,7 @@ function Blogpage(props) {
         <div>
           {data
             .filter((val) => {
-              if (searchTerm == "") {
+              if (searchTerm === "") {
                 return val;
               } else if (
                 val.blogTitle.toLowerCase().includes(searchTerm.toLowerCase())

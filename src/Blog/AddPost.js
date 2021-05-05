@@ -3,6 +3,7 @@ import Axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 const useStyles = makeStyles((theme) => ({
   container: {
     position: "relative",
@@ -39,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     border: "1px solid #d3a625",
   },
 }));
+
 function AddPost() {
   const classes = useStyles();
 
@@ -70,6 +72,7 @@ function AddPost() {
         console.log(response);
       });
   }
+
   function handle(e) {
     const newData = { ...data };
     newData[e.target.id] = e.target.value;
