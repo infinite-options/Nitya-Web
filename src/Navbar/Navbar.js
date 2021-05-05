@@ -75,7 +75,7 @@ const Navbar = () => {
             height: 150,
             objectFit: "cover",
           }}
-          alt="logo"
+          alt="Nitya Ayurveda’s Logo"
           onClick={scrollToTop}
         />
       </Link>

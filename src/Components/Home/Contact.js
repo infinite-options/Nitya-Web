@@ -65,6 +65,9 @@ const useStyles = makeStyles({
     marginLeft: "40px",
     minHeight: "60px",
   },
+  label: {
+    color: "#dbdbdb",
+  },
 });
 
 const location = {
@@ -111,11 +114,24 @@ export default function Contact() {
           <Row>
             <Col>
               <p className={classes.title}>Contact Us</p>
+              <p
+                className={classes.content}
+                aria-label="6055 Meridian Ave suite 40"
+              >
+                6055 Meridian Ave #40,
+              </p>
               <p className={classes.content}>
-                6055 Meridian Ave #40, San Jose, CA 95120, USA <br />
+                San Jose, CA 95120, USA <br />
                 Office: 408 471 7004
               </p>
-              <MapSection location={location} zoomLevel={13} />​
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.732452474541!2d-121.8872221846979!3d37.230325779862234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e314406ce969d%3A0x82fb75802c5ef489!2s6055%20Meridian%20Ave%20%2340%2C%20San%20Jose%2C%20CA%2095120!5e0!3m2!1sen!2sus!4v1618695078070!5m2!1sen!2sus"
+                width="600"
+                height="450"
+                style={{ border: 0 }}
+                allowfullscreen=""
+                loading="lazy"
+              ></iframe>
             </Col>
             <Col
               className={classes.form}
@@ -125,6 +141,9 @@ export default function Contact() {
                 <Row form>
                   <Col md={6}>
                     <FormGroup>
+                      {/* <label className={classes.label} for="name">
+                        Name
+                      </label> */}
                       <Input
                         type="text"
                         name="name"
@@ -137,6 +156,9 @@ export default function Contact() {
                   </Col>
                   <Col md={6}>
                     <FormGroup>
+                      {/* <label className={classes.label} for="email">
+                        Email
+                      </label> */}
                       <Input
                         type="email"
                         name="email"
@@ -149,6 +171,9 @@ export default function Contact() {
                   </Col>
                 </Row>
                 <FormGroup>
+                  {/* <label className={classes.label} for="subject">
+                    Subject
+                  </label> */}
                   <Input
                     type="text"
                     name="subject"
@@ -160,6 +185,9 @@ export default function Contact() {
                 </FormGroup>
 
                 <FormGroup>
+                  {/* <label className={classes.label} for="exampleText">
+                    Type your message here
+                  </label> */}
                   <Input
                     type="textarea"
                     name="text"
@@ -169,8 +197,12 @@ export default function Contact() {
                     value={data.message}
                   />
                 </FormGroup>
-
-                <Button className={classes.btn}>Submit</Button>
+                <div
+                  style={{ padding: 10 }}
+                  aria-label={"click button to submit your messsage session."}
+                >
+                  <Button className={classes.btn}>Submit</Button>
+                </div>
               </Form>
 
               <ul

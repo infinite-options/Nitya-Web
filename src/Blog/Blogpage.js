@@ -231,7 +231,10 @@ function Blogpage(props) {
                 ))}
               </List>
             </Container>
-            <div className={classes.search}>
+            <div
+              className={classes.search}
+              aria-label={"Enter text to search blog content"}
+            >
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -279,8 +282,8 @@ function Blogpage(props) {
                                   objectPosition: "center -20px",
                                 }}
                                 onError={(e) =>
-                                  (e.target.style.display = "none")
-                                }
+                                  (e.target.style.display = "none")}
+                                aria-label={"an image of " + post.blogTitle}
                               />
                             )}
                           </Col>

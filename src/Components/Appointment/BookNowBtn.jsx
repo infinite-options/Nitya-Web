@@ -10,9 +10,11 @@ class BookNowBTN extends Component {
 
   render() {
     return (
-      <Button>
-        <Link to={`/${this.state.tID}/appt`}>Book Now</Link>
-      </Button>
+      <div aria-label={"click button to book a session now"}>
+        <Button>
+          <Link to={`/${this.state.tID}/appt`}>Book Now</Link>
+        </Button>
+      </div>
     );
   }
 }
