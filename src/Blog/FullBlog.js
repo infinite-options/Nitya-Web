@@ -1,24 +1,11 @@
 import React, { useState, useEffect } from "react";
-
-import { fade } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from "@material-ui/core";
+import { IconButton, Menu, MenuItem } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ShareOutline from "@material-ui/icons/ShareOutlined";
-import SearchIcon from "@material-ui/icons/Search";
 import AuthorIcon from "@material-ui/icons/AccountCircle";
 import { useParams } from "react-router";
 import ScrollToTop from "./ScrollToTop";

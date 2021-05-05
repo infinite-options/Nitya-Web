@@ -1,15 +1,11 @@
-import React, { Component, useState, useContext, useEffect } from "react";
-
+import React, { useState, useContext, useEffect } from "react";
 import Cookies from "js-cookie";
 import { withRouter } from "react-router";
 import axios from "axios";
-
 import { Grid, Paper, Button, Typography, Box } from "@material-ui/core";
-
 import { AuthContext } from "../../auth/AuthContext";
 import CssTextField from "../../utils/CssTextField";
 import SocialLogin from "./SocialLogin";
-const API_URL = process.env.REACT_APP_SERVER_BASE_URI + "";
 
 function AdminLogin(props) {
   const [emailValue, setEmail] = useState("");
@@ -188,28 +184,29 @@ function AdminLogin(props) {
                       setError("");
                       console.log("Login success");
                       let customerInfo = res.data.result[0];
-                      //Auth.setIsAuth(true);
+
+                      Auth.setIsAuth(true);
                       Cookies.set("login-session", "good");
                       Cookies.set("customer_uid", customerInfo.customer_uid);
                       Cookies.set("role", customerInfo.role);
 
-                      /*    let newAccountType = customerInfo.role.toLowerCase();
+                      let newAccountType = customerInfo.role.toLowerCase();
                       switch (newAccountType) {
                         case "admin":
                           Auth.setAuthLevel(2);
-                          props.history.push("/admin");
+                          props.history.push("/blog");
                           break;
 
                         case "customer":
                           Auth.setAuthLevel(0);
-                          props.history.push("/store");
+                          props.history.push("/home");
                           break;
 
                         default:
                           Auth.setAuthLevel(1);
-                          props.history.push("/admin");
+                          props.history.push("/home");
                           break;
-                      } */
+                      }
                     } else if (res.data.code === 406 || res.data.code === 404) {
                       console.log("Invalid credentials");
                       setError("credential");

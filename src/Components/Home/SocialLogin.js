@@ -1,9 +1,9 @@
-import React, { Component, useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import FacebookLogin from "react-facebook-login";
 import GoogleLogin from "react-google-login";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { Grid, Paper, Button, Typography, Box } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { AuthContext } from "../../auth/AuthContext";
 import { withRouter } from "react-router";
 
@@ -108,20 +108,17 @@ function SocialLogin(props) {
               switch (newAccountType) {
                 case "admin":
                   Auth.setAuthLevel(2);
-                  props.history.push("/admin");
+                  props.history.push("/blog");
                   break;
-                case "farmer":
-                  Auth.setAuthLevel(1);
-                  props.history.push("/admin");
-                  break;
+
                 case "customer":
                   Auth.setAuthLevel(0);
-                  props.history.push("/store");
+                  props.history.push("/");
                   break;
                 // Farmer roles are moving towared business Id string
                 default:
                   Auth.setAuthLevel(1);
-                  props.history.push("/admin");
+                  props.history.push("/");
                   break;
               }
             });

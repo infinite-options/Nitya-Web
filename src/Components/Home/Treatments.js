@@ -10,11 +10,10 @@ import {
   CardBody,
 } from "reactstrap";
 import { NavHashLink } from "react-router-hash-link";
-
 import { makeStyles } from "@material-ui/core/styles";
 import BookApptBtn from "../Appointment/BookNowBtn";
-import { Link } from "react-router-dom";
-import LearnMoreBTN  from "../Services/LearnMoreBtn";
+
+import LearnMoreBTN from "../Services/LearnMoreBtn";
 import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({

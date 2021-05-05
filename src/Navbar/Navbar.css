@@ -20,7 +20,7 @@
   grid-template-columns: repeat(7, auto);
   grid-gap: 20px;
   list-style: none;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 
 .nav-link {
@@ -32,14 +32,17 @@
 .nav-link:hover {
   color: #d3a625;
 }
-
+.nav-log {
+  list-style: none;
+  padding-top: 30px;
+}
 .nav-icon {
   display: none;
   font-size: 2rem;
   cursor: pointer;
 }
 
-@media screen and (max-width: 1305px) and (min-width: 960px) {
+@media screen and (max-width: 1305px) and (min-width: 1050px) {
   .navbar {
     position: sticky;
     top: 0;
