@@ -12,7 +12,6 @@ import {
 import { NavHashLink } from "react-router-hash-link";
 import { makeStyles } from "@material-ui/core/styles";
 import BookApptBtn from "../Appointment/BookNowBtn";
-
 import LearnMoreBTN from "../Services/LearnMoreBtn";
 import BookNowBTN from "../Appointment/BookNowBtn";
 
@@ -68,7 +67,7 @@ export default function Treatments() {
     });
   }, []);
   return (
-    <div className="treatments" id="treatments">
+    <div className="treatments" id="treatments" aria-label="treatments section">
       <br />
       <div className={classes.container}>
         {data
@@ -82,6 +81,7 @@ export default function Treatments() {
                       className={classes.img}
                       variant="top"
                       src={filteredService.image_url}
+                      alt={"An image of" + filteredService.title}
                     />
                   </Col>
                   <Col style={{ display: "flex", justifyContent: "center" }}>
@@ -93,9 +93,11 @@ export default function Treatments() {
                         {filteredService.description} <br />
                         <NavHashLink to="#home">Learn More</NavHashLink> <br />
                       </CardText>
-                      <Button className={classes.btn} variant="primary">
-                        Book Now
-                      </Button>
+                      <div aria-label={"click button to book a session."}>
+                        <Button className={classes.btn} variant="primary">
+                          Book Now
+                        </Button>
+                      </div>
                     </CardBody>
                   </Col>
                 </Row>

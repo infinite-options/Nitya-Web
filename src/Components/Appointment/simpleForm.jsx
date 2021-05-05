@@ -54,7 +54,7 @@ class Form extends Component {
     const info = this.props.variable;
     return (
       <form onSubmit={this.handleSubmit}>
-        <div>
+        <div aria-label={"Enter your " + this.props.field + "here"}>
           {/* <label htmlFor="email">{this.props.field}</label> */}
           <input
             name="variable"
