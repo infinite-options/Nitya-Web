@@ -2,35 +2,27 @@ import React from "react";
 import Scheduler from "./Appointment/Scheduler";
 import { useParams } from "react-router";
 import ScrollToTop from "../Blog/ScrollToTop";
-
+import { Elements, CardElement, useStripe } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { Restaurant } from "@material-ui/icons";
 
 // The following react component is based on the youtube tutorial provided by Syncfusion, Inc. at the url below:
 
 export default function AppointmentPage(props) {
   const { treatmentID } = useParams();
-  // const {serviceArr, servicesLoaded} = useContext(MyContext);
-  // const [info, setInfo] = useState("");
 
+  let PUBLISHABLE_KEY = "pk_test_51Ihyn......0wa0SR2JG";
 
-  // function conditionalPrint(){
-  //   if(servicesLoaded){
-  //     serviceArr.forEach((element) => {
-  //       if (element.treatment_uid === treatmentID) {
-  //         console.log("The following element does match with what we are looking for" + element.title);
-  //         // setElementToBeRendered(element);
-  //         //setInfo(element.title);
-  //       }
-  //     })
-  //   }
-  // }
-  //   // console.log(servicesLoaded);
+  let stripePromise = loadStripe(PUBLISHABLE_KEY);
 
   return (
     <>
       <div className="page-container ">
         <ScrollToTop />
-       
-        <Scheduler treatmentID={treatmentID} />
+
+        <Elements stripe={stripePromise}>
+          <Scheduler treatmentID={treatmentID} />
+        </Elements>
       </div>
     </>
   );
