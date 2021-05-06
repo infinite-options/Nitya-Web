@@ -337,7 +337,6 @@ export default function Scheduler(props) {
             <Button on onClick={bookAppt}>
               Book Appt Now
             </Button>
-            <Stripe
           </Box>
         </Col>
       </div>
