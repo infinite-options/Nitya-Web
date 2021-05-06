@@ -8,27 +8,26 @@ import SimpleForm from "./simpleForm";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import {MyContext} from "../../App";
-/**
- * This Web Dev Simplified tutorial was crucial to my understanding of useContext:
- * https://www.youtube.com/watch?v=5LrDIWkK_Bc&ab_channel=WebDevSimplified 
- */
+import { MyContext } from "../../App";
+
+import StripeElement from "./StripeElement";
+
+export const SchedulerContext = React.createContext();
 
 export default function Scheduler(props) {
   //import the Context from the App
-  const {serviceArr, servicesLoaded} = useContext(MyContext);
+  const { serviceArr, servicesLoaded } = useContext(MyContext);
   const [elementToBeRendered, setElementToBeRendered] = useState([]);
-
 
   const treatment_uid = props.treatmentID;
 
   useEffect(() => {
-    if(servicesLoaded){
+    if (servicesLoaded) {
       serviceArr.forEach((element) => {
         if (element.treatment_uid === treatment_uid) {
           setElementToBeRendered(element);
         }
-      })
+      });
     }
   });
 
@@ -47,6 +46,8 @@ export default function Scheduler(props) {
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
   const [email, setEmail] = useState("");
+  const [price, setPrice] = useState("");
+  const [apptDate, setApptDate] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [notes, setNotes] = useState("");
 
@@ -162,6 +163,8 @@ export default function Scheduler(props) {
     // console.log(lName);
     // console.log(email);
     // console.log(phoneNum);
+    setApptDate(dateFormat1(date));
+    setPurchaseDate(dateFormat1(purchaseDate));
 
     const postURL =
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
@@ -175,12 +178,10 @@ export default function Scheduler(props) {
         notes: notes,
         appt_date: dateFormat1(date),
         appt_time: selectedTime,
-        purchase_price: "$100", //TREATMENT INFO #2
+        purchase_price: elementToBeRendered.cost, //TREATMENT INFO #2
         purchase_date: dateFormat1(purchaseDate),
       })
       .then((res) => console.log(res));
-
-    
   }
 
   const useStyles = makeStyles({
@@ -244,7 +245,7 @@ export default function Scheduler(props) {
   return (
     <Box>
       <div className="row">
-        <div className ="col">
+        <div className="col">
           <Box className={classes.container}>
             <p className={classes.title}>Find a time to meet with Nitya </p>
             <Calendar
@@ -255,20 +256,16 @@ export default function Scheduler(props) {
             />
           </Box>
         </div>
-        <div className ="col">
+        <div className="col">
           <Box className={classes.container}>
             <p className={classes.title}>
-              {elementToBeRendered.title} 
-              <br></br> 
-              Duration: ({elementToBeRendered.duration})
+              {elementToBeRendered.title}
               <br></br>
+              Duration: ({elementToBeRendered.duration})<br></br>
               Price: {elementToBeRendered.cost}
             </p>
-
             {renderAvailableApptsVertical()}
-
-            Selected Date
-            Selected Timeslot
+            Selected Date Selected Timeslot
           </Box>
         </div>
 
@@ -314,81 +311,56 @@ export default function Scheduler(props) {
           </Box>
         </Col>
       </div>
+
+      <div
+        style={{
+          backgroundColor: "#f8bb17",
+          width: "130%",
+          height: "60px",
+          // marginTop: '36px',
+          // marginLeft: '60px',
+        }}
+      >
+        {/* <h6 className={styles.subHeadingRight}> Complete Payment</h6> */}
+        <h6> Complete Payment</h6>
+      </div>
+
+      <SchedulerContext
+        value={{
+          fName,
+          lName,
+          email,
+          phoneNum,
+          treatment_uid,
+          notes,
+          apptDate,
+          selectedTime,
+          purchaseDate,
+          price,
+        }}
+      >
+        <div style={{ display: "flex" }}>
+          <div style={{ display: "inline-block", width: "80%", height: "0px" }}>
+            {/* <div className={styles.buttonContainer}> */}
+            <div>
+              <StripeElement
+              // stripePromise={this.state.stripePromise}
+              // customerPassword={this.state.customerPassword}
+              // deliveryInstructions={this.state.instructions}
+              // setPaymentType={this.setPaymentType}
+              // paymentSummary={this.state.paymentSummary}
+              // // loggedInByPassword={loggedInByPassword}
+              // latitude={this.state.latitude.toString()}
+              // longitude={this.state.longitude.toString()}
+              // email={this.state.email}
+              // customerUid={this.state.customerUid}
+              // phone={this.state.phone}
+              // cardInfo={this.state.cardInfo}
+              />
+            </div>
+          </div>
+        </div>
+      </SchedulerContext>
     </Box>
   );
-  // return (
-  //   <Box>
-  //     <div className="row">
-  //       <div className ="col">
-  //         <Box className= "container">
-  //           <p className="title">Find a time to meet with Nitya </p>
-  //           <Calendar
-  //             backgroundColor="#d3a625"
-  //             calendarType="US"
-  //             onClickDay={dateChange}
-  //             value={date}
-  //           />
-  //         </Box>
-  //       </div>
-  //       <div className ="col">
-  //         <Box className="container">
-  //           <p className="title">
-  //             {elementToBeRendered.title} 
-  //             <br></br> 
-  //             Duration: ({elementToBeRendered.duration})
-  //             <br></br>
-  //             Price: {elementToBeRendered.cost}
-  //           </p>
-
-  //           {renderAvailableApptsVertical()}
-
-  //           Selected Date
-  //           Selected Timeslot
-  //         </Box>
-  //       </div>
-
-  //       <Col>
-  //         <Box className="container">
-  //           <p className="title">
-  //             Please fill out the information and notes below
-  //           </p>
-  //           <br></br>
-  //           <br></br>
-  //           <SimpleForm
-  //             field="First Name"
-  //             onHandleChange={handleFirstNameChange}
-  //           />
-  //           {/* Your first Name is {fName} */}
-  //           <br></br>
-  //           <br></br>
-  //           <SimpleForm
-  //             field="Last Name"
-  //             onHandleChange={handleLastNameChange}
-  //           />
-  //           {/* Your Last Name is {lName} */}
-  //           <br></br>
-  //           <br></br>
-  //           <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
-  //           {/* Your Email is {email} */}
-  //           <br></br>
-  //           <br></br>
-  //           <SimpleForm
-  //             field="Phone Number"
-  //             onHandleChange={handlePhoneNumChange}
-  //           />
-  //           {/* Your Phone Num is {phoneNum} */}
-  //           <br></br>
-  //           <br></br>
-  //           <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
-  //           {/* Your Notes are {notes} */}
-  //           <br></br>
-  //           <br></br>
-  //           <Button on onClick={bookAppt}>
-  //             Book Appt Now
-  //           </Button>
-  //         </Box>
-  //       </Col>
-  //     </div>
-  //   </Box>
-  // );
 }
