@@ -8,27 +8,26 @@ import SimpleForm from "./simpleForm";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import {MyContext} from "../../App";
+import { MyContext } from "../../App";
 /**
  * This Web Dev Simplified tutorial was crucial to my understanding of useContext:
- * https://www.youtube.com/watch?v=5LrDIWkK_Bc&ab_channel=WebDevSimplified 
+ * https://www.youtube.com/watch?v=5LrDIWkK_Bc&ab_channel=WebDevSimplified
  */
 
 export default function Scheduler(props) {
   //import the Context from the App
-  const {serviceArr, servicesLoaded} = useContext(MyContext);
+  const { serviceArr, servicesLoaded } = useContext(MyContext);
   const [elementToBeRendered, setElementToBeRendered] = useState([]);
-
 
   const treatment_uid = props.treatmentID;
 
   useEffect(() => {
-    if(servicesLoaded){
+    if (servicesLoaded) {
       serviceArr.forEach((element) => {
         if (element.treatment_uid === treatment_uid) {
           setElementToBeRendered(element);
         }
-      })
+      });
     }
   });
 
@@ -157,30 +156,61 @@ export default function Scheduler(props) {
     setSelectedTime(element);
   }
 
+  // function bookAppt() {
+  //   // console.log(fName);
+  //   // console.log(lName);
+  //   // console.log(email);
+  //   // console.log(phoneNum);
+
+  //   const postURL =
+  //     "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
+  //   axios
+  //     .post(postURL, {
+  //       first_name: fName,
+  //       last_name: lName,
+  //       email: email,
+  //       phone_no: phoneNum,
+  //       appt_treatment_uid: treatment_uid, //TREATMENT INFO #1
+  //       notes: notes,
+  //       appt_date: dateFormat1(date),
+  //       appt_time: selectedTime,
+  //       purchase_price: "$100", //TREATMENT INFO #2
+  //       purchase_date: dateFormat1(purchaseDate),
+  //     })
+  //     .then((res) => console.log(res));
+
+  // }
+
   function bookAppt() {
     // console.log(fName);
     // console.log(lName);
     // console.log(email);
     // console.log(phoneNum);
+    const temp = {
+      tax: 5,
+      total: 10,
+    };
 
     const postURL =
-      "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
+      "https://huo8rhh76i.execute-api.us-west-1.amazonaws.com/dev/api/v2/createPaymentIntent";
     axios
       .post(postURL, {
-        first_name: fName,
-        last_name: lName,
-        email: email,
-        phone_no: phoneNum,
-        appt_treatment_uid: treatment_uid, //TREATMENT INFO #1
-        notes: notes,
-        appt_date: dateFormat1(date),
-        appt_time: selectedTime,
-        purchase_price: "$100", //TREATMENT INFO #2
-        purchase_date: dateFormat1(purchaseDate),
+        customer_uid: "100-000001",
+        business_code: "M4METEST",
+        payment_summary: temp,
+
+        // first_name: fName,
+        // last_name: lName,
+        // email: email,
+        // phone_no: phoneNum,
+        // appt_treatment_uid: treatment_uid, //TREATMENT INFO #1
+        // notes: notes,
+        // appt_date: dateFormat1(date),
+        // appt_time: selectedTime,
+        // purchase_price: "$100", //TREATMENT INFO #2
+        // purchase_date: dateFormat1(purchaseDate),
       })
       .then((res) => console.log(res));
-
-    
   }
 
   const useStyles = makeStyles({
@@ -244,7 +274,7 @@ export default function Scheduler(props) {
   return (
     <Box>
       <div className="row">
-        <div className ="col">
+        <div className="col">
           <Box className={classes.container}>
             <p className={classes.title}>Find a time to meet with Nitya </p>
             <Calendar
@@ -255,20 +285,16 @@ export default function Scheduler(props) {
             />
           </Box>
         </div>
-        <div className ="col">
+        <div className="col">
           <Box className={classes.container}>
             <p className={classes.title}>
-              {elementToBeRendered.title} 
-              <br></br> 
-              Duration: ({elementToBeRendered.duration})
+              {elementToBeRendered.title}
               <br></br>
+              Duration: ({elementToBeRendered.duration})<br></br>
               Price: {elementToBeRendered.cost}
             </p>
-
             {renderAvailableApptsVertical()}
-
-            Selected Date
-            Selected Timeslot
+            Selected Date Selected Timeslot
           </Box>
         </div>
 
@@ -311,6 +337,7 @@ export default function Scheduler(props) {
             <Button on onClick={bookAppt}>
               Book Appt Now
             </Button>
+            <Stripe
           </Box>
         </Col>
       </div>
@@ -333,8 +360,8 @@ export default function Scheduler(props) {
   //       <div className ="col">
   //         <Box className="container">
   //           <p className="title">
-  //             {elementToBeRendered.title} 
-  //             <br></br> 
+  //             {elementToBeRendered.title}
+  //             <br></br>
   //             Duration: ({elementToBeRendered.duration})
   //             <br></br>
   //             Price: {elementToBeRendered.cost}
