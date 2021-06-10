@@ -1,70 +1,90 @@
 .navbar {
+  height: 150px;
+  width: 100%;
+  background: white;
   color: #8d6f1a;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  padding: 0 2rem;
   font-size: 1.5rem;
-  text-decoration: none;
-  background-color: #ffffff;
   position: sticky;
   top: 0;
   width: 100%;
-  z-index: 2;
+  z-index: 500;
   cursor: pointer;
 }
-.nav-center {
-  width: 100%;
-  display: flex;
+
+.nav-links {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  grid-gap: 20px;
+  list-style: none;
+  padding-top: 30px;
 }
-.navbar-logo {
-  justify-self: start;
+
+.nav-link {
+  text-decoration: none;
+  color: #8d6f1a;
+  transition: 0.3s all;
+}
+
+.nav-link:hover {
+  color: #d3a625;
+}
+.nav-log {
+  list-style: none;
+  padding-top: 30px;
+}
+.nav-icon {
+  display: none;
+  font-size: 2rem;
   cursor: pointer;
-  margin-left: 150px;
 }
 
-.nav-menu {
-  display: grid;
-  grid-template-columns: repeat(5, auto);
-  grid-gap: 15px;
-  list-style: none;
-  text-align: center;
-  width: 100%;
-  justify-content: start;
-  color: #8d6f1a;
-  margin-top: 3.5rem;
+@media screen and (max-width: 1305px) and (min-width: 1050px) {
+  .navbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 500;
+    cursor: pointer;
+    height: 300px;
+  }
 }
 
-.log-in {
-  color: #8d6f1a;
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  list-style: none;
-  justify-content: end;
-  width: 100%;
-  margin-right: 2rem;
-  margin-top: 3.5rem;
-}
-.login {
-  margin-top: 10px;
-}
+@media screen and (max-width: 1050px) {
+  .navbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 500;
+    cursor: pointer;
+  }
 
-.nav-links a {
-  color: #8d6f1a;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-}
+  .nav-links {
+    font-size: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    text-align: center;
+    width: 400px;
+    top: 150px;
+    left: -100%;
+    transition: 0.2s all;
+  }
 
-.nav-links a:hover {
-  color: #d3a625;
-  text-decoration: none;
-}
+  .nav-links.active {
+    background: white;
+    left: 0;
+  }
 
-.nav-links a:active {
-  color: #d3a625;
-}
-.nav-links a:target {
-  color: #d3a625;
-}
-.active a:hover {
-  color: #d3a625;
+  .nav-item {
+    border-bottom: 1px solid #d3a625;
+    height: 40px;
+  }
+
+  .nav-icon {
+    display: flex;
+  }
 }
