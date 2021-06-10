@@ -332,8 +332,8 @@ export default function Scheduler(props) {
   return (
     <Box>
       <div className="row">
-        <div className="col">
-          <Box className={classes.container}>
+        <Col>
+          <Box className={classes.container} aria-label={"find a day to meet"}>
             <p className={classes.title}>Find a time to meet with Nitya </p>
             <Calendar
               backgroundColor="#d3a625"
@@ -342,10 +342,10 @@ export default function Scheduler(props) {
               value={date}
             />
           </Box>
-        </div>
-        <div className="col">
-          <Box className={classes.container}>
-            <p className={classes.title}>
+        </Col>
+        <Col>
+          <Box className={classes.container} aria-label={"find a time to meet"}>
+          <p className={classes.title}>
               {elementToBeRendered.title}
               <br></br>
               Duration: ({elementToBeRendered.duration})<br></br>
@@ -354,7 +354,7 @@ export default function Scheduler(props) {
             {renderAvailableApptsVertical()}
             Selected Date Selected Timeslot
           </Box>
-        </div>
+        </Col>
 
         <Col>
           <Box className={classes.container}>
@@ -397,7 +397,11 @@ export default function Scheduler(props) {
               // className={props.classes.element}
               // options={options}
             />
-            <Button onClick={bookAppt}>Book Appt Now</Button>
+            <div aria-label={"click button to book your appointment"}>
+              <Button on onClick={bookAppt}>
+                Book Appt Now
+              </Button>
+            </div>
           </Box>
         </Col>
       </div>
