@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { AuthContext } from "./auth/AuthContext";
+
+//Component-related imports
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import Homepage from "./Components/Homepage";
@@ -16,9 +19,8 @@ import ServicePage from "./Components/ServicePage";
 import AppointmentPage from "./Components/AppointmentPage";
 import SignUp from "./Components/Home/SignUp";
 
-//Below is everything for Stripe
+//Stripe-related imports
 import CheckoutForm from "./Components/Stripe/CheckoutForm";
-// import React, { useState } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   CardElement,
@@ -26,7 +28,9 @@ import {
   useElements,
   useStripe
 } from "@stripe/react-stripe-js";
-// import "./styles.css";
+
+
+export const MyContext = React.createContext();
 
 export default function App(props) {
   const cookies = new Cookies();
@@ -42,13 +46,6 @@ export default function App(props) {
   const [authLevel, setAuthLevel] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-
-// import ReactDOM from "react-dom";
-
-
-export const MyContext = React.createContext();
 const ELEMENTS_OPTIONS = {
   fonts: [
     {

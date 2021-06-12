@@ -55,6 +55,8 @@ export default function Scheduler(props) {
   const [phoneNum, setPhoneNum] = useState("");
   const [notes, setNotes] = useState("");
 
+  //A lot of event handlers
+
   const handleFirstNameChange = (newFName) => {
     setFName(newFName);
   };
@@ -79,6 +81,8 @@ export default function Scheduler(props) {
     setDate(date);
     dateStringChange(date);
   };
+
+  //String formatting functions for the date variable
 
   const doubleDigitMonth = (date) => {
     let str = "00" + (date.getMonth() + 1);
@@ -148,15 +152,6 @@ export default function Scheduler(props) {
       </Row>
     ));
   }
-  // function renderAvailableApptsHorizontal() {
-  //   return timeSlots.map((element) => (
-  //     <div className="row">
-  //       <div className="col">
-  //         <Button onClick={() => selectApptTime(element)}>{element}</Button>{" "}
-  //       </div>
-  //     </div>
-  //   ));
-  // }
 
   function selectApptTime(element) {
     setSelectedTime(element);
@@ -206,7 +201,8 @@ export default function Scheduler(props) {
     axios
       .post(postURL, {
         customer_uid: "100-000001",
-        business_code: "IOTEST",
+        // business_code: "IOTEST",
+        business_code:"NITYATEST",
         payment_summary: temp,
 
         // first_name: fName,
@@ -273,11 +269,6 @@ export default function Scheduler(props) {
 
   const useStyles = makeStyles({
     container: {
-      // position: "relative",
-      // top: "50px",
-      // marginBottom: "100px",
-      // left: "50px",
-      // right: "80px",
       height: "1000px",
       width: "500px",
       backgroundColor: "#323c47",
@@ -331,7 +322,7 @@ export default function Scheduler(props) {
 
   return (
     <Box>
-      <div className="row">
+      <Row>
         <Col>
           <Box className={classes.container} aria-label={"find a day to meet"}>
             <p className={classes.title}>Find a time to meet with Nitya </p>
@@ -355,7 +346,6 @@ export default function Scheduler(props) {
             Selected Date Selected Timeslot
           </Box>
         </Col>
-
         <Col>
           <Box className={classes.container}>
             <p className={classes.title}>
@@ -367,29 +357,29 @@ export default function Scheduler(props) {
               field="First Name"
               onHandleChange={handleFirstNameChange}
             />
-            {/* Your first Name is {fName} */}
+            
             <br></br>
             <br></br>
             <SimpleForm
               field="Last Name"
               onHandleChange={handleLastNameChange}
             />
-            {/* Your Last Name is {lName} */}
+            
             <br></br>
             <br></br>
             <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
-            {/* Your Email is {email} */}
+            
             <br></br>
             <br></br>
             <SimpleForm
               field="Phone Number"
               onHandleChange={handlePhoneNumChange}
             />
-            {/* Your Phone Num is {phoneNum} */}
+            
             <br></br>
             <br></br>
             <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
-            {/* Your Notes are {notes} */}
+            
             <br></br>
             <br></br>
             <CardElement
@@ -404,7 +394,7 @@ export default function Scheduler(props) {
             </div>
           </Box>
         </Col>
-      </div>
+      </Row>
     </Box>
   );
   // return (
