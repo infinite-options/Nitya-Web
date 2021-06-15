@@ -11,7 +11,7 @@ import {
 } from "reactstrap";
 import { NavHashLink } from "react-router-hash-link";
 import { makeStyles } from "@material-ui/core/styles";
-import LearnMoreBTN  from "../Services/LearnMoreBtn";
+import LearnMoreBTN from "../Services/LearnMoreBtn";
 import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({
@@ -28,7 +28,6 @@ const useStyles = makeStyles({
   },
   body: {
     minWidth: "600px",
-
     float: "right",
     textAlign: "center",
     color: "#594d2c",
@@ -68,7 +67,11 @@ export default function Consulting() {
   }, []);
 
   return (
-    <div className="consulting" id="consulting">
+    <div
+      className="consulting"
+      id="consulting"
+      aria-label={"consulting section"}
+    >
       <br />
       <div className={classes.container}>
         {data
@@ -82,6 +85,7 @@ export default function Consulting() {
                       className={classes.img}
                       variant="top"
                       src={filteredService.image_url}
+                      alt={"An image of" + filteredService.title}
                     />
                   </Col>
                   <Col style={{ display: "flex", justifyContent: "center" }}>

@@ -60,25 +60,28 @@ const Services = (props) => {
 
   return (
     <div className="page-container">
-      <div className="services" id="services">
+      <div className="services" id="services" aria-label={"service block"}>
         <div className={classes.container}>
           <ScrollToTop />
-          <ButtonGroup>
-            <Button
-              className={classes.btn1}
-              onClick={() => setRSelected(<Consulting />)}
-              active={rSelected === <Consulting />}
-            >
-              Consulting
-            </Button>
-            <Button
-              className={classes.btn2}
-              onClick={() => setRSelected(<Treatments />)}
-              active={rSelected === <Treatments />}
-            >
-              Treatments
-            </Button>
-          </ButtonGroup>
+          <div aria-label={"click button to switch service type."}>
+            <ButtonGroup>
+              <Button
+                className={classes.btn1}
+                onClick={() => setRSelected(<Consulting />)}
+                active={rSelected === <Consulting />}
+              >
+                Consulting
+              </Button>
+              <Button
+                className={classes.btn2}
+                onClick={() => setRSelected(<Treatments />)}
+                active={rSelected === <Treatments />}
+              >
+                Treatments
+              </Button>
+            </ButtonGroup>
+          </div>
+
           <p>{rSelected}</p>
         </div>
       </div>
