@@ -1,36 +1,91 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Scheduler from "./Appointment/Scheduler";
+import StripeElement from "./Appointment/StripeElement";
 import { useParams } from "react-router";
 import ScrollToTop from "../Blog/ScrollToTop";
-
+import { Elements, CardElement, useStripe } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { Restaurant } from "@material-ui/icons";
+import axios from "axios";
 
 // The following react component is based on the youtube tutorial provided by Syncfusion, Inc. at the url below:
 
 export default function AppointmentPage(props) {
   const { treatmentID } = useParams();
-  // const {serviceArr, servicesLoaded} = useContext(MyContext);
-  // const [info, setInfo] = useState("");
 
+  const [stripePromise, setStripePromise] = useState(null);
 
-  // function conditionalPrint(){
-  //   if(servicesLoaded){
-  //     serviceArr.forEach((element) => {
-  //       if (element.treatment_uid === treatmentID) {
-  //         console.log("The following element does match with what we are looking for" + element.title);
-  //         // setElementToBeRendered(element);
-  //         //setInfo(element.title);
-  //       }
-  //     })
-  //   }
-  // }
-  //   // console.log(servicesLoaded);
+  let PUBLISHABLE_KEY = "pk_test_51Ihyn......0wa0SR2JG";
+
+  
+  useEffect(() => {
+  if(true){
+    // Fetch public key
+    console.log("fetching public key");
+    axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST")
+      .then(result=>{
+
+        console.log("(1 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
+
+        let stripePromise2 = loadStripe(result.data.publicKey);
+
+        console.log("(1 PaymentDetails) setting state with stripePromise");
+
+        // this.setState({
+        //   stripePromise: stripePromise
+        // });
+        setStripePromise(stripePromise2);
+
+        console.log("(1 PaymentDetails) stripePromise set!");
+      })
+      .catch(err => {
+        console.log(err);
+        if (err.response) {
+          console.log("(1 PaymentDetails) error: " + JSON.stringify(err.response));
+        }
+      });
+  } else {
+    // Fetch public key live
+    console.log("fetching public key live");
+    axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/LIVE")
+      .then(result=>{
+
+        console.log("(2 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
+
+        let stripePromise2 = loadStripe(result.data.publicKey);
+
+        console.log("(2 PaymentDetails) setting state with stripePromise");
+
+        // this.setState({
+        //   stripePromise: stripePromise
+        // });
+        setStripePromise(stripePromise2);
+
+        console.log("(2 PaymentDetails) stripePromise set!");
+      })
+      .catch(err => {
+        console.log(err);
+        if (err.response) {
+          console.log("(2 PaymentDetails) error: " + JSON.stringify(err.response));
+        }
+      });
+  }
+  }, [])
+
+  //let stripePromise = loadStripe(PUBLISHABLE_KEY);
 
   return (
     <>
       <div className="page-container ">
         <ScrollToTop />
-       
-        <Scheduler treatmentID={treatmentID} />
+
+        {/* <Elements stripe={stripePromise}>
+          <Scheduler treatmentID={treatmentID} />
+        </Elements> */}
+        <StripeElement
+          stripePromise={stripePromise}
+          treatmentID={treatmentID}
+        />
       </div>
     </>
   );

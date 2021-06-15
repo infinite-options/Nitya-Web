@@ -11,7 +11,7 @@ class BookNowBTN extends Component {
 
   render() {
     return (
-      <div>
+      <div aria-label={"click button to learn more."}>
         <Link to={`/${this.state.tID}/service`}>Learn More</Link>
       </div>
     );

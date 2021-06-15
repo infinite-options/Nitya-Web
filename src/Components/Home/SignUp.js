@@ -46,12 +46,17 @@ export default function SignUp(props) {
           <br></br>
           <p className={classes.content}>
             Already a member?
-            <a href="">Log In</a>
+            <a href="" aria-label={"click link to log in"}>
+              Log In
+            </a>
           </p>
         </div>
         <br></br>
         <hr></hr>
-        <Button className={classes.btn}>Sign up with email</Button>
+        <div aria-label={"click button to sign up"} style={{ padding: 10 }}>
+          <Button className={classes.btn}>Sign up with email</Button>
+        </div>
+
         <br></br>
         <br></br>
         <br></br>
