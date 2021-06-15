@@ -15,62 +15,79 @@ export default function AppointmentPage(props) {
 
   const [stripePromise, setStripePromise] = useState(null);
 
+  const [stripePromise1, setStripePromise1] = useState(null);
+  const [stripePromise2, setStripePromise2] = useState(null);
+  const [testKeys, setTestKeys] = useState(false);
+
   let PUBLISHABLE_KEY = "pk_test_51Ihyn......0wa0SR2JG";
 
-  
   useEffect(() => {
-  if(true){
+    // if (true) {
     // Fetch public key
     console.log("fetching public key");
-    axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST")
-      .then(result=>{
+    axios
+      .get(
+        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST"
+      )
+      .then((result) => {
+        console.log(
+          "(1 PaymentDetails) Stripe-key then result (1): " +
+            JSON.stringify(result)
+        );
 
-        console.log("(1 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
-
-        let stripePromise2 = loadStripe(result.data.publicKey);
+        let tempStripePromise = loadStripe(result.data.publicKey);
 
         console.log("(1 PaymentDetails) setting state with stripePromise");
 
         // this.setState({
         //   stripePromise: stripePromise
         // });
-        setStripePromise(stripePromise2);
+        setStripePromise1(tempStripePromise);
 
         console.log("(1 PaymentDetails) stripePromise set!");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         if (err.response) {
-          console.log("(1 PaymentDetails) error: " + JSON.stringify(err.response));
+          console.log(
+            "(1 PaymentDetails) error: " + JSON.stringify(err.response)
+          );
         }
       });
-  } else {
+    // } else {
     // Fetch public key live
     console.log("fetching public key live");
-    axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/LIVE")
-      .then(result=>{
+    axios
+      .get(
+        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/LIVE"
+      )
+      .then((result) => {
+        console.log(
+          "(2 PaymentDetails) Stripe-key then result (1): " +
+            JSON.stringify(result)
+        );
 
-        console.log("(2 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
-
-        let stripePromise2 = loadStripe(result.data.publicKey);
+        let tempStripePromise = loadStripe(result.data.publicKey);
 
         console.log("(2 PaymentDetails) setting state with stripePromise");
 
         // this.setState({
         //   stripePromise: stripePromise
         // });
-        setStripePromise(stripePromise2);
+        setStripePromise2(tempStripePromise);
 
         console.log("(2 PaymentDetails) stripePromise set!");
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         if (err.response) {
-          console.log("(2 PaymentDetails) error: " + JSON.stringify(err.response));
+          console.log(
+            "(2 PaymentDetails) error: " + JSON.stringify(err.response)
+          );
         }
       });
-  }
-  }, [])
+    // }
+  }, []);
 
   //let stripePromise = loadStripe(PUBLISHABLE_KEY);
 
@@ -82,10 +99,23 @@ export default function AppointmentPage(props) {
         {/* <Elements stripe={stripePromise}>
           <Scheduler treatmentID={treatmentID} />
         </Elements> */}
-        <StripeElement
-          stripePromise={stripePromise}
-          treatmentID={treatmentID}
-        />
+        {testKeys ? (
+          <>
+            <h1>You are using test keys</h1>
+            <StripeElement
+              stripePromise={stripePromise1}
+              treatmentID={treatmentID}
+            />
+          </>
+        ) : (
+          <>
+            <h1>You are using live keys</h1>
+            <StripeElement
+              stripePromise={stripePromise2}
+              treatmentID={treatmentID}
+            />
+          </>
+        )}
       </div>
     </>
   );
