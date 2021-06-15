@@ -77,6 +77,11 @@ export default function Scheduler(props) {
 
   const handleNotesChange = (newNotes) => {
     setNotes(newNotes);
+    // if (newNotes === "NITYATEST") {
+    //   useTestKeys();
+    // } else {
+    //   useLiveKeys();
+    // }
   };
 
   const dateChange = (date) => {
