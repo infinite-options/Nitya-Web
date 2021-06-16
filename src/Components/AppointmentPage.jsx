@@ -25,7 +25,119 @@ export default function AppointmentPage(props) {
 
   let PUBLISHABLE_KEY = "pk_test_51Ihyn......0wa0SR2JG";
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   if (notes === "NITYATEST") {
+  //     // Fetch public key
+  //     console.log("fetching public key");
+  //     axios
+  //       .get(
+  //         "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST"
+  //       )
+  //       .then((result) => {
+  //         console.log(
+  //           "(1 PaymentDetails) Stripe-key then result (1): " +
+  //             JSON.stringify(result)
+  //         );
+
+  //         let tempStripePromise = loadStripe(result.data.publicKey);
+
+  //         console.log("(1 PaymentDetails) setting state with stripePromise");
+
+  //         // this.setState({
+  //         //   stripePromise: stripePromise
+  //         // });
+  //         setStripePromise(tempStripePromise);
+
+  //         console.log("(1 PaymentDetails) stripePromise set!");
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         if (err.response) {
+  //           console.log(
+  //             "(1 PaymentDetails) error: " + JSON.stringify(err.response)
+  //           );
+  //         }
+  //       });
+  //   } else {
+  //     // Fetch public key live
+  //     console.log("fetching public key live");
+  //     axios
+  //       .get(
+  //         "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/LIVE"
+  //       )
+  //       .then((result) => {
+  //         console.log(
+  //           "(2 PaymentDetails) Stripe-key then result (1): " +
+  //             JSON.stringify(result)
+  //         );
+
+  //         let tempStripePromise = loadStripe(result.data.publicKey);
+
+  //         console.log("(2 PaymentDetails) setting state with stripePromise");
+
+  //         // this.setState({
+  //         //   stripePromise: stripePromise
+  //         // });
+  //         setStripePromise(tempStripePromise);
+
+  //         console.log("(2 PaymentDetails) stripePromise set!");
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //         if (err.response) {
+  //           console.log(
+  //             "(2 PaymentDetails) error: " + JSON.stringify(err.response)
+  //           );
+  //         }
+  //       });
+  //   }
+  // }, [notes]);
+
+  const handleNotesChange = (newNotes) => {
+    setNotes(newNotes);
+    // if (newNotes === "NITYATEST") {
+    //   useTestKeys();
+    // } else {
+    //   useLiveKeys();
+    // }
+  };
+
+  //let stripePromise = loadStripe(PUBLISHABLE_KEY);
+
+  // return (
+  //   <>
+  //     <div className="page-container ">
+  //       <ScrollToTop />
+
+  //       {/* <Elements stripe={stripePromise}>
+  //         <Scheduler treatmentID={treatmentID} />
+  //       </Elements> */}
+  //       {testKeys ? (
+  //         <>
+  //           <h1>You are using test keys</h1>
+  //           <StripeElement
+  //             stripePromise={stripePromise1}
+  //             treatmentID={treatmentID}
+  //           />
+  //         </>
+  //       ) : (
+  //         <>
+  //           <h1>You are using live keys</h1>
+  //           <StripeElement
+  //             stripePromise={stripePromise2}
+  //             treatmentID={treatmentID}
+  //           />
+  //         </>
+  //       )}
+  //     </div>
+  //   </>
+  // );
+
+  const [useTestKeys, setUseTestKeys] = useState(true);
+
+  function toggleKeys() {
+    setUseTestKeys(!useTestKeys);
+
     if (notes === "NITYATEST") {
       // Fetch public key
       console.log("fetching public key");
@@ -91,47 +203,7 @@ export default function AppointmentPage(props) {
           }
         });
     }
-  }, [notes]);
-
-  const handleNotesChange = (newNotes) => {
-    setNotes(newNotes);
-    // if (newNotes === "NITYATEST") {
-    //   useTestKeys();
-    // } else {
-    //   useLiveKeys();
-    // }
-  };
-
-  //let stripePromise = loadStripe(PUBLISHABLE_KEY);
-
-  // return (
-  //   <>
-  //     <div className="page-container ">
-  //       <ScrollToTop />
-
-  //       {/* <Elements stripe={stripePromise}>
-  //         <Scheduler treatmentID={treatmentID} />
-  //       </Elements> */}
-  //       {testKeys ? (
-  //         <>
-  //           <h1>You are using test keys</h1>
-  //           <StripeElement
-  //             stripePromise={stripePromise1}
-  //             treatmentID={treatmentID}
-  //           />
-  //         </>
-  //       ) : (
-  //         <>
-  //           <h1>You are using live keys</h1>
-  //           <StripeElement
-  //             stripePromise={stripePromise2}
-  //             treatmentID={treatmentID}
-  //           />
-  //         </>
-  //       )}
-  //     </div>
-  //   </>
-  // );
+  }
 
   return (
     <>
@@ -168,6 +240,7 @@ export default function AppointmentPage(props) {
           </Col>
           <Col>
             <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
+            <button onClick={toggleKeys}> Submit Notes </button>
           </Col>
         </Row>
       </div>
