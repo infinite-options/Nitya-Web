@@ -19,7 +19,6 @@ import { MyContext } from "../../App";
 export default function Scheduler(props) {
   const elements = useElements();
   const stripe = useStripe();
-  // const options = useOptions();
 
   //import the Context from the App
   const { serviceArr, servicesLoaded } = useContext(MyContext);
@@ -55,7 +54,7 @@ export default function Scheduler(props) {
   const [price, setPrice] = useState("");
   const [apptDate, setApptDate] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
-  const [notes, setNotes] = useState("");
+  // const [notes, setNotes] = useState("");
 
   //A lot of event handlers
 
@@ -75,14 +74,9 @@ export default function Scheduler(props) {
     setPhoneNum(newPhoneNum);
   };
 
-  const handleNotesChange = (newNotes) => {
-    setNotes(newNotes);
-    // if (newNotes === "NITYATEST") {
-    //   useTestKeys();
-    // } else {
-    //   useLiveKeys();
-    // }
-  };
+  // const handleNotesChange = (newNotes) => {
+  //   setNotes(newNotes);
+  // };
 
   const dateChange = (date) => {
     setDate(date);
@@ -181,7 +175,8 @@ export default function Scheduler(props) {
         email: email,
         phone_no: phoneNum,
         appt_treatment_uid: treatment_uid, //TREATMENT INFO #1
-        notes: notes,
+        // notes: notes,
+        notes: props.notes,
         appt_date: dateFormat1(date),
         appt_time: selectedTime,
         purchase_price: elementToBeRendered.cost, //TREATMENT INFO #2
@@ -366,31 +361,29 @@ export default function Scheduler(props) {
               field="First Name"
               onHandleChange={handleFirstNameChange}
             />
-
             <br></br>
             <br></br>
             <SimpleForm
               field="Last Name"
               onHandleChange={handleLastNameChange}
             />
-
             <br></br>
             <br></br>
             <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
-
             <br></br>
             <br></br>
             <SimpleForm
               field="Phone Number"
               onHandleChange={handlePhoneNumChange}
             />
+            <br></br>
+            <br></br>
+            {/* <SimpleForm field="Notes" onHandleChange={handleNotesChange} /> */}
+            {props.notes}
 
             <br></br>
             <br></br>
-            <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
 
-            <br></br>
-            <br></br>
             <CardElement
               elementRef={(c) => (this._element = c)}
               // className={props.classes.element}
