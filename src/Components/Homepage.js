@@ -13,7 +13,7 @@ class Homepage extends Component {
           <div className="page-container ">
             <ScrollToTop />
             <Home />
-            <About />
+            {/* <About />
             <p
               style={{
                 textAlign: "center",
@@ -27,8 +27,9 @@ class Homepage extends Component {
               }}
             >
               Services
-            </p>
+            </p> */}
             <Services />
+            <About />
             <Contact />
           </div>
         </div>

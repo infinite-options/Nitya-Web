@@ -56,7 +56,7 @@ const useStyles = makeStyles({
     border: "1px solid #ffffff",
   },
   btn: {
-    backgroundColor: "#d3a625",
+    backgroundColor: "white",
     color: "#ffffff",
     border: "1px solid #ffffff",
     fontSize: "2rem",
@@ -138,38 +138,34 @@ export default function Contact() {
               style={{ display: "flex", justifyContent: "center" }}
             >
               <Form onSubmit={(e) => submit(e)}>
-                <Row form>
-                  <Col md={6}>
-                    <FormGroup>
-                      {/* <label className={classes.label} for="name">
+                <FormGroup>
+                  {/* <label className={classes.label} for="name">
                         Name
                       </label> */}
-                      <Input
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Name"
-                        onChange={(e) => handle(e)}
-                        value={data.name}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <FormGroup>
-                      {/* <label className={classes.label} for="email">
+                  <Input
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Name"
+                    onChange={(e) => handle(e)}
+                    value={data.name}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  {/* <label className={classes.label} for="email">
                         Email
                       </label> */}
-                      <Input
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Email"
-                        onChange={(e) => handle(e)}
-                        value={data.email}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    onChange={(e) => handle(e)}
+                    value={data.email}
+                  />
+                </FormGroup>
+
                 <FormGroup>
                   {/* <label className={classes.label} for="subject">
                     Subject
@@ -209,7 +205,7 @@ export default function Contact() {
                 className="list-icons "
                 style={{ color: "#ffffff", paddingTop: "100px" }}
               >
-                <li>
+                {/* <li>
                   <FacebookIcon
                     fontSize="large"
                     onClick={(event) =>
@@ -241,9 +237,10 @@ export default function Contact() {
                     aria-hidden="false"
                     aria-label="Pinterest"
                   />
-                </li>
+                </li> */}
                 <li>
                   <InstagramIcon
+                    backgroundColor="#B28D42"
                     fontSize="large"
                     onClick={(event) =>
                       (window.location.href =
