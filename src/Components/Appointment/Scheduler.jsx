@@ -106,11 +106,11 @@ export default function Scheduler(props) {
 
   const dateFormat2 = (date) => {
     return (
+      date.getFullYear() +
+      "-" +
       doubleDigitMonth(date) +
       "-" +
-      doubleDigitDay(date) +
-      "-" +
-      date.getFullYear()
+      doubleDigitDay(date)
     );
   };
 
@@ -173,7 +173,8 @@ export default function Scheduler(props) {
         phone_no: phoneNum,
         appt_treatment_uid: treatment_uid, //TREATMENT INFO #1
         notes: notes,
-        appt_date: dateFormat1(date),
+        // appt_date: dateFormat1(date),
+        appt_date: dateFormat2(date),
         appt_time: selectedTime,
         purchase_price: "$100", //TREATMENT INFO #2
         purchase_date: dateFormat1(purchaseDate),
@@ -202,7 +203,7 @@ export default function Scheduler(props) {
       .post(postURL, {
         customer_uid: "100-000001",
         // business_code: "IOTEST",
-        business_code:"NITYATEST",
+        business_code: "NITYATEST",
         payment_summary: temp,
 
         // first_name: fName,
@@ -336,7 +337,7 @@ export default function Scheduler(props) {
         </Col>
         <Col>
           <Box className={classes.container} aria-label={"find a time to meet"}>
-          <p className={classes.title}>
+            <p className={classes.title}>
               {elementToBeRendered.title}
               <br></br>
               Duration: ({elementToBeRendered.duration})<br></br>
@@ -357,29 +358,29 @@ export default function Scheduler(props) {
               field="First Name"
               onHandleChange={handleFirstNameChange}
             />
-            
+
             <br></br>
             <br></br>
             <SimpleForm
               field="Last Name"
               onHandleChange={handleLastNameChange}
             />
-            
+
             <br></br>
             <br></br>
             <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
-            
+
             <br></br>
             <br></br>
             <SimpleForm
               field="Phone Number"
               onHandleChange={handlePhoneNumChange}
             />
-            
+
             <br></br>
             <br></br>
             <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
-            
+
             <br></br>
             <br></br>
             <CardElement
