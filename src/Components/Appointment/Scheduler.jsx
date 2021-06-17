@@ -95,6 +95,7 @@ export default function Scheduler(props) {
     return str.substring(str.length - 2);
   };
 
+  // This one is for
   const dateFormat1 = (date) => {
     return (
       doubleDigitMonth(date) +
@@ -105,6 +106,7 @@ export default function Scheduler(props) {
     );
   };
 
+  // This one is for the timeslotAPI call
   const dateFormat2 = (date) => {
     return (
       doubleDigitMonth(date) +
@@ -112,6 +114,17 @@ export default function Scheduler(props) {
       doubleDigitDay(date) +
       "-" +
       date.getFullYear()
+    );
+  };
+
+  // This one is for doing the sendToDatabase Post Call
+  const dateFormat3 = (date) => {
+    return (
+      date.getFullYear() +
+      "-" +
+      doubleDigitMonth(date) +
+      "-" +
+      doubleDigitDay(date)
     );
   };
 
@@ -177,10 +190,10 @@ export default function Scheduler(props) {
         appt_treatment_uid: treatment_uid, //TREATMENT INFO #1
         // notes: notes,
         notes: props.notes,
-        appt_date: dateFormat1(date),
+        appt_date: dateFormat3(date),
         appt_time: selectedTime,
         purchase_price: elementToBeRendered.cost, //TREATMENT INFO #2
-        purchase_date: dateFormat1(purchaseDate),
+        purchase_date: dateFormat3(purchaseDate),
       })
       .then((res) => console.log(res));
   }
@@ -188,6 +201,7 @@ export default function Scheduler(props) {
   const [changeLoadingState, setLoadingState] = useState(false);
 
   async function bookAppt() {
+    sendToDatabase();
     // console.log(fName);
     // console.log(lName);
     // console.log(email);
