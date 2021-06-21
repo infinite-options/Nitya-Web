@@ -29,21 +29,23 @@ const useStyles = makeStyles({
 
   title: {
     marginTop: "-40px",
-    textAlign: "center",
-    fontFamily: "DidoteTextW01-Italic",
-    fontStyle: "italic",
-    fontSize: "4rem",
+    textAlign: "left",
+    font: "normal normal normal 54px/65px Hoefler Text",
+    // fontFamily: "DidoteTextW01-Italic",
+    // fontStyle: "italic",
+    // fontSize: "4rem",
     wordWrap: "break-word",
-    color: "#d3a625",
+    color: "#b28d42",
     lineHeight: "2",
   },
   content: {
-    fontSize: "1.5rem",
-    fontFamily: "'Open Sans', sans-serif",
+    font: "normal normal normal 32px/38px SF Pro Display",
+    // fontSize: "1.5rem",
+    // fontFamily: "'Open Sans', sans-serif",
     wordWrap: "break-word",
-    color: "#8d6f19",
+    color: "#b28d42",
     lineHeight: "1.4",
-    textAlign: "center",
+    textAlign: "left",
   },
   form: {
     display: "flex",
@@ -67,6 +69,10 @@ const useStyles = makeStyles({
   },
   label: {
     color: "#dbdbdb",
+  },
+  temp: {
+    color: "red",
+    borderColor: "yellow",
   },
 });
 
@@ -139,9 +145,6 @@ export default function Contact() {
             >
               <Form onSubmit={(e) => submit(e)}>
                 <FormGroup>
-                  {/* <label className={classes.label} for="name">
-                        Name
-                      </label> */}
                   <Input
                     type="text"
                     name="name"
@@ -153,9 +156,6 @@ export default function Contact() {
                 </FormGroup>
 
                 <FormGroup>
-                  {/* <label className={classes.label} for="email">
-                        Email
-                      </label> */}
                   <Input
                     type="email"
                     name="email"
@@ -167,9 +167,6 @@ export default function Contact() {
                 </FormGroup>
 
                 <FormGroup>
-                  {/* <label className={classes.label} for="subject">
-                    Subject
-                  </label> */}
                   <Input
                     type="text"
                     name="subject"
@@ -181,9 +178,6 @@ export default function Contact() {
                 </FormGroup>
 
                 <FormGroup>
-                  {/* <label className={classes.label} for="exampleText">
-                    Type your message here
-                  </label> */}
                   <Input
                     type="textarea"
                     name="text"
@@ -205,42 +199,9 @@ export default function Contact() {
                 className="list-icons "
                 style={{ color: "#ffffff", paddingTop: "100px" }}
               >
-                {/* <li>
-                  <FacebookIcon
-                    fontSize="large"
-                    onClick={(event) =>
-                      (window.location.href =
-                        "https://www.instagram.com/nityaayurveda/")
-                    }
-                    aria-hidden="false"
-                    aria-label="Facebook"
-                  />
-                </li>
-                <li>
-                  <TwitterIcon
-                    fontSize="large"
-                    onClick={(event) =>
-                      (window.location.href =
-                        "https://www.instagram.com/nityaayurveda/")
-                    }
-                    aria-hidden="false"
-                    aria-label="Twitter"
-                  />
-                </li>
-                <li>
-                  <PinterestIcon
-                    fontSize="large"
-                    onClick={(event) =>
-                      (window.location.href =
-                        "https://www.instagram.com/nityaayurveda/")
-                    }
-                    aria-hidden="false"
-                    aria-label="Pinterest"
-                  />
-                </li> */}
                 <li>
                   <InstagramIcon
-                    backgroundColor="#B28D42"
+                    // backgroundColor="#B28D42"
                     fontSize="large"
                     onClick={(event) =>
                       (window.location.href =

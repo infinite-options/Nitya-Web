@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 
   title: {
     marginTop: "-40px",
-    textAlign: "center",
+    textAlign: "left",
     fontFamily: "DidoteTextW01-Italic",
     fontStyle: "italic",
     fontSize: "3.5rem",
@@ -30,12 +30,13 @@ const useStyles = makeStyles({
     lineHeight: "2",
   },
   content: {
-    fontSize: "1.5rem",
-    fontFamily: "'Open Sans', sans-serif",
+    font: "normal normal normal 32px/38px Hoefler Text",
+    // fontSize: "1.5rem",
+    // fontFamily: "'Open Sans', sans-serif",
     wordWrap: "break-word",
     color: "#8d6f19",
     lineHeight: "1.4",
-    textAlign: "justify",
+    textAlign: "left",
   },
   img: {
     width: "600px",
