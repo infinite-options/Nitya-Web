@@ -19,7 +19,6 @@ import { MyContext } from "../../App";
 export default function Scheduler(props) {
   const elements = useElements();
   const stripe = useStripe();
-  // const options = useOptions();
 
   //import the Context from the App
   const { serviceArr, servicesLoaded } = useContext(MyContext);
@@ -52,8 +51,10 @@ export default function Scheduler(props) {
   const [fName, setFName] = useState("");
   const [lName, setLName] = useState("");
   const [email, setEmail] = useState("");
+  const [price, setPrice] = useState("");
+  const [apptDate, setApptDate] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
-  const [notes, setNotes] = useState("");
+  // const [notes, setNotes] = useState("");
 
   //A lot of event handlers
 
@@ -73,9 +74,9 @@ export default function Scheduler(props) {
     setPhoneNum(newPhoneNum);
   };
 
-  const handleNotesChange = (newNotes) => {
-    setNotes(newNotes);
-  };
+  // const handleNotesChange = (newNotes) => {
+  //   setNotes(newNotes);
+  // };
 
   const dateChange = (date) => {
     setDate(date);
@@ -94,6 +95,7 @@ export default function Scheduler(props) {
     return str.substring(str.length - 2);
   };
 
+  // This one is for
   const dateFormat1 = (date) => {
     return (
       doubleDigitMonth(date) +
@@ -104,7 +106,19 @@ export default function Scheduler(props) {
     );
   };
 
+  // This one is for the timeslotAPI call
   const dateFormat2 = (date) => {
+    return (
+      date.getFullYear() +
+      "-" +
+      doubleDigitMonth(date) +
+      "-" +
+      doubleDigitDay(date)
+    );
+  };
+
+  // This one is for doing the sendToDatabase Post Call
+  const dateFormat3 = (date) => {
     return (
       date.getFullYear() +
       "-" +
@@ -162,6 +176,8 @@ export default function Scheduler(props) {
     // console.log(lName);
     // console.log(email);
     // console.log(phoneNum);
+    setApptDate(dateFormat1(date));
+    setPurchaseDate(dateFormat1(purchaseDate));
 
     const postURL =
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
@@ -172,12 +188,12 @@ export default function Scheduler(props) {
         email: email,
         phone_no: phoneNum,
         appt_treatment_uid: treatment_uid, //TREATMENT INFO #1
-        notes: notes,
-        // appt_date: dateFormat1(date),
-        appt_date: dateFormat2(date),
+        // notes: notes,
+        notes: props.notes,
+        appt_date: dateFormat3(date),
         appt_time: selectedTime,
-        purchase_price: "$100", //TREATMENT INFO #2
-        purchase_date: dateFormat1(purchaseDate),
+        purchase_price: elementToBeRendered.cost, //TREATMENT INFO #2
+        purchase_date: dateFormat3(purchaseDate),
       })
       .then((res) => console.log(res));
   }
@@ -185,6 +201,7 @@ export default function Scheduler(props) {
   const [changeLoadingState, setLoadingState] = useState(false);
 
   async function bookAppt() {
+    sendToDatabase();
     // console.log(fName);
     // console.log(lName);
     // console.log(email);
@@ -358,31 +375,29 @@ export default function Scheduler(props) {
               field="First Name"
               onHandleChange={handleFirstNameChange}
             />
-
             <br></br>
             <br></br>
             <SimpleForm
               field="Last Name"
               onHandleChange={handleLastNameChange}
             />
-
             <br></br>
             <br></br>
             <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
-
             <br></br>
             <br></br>
             <SimpleForm
               field="Phone Number"
               onHandleChange={handlePhoneNumChange}
             />
+            <br></br>
+            <br></br>
+            {/* <SimpleForm field="Notes" onHandleChange={handleNotesChange} /> */}
+            {props.notes}
 
             <br></br>
             <br></br>
-            <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
 
-            <br></br>
-            <br></br>
             <CardElement
               elementRef={(c) => (this._element = c)}
               // className={props.classes.element}
