@@ -11,6 +11,7 @@
  **/
 
 import React, { Component } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 
 class Form extends Component {
   constructor(props) {
@@ -33,6 +34,11 @@ class Form extends Component {
             placeholder={this.props.field}
             value={info}
             onChange={this.handleChange}
+            style={{
+              borderRadius: "5px",
+              borderColor: "b28d42",
+              borderWidth: "10px",
+            }}
           />
         </div>
       </form>
