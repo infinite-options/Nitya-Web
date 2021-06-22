@@ -6,7 +6,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { Box, Button } from "@material-ui/core";
 import { AuthContext } from "../auth/AuthContext";
-import "./Navbar.css";
+import "./Navbar.css";     
 
 const useStyles = makeStyles((theme) => ({
   root: {
