@@ -11,10 +11,6 @@ import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { MyContext } from "../../App";
-/**
- * This Web Dev Simplified tutorial was crucial to my understanding of useContext:
- * https://www.youtube.com/watch?v=5LrDIWkK_Bc&ab_channel=WebDevSimplified
- */
 
 export default function Scheduler(props) {
   const elements = useElements();
@@ -109,11 +105,16 @@ export default function Scheduler(props) {
   // This one is for the timeslotAPI call
   const dateFormat2 = (date) => {
     return (
-      date.getFullYear() +
-      "-" +
+      // date.getFullYear() +
+      // "-" +
+      // doubleDigitMonth(date) +
+      // "-" +
+      // doubleDigitDay(date)
       doubleDigitMonth(date) +
       "-" +
-      doubleDigitDay(date)
+      doubleDigitDay(date) +
+      "-" +
+      date.getFullYear()
     );
   };
 
@@ -131,7 +132,7 @@ export default function Scheduler(props) {
   const dateStringChange = (date) => {
     setDateString(dateFormat1(date));
 
-    setApiDateString(dateFormat2(date));
+    setApiDateString(dateFormat3(date));
 
     setDateHasBeenChanged(true);
   };
@@ -141,28 +142,38 @@ export default function Scheduler(props) {
       axios
         .get(
           "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/calendar/" +
-            treatment_uid +
-            "/" +
+            // treatment_uid +
+            // "/" +
             apiDateString
         )
         .then((res) => {
-          console.log(res.data.result.available_timeslots);
-          setTimeSlots(res.data.result.available_timeslots);
+          // console.log(res.data.result.available_timeslots);
+          // setTimeSlots(res.data.result.available_timeslots);
+          console.log(res);
+          console.log("This is the information we got" + res.data);
+          console.log(res.data[0]);
+          console.log(res.data[0].appt_start);
+          setTimeSlots(res.data);
+          console.log("Timeslots Array " + timeSlots);
         });
     }
     setDateHasBeenChanged(false);
   });
 
-  function renderAvailableAppts() {
-    return timeSlots.map((element) => (
-      <Button onClick={() => selectApptTime(element)}>{element}</Button>
-    ));
-  }
+  // function renderAvailableAppts() {
+  //   return timeSlots.map((element) => (
+  //     <Button onClick={() => selectApptTime(element)}>
+  //       {element.appt_start}
+  //     </Button>
+  //   ));
+  // }
 
   function renderAvailableApptsVertical() {
     return timeSlots.map((element) => (
       <Row>
-        <Button onClick={() => selectApptTime(element)}>{element}</Button>{" "}
+        <Button onClick={() => selectApptTime(element.appt_start)}>
+          {element.appt_start}
+        </Button>{" "}
       </Row>
     ));
   }
@@ -239,7 +250,7 @@ export default function Scheduler(props) {
         console.log("clientSecret from createPaymentIntent: " + result.data);
         clientSecret = result.data;
 
-        console.log("calling createPaymentMethod...");
+        console.log("calling createPayment gMethod...");
 
         const paymentMethod = stripe
           .createPaymentMethod({
@@ -361,7 +372,14 @@ export default function Scheduler(props) {
               Price: {elementToBeRendered.cost}
             </p>
             {renderAvailableApptsVertical()}
-            Selected Date Selected Timeslot
+            <p
+              style={{
+                color: "white",
+              }}
+            >
+              {" "}
+              Selected Date {dateFormat3(date)} Selected Timeslot {selectedTime}
+            </p>
           </Box>
         </Col>
         <Col>
