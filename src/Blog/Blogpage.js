@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { fade } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/core/styles";
-import { Row, Col } from "reactstrap";
-import { Link } from "react-router-dom";
 import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  List,
-  Menu,
-  MenuItem,
+    AppBar,
+
+    IconButton,
+    List,
+    Menu,
+    MenuItem, Toolbar
 } from "@material-ui/core";
-import Hidden from "@material-ui/core/Hidden";
-import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
+import Container from "@material-ui/core/Container";
+import Hidden from "@material-ui/core/Hidden";
+import { fade, makeStyles } from "@material-ui/core/styles";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import ShareOutline from "@material-ui/icons/ShareOutlined";
 import SearchIcon from "@material-ui/icons/Search";
+import ShareOutline from "@material-ui/icons/ShareOutlined";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Col, Row } from "reactstrap";
 import BlogEntries from "./BlogEntries";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,13 +28,18 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "600px",
     height: "auto",
     width: "auto",
-    padding: "100px",
+    /*
+     * remove this padding to get rid
+     * of all the white space at the top
+     */
+  //  padding: "100px",
     backgroundColor: "white",
   },
   appbar: {
-    backgroundColor: "#ffffff",
+   // backgroundColor: "#ffffff",
+      backgroundColor: "#8d6f1a",
     boxShadow: "none",
-    paddingBottom: "30px",
+    //paddingBottom: "30px",
     color: "#000000",
   },
   navbarDisplayFlex: {
@@ -46,16 +50,20 @@ const useStyles = makeStyles((theme) => ({
   navDisplayFlex: {
     display: "flex",
     justifyContent: "space-between",
-  },
+    },
+  //handles the text of menubuttons "all post"
   menuBtns: {
-    backgroundColor: "#d3a625",
-    color: "#ffffff",
-    boxShadow: "none",
-    border: "1px solid #d3a625",
-    margin: "10px",
+    backgroundColor: "#8d6f1a",
+    color: "white",
+      boxShadow: "none",
+    paddingRight: "30px",
+ 
+    /*deletes the space between the menu buttons */
+    // margin: "10px",
   },
 
-  search: {
+    search: {
+    
     position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
@@ -77,12 +85,15 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#594d2c",
+    color: "white",
   },
   inputRoot: {
     color: "#594d2cs",
-  },
+    },
+  //Code for SearchBar 
   inputInput: {
+   
+      borderRadius:"15px",
     boxShadow: "none",
     outline: "none",
     padding: theme.spacing(1, 1, 1, 0),
@@ -91,8 +102,10 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create("width"),
     width: "100%",
     [theme.breakpoints.up("sm")]: {
+        // adjusts searchbox size
       width: "12ch",
-      "&:focus": {
+        "&:focus": {
+          //width: "50ch",
         width: "20ch",
       },
     },
@@ -160,6 +173,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 function Blogpage(props) {
   const [anchorEl, setanchorEl] = useState(null);
   const classes = useStyles();
@@ -171,7 +186,8 @@ function Blogpage(props) {
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/truncatedBlog"
     );
     const json = await res.json();
-    return json.result;
+      return json.result;
+     
   };
   useEffect(() => {
     fetchData().then((data) => {
@@ -203,8 +219,21 @@ function Blogpage(props) {
       >
         Blog
       </h1>
-      <div className={classes.container}>
+          <div className={classes.container}>
+              <h1 style={{
+                  textAlign: "center",
+                  fontFamily: "DidoteTextW01-Italic",
+
+                  fontSize: "4.5rem",
+                  wordWrap: "break-word",
+                  color: "#d3a625",
+              }}
+              >
+                  Ayurvedic Musings
+                 </h1>
         <AppBar className={classes.appbar} position="static">
+               
+                  
           <Toolbar>
             <Container maxWidth="md" className={classes.navbarDisplayFlex}>
               <List
@@ -230,22 +259,26 @@ function Blogpage(props) {
                   </button>
                 ))}
               </List>
-            </Container>
+                      </Container>
+                      <div>
+                          <input
+                              placeholder="Search" type="text"
+                              width="300px" 
+                              className={classes.inputInput}
+                              onChange={(event) => {
+                                  setSerchTerm(event.target.value);
+                              }}
+
+                          />
+                      </div> 
             <div
               className={classes.search}
               aria-label={"Enter text to search blog content"}
             >
               <div className={classes.searchIcon}>
                 <SearchIcon />
-              </div>
-
-              <input
-                type="text"
-                className={classes.inputInput}
-                onChange={(event) => {
-                  setSerchTerm(event.target.value);
-                }}
-              />
+                          </div>
+                          
             </div>
           </Toolbar>
         </AppBar>
@@ -263,27 +296,27 @@ function Blogpage(props) {
 
             .map((post, key) => {
               return catName === post.blogCategory ? (
-                <div className={classes.blogPostContainer} key={key}>
+                  <div className={classes.blogPostContainer} key={key}>
+
                   <Card className={classes.card}>
                     <Row>
                       <Hidden only={["xs", "sm", "md"]}>
                         <div>
-                          <Col>
+                         <Col>
+                          
                             {!!post.blogImage && (
-                              <img
+                                    <img src={post.blogImage}
                                 className={classes.img}
                                 id="blogImage"
                                 variant="top"
-                                src={post.blogImage}
                                 style={{
                                   width: "550px",
                                   height: "450px",
                                   objectFit: "cover",
-                                  objectPosition: "center -20px",
-                                }}
+                                  objectPosition: "center -20px",  }}
                                 onError={(e) =>
                                   (e.target.style.display = "none")}
-                                aria-label={"an image of " + post.blogTitle}
+                                                  aria-label={"an image of " + post.blogTitle}
                               />
                             )}
                           </Col>
