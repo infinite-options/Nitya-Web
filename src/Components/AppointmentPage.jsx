@@ -230,19 +230,17 @@ export default function AppointmentPage(props) {
             />
           </>
         )} */}
-        <Row>
-          <Col>
-            <StripeElement
-              stripePromise={stripePromise}
-              treatmentID={treatmentID}
-              notes={notes}
-            />
-          </Col>
-          <Col>
-            <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
-            <button onClick={toggleKeys}> Submit Notes </button>
-          </Col>
-        </Row>
+        <div>
+          <StripeElement
+            stripePromise={stripePromise}
+            treatmentID={treatmentID}
+            notes={notes}
+          />
+        </div>
+        <div>
+          <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
+          <button onClick={toggleKeys}> Submit Notes </button>
+        </div>
       </div>
     </>
   );
