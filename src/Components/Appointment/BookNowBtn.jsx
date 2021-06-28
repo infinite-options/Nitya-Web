@@ -16,6 +16,7 @@ class BookNowBTN extends Component {
             backgroundColor: "white",
             border: "none",
             borderRadius: "12px",
+            padding: "10px",
           }}
         >
           <Link to={`/${this.state.tID}/appt`}>

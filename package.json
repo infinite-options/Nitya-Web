@@ -38,6 +38,7 @@
     "react-horizontal-scrolling-menu": "^0.7.10",
     "react-icons": "^4.2.0",
     "react-markdown": "^5.0.3",
+    "react-multi-carousel": "^2.6.3",
     "react-native": "^0.64.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",

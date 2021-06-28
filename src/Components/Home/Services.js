@@ -11,10 +11,15 @@ const Services = (props) => {
       position: "relative",
       top: "40px",
       marginBottom: "150px",
-      minHeight: "710px",
+      /*minHeight: "710px",
       minWidth: "600px",
       height: "auto",
       width: "auto",
+      */
+     height: "auto",
+     width: "80vw",
+      
+      
       padding: "50px",
       backgroundColor: "white",
       display: "flex",
@@ -22,35 +27,39 @@ const Services = (props) => {
       justifyContent: "center",
       alignItems: "center",
     },
+    
     ButtonGroup: {
       top: 0,
     },
+    
     btn1: {
-      backgroundColor: "#88898a",
-      border: "1px solid #88898a",
-      borderRadius: "0px",
-      color: "#e9d9ac",
-      fontSize: "1.5rem",
+      backgroundColor: "transparent",
+      //border: "1px solid #88898a",
+      border: "none",
+      //borderRadius: "0px",
+      color: "#b28d42",
+      fontSize: "2.5rem",
       marginRight: "20px",
       padding: "5px 40px",
       minHeight: "60px",
       "&:hover": {
-        backgroundColor: "#e9d9ac",
-        color: "#88898a",
-        border: "#88898a",
+        backgroundColor: "transparent",
+        color: "#b28d42",
+        border: "#b28d42",
       },
     },
     btn2: {
-      backgroundColor: "#d3a625",
-      border: "1px solid #d3a625",
-      borderRadius: "0px",
-      color: "#88898a",
-      fontSize: "1.5rem",
+      backgroundColor: "transparent",
+      //border: "1px solid #d3a625",
+      border: "none",
+      //borderRadius: "0px",
+      color: "#b28d42",
+      fontSize: "2.5rem",
       minHeight: "60px",
       "&:hover": {
-        backgroundColor: "#88898a",
-        color: "#d3a625",
-        border: "#88898a",
+        backgroundColor: "transparent",
+        color: "#b28d42",
+        border: "#b28d42",
       },
     },
   });
@@ -64,7 +73,7 @@ const Services = (props) => {
         <div className={classes.container}>
           <ScrollToTop />
           <div aria-label={"click button to switch service type."}>
-            <ButtonGroup>
+            <ButtonGroup style={{border:"none"}}>
               <Button
                 className={classes.btn1}
                 onClick={() => setRSelected(<Consulting />)}
@@ -81,8 +90,13 @@ const Services = (props) => {
               </Button>
             </ButtonGroup>
           </div>
+          {/*
+          <div>
+          <img src="consulting2.jpg"></img>
+          </div>
+  */}
 
-          <p>{rSelected}</p>
+          <p style={{width:"fit-content" , height:"fit-content"}}>{rSelected}</p>
         </div>
       </div>
     </div>

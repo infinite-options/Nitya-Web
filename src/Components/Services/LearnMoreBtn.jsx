@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 
+
 class BookNowBTN extends Component {
   constructor(props) {
     super(props);
@@ -9,10 +10,31 @@ class BookNowBTN extends Component {
     this.state = { tID: props.apptID };
   }
 
+
+
   render() {
     return (
-      <div aria-label={"click button to learn more."}>
-        <Link to={`/${this.state.tID}/service`}>Learn More</Link>
+      <div>
+        <br />
+      <div style={{
+              textAlign: "center",
+              fontSize:"1.3rem",
+              width:"300px",            
+              color: "white",
+              paddingTop: "20px",
+              paddingBottom: "20px",
+              marginLeft: "450px",
+              //fontWeight: "bolder",
+              backgroundColor: "#b28d42",
+              borderColor: "#b28d42",
+              borderRadius: "100px",
+              //marginLeft:  "240px",
+              textDecoration: "none",
+            }} 
+            aria-label={"click button to learn more."}
+      >
+        <Link to={`/${this.state.tID}/service`} style={{color:"white"}}>Learn More</Link>
+      </div>
       </div>
     );
   }

@@ -37,12 +37,14 @@
   margin-right: 200px;
 }
 .consulting {
-  margin-left: 200px;
-  margin-right: 200px;
+  /* margin-left: 200px; */
+  /* margin-right: 200px; */
+  /* margin-left: 10rem;  */
+  /* margin-right: 10rem; */
 }
 .treatments {
-  margin-left: 200px;
-  margin-right: 200px;
+  /* margin-left: 200px; */
+  /* margin-right: 200px; */
 }
 .page-container {
   background-color: #dbdbdb;

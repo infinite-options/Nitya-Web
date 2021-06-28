@@ -15,25 +15,38 @@ import LearnMoreBTN from "../Services/LearnMoreBtn";
 import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({
+  container:{
+    width: "80vw",
+    height: "70vh",
+    // width: "100%",
+    // alignItems: "left",
+    // marginLeft: "-50px",
+  },
   card: {
-    maxWidth: "420px",
-    width: "auto",
-    height: "800px",
+    // maxWidth: "420px",
+    //width: "20rem",
+    // height: "800px",
+    height: "42rem",
     backgroundColor: "#B28D42",
     outline: "none",
+    // marginLeft: "-100px",
+    // marginRight: "-80px",
+
   },
   img: {
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
-    width: "50%",
-    height: "450px",
-    width: "420px",
+    width: "20rem",
+    height: "20rem",
+    // width: "33.3%",
+    // height: "450px",
+    // width: "420px",
     objectFit: "cover",
   },
   body: {
-    minWidth: "420px",
-    float: "right",
+    // minWidth: "420px",
+    // float: "right",
     textAlign: "center",
     color: "#594d2c",
     padding: "4rem",
@@ -48,15 +61,16 @@ const useStyles = makeStyles({
     fontSize: "1.0rem",
     color: "white",
   },
-  btn: {
-    // backgroundColor: "#d3a625",
-    backgroundColor: "transparent",
-    border: "1px solid #d3a625",
-    borderRadius: "0px",
-    color: "#ffffff",
-    fontSize: "1.4rem",
-    minHeight: "40px",
-  },
+
+  // btn: {
+  //   // backgroundColor: "#d3a625",
+  //   backgroundColor: "transparent",
+  //   border: "1px solid #d3a625",
+  //   borderRadius: "0px",
+  //   color: "#ffffff",
+  //   fontSize: "1.4rem",
+  //   minHeight: "40px",
+  // },
 });
 
 export default function Consulting() {
@@ -81,13 +95,14 @@ export default function Consulting() {
       className="consulting"
       id="consulting"
       aria-label={"consulting section"}
+      
     >
-      <br />
-      <Row className={classes.container}>
+      <br /><br />
+      <Row className={classes.container} >
         {data
           .filter((service) => service.category === "Consultation")
           .map((filteredService) => (
-            <Col>
+            <Col >
               <Card className={classes.card}>
                 {/* <Col className="no-gutters"> */}
                 <Row>
@@ -100,9 +115,10 @@ export default function Consulting() {
                   />
                 </Row>
                 <Row>
+                  
                   {/* <Row style={{ display: "flex", justifyContent: "center" }}> */}
-                  <CardBody className={classes.body}>
-                    <CardTitle className={classes.title}>
+                  <CardBody className={classes.body} >
+                    <CardTitle className={classes.title} >
                       {filteredService.title}
                     </CardTitle>
                     <CardText className={classes.text}>
@@ -122,6 +138,7 @@ export default function Consulting() {
             </Col>
           ))}
       </Row>
+      <LearnMoreBTN  />
     </div>
   );
 }

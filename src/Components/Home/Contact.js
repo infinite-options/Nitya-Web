@@ -9,71 +9,101 @@ import TwitterIcon from "@material-ui/icons/Twitter";
 import PinterestIcon from "@material-ui/icons/Pinterest";
 import { makeStyles } from "@material-ui/core/styles";
 import ScrollToTop from "../../Blog/ScrollToTop";
+import { auto } from "@popperjs/core";
+
+import "./Contact.css";
 
 const useStyles = makeStyles({
+  
   container: {
     position: "relative",
     top: "70px",
     marginBottom: "200px",
-    minHeight: "710px",
+    /*minHeight: "710px",
     minWidth: "600px",
     height: "auto",
     width: "auto",
+    */
+    height: "70vh",
+    width: "80vw",
     padding: "50px",
     backgroundColor: "white",
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "left",
   },
+  
 
   title: {
     marginTop: "-40px",
-    textAlign: "left",
-    font: "normal normal normal 54px/65px Hoefler Text",
+    //textAlign: "left",
+    font: "normal normal normal 40px Hoefler Text",
     // fontFamily: "DidoteTextW01-Italic",
     // fontStyle: "italic",
     // fontSize: "4rem",
+
     wordWrap: "break-word",
     color: "#b28d42",
     lineHeight: "2",
   },
+  
   content: {
-    font: "normal normal normal 32px/38px SF Pro Display",
-    // fontSize: "1.5rem",
-    // fontFamily: "'Open Sans', sans-serif",
+    //font: "normal normal normal 32px/38px SF Pro Display",
+    marginTop: "-20px",
+    fontSize: "1.2rem",
+    fontFamily: "'Open Sans', sans-serif",
+    fontWeight: "bolder",
     wordWrap: "break-word",
     color: "#b28d42",
-    lineHeight: "1.4",
-    textAlign: "left",
+    //lineHeight: "1.4",
+    //textAlign: "left",
   },
+
+  
   form: {
+    /*
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#dbdbdb",
+    backgroundColor: "transparent",
     paddingTop: "12rem",
     paddingBottom: "10rem",
-    border: "1px solid #ffffff",
+    */
+    //width: "100%",
+    //paddingLeft: "100px",
+    //float: "right",
+    border: "1px solid #b28d42",
+
+    //borderRadius: "200px",
   },
+
   btn: {
-    backgroundColor: "white",
-    color: "#ffffff",
-    border: "1px solid #ffffff",
-    fontSize: "2rem",
-    textAlign: "center",
-    padding: "5px 150px",
-    marginLeft: "40px",
-    minHeight: "60px",
+    color: "white",
+    fontWeight: "bolder",
+    backgroundColor: "#b28d42",
+    borderColor: "#b28d42",
+    borderRadius: "100px",
+    marginLeft:  "150px",
+    //backgroundColor: "b28d42",
+    //color: "#ffffff",
+    //border: "1px solid #b28d42",
+    //fontSize: "1.2 rem",
+    //textAlign: "center",
+    //padding: "5px 100px",
+    //marginLeft: "40px",
+    //minHeight: "60px",
+    //borderRadius: "200px",
   },
   label: {
-    color: "#dbdbdb",
+    //color: "#dbdbdb",
   },
   temp: {
-    color: "red",
-    borderColor: "yellow",
+    //color: "red",
+    //borderColor: "yellow",
   },
+  
 });
 
 const location = {
@@ -113,45 +143,52 @@ export default function Contact() {
     setData(newData);
   }
   return (
-    <div className="page-container ">
-      <div className="contact" id="contact">
-        <div className={classes.container}>
-          <ScrollToTop />
-          <Row>
-            <Col>
-              <p className={classes.title}>Contact Us</p>
-              <p
-                className={classes.content}
-                aria-label="6055 Meridian Ave suite 40"
-              >
-                6055 Meridian Ave #40,
-              </p>
-              <p className={classes.content}>
-                San Jose, CA 95120, USA <br />
-                Office: 408 471 7004
-              </p>
-              <iframe
+    <div className="page-container" style={{marginTop:"-90px" }}>
+      <br />
+      <div className="contact" id="contact" >
+        <ScrollToTop />
+        <div 
+        style={{
+          position:"relative", 
+          backgroundColor:"white", 
+          minWidth:"600px", 
+          minHeight:"710px", 
+          height:"auto", 
+          width:"auto",
+          
+          //marginBottom:"100px",
+          }}
+        >
+          <div className="column">
+            <p className={classes.title}>Contact Us</p>
+            <p className={classes.content} aria-label="6055 Meridian Ave suite 40">
+              6055 Meridian Ave #40, <br />
+              San Jose, CA 95120, USA
+            </p>
+            <p className={classes.content}>
+              <br />
+              Office: 408 471 7004
+            </p>
+            <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.732452474541!2d-121.8872221846979!3d37.230325779862234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e314406ce969d%3A0x82fb75802c5ef489!2s6055%20Meridian%20Ave%20%2340%2C%20San%20Jose%2C%20CA%2095120!5e0!3m2!1sen!2sus!4v1618695078070!5m2!1sen!2sus"
-                width="600"
-                height="450"
-                style={{ border: 0 }}
+                width="500"
+                height="300"
+                style={{ border: 0, borderRadius:"30px", height:"15rem"}}
                 allowfullscreen=""
                 loading="lazy"
               ></iframe>
-            </Col>
-            <Col
-              className={classes.form}
-              style={{ display: "flex", justifyContent: "center" }}
-            >
-              <Form onSubmit={(e) => submit(e)}>
+          </div>
+          <div className="column" style={{marginTop:"-30px"}}>
+            <Form onSubmit={(e) => submit(e)}>
                 <FormGroup>
                   <Input
                     type="text"
                     name="name"
                     id="name"
-                    placeholder="Name"
+                    placeholder="Full Name"
                     onChange={(e) => handle(e)}
                     value={data.name}
+                    style={{borderRadius:"10px" , border: "1px solid #a8841d", borderWidth:"0.15em", width:"35rem", paddingTop:"25px", paddingBottom:"25px", fontSize:"1.1rem", color:"black"}}
                   />
                 </FormGroup>
 
@@ -163,6 +200,7 @@ export default function Contact() {
                     placeholder="Email"
                     onChange={(e) => handle(e)}
                     value={data.email}
+                    style={{borderRadius:"10px" , border: "1px solid #a8841d", borderWidth:"0.15em", width:"35rem", paddingTop:"25px", paddingBottom:"25px", fontSize:"1.1rem", color:"black"}}
                   />
                 </FormGroup>
 
@@ -174,6 +212,7 @@ export default function Contact() {
                     placeholder="Subject"
                     onChange={(e) => handle(e)}
                     value={data.subject}
+                    style={{borderRadius:"10px" , border: "1px solid #a8841d", borderWidth:"0.15em", width:"35rem", paddingTop:"25px", paddingBottom:"25px", fontSize:"1.1rem", color:"black"}}
                   />
                 </FormGroup>
 
@@ -185,21 +224,39 @@ export default function Contact() {
                     placeholder="Type your message here"
                     onChange={(e) => handle(e)}
                     value={data.message}
+                    style={{borderRadius:"10px" , border: "1px solid #a8841d", borderWidth:"0.15em", width:"35rem", paddingTop:"25px", paddingBottom:"25px", fontSize:"1.1rem", color:"black", height:"14.0rem"}}
                   />
                 </FormGroup>
                 <div
-                  style={{ padding: 10 }}
+                  style={{ padding: 10, justifyContent:"center" }}
                   aria-label={"click button to submit your messsage session."}
                 >
-                  <Button className={classes.btn}>Submit</Button>
+                  <Button className={classes.btn} style={{padding:"15px 100px 50px 100px", fontSize:"1.3rem"}}>Submit</Button>
+                </div>
+                <div>
+                  <InstagramIcon
+                    //backgroundColor="#B28D42"
+                    fontSize="large"
+                    onClick={(event) =>
+                      (window.location.href =
+                        "https://www.instagram.com/nityaayurveda/")
+                    }
+                    aria-hidden="false"
+                    aria-label="Instagram"
+                    style={{color:"#b28d42", marginLeft:"270px"}}
+                  />
                 </div>
               </Form>
-
-              <ul
+              
+              
+              
+              {/*<ul
                 className="list-icons "
                 style={{ color: "#ffffff", paddingTop: "100px" }}
               >
+                
                 <li>
+                <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                   <InstagramIcon
                     // backgroundColor="#B28D42"
                     fontSize="large"
@@ -209,11 +266,11 @@ export default function Contact() {
                     }
                     aria-hidden="false"
                     aria-label="Instagram"
+                    style={{color:"black"}}
                   />
                 </li>
-              </ul>
-            </Col>
-          </Row>
+                  </ul>*/}
+          </div>
         </div>
       </div>
     </div>

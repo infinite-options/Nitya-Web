@@ -16,25 +16,37 @@ import LearnMoreBTN from "../Services/LearnMoreBtn";
 import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({
+  container:{
+    width: "80vw",
+    height: "70vh",
+    // width: "100%",
+    // alignItems: "left",
+    // marginLeft: "-50px",
+  },
   card: {
-    maxWidth: "420px",
-    width: "auto",
-    height: "800px",
+    // maxWidth: "420px",
+    // width: "20rem",
+    // height: "800px",
+    height: "42rem",
     backgroundColor: "#B28D42",
     outline: "none",
+    // marginLeft: "-100px",
+    // marginRight: "-60px",
   },
   img: {
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
-    width: "50%",
-    height: "450px",
-    width: "420px",
+    width: "20rem",
+    height: "20rem",
+    // width: "33.3%",
+    // height: "450px",
+    // width: "420px",
     objectFit: "cover",
   },
   body: {
-    minWidth: "420px",
-    float: "right",
+    // minWidth: "420px",
+    // float: "right",
     textAlign: "center",
     color: "#594d2c",
     padding: "4rem",
@@ -49,15 +61,15 @@ const useStyles = makeStyles({
     fontSize: "1.0rem",
     color: "white",
   },
-  btn: {
-    // backgroundColor: "#d3a625",
-    backgroundColor: "transparent",
-    border: "1px solid #d3a625",
-    borderRadius: "0px",
-    color: "#ffffff",
-    fontSize: "1.4rem",
-    minHeight: "40px",
-  },
+  // btn: {
+  //   // backgroundColor: "#d3a625",
+  //   backgroundColor: "transparent",
+  //   border: "1px solid #d3a625",
+  //   borderRadius: "0px",
+  //   color: "#ffffff",
+  //   fontSize: "1.4rem",
+  //   minHeight: "40px",
+  // },
 });
 
 export default function Treatments() {
@@ -157,6 +169,10 @@ export default function Treatments() {
             </Col>
           ))}
       </Row>
+      <div>
+      <LearnMoreBTN  />
+      </div>
+      
     </div>
   );
 }

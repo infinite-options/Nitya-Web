@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 70px;
+    margin-bottom: 150px;
+    padding: 100px;
+    height: 70vh;
+}
+.leftCol {
+    width: 45%;
+    float: left;
+    background-color: white;
+    height: 70vh;
+}
+
+.rightCol {
+    width: 60%;
+    float: right;
+    /*background-image: url(/src/Components/Home/NityaHomeImg.jpg);*/
+    
+    background-position: 36% 58%;
+    background-size: 120%;
+    height: 70vh;
+    filter: saturate(130%);
+}
+

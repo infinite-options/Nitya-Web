@@ -4,6 +4,8 @@ import Img from "../../card2.png";
 import { makeStyles } from "@material-ui/core/styles";
 import ScrollToTop from "../../Blog/ScrollToTop";
 
+
+
 const useStyles = makeStyles({
   container: {
     display: "flex",
@@ -11,10 +13,13 @@ const useStyles = makeStyles({
     alignItems: "center",
     position: "relative",
     top: "70px",
-    minHeight: "710px",
+    /*minHeight: "710px",
     minWidth: "600px",
     height: "auto",
     width: "auto",
+    */
+    height: "70vh",
+    width: "80vw",
     padding: "50px",
     backgroundColor: "white",
   },
@@ -23,24 +28,29 @@ const useStyles = makeStyles({
     marginTop: "-40px",
     textAlign: "left",
     fontFamily: "DidoteTextW01-Italic",
-    fontStyle: "italic",
-    fontSize: "3.5rem",
+    //fontStyle: "italic",
+    fontSize: "3rem",
     wordWrap: "break-word",
-    color: "#d3a625",
+    color: "#a8841d",
     lineHeight: "2",
+    marginLeft: "-40px",
   },
+
   content: {
-    font: "normal normal normal 32px/38px Hoefler Text",
-    // fontSize: "1.5rem",
-    // fontFamily: "'Open Sans', sans-serif",
+    font: "normal normal normal 21px Hoefler Text",
+    //fontSize: "1.5rem",
+    //fontFamily: "'Open Sans', sans-serif",
     wordWrap: "break-word",
-    color: "#8d6f19",
+    color: "#808080",
     lineHeight: "1.4",
     textAlign: "left",
+    marginLeft: "-40px",
   },
+
   img: {
-    width: "600px",
-    height: "630px",
+    marginRight: "-40px",
+    width: "500px",
+    height: "530px",
     objectFit: "cover",
   },
 });
@@ -57,7 +67,7 @@ export default function Home() {
         >
           <ScrollToTop />
           <Row className={classes.rows}>
-            <Col>
+            <Col classname="firstCol">
               <p className={classes.title}>Leena Marathay</p>
               <p className={classes.content}>
                 Leena is a NAMA (National Ayurvedic Medical Association)
@@ -79,7 +89,7 @@ export default function Home() {
               </p>
               ​
             </Col>
-            <Col style={{ display: "flex", justifyContent: "center" }}>
+            <Col classname="secCol" style={{ display: "flex", justifyContent: "center" }}>
               <img
                 src={Img}
                 className={classes.img}
