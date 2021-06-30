@@ -19,6 +19,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ShareOutline from "@material-ui/icons/ShareOutlined";
 import SearchIcon from "@material-ui/icons/Search";
 import BlogEntries from "./BlogEntries";
+import NityaLogo from "../nitya_logo.png";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -269,23 +270,31 @@ function Blogpage(props) {
                       <Hidden only={["xs", "sm", "md"]}>
                         <div>
                           <Col>
-                            {!!post.blogImage && (
-                              <img
-                                className={classes.img}
-                                id="blogImage"
-                                variant="top"
-                                src={post.blogImage}
-                                style={{
-                                  width: "550px",
-                                  height: "450px",
-                                  objectFit: "cover",
-                                  objectPosition: "center -20px",
-                                }}
-                                onError={(e) =>
-                                  (e.target.style.display = "none")}
-                                aria-label={"an image of " + post.blogTitle}
-                              />
-                            )}
+                            {
+                              (console.log("image:" + post.blogImage),
+                              !!post.blogImage && (
+                                <img
+                                  className={classes.img}
+                                  id="blogImage"
+                                  variant="top"
+                                  src={
+                                    post.blogImage == "NULL"
+                                      ? NityaLogo
+                                      : post.blogImage
+                                  }
+                                  style={{
+                                    width: "50%",
+                                    height: "50%",
+                                    objectFit: "cover",
+                                    objectPosition: "center -20px",
+                                  }}
+                                  onError={(e) =>
+                                    (e.target.style.display = "none")
+                                  }
+                                  aria-label={"an image of " + post.blogTitle}
+                                />
+                              ))
+                            }
                           </Col>
                         </div>
                       </Hidden>
@@ -389,21 +398,30 @@ function Blogpage(props) {
                     <Hidden only={["xs", "sm", "md"]}>
                       <div>
                         <Col>
-                          {!!post.blogImage && (
-                            <img
-                              className={classes.img}
-                              id="blogImage"
-                              variant="top"
-                              src={post.blogImage}
-                              style={{
-                                width: "550px",
-                                height: "450px",
-                                objectFit: "cover",
-                                objectPosition: "center -20px",
-                              }}
-                              onError={(e) => (e.target.style.display = "none")}
-                            />
-                          )}
+                          {
+                            (console.log("image:" + post.blogImage),
+                            !!post.blogImage && (
+                              <img
+                                className={classes.img}
+                                id="blogImage"
+                                variant="top"
+                                src={
+                                  post.blogImage == "NULL"
+                                    ? NityaLogo
+                                    : post.blogImage
+                                }
+                                style={{
+                                  width: "50%",
+                                  height: "50%",
+                                  objectFit: "cover",
+                                  objectPosition: "center -20px",
+                                }}
+                                onError={(e) =>
+                                  (e.target.style.display = "none")
+                                }
+                              />
+                            ))
+                          }
                         </Col>
                       </div>
                     </Hidden>
