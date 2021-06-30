@@ -1,13 +1,35 @@
+@font-face {
+  font-family: "Hoefler";
+  src: local("HoeflerText"),
+    url(./assets/font/FontsFree-Net-Hoefler-Text.ttf) format("truetype");
+}
+@font-face {
+  font-family: "SFProDisplayRegular";
+  src: local("SFProDisplayRegular"),
+    url(./assets/font/SFProDisplay/SF-Pro-Display-Regular.otf)
+      format("truetype");
+}
+@font-face {
+  font-family: "SFProDisplayMedium";
+  src: local("SFProDisplayMedium"),
+    url(./assets/font/SFProDisplay/SF-Pro-Display-Medium.otf) format("truetype");
+}
+@font-face {
+  font-family: "SFProDisplayMedium";
+  src: local("SFProDisplayMedium"),
+    url(./assets/font/SFProDisplay/SF-Pro-Display-Medium.otf) format("truetype");
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
