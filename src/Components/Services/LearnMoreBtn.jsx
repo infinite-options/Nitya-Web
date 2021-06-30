@@ -23,7 +23,7 @@ class BookNowBTN extends Component {
               color: "white",
               paddingTop: "20px",
               paddingBottom: "20px",
-              marginLeft: "450px",
+              //marginLeft: "600px",
               //fontWeight: "bolder",
               backgroundColor: "#b28d42",
               borderColor: "#b28d42",

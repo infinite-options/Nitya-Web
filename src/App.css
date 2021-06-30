@@ -24,6 +24,15 @@
   margin-left: 200px;
   margin-right: 200px;
 }
+.servicespage {
+   /* margin-left: 0px;
+  margin-right: 0px;
+  margin: none; */
+  margin: auto;
+  /* background-color: white; */
+
+  
+}
 .blog {
   margin-left: 200px;
   margin-right: 200px;
@@ -37,14 +46,18 @@
   margin-right: 200px;
 }
 .consulting {
-  /* margin-left: 200px; */
-  /* margin-right: 200px; */
-  /* margin-left: 10rem;  */
-  /* margin-right: 10rem; */
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-left: 10rem; 
+  margin-right: 10rem;
 }
 .treatments {
-  /* margin-left: 200px; */
-  /* margin-right: 200px; */
+  /* margin-left: 200px;
+  margin-right: 200px;
+  margin-left: 10rem; 
+  margin-right: 10rem; */
+  /* display: flex;
+  justify-content: center; */
 }
 .page-container {
   background-color: #dbdbdb;

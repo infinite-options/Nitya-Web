@@ -19,6 +19,9 @@ import ServicePage from "./Components/ServicePage";
 import AppointmentPage from "./Components/AppointmentPage";
 import SignUp from "./Components/Home/SignUp";
 
+import ServicesPage from "./Components/Home/ServicesPage";
+import ConsultingPage from "./Components/Home/ConsultingPage";
+
 //Stripe-related imports
 import CheckoutForm from "./Components/Stripe/CheckoutForm";
 import { loadStripe } from "@stripe/stripe-js";
@@ -105,6 +108,8 @@ const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
         <Route path="/addpost" component={AddPost} />
         <Route path="/services" component={Services} />
         <Route path="/contact" component={Contact} />
+        <Route path="/servicespage" component={ServicesPage} />
+        
         <Route exact path = "/:treatmentID/service/">
           <MyContext.Provider value = {{serviceArr, servicesLoaded}}>
             <ServicePage/>

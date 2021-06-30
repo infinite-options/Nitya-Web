@@ -10,6 +10,8 @@ import SignUp from "../Components/Home/SignUp";
 import LogIn from "../Components/Home/LogIn";
 import "./Navbar.css";
 
+
+
 const useStyles = makeStyles((theme) => ({
   authModal: {
     position: "absolute",
@@ -93,8 +95,13 @@ const Navbar = () => {
             About
           </Link>
         </li>
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link to="/services" className="nav-link" onClick={closeMenu}>
+            Services
+          </Link>
+        </li> */}
+        <li className="nav-item">
+          <Link to="/servicespage" className="nav-link" onClick={closeMenu}>
             Services
           </Link>
         </li>

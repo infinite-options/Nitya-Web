@@ -28,21 +28,23 @@ const useStyles = makeStyles({
     // width: "20rem",
     // height: "800px",
     height: "42rem",
+    width: "auto",
     backgroundColor: "#B28D42",
     outline: "none",
+    float: "center",
     // marginLeft: "-100px",
     // marginRight: "-60px",
   },
   img: {
     display: "block",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "20rem",
+    width: "100%",
     height: "20rem",
+    paddingLeft: "14px",
+    paddingRight: "14px",
     // width: "33.3%",
     // height: "450px",
     // width: "420px",
-    objectFit: "cover",
+    //objectFit: "cover",
   },
   body: {
     // minWidth: "420px",
@@ -60,6 +62,12 @@ const useStyles = makeStyles({
   text: {
     fontSize: "1.0rem",
     color: "white",
+  },
+  LMbtn: {
+    // textAlign: "center",
+    display: "flex",
+    justifyContent:"center",
+
   },
   // btn: {
   //   // backgroundColor: "#d3a625",
@@ -169,7 +177,7 @@ export default function Treatments() {
             </Col>
           ))}
       </Row>
-      <div>
+      <div className={classes.LMbtn}>
       <LearnMoreBTN  />
       </div>
       

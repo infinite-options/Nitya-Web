@@ -3,6 +3,7 @@ import ScrollToTop from "../Blog/ScrollToTop";
 import Home from "./Home/Home";
 import About from "./Home/About";
 import Services from "./Home/Services";
+import ServicePage from "./Home/ServicesPage";
 import Contact from "./Home/Contact";
 
 class Homepage extends Component {
@@ -29,6 +30,7 @@ class Homepage extends Component {
               Services
             </p> */}
             <Services />
+            {/* <ServicePage /> */}
             <About />
             <Contact />
           </div>

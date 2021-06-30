@@ -64,8 +64,8 @@ const useStyles = makeStyles({
   btn: {
     fontSize: "1.2rem",
     color: "#ffffff",
-    backgroundColor: "#a8841d",
-    border: "1px solid #a8841d",
+    backgroundColor: "#B28D42",
+    border: "1px solid #B28D42",
     marginTop: "40px",
     marginBottom: "20px",
     minHeight: "60px",

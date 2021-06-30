@@ -1,42 +1,35 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup } from "reactstrap";
-import Consulting from "./Consulting";
-import Treatments from "./Treatments";
+import Consulting from "./ConsultingPage";
+import Treatments from "./TreatmentsPage";
 import { makeStyles } from "@material-ui/core/styles";
 import ScrollToTop from "../../Blog/ScrollToTop";
 
-const Services = (props) => {
+const ServicesPage = (props) => {
   const useStyles = makeStyles({
     container: {
-      position: "relative",
-      top: "40px",
-      marginBottom: "150px",
-      /*minHeight: "710px",
-      minWidth: "600px",
-      height: "auto",
-      width: "auto",
-      */
-     height: "auto",
-     width: "80vw",
-      
-      
-      padding: "50px",
+      borderTop: "1px solid #b28d42",
+      paddingTop: "30px",
       backgroundColor: "white",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
+      height:"100%",
+
+
+      //minHeight: "100%",
+    //height: "auto !important",
+    
+    //margin: "0 auto -20px",
     },
     
     ButtonGroup: {
       top: 0,
+      //backgroundColor:"white",
+    //   width: "auto",
+    //   float: "center",
     },
     
     btn1: {
       backgroundColor: "transparent",
-      //border: "1px solid #88898a",
       border: "none",
-      //borderRadius: "0px",
       color: "#b28d42",
       fontSize: "2.5rem",
       marginRight: "20px",
@@ -44,36 +37,49 @@ const Services = (props) => {
       minHeight: "60px",
       "&:hover": {
         backgroundColor: "transparent",
-        color: "#B28D42",
-        border: "#B28D42",
+        color: "#b28d42",
+        border: "#b28d42",
       },
     },
     btn2: {
       backgroundColor: "transparent",
-      //border: "1px solid #d3a625",
       border: "none",
-      //borderRadius: "0px",
       color: "#b28d42",
       fontSize: "2.5rem",
       minHeight: "60px",
       "&:hover": {
         backgroundColor: "transparent",
-        color: "#B28D42",
-        border: "#B28D42",
+        color: "#b28d42",
+        border: "#b28d42",
       },
     },
+    buttonCenter:{
+        position: "absolute",
+        transform: "translateX(35vw)",  
+
+    },
+    buttonWrapper: {
+        backgroundColor:"white",
+        // position: "absolute",
+        // transform: "translateX(50%)",
+        textAlign: "center",
+    }
   });
   const classes = useStyles();
 
   const [rSelected, setRSelected] = useState(<Consulting />);
 
+
+  
+
   return (
-    <div className="page-container">
-      <div className="services" id="services" aria-label={"service block"}>
+    <div className="page-container" >
+        
+      <div className="servicespage" id="servicespage" aria-label={"service block"}>
         <div className={classes.container}>
           <ScrollToTop />
-          <div aria-label={"click button to switch service type."}>
-            <ButtonGroup style={{border:"none"}}>
+          <div className={classes.buttonWrapper} aria-label={"click button to switch service type."} >
+            <ButtonGroup style={{border:"none", }}>
               <Button
                 className={classes.btn1}
                 onClick={() => setRSelected(<Consulting />)}
@@ -88,6 +94,7 @@ const Services = (props) => {
               >
                 Treatments
               </Button>
+              <br /><br />
             </ButtonGroup>
           </div>
           {/*
@@ -95,7 +102,7 @@ const Services = (props) => {
           <img src="consulting2.jpg"></img>
           </div>
   */}
-
+            <br /><br />
           <p style={{width:"fit-content" , height:"fit-content"}}>{rSelected}</p>
         </div>
       </div>
@@ -103,4 +110,4 @@ const Services = (props) => {
   );
 };
 
-export default Services;
+export default ServicesPage;

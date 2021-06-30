@@ -22,27 +22,34 @@ const useStyles = makeStyles({
     // alignItems: "left",
     // marginLeft: "-50px",
   },
+
   card: {
     // maxWidth: "420px",
     //width: "20rem",
     // height: "800px",
     height: "42rem",
+    width: "auto",
     backgroundColor: "#B28D42",
     outline: "none",
+    float: "center",
     // marginLeft: "-100px",
     // marginRight: "-80px",
 
   },
   img: {
     display: "block",
-    marginLeft: "auto",
-    marginRight: "auto",
-    width: "20rem",
+    width: "100%",
     height: "20rem",
+    paddingLeft: "14px",
+    paddingRight: "14px",
+    //width: "auto",
+    // width: "25rem",
+    //height: "20rem",
     // width: "33.3%",
     // height: "450px",
     // width: "420px",
-    objectFit: "cover",
+    //objectFit: "cover",
+    //display: "inline-block",
   },
   body: {
     // minWidth: "420px",
@@ -60,6 +67,12 @@ const useStyles = makeStyles({
   text: {
     fontSize: "1.0rem",
     color: "white",
+  },
+  LMbtn: {
+    // textAlign: "center",
+    display: "flex",
+    justifyContent:"center",
+
   },
 
   // btn: {
@@ -105,17 +118,16 @@ export default function Consulting() {
             <Col >
               <Card className={classes.card}>
                 {/* <Col className="no-gutters"> */}
-                <Row>
+                <Row className={classes.row}>
                   {/* <Row className="d-none d-sm-block d-md-block"> */}
-                  <CardImg
+                  <img
                     className={classes.img}
                     variant="top"
                     src={filteredService.image_url}
                     alt={"An image of" + filteredService.title}
                   />
                 </Row>
-                <Row>
-                  
+                <Row className={classes.row}>
                   {/* <Row style={{ display: "flex", justifyContent: "center" }}> */}
                   <CardBody className={classes.body} >
                     <CardTitle className={classes.title} >
@@ -138,7 +150,10 @@ export default function Consulting() {
             </Col>
           ))}
       </Row>
-      <LearnMoreBTN  />
+      <div className={classes.LMbtn}>
+        <LearnMoreBTN  />
+      </div>
+      
     </div>
   );
 }
