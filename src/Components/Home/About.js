@@ -8,50 +8,82 @@ import ScrollToTop from "../../Blog/ScrollToTop";
 
 const useStyles = makeStyles({
   container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-    top: "70px",
+    // display: "flex",
+    // justifyContent: "center",
+    // alignItems: "center",
+    // position: "relative",
+    //top: "70px",
     /*minHeight: "710px",
     minWidth: "600px",
     height: "auto",
     width: "auto",
     */
-    height: "70vh",
-    width: "80vw",
-    padding: "50px",
+   marginLeft:"40px",
+   marginRight: "48px",
+   marginTop:"95px",
+    // height: "70vh",
+    // width: "80vw",
+    width: "980px",
+    height: "625px",
+    //padding: "50px",
     backgroundColor: "white",
   },
 
   title: {
-    marginTop: "-40px",
-    textAlign: "left",
-    fontFamily: "DidoteTextW01-Italic",
+    marginLeft: "40px",
+    //textAlign: "left",
+    //fontFamily: "DidoteTextW01-Italic",
     //fontStyle: "italic",
-    fontSize: "3rem",
-    wordWrap: "break-word",
-    color: "#a8841d",
-    lineHeight: "2",
-    marginLeft: "-40px",
+    //fontSize: "3rem",
+    //wordWrap: "break-word",
+    //color: "#a8841d",
+    //lineHeight: "2",
+    textAlign: "left",
+    font: "italic normal normal 32px/38px Hoefler Text",
+    letterSpacing: "0px",
+    color: "#B28D42",
+    opacity: "1",
+    width: "443px",
+    height: "32px",
+    marginTop:"45px",
   },
 
   content: {
-    font: "normal normal normal 21px Hoefler Text",
+    //font: "normal normal normal 21px Hoefler Text",
     //fontSize: "1.5rem",
     //fontFamily: "'Open Sans', sans-serif",
-    wordWrap: "break-word",
-    color: "#808080",
-    lineHeight: "1.4",
+    //wordWrap: "break-word",
+    //color: "#808080",
+    //lineHeight: "1.4",
+    //textAlign: "left",
+    //marginRight:"23px",
+    marginTop:"23px",
+
+    width: "410px",
+    height: "468px",
     textAlign: "left",
-    marginLeft: "-40px",
+    font: "normal normal normal 22px/26px SFProDisplayRegular",
+    letterSpacing: "0px",
+    color: "#B28D42",
+    opacity: "1",
+  },
+  image: {
+    width: "400px",
+    height: "463px",
+    overflow: "hidden",
+    display: "block",
   },
 
   img: {
-    marginRight: "-40px",
-    width: "500px",
-    height: "530px",
+    //marginRight: "-40px",
+    width: "450px",
+    // height: "463px",
     objectFit: "cover",
+    marginLeft:"-35px",
+    //marginTop:"23px",
+    //marginBottom:"62px",
+    //marginRight:"48px",
+    //objectFit: "cover",
   },
 });
 
@@ -66,9 +98,10 @@ export default function Home() {
           aria-label="Counselor Introduction Block"
         >
           <ScrollToTop />
+          <p className={classes.title}>Leena Marathay</p>
           <Row className={classes.rows}>
             <Col classname="firstCol">
-              <p className={classes.title}>Leena Marathay</p>
+
               <p className={classes.content}>
                 Leena is a NAMA (National Ayurvedic Medical Association)
                 certified Ayurvedic Practitioner and an Ayurvedic Health and
@@ -89,12 +122,14 @@ export default function Home() {
               </p>
               ​
             </Col>
-            <Col classname="secCol" style={{ display: "flex", justifyContent: "center" }}>
+            <Col classname="secCol" >
+              <div className={classes.image}>
               <img
                 src={Img}
                 className={classes.img}
                 alt="An image of Leena Marathay"
               />
+              </div>
             </Col>
           </Row>
         </div>

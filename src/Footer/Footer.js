@@ -13,49 +13,51 @@ function Footer() {
     <div className="main-footer">
       <div className="container">
         <Row>
-          <Col>
+          {/* <Col>
             <Row>
-              <img
+              {/* <img
                 src={Logo}
                 // style={
                 //   height= "100px",
                 //   width= "100px",}
-              />
-            </Row>
-            <Row>
+              /> */}
+            {/* </Row> */}
+            {/* <Row>
               <div className="col-sm">
                 &copy;{new Date().getFullYear()} by Leena Marathay
               </div>
-            </Row>
-          </Col>
+            </Row> */}
+          {/* </Col>  */}
 
           {/* Column1 */}
-          <Col>
-            <h4 className="list-unstyled">
-              <li>36055 Meridian Ave, Ste.</li>
+          <Col style={{borderRight:"1px solid white", height:"150px", display:"flex", justifyContent:"center", }}>
+            <h4 className="list-unstyled" style={{fontSize:"20px"}}>
+              <li>6055 Meridian Ave, Ste.</li>
               <li> 40A, San Jose, CA 95120</li>
             </h4>
           </Col>
 
           {/* Column2 */}
-          <Col>
-            <ui className="list-unstyled">
+          <Col style={{borderRight:"1px solid white", height:"150px", width:"800px"}}>
+            <ui className="list-unstyled" >
+              <h1 style={{fontSize:"35px"}}>Leena Marathay</h1>
+              <li style={{fontSize:"20px"}}>NAMA Certified Ayurvedic Practitioner</li>
+            </ui>
+          </Col>
+
+          
+
+          {/* Column3 */}
+          <Col style={{height:"150px"}}>
+            <ui className="list-unstyled" style={{fontSize:"20px"}}>
               <li>Office: 408 471 7004</li>
 
               <li>Email: Leena@nityaayurveda.com</li>
             </ui>
           </Col>
 
-          {/* Column3 */}
-          <Col>
-            <ui className="list-unstyled">
-              <h1>Leena Marathay</h1>
-              <li>NAMA Certified Ayurvedic Practitioner</li>
-            </ui>
-          </Col>
-
           {/* Column4 */}
-          <Col>
+          {/* <Col>
             <ui className="list-unstyled">
               <img
                 src={Namacb}
@@ -67,7 +69,7 @@ function Footer() {
                 alt="An Image of NAMACB CAP"
               />
             </ui>
-          </Col>
+          </Col> */}
         </Row>
         <hr />
         <Row>

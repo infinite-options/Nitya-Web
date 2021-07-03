@@ -10,22 +10,28 @@ class BookNowBTN extends Component {
 
   render() {
     return (
-      <div aria-label={"click button to book a session now"}>
+      <div aria-label={"click button to book a session now"} style={{display:"flex", justifyContent:"center"}}>
         <Button
           style={{
             backgroundColor: "white",
             border: "none",
             borderRadius: "12px",
-            padding: "10px",
+            //padding: "10px",
+            width:"243px",
+            height: "60px",
+            paddingTop:"17px",
+            align:"center",
+
           }}
         >
           <Link to={`/${this.state.tID}/appt`}>
             <p
               style={{
                 color: "#B28D42",
+                fontSize:"20px",
               }}
             >
-              Book a Session
+              Book Now
             </p>
           </Link>
         </Button>

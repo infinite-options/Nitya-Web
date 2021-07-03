@@ -6,10 +6,10 @@ import Card from "@material-ui/core/Card";
 import ScrollToTop from "../../Blog/ScrollToTop";
 // import Contact from "./Contact";
 
-
+import "./Home.css"
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
-import "./Home.css";
+
 import card1 from "./card1.jpg";
 
 const responsive = {
@@ -34,62 +34,56 @@ const responsive = {
 const useStyles = makeStyles({
   
   container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-    top: "70px",
-    marginBottom: "150px",
-    //minHeight: "710px",
-    //minWidth: "600px",
-    height: "70vh",
-    width: "80vw",
-    //padding: "100px",
+    width: "980px",
+    height: "476px",
     backgroundColor: "white",
+    
   },
 
   title: {
-    textAlign: "center",
-    fontFamily: "DidoteTextW01-Italic",
-    fontStyle: "italic",
-    fontSize: "2.5rem",
-    padding: "150px 100px 0px 100px",
-    fontWeight: "bolder",
-    fontStretch: "expanded",
-    wordWrap: "break-word",
-    color: "#a8841d",
-    lineHeight: "1.5",
+    // textAlign: "center",
+    // font: "italic normal normal 54px/65px Hoefler Text",
+    // letterSpacing: "0px",
+    color: "#B28D42",
+    // opacity: "1",
+    // paddingTop: "90px", 
+    // paddingBottom:"20px",
   },
 
   btn: {
-    fontSize: "1.2rem",
-    color: "#ffffff",
+    // width: "243px",
+    // height:"49px",
+    // marginBottom:"12px",
+    // fontSize:"15px",
     backgroundColor: "#B28D42",
+    color: "white",
     border: "1px solid #B28D42",
-    marginTop: "40px",
-    marginBottom: "20px",
-    minHeight: "60px",
-
-    textShadow: "0px .2px, 0.2px 0px, 0.2px 0.2px",
-    fontWeight: "bold",
     borderRadius: "100px",
-    padding: "0 80px 0 80px",
   },
 
   img: {
-    /*width: "600px",
-    height: "530px",*/
-    minHeight: "710px",
-    minWidth: "600px",
-    height: "auto",
-    width: "auto",
-    objectFit: "cover",
+    // width:"555px",
+    // height:"476px",
   },
 
   carousel:{
-    marginBottom: "-50px",
-    marginTop:"10px",
+    // marginBottom: "-50px",
+    // marginTop:"10px",
   },
+  leftCol: {
+    // width: "425px",
+    // float: "left",
+    backgroundColor: "white",
+},
+
+rightCol: {
+    // width: "555px",
+    // float: "right",
+    
+    // backgroundPosition: "36% 58%",
+    // backgroundSize: "120%",
+    filter: "saturate(130%)",
+},
 
 });
 
@@ -113,6 +107,7 @@ export default function Home() {
           <img
             src={Img}
             className={classes.img}
+            id="img"
             alt="An spices image for home block"
           />
         );
@@ -160,6 +155,7 @@ export default function Home() {
       <div>
         <h3
           className={classes.title}
+          id="title"
           style={{
             textAlign: "center",
             color: "white",
@@ -194,14 +190,14 @@ export default function Home() {
       <div className="home" id="home">
         <div aria-label="Home block">
           <ScrollToTop />
-          <div className={classes.container}>
-            <div className="leftCol" style={{height: "70vh",}}>
-              <p className= {classes.title}>Helping your body heal itself</p>
+          <div className={classes.container} id="container">
+            <div className={classes.leftCol} id="leftCol">
+              <p className={classes.title} id="title">Helping your body heal itself</p>
               <div
                 aria-label={"click button to book a session."}
                 style={{ textAlign: "center" }}
               >
-                <Button className={classes.btn} onClick={() => {
+                <Button className={classes.btn} id="btn" onClick={() => {
                       goToSlide2(1);
                       }} >
                   What is Ayurveda ?
@@ -211,7 +207,7 @@ export default function Home() {
                 aria-label={"click button to book a session."}
                 style={{ textAlign: "center" }}
               >
-                <Button className={classes.btn} onClick={() => {
+                <Button className={classes.btn} id="btn" onClick={() => {
                       goToSlide2(2);
                       }} >
                   Is Ayurveda for you?
@@ -219,34 +215,38 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="rightCol">
-            <Carousel responsive={responsive} arrows={false} showDots={true} ref={carouselRef}>
-              <img src={card1} style={{width:"100%", objectFit: "cover", height: "70vh",}}/>
-              <div style={{color:"white", textAlign:"center", padding:"6%", backgroundColor: "#B28D42", height: "70vh",}}> 
-                <h1 style={{font: "italic normal normal 3.8rem Hoefler Text", marginTop: "30px", marginBottom: "40px", }}>What is Ayurveda?</h1> 
-                <p style={{font: "normal normal normal 1.8rem SF Pro Display"}}>
+            <div className={classes.rightCol} id="rightCol">
+            <Carousel responsive={responsive} arrows={false} showDots={true} ref={carouselRef} autoPlay={true} autoPlaySpeed={10000} infinite={true}>
+              <img src={card1} className={classes.img} id="img" />
+              <div style={{color:"white", textAlign:"center", padding:"5%", backgroundColor: "#B28D42", height:"476px"}}>               
+              <h1 style={{font: "italic normal normal 40px Hoefler Text", marginTop: "30px", marginBottom: "30px",}}>Is Ayurveda for you?</h1> 
+              <p style={{font: "normal normal normal 20px SF Pro Display"}}>
                   Ayurvedic Medicine is the traditional holistic medical science of ancient India. 
                   Orgin of Ayurveda dates back more than 5,000 years ago, yet its principles are applicable 
                   to our modern life. Today, it is practiced not only in India, but also has become popular in the 
                   U.S. and all over the world.
                 </p>
-                <p style={{font: "normal normal normal 1.8rem SF Pro Display"}}>
+                <p style={{font: "normal normal normal 20px SF Pro Display"}}>
                   Nitya Ayurveda brings theis classical Ayurvedic healthcare to clients in the 
                   South Bay. We offer Ayurvedic health consultations; herbal suggestions, diet & lifestyle plans
                   and Ayurvedic body therapies to our clients. Every client is treated holistically.
                 </p>
               </div>
-              <div style={{color:"white", textAlign:"center", padding:"5%", backgroundColor: "#B28D42", height: "70vh",}}> 
-                <h1 style={{font: "italic normal normal 3.8rem Hoefler Text", marginTop: "30px", marginBottom: "40px",}}>Is Ayurveda for you?</h1> 
-                <p style={{font: "normal normal normal 1.8rem SF Pro Display"}}>
-                  A typical Ayurvedic health plan begins with changing your eating habits, eliminating certain 
-                  foods from your diet or simply fasting along with some digestive herbs or teas. Some people 
-                  are able to follow this kind of advice very well while others find it an absolute 
-                  impossibility!
+              <div style={{color:"white", textAlign:"center", padding:"5%", backgroundColor: "#B28D42", height:"476px"}}>               
+                <h1 style={{font: "italic normal normal 40px Hoefler Text", marginTop: "30px", marginBottom: "30px",}}>Is Ayurveda for you?</h1> 
+                <p style={{font: "normal normal normal 20px SF Pro Display"}}>
+                  If you're seeking Ayurvedic treatment and wondering if this system of medicine will work for you, 
+                  try to answer these two simple questions:
                 </p>
-                <p style={{font: "normal normal normal 1.8rem SF Pro Display"}}>
-                  So if you're seeking Ayurvedic treatment and wondering if this system of medicine will work 
-                  for you, try to answer these two simple questions:
+                <p style={{font: "normal normal normal 20px SF Pro Display"}}>
+                  1. Do you suspect that your diet, lifestyle, the supplements you are taking may have something to do with your current health issue? 
+
+                </p>
+                <p style={{font: "normal normal normal 20px SF Pro Display"}}>
+                  2. Are you willing to make changes in your diet and lifestyle?
+                </p>
+                <p style={{font: "normal normal normal 20px SF Pro Display"}}>
+                  If your answer is "yes" to both questions then Ayurveda is probably for you! 
                 </p>
                </div>
             </Carousel>

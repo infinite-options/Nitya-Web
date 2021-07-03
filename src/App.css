@@ -9,20 +9,64 @@
   margin: 30px;
 }
 .about {
-  margin-left: 200px;
-  margin-right: 200px;
+  /* margin-left: 200px;
+  margin-right: 200px; */
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+
+  align-items: center;
+  justify-content: center;
 }
 .home {
-  margin-left: 200px;
-  margin-right: 200px;
+  /* margin-left: 200px;
+  margin-right: 200px; */
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+
+  align-items: center;
+  justify-content: center;
+  padding-top: 70px;
+  /* height: 329px;
+    width: 679px; */
 }
 .contact {
-  margin-left: 200px;
-  margin-right: 200px;
+  /* margin-left: 200px;
+  margin-right: 200px; */
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+
+  align-items: center;
+  justify-content: center;
 }
 .services {
-  margin-left: 200px;
-  margin-right: 200px;
+  /* margin-left: 200px;
+  margin-right: 200px; */
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+
+  align-items: center;
+  justify-content: center;
+
 }
 .servicespage {
    /* margin-left: 0px;
@@ -46,10 +90,10 @@
   margin-right: 200px;
 }
 .consulting {
-  margin-left: 200px;
-  margin-right: 200px;
-  margin-left: 10rem; 
-  margin-right: 10rem;
+  margin-left: 43px;
+  margin-right: 43px;
+  /* margin-left: 10rem; 
+  margin-right: 10rem; */
 }
 .treatments {
   /* margin-left: 200px;

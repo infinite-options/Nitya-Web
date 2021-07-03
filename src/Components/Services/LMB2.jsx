@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 
-import "../Home/Consulting1.js";
 
 class BookNowBTN extends Component {
   constructor(props) {
@@ -36,8 +35,7 @@ class BookNowBTN extends Component {
             }} 
             aria-label={"click button to learn more."}
       >
-        
-        <Link to={`/${this.state.tID}/services`} style={{color:"white"}}>Learn More</Link>
+        <Link to={`/${this.state.tID}/service`} style={{color:"white"}}>Learn More</Link>
       </div>
       </div>
     );

@@ -27,7 +27,6 @@ const useStyles = makeStyles({
     //padding: "30px",
     //width: "700px",
     //width: "30vw",
-
   },
   body: {
     color: "#594d2c",
@@ -50,14 +49,11 @@ const useStyles = makeStyles({
     color: "#B28D42",
     fontWeight: "bolder",
   },
-
    btn: {
     backgroundColor: "#B28D42",
     // border: "1pc solid #B28D42",
     color: "white",
    },
-
-   
 });
 
 function tConvert (time) {
@@ -72,17 +68,27 @@ function tConvert (time) {
     return time.join (''); // return adjusted time or original string
   }
 
-  window.onloadv=function() {
-      convertTime();
+  // window.onloadv=function() {
+  //     convertTime();
   function convertTime(time){
     var d = new Date(time);
     var x = document.getElementById("timePrice");
     var h = d.getHours();
     var m = d.getMinutes();
     var s = d.getSeconds();
-    // x.innerHTML = h+":"+m;
-  }
+   //x.innerHTML = d.getTime();
+  // }
 }
+
+function tConv24(time24) {
+  var ts = time24;
+  var H = +ts.substr(0, 2);
+  var h = (H % 12) || 12;
+  h = (h < 10)?("0"+h):h;  // leading 0 at the left for 1 digit hours
+  var ampm = H < 12 ? " AM" : " PM";
+  ts = h + ts.substr(2, 3) + ampm;
+  return ts;
+};
 
 export default function Consulting() {
   const classes = useStyles();
@@ -135,10 +141,11 @@ export default function Consulting() {
                       {/* <LearnMoreBTN apptID={filteredService.treatment_uid} /> */}
                     </CardText>
                     <CardText className={classes.text2} id="timePrice">
-
                         {filteredService.duration} | {filteredService.cost} <br />
                     </CardText>
                     <BookNowBTN2 apptID={filteredService.treatment_uid} />
+                    {convertTime()}
+                    {tConv24('08:00')}
                 </div>
                 </div>
                 <hr noshade="noshade" size="5" style={{width:"100%" , textAlign:"center", height:"1px", backgroundColor:"#B28D42"}} /> 

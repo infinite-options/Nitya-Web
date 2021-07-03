@@ -5,101 +5,64 @@ import {
   CardImg,
   CardTitle,
   CardText,
-  CardBody,
   Row,
   Col,
+  CardBody,
 } from "reactstrap";
 import { NavHashLink } from "react-router-hash-link";
 import { makeStyles } from "@material-ui/core/styles";
+import BookApptBtn from "../Appointment/BookNowBtn";
 import LearnMoreBTN from "../Services/LearnMoreBtn";
 import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({
   container:{
-    //width: "80vw",
-    //height: "70vh",
-    //width: "100%",
+    width: "80vw",
+    height: "70vh",
+    // width: "100%",
     // alignItems: "left",
     // marginLeft: "-50px",
-    //height: "360px",
-    //width: "888.73px",
   },
-
   card: {
     // maxWidth: "420px",
-    //width: "20rem",
+    // width: "20rem",
     // height: "800px",
     //height: "42rem",
-    height: "360px",
-    width: "888.73px",
+    height: "35rem",
+    width: "auto",
     backgroundColor: "#B28D42",
-    //outline: "none",
-    //float: "right",
-    marginBottom:"44px",
+    outline: "none",
+    float: "center",
     // marginLeft: "-100px",
-    // marginRight: "-80px",
-
+    // marginRight: "-60px",
   },
-  images: {
+  img: {
     display: "block",
-    width: "476.73px",
-    overflow: "hidden",
-    height: "360px",
-    //float: "left",
+    width: "100%",
     //height: "20rem",
-    //paddingLeft: "14px",
-    //paddingRight: "14px",
-    //width: "auto",
-    // width: "25rem",
-    //height: "20rem",
+    paddingLeft: "14px",
+    paddingRight: "14px",
     // width: "33.3%",
     // height: "450px",
     // width: "420px",
     //objectFit: "cover",
-    //display: "inline-block",
-  },
-  img:{
-    width:"476.73px",
-    objectFit: "cover",
-    height: "360px",
-
   },
   body: {
     // minWidth: "420px",
-    //marginLeft:"525px",
-    height: "360px",
-    width: "412px",
-    // display: "flex",
-    // alignItems:"center",
-    // textAlign: "center",
+    // float: "right",
+    textAlign: "center",
     color: "#594d2c",
-    //float:"right",
-    // paddingTop: "4rem",
-    // padding: "4rem",
-    paddingTop:"44px",
-    //paddingRight:"50px",
-    //paddingLeft:"57px",
+    padding: "4rem",
   },
   title: {
     // textAlign: "center",
     // width: "400px",
-    // fontSize: "1.4rem",
-
-    // color: "black",
-    
-    textAlign: "center",
-    font: "normal normal normal 24px/26px Hoefler Text",
-    letterSpacing: "0.6px",
-    color: "#FFFFFF",
+    fontSize: "1.4rem",
+    color: "white",
   },
   text: {
-    // fontSize: "1.0rem",
-    // color: "black",
-    textAlign: "center",
-    font: "normal normal normal 22px/26px SF Pro Display",
-    letterSpacing: "0.55px",
-    color: "#FFFFFF",
-
+    fontSize: "1.0rem",
+    color: "white",
   },
   LMbtn: {
     // textAlign: "center",
@@ -107,11 +70,6 @@ const useStyles = makeStyles({
     justifyContent:"center",
 
   },
-  divBody: {
-    //width:"400px",
-    //marginLeft:""
-  },
-
   // btn: {
   //   // backgroundColor: "#d3a625",
   //   backgroundColor: "transparent",
@@ -123,10 +81,9 @@ const useStyles = makeStyles({
   // },
 });
 
-export default function Consulting() {
+export default function Treatments() {
   const classes = useStyles();
   const [data, setData] = useState([]);
-
   const fetchData = async () => {
     const res = await fetch(
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments"
@@ -139,38 +96,72 @@ export default function Consulting() {
       setData(data);
     });
   }, []);
+  // return (
+  //   <div className="treatments" id="treatments" aria-label="treatments section">
+  //     <br />
+  //     <div className={classes.container}>
+  //       {data
+  //         .filter((service) => service.category === "Treatment")
+  //         .map((filteredService) => (
+  //           <div>
+  //             <Card className={classes.card}>
+  //               <Row className="no-gutters">
+  //                 <Col className="d-none d-sm-block d-md-block">
+  //                   <CardImg
+  //                     className={classes.img}
+  //                     variant="top"
+  //                     src={filteredService.image_url}
+  //                     alt={"An image of" + filteredService.title}
+  //                   />
+  //                 </Col>
+  //                 <Col style={{ display: "flex", justifyContent: "center" }}>
+  //                   <CardBody className={classes.body}>
+  //                     <CardTitle className={classes.title}>
+  //                       {filteredService.title}
+  //                     </CardTitle>
+  //                     <CardText className={classes.text}>
+  //                       {filteredService.description} <br/>
+  //                       <LearnMoreBTN apptID = {filteredService.treatment_uid}/>
+  //                     </CardText>
+  //                     <BookNowBTN apptID = {filteredService.treatment_uid}/>
+  //                   </CardBody>
+  //                 </Col>
+  //               </Row>
+  //             </Card>
+  //             <br />
+  //           </div>
+  //         ))}
+  //     </div>
+  //   </div>
+  // );
 
   return (
-    <div
-      className="consulting"
-      id="consulting"
-      aria-label={"consulting section"}
-      
-    >
-      <br /><br />
-      <Row className={classes.container} >
+    <div className="treatments" id="treatments" aria-label="treatments section">
+      <br />
+      <br />
+      <Row className={classes.container}>
         {data
-          .filter((service) => service.category === "Consultation")
+          .filter((service) => service.category === "Treatment")
           .map((filteredService) => (
-            <Col >
+            <Col>
               <Card className={classes.card}>
                 {/* <Col className="no-gutters"> */}
                 <Row>
                   {/* <Row className="d-none d-sm-block d-md-block"> */}
-                  <div className={classes.images}>
-                  <img
+                  <CardImg
                     className={classes.img}
                     variant="top"
                     src={filteredService.image_url}
                     alt={"An image of" + filteredService.title}
                   />
-                  </div>
+                </Row>
+                <Row>
                   {/* <Row style={{ display: "flex", justifyContent: "center" }}> */}
-                  <CardBody className={classes.body} >
-                    <CardTitle className={classes.title} >
+                  <CardBody className={classes.body}>
+                    <CardTitle className={classes.title}>
                       {filteredService.title}
                     </CardTitle>
-                    <CardText className={classes.text} >
+                    <CardText className={classes.text}>
                       {filteredService.description} <br />
                       {/* <NavHashLink to="#home">Learn More</NavHashLink> <br /> */}
                       {/* <LearnMoreBTN apptID={filteredService.treatment_uid} /> */}
@@ -178,8 +169,6 @@ export default function Consulting() {
                     {/* <Button className={classes.btn} variant="primary">
                         Book Now
                       </Button> */}
-                      <LearnMoreBTN  />
-                      <br />
                     <BookNowBTN apptID={filteredService.treatment_uid} />
                   </CardBody>
                 </Row>
@@ -189,10 +178,10 @@ export default function Consulting() {
             </Col>
           ))}
       </Row>
-
-      {/* <div className={classes.LMbtn}>
-        <LearnMoreBTN  />
-      </div> */}
+      
+      <div className={classes.LMbtn}>
+      <LearnMoreBTN  />
+      </div>
       
     </div>
   );
