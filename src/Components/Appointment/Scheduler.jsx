@@ -68,7 +68,7 @@ export default function Scheduler(props) {
   // for hide and show
   const [timeSelected, setTimeSelected] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [bookNowClicked, setBookNowClicked] = useState(false);
+  const [bookNowClicked, setBookNowClicked] = useState(true);
 
   //A lot of event handlers
 
@@ -423,12 +423,14 @@ export default function Scheduler(props) {
       margin: "0 auto",
     },
     calendarBox: {
-      width: "60%",
-      padding: "50px",
+      width: "55%",
+      height: "485px",
+      padding: "20px",
       backgroundColor: "#B28D42",
     },
     timeslotBox: {
-      width: "40%",
+      width: "45%",
+      height: "485px",
       padding: "20px",
     },
     center: {
@@ -458,30 +460,12 @@ export default function Scheduler(props) {
       },
     },
 
-    durationInput: {
-      backgroundColor: "#FAD399",
-      width: "50%",
-      height: "75px",
-      border: "none",
-      padding: "20px",
-      boxSizing: "border-box",
-      borderRadius: "50px",
-      fontColor: "#52330D",
-      fontSize: "25px",
-      display: "inline-block",
-      margin: "5px",
-      "&::placeholder": {
-        textOverflow: "ellipsis !important",
-        color: "#52330D",
-      },
-      outline: "none",
-    },
-
     timeslotButtonBox: {
       width: "90%",
-      height: "500px",
+      height: "350px",
       margin: "0 auto",
       overflowY: "scroll",
+      overflowX: "hidden",
       "&::-webkit-scrollbar": {
         width: "10px",
         // border: "1px solid black",
@@ -499,36 +483,6 @@ export default function Scheduler(props) {
     img: {
       width: "100%",
     },
-
-    // title: {
-    //   marginTop: "-40px",
-    //   textAlign: "center",
-    //   fontFamily: "DidoteTextW01-Italic",
-    //   fontStyle: "italic",
-    //   fontSize: "2rem",
-    //   wordWrap: "break-word",
-    //   color: "#d3a625",
-    //   lineHeight: "2",
-    // },
-
-    // form: {
-    //   display: "flex",
-    //   flexDirection: "column",
-    //   justifyContent: "center",
-    //   alignItems: "center",
-    //   backgroundColor: "#dbdbdb",
-    //   paddingTop: "12rem",
-    //   paddingBottom: "10rem",
-    // },
-    // btn: {
-    //   backgroundColor: "#d3a625",
-    //   color: "#ffffff",
-    //   border: "1px solid #ffffff",
-    //   fontSize: "2rem",
-    //   textAlign: "center",
-    //   padding: "5px 150px",
-    //   marginLeft: "40px",
-    // },
   });
 
   const classes = useStyles();
@@ -596,6 +550,7 @@ export default function Scheduler(props) {
                     textAlign: "left",
                     color: "white",
                     fontFamily: "AvenirHeavy",
+                    fontSize: "25px",
                   }}
                 >
                   Find a date to meet with us
@@ -618,7 +573,7 @@ export default function Scheduler(props) {
                     textAlign: "left",
                     color: "#B28D42",
                     // fontFamily: "AvenirHeavy",
-                    fontSize: "24px",
+                    fontSize: "15px",
                   }}
                 >
                   UTC - 07:00 Pacific Time
@@ -694,11 +649,7 @@ export default function Scheduler(props) {
                   onHandleChange={handlePhoneNumChange}
                 />
                 <br></br>
-                <SimpleFormText
-                  field="Notes"
-                  onHandleChange={handleNotesChange}
-                />
-                {props.notes}
+
                 <br></br>
                 <SimpleForm
                   field="Zip Code (Last Name)"
@@ -710,6 +661,7 @@ export default function Scheduler(props) {
                   // className={props.classes.element}
                   // options={options}
                   style={{
+                    backgroundColor: "red",
                     padding: "10px",
                     boxSizing: "border-box",
                     borderRadius: "20px",

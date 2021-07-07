@@ -237,7 +237,7 @@ export default function AppointmentPage(props) {
             notes={notes}
           />
         </div>
-        <div>
+        <div style={{ width: "50%", margin: "0 auto" }}>
           <SimpleForm field="Notes" onHandleChange={handleNotesChange} />
           <button onClick={toggleKeys}> Submit Notes </button>
         </div>
