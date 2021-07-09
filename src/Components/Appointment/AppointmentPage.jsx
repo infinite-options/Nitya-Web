@@ -119,24 +119,30 @@ const useStyles = makeStyles({
     margin: "0 auto",
   },
   timeslotButton: {
-    backgroundColor: "#B28D42",
-    border: "none",
-    color: "white",
-    padding: " 20px 100px 20px 100px ",
+    backgroundColor: "white",
+    border: "2px solid #B28D42",
+
+    color: "#B28D42",
+    padding: "15px 90px",
     textAlign: "center",
     textDecoration: "none",
     fontSize: "20px",
     borderRadius: "50px",
-    margin: "5px",
+    display: "block",
+    margin: "2px auto",
+    "&:hover": {
+      background: "#B28D42",
+      color: "white",
+    },
     "&:focus": {
-      background: "#52330D",
-      fontColor: "#B28D42",
+      background: "#B28D42",
+      color: "white",
       outline: "none",
       boxShadow: "none",
     },
     "&:active": {
-      background: "#52330D",
-      fontColor: "#B28D42",
+      background: "#B28D42",
+      color: "white",
       outline: "none",
       boxShadow: "none",
     },
@@ -187,7 +193,7 @@ export default function AppointmentPage(props) {
 
   // for hide & show
   const [infoSubmitted, setInfoSubmitted] = useState(false);
-  const [bookNowClicked, setBookNowClicked] = useState(true);
+  const [bookNowClicked, setBookNowClicked] = useState(false);
   const [timeSelected, setTimeSelected] = useState(false);
   //import context
   const { serviceArr, servicesLoaded } = useContext(MyContext);
@@ -374,6 +380,22 @@ export default function AppointmentPage(props) {
     setTimeSelected(true);
   };
 
+  function formatTime(date, time) {
+    if (time == null) {
+      return "?";
+    } else {
+      var newDate = new Date(date + " " + time);
+      var hours = newDate.getHours();
+      var minutes = newDate.getMinutes();
+      var ampm = hours >= 12 ? "pm" : "am";
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      var strTime = hours + ":" + minutes + " " + ampm;
+      return strTime;
+    }
+  }
+
   //get appt
   useEffect(() => {
     if (dateHasBeenChanged) {
@@ -397,10 +419,10 @@ export default function AppointmentPage(props) {
     return timeSlots.map((element) => (
       <Row>
         <button
-          className={classes.button}
+          className={classes.timeslotButton}
           onClick={() => selectApptTime(element.begin_time)}
         >
-          {element.begin_time}
+          {formatTime(apiDateString, element.begin_time)}
         </button>
       </Row>
     ));
@@ -414,7 +436,6 @@ export default function AppointmentPage(props) {
   return (
     <div style={{ backgroundColor: "#DADADA" }}>
       <ScrollToTop />
-      <br />
       <br />
       <div className={classes.container}>
         <Row style={{ padding: "0px", backgroundColor: "#B28D42" }}>
@@ -464,140 +485,158 @@ export default function AppointmentPage(props) {
           </Col>
         </Row>
       </div>
-      <div
-        className={classes.CalendarContainer}
-        aria-label={"find a day to meet"}
-      >
-        <Row className={classes.calendarTimeTable}>
-          <Col className={classes.calendarBox}>
-            <h1
-              style={{
-                textAlign: "left",
-                color: "white",
-                fontFamily: "AvenirHeavy",
-                fontSize: "25px",
-              }}
-            >
-              Find a date to meet with us
-            </h1>
-            <Calendar
-              backgroundColor="#d3a625"
-              calendarType="US"
-              onClickDay={dateChange}
-              value={date}
-              className={classes.center}
-            />
-          </Col>
-          <Col className={classes.timeslotBox}>
-            <h1 className={classes.h1} style={{ textAlign: "left" }}>
-              What time is good for you?
-            </h1>
-            <p
-              style={{
-                textAlign: "left",
-                color: "#B28D42",
-                // fontFamily: "AvenirHeavy",
-                fontSize: "15px",
-              }}
-            >
-              UTC - 07:00 Pacific Time
-            </p>
-            <div className={classes.timeslotButtonBox}>
-              {renderAvailableApptsVertical()}
-            </div>
-          </Col>
-        </Row>
-      </div>
-
-      <div className={classes.container} style={{ padding: "40px 40px" }}>
-        <Row>
-          <Col>
-            <h1 className={classes.selectTime}>Confirm Meeting</h1>
-            <br></br>
-            <h1
-              style={{
-                fontSize: "42x",
-                fontFamily: "AvenirHeavy",
-                margin: "0 auto",
-                textAlign: "center",
-              }}
-              hidden={timeSelected ? "hidden" : ""}
-            >
-              Please pick a day and time to meet
-            </h1>
-            <h1 className={classes.date} hidden={!timeSelected ? "hidden" : ""}>
-              <span style={{}}>{dateString1}</span> at{" "}
-              <span style={{}}>{selectedTime}</span>
-            </h1>
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col>
-            <p className={classes.content} style={{ textAlign: "left" }}>
-              {elementToBeRendered.title}
-              <br />
-              {elementToBeRendered.duration} | {elementToBeRendered.cost}
-            </p>
+      {bookNowClicked ? (
+        <div>
+          <div
+            className={classes.CalendarContainer}
+            aria-label={"find a day to meet"}
+          >
+            <Row className={classes.calendarTimeTable}>
+              <Col className={classes.calendarBox}>
+                <h1
+                  style={{
+                    textAlign: "left",
+                    color: "white",
+                    fontFamily: "AvenirHeavy",
+                    fontSize: "25px",
+                  }}
+                >
+                  Find a date to meet with us
+                </h1>
+                <Calendar
+                  backgroundColor="#d3a625"
+                  calendarType="US"
+                  onClickDay={dateChange}
+                  value={date}
+                  className={classes.center}
+                />
+              </Col>
+              <Col className={classes.timeslotBox}>
+                <h1 className={classes.h1} style={{ textAlign: "left" }}>
+                  What time is good for you?
+                </h1>
+                <p
+                  style={{
+                    textAlign: "left",
+                    color: "#B28D42",
+                    // fontFamily: "AvenirHeavy",
+                    fontSize: "15px",
+                  }}
+                >
+                  UTC - 07:00 Pacific Time
+                </p>
+                <div className={classes.timeslotButtonBox}>
+                  {renderAvailableApptsVertical()}
+                </div>
+              </Col>
+            </Row>
+          </div>
+          <div className={classes.container} style={{ padding: "40px 40px" }}>
+            <Row>
+              <Col>
+                <h1 className={classes.selectTime}>Confirm Meeting</h1>
+                <br></br>
+                <h1
+                  style={{
+                    fontSize: "42x",
+                    fontFamily: "AvenirHeavy",
+                    margin: "0 auto",
+                    textAlign: "center",
+                  }}
+                  hidden={timeSelected ? "hidden" : ""}
+                >
+                  Please pick a day and time to meet
+                </h1>
+                <h1
+                  className={classes.date}
+                  hidden={!timeSelected ? "hidden" : ""}
+                >
+                  <span style={{}}>{dateString1}</span> at{" "}
+                  <span style={{}}>
+                    {formatTime(apiDateString, selectedTime)}
+                  </span>
+                </h1>
+              </Col>
+            </Row>
             <br />
-            <img
-              src={elementToBeRendered.image_url}
-              className={classes.img}
-              alt=""
-            />
-            <br />
-            <br />
-            <p className={classes.content} style={{ textAlign: "left" }}>
-              6055 Meridian Ave #40, San Jose, CA 95120, USA
-              <br />
-              Office: 408 471 7004
-            </p>
-          </Col>
-          <Col>
-            <SimpleForm
-              field="First Name"
-              onHandleChange={handleFullNameChange}
-            />
+            <Row>
+              <Col>
+                <p className={classes.content} style={{ textAlign: "left" }}>
+                  {elementToBeRendered.title}
+                  <br />
+                  {elementToBeRendered.duration} | {elementToBeRendered.cost}
+                </p>
+                <br />
+                <img
+                  src={elementToBeRendered.image_url}
+                  className={classes.img}
+                  alt=""
+                />
+                <br />
+                <br />
+                <p className={classes.content} style={{ textAlign: "left" }}>
+                  6055 Meridian Ave #40, San Jose, CA 95120, USA
+                  <br />
+                  Office: 408 471 7004
+                </p>
+              </Col>
+              <Col>
+                <SimpleForm
+                  field="First Name"
+                  onHandleChange={handleFullNameChange}
+                />
 
-            <br></br>
-            <SimpleForm field="Email Name" onHandleChange={handleEmailChange} />
-            <br></br>
+                <br></br>
+                <SimpleForm
+                  field="Email Name"
+                  onHandleChange={handleEmailChange}
+                />
+                <br></br>
 
-            <SimpleForm
-              field="Phone Number"
-              onHandleChange={handlePhoneNumChange}
-            />
-            <br></br>
-            <SimpleFormText field="Notes" onHandleChange={handleNotesChange} />
-            <br></br>
-            <div style={{ background: "white" }}>
-              <StripeElement
-                stripePromise={stripePromise}
-                treatmentID={treatmentID}
-                notes={notes}
-                infoSubmitted={infoSubmitted}
-                fName={fName}
-                email={email}
-                phoneNum={phoneNum}
-                date={date}
-                selectedTime={selectedTime}
-                purchaseDate={purchaseDate}
-                cost={cost}
-              />
-            </div>
-            <div aria-label={"click button to book your appointment"}>
-              <div hidden={timeSelected ? "hidden" : ""}>
-                <button className={classes.buttonDisable}>Confirm</button>
-              </div>
-              <div hidden={timeSelected !== infoSubmitted ? "" : "hidden"}>
-                <button className={classes.button} onClick={toggleKeys}>
-                  Book Appointment
-                </button>
-              </div>
-            </div>
-          </Col>
-        </Row>
-      </div>
+                <SimpleForm
+                  field="Phone Number"
+                  onHandleChange={handlePhoneNumChange}
+                />
+                <br></br>
+                <SimpleFormText
+                  field="Notes"
+                  onHandleChange={handleNotesChange}
+                />
+                <br></br>
+                <div style={{ background: "white" }}>
+                  <StripeElement
+                    stripePromise={stripePromise}
+                    treatmentID={treatmentID}
+                    notes={notes}
+                    infoSubmitted={infoSubmitted}
+                    fName={fName}
+                    email={email}
+                    phoneNum={phoneNum}
+                    date={date}
+                    selectedTime={selectedTime}
+                    purchaseDate={purchaseDate}
+                    cost={cost}
+                  />
+                </div>
+                <div aria-label={"click button to book your appointment"}>
+                  <div hidden={timeSelected ? "hidden" : ""}>
+                    <button className={classes.buttonDisable}>Confirm</button>
+                  </div>
+                  <div hidden={timeSelected !== infoSubmitted ? "" : "hidden"}>
+                    <button className={classes.button} onClick={toggleKeys}>
+                      Book Appointment
+                    </button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+      <br />
+      <br />
     </div>
   );
 }
