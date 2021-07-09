@@ -13,7 +13,18 @@ export default function StripeElement(props) {
 
   return (
     <Elements stripe={props.stripePromise}>
-      <Scheduler treatmentID={props.treatmentID} notes={props.notes} />
+      <Scheduler
+        treatmentID={props.treatmentID}
+        notes={props.notes}
+        infoSubmitted={props.infoSubmitted}
+        fName={props.fName}
+        email={props.email}
+        phoneNum={props.phoneNum}
+        date={props.date}
+        purchaseDate={props.purchaseDate}
+        selectedTime={props.selectedTime}
+        cost={props.cost}
+      />
     </Elements>
   );
 }

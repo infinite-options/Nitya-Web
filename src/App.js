@@ -16,7 +16,7 @@ import Blog from "./Blog/Blog";
 import FullBlog from "./Blog/FullBlog";
 import AddPost from "./Blog/AddPost";
 import ServicePage from "./Components/ServicePage";
-import AppointmentPage from "./Components/AppointmentPage";
+import AppointmentPage from "./Components/Appointment/AppointmentPage";
 import SignUp from "./Components/Home/SignUp";
 
 import ServicesPage from "./Components/Home/ServicesPage";
@@ -29,9 +29,8 @@ import {
   CardElement,
   Elements,
   useElements,
-  useStripe
+  useStripe,
 } from "@stripe/react-stripe-js";
-
 
 export const MyContext = React.createContext();
 
@@ -49,21 +48,19 @@ export default function App(props) {
   const [authLevel, setAuthLevel] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-const ELEMENTS_OPTIONS = {
-  fonts: [
-    {
-      cssSrc: "https://fonts.googleapis.com/css?family=Roboto"
-    }
-  ]
-};
-const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
-
+  const ELEMENTS_OPTIONS = {
+    fonts: [
+      {
+        cssSrc: "https://fonts.googleapis.com/css?family=Roboto",
+      },
+    ],
+  };
+  const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
   const url =
-  "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
+    "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
   const [servicesLoaded, setServicesLoaded] = useState(false);
   const [serviceArr, setServiceArr] = useState([]);
-
 
   useEffect(() => {
     if (!servicesLoaded) {
@@ -81,7 +78,7 @@ const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
   const logout = () => {
     setIsLoggedIn(false);
   };
-   
+
   return (
     <Router>
       <AuthContext.Provider
@@ -97,43 +94,41 @@ const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
           setAuthLevel,
         }}
       >
-      <Navbar />
+        <Navbar />
 
-      <Switch>
-        <Route exact path="/" component={Homepage} />
-        <Route path="/home" component={Homepage} />
-        <Route path="/about" component={About} />
-        <Route path="/blog" component={Blog} />
-        <Route path="/:blog_uid/fullblog" component={FullBlog} />
-        <Route path="/addpost" component={AddPost} />
-        <Route path="/services" component={Services} />
-        <Route path="/contact" component={Contact} />
-        <Route path="/servicespage" component={ServicesPage} />
-        
-        <Route exact path = "/:treatmentID/service/">
-          <MyContext.Provider value = {{serviceArr, servicesLoaded}}>
-            <ServicePage/>
-          </MyContext.Provider>
-        </Route>
-        <Route exact path = "/:treatmentID/appt/">
-          <MyContext.Provider value = {{serviceArr, servicesLoaded}}>
-            <AppointmentPage/>
-          </MyContext.Provider>
-        </Route>
-        <Route exact path = "/:treatmentID/appt/stripe">
-          <MyContext.Provider value = {{serviceArr, servicesLoaded}}>
-            <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
-              <CheckoutForm />
-            </Elements>
-          </MyContext.Provider>
-        </Route>
-        <Route exact path="/signup" component={SignUp} />
-      </Switch>
-      
-      <Footer />
+        <Switch>
+          <Route exact path="/" component={Homepage} />
+          <Route path="/home" component={Homepage} />
+          <Route path="/about" component={About} />
+          <Route path="/blog" component={Blog} />
+          <Route path="/:blog_uid/fullblog" component={FullBlog} />
+          <Route path="/addpost" component={AddPost} />
+          <Route path="/services" component={Services} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/servicespage" component={ServicesPage} />
+
+          <Route exact path="/:treatmentID/service/">
+            <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
+              <ServicePage />
+            </MyContext.Provider>
+          </Route>
+          <Route exact path="/:treatmentID/appt/">
+            <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
+              <AppointmentPage />
+            </MyContext.Provider>
+          </Route>
+          <Route exact path="/:treatmentID/appt/stripe">
+            <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
+              <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
+                <CheckoutForm />
+              </Elements>
+            </MyContext.Provider>
+          </Route>
+          <Route exact path="/signup" component={SignUp} />
+        </Switch>
+
+        <Footer />
       </AuthContext.Provider>
     </Router>
   );
 }
-
-
