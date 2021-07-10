@@ -105,15 +105,15 @@ const useStyles = makeStyles({
     margin: "0 auto",
   },
   calendarBox: {
-    width: "55%",
-    height: "485px",
+    width: "50%",
+    height: "550px",
     padding: "20px",
     backgroundColor: "#B28D42",
   },
   timeslotBox: {
-    width: "45%",
-    height: "485px",
-    padding: "20px",
+    width: "50%",
+    height: "350px",
+    //padding: "20px",
   },
   center: {
     margin: "0 auto",
@@ -150,7 +150,7 @@ const useStyles = makeStyles({
 
   timeslotButtonBox: {
     width: "90%",
-    height: "350px",
+    height: "300px",
     margin: "0 auto",
     overflowY: "scroll",
     overflowX: "hidden",
