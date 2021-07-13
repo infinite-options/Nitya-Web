@@ -384,14 +384,27 @@ export default function AppointmentPage(props) {
     if (time == null) {
       return "?";
     } else {
-      var newDate = new Date(date + " " + time);
-      var hours = newDate.getHours();
-      var minutes = newDate.getMinutes();
-      var ampm = hours >= 12 ? "pm" : "am";
-      hours = hours % 12;
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      var strTime = hours + ":" + minutes + " " + ampm;
+      time = time.split(":");
+      // fetch
+      var hours = Number(time[0]);
+      var minutes = Number(time[1]);
+      var seconds = Number(time[2]);
+
+      // calculate
+      var strTime;
+
+      if (hours > 0 && hours <= 12) {
+        strTime = "" + hours;
+      } else if (hours > 12) {
+        strTime = "" + (hours - 12);
+      } else if (hours == 0) {
+        strTime = "12";
+      }
+
+      strTime += minutes < 10 ? ":0" + minutes : ":" + minutes; // get minutes
+      strTime += seconds < 10 ? ":0" + seconds : ":" + seconds; // get seconds
+      strTime += hours >= 12 ? " P.M." : " A.M."; // get AM/PM
+
       return strTime;
     }
   }
