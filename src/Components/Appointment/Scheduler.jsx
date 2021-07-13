@@ -3,7 +3,9 @@ import axios from "axios";
 import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import { makeStyles } from "@material-ui/core/styles";
 import { Switch, Route, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AppointmentConfirmationPage from "./confirmationPage";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   container: {
@@ -65,7 +67,7 @@ export const ApptContext = React.createContext();
 export default function Scheduler(props) {
   const elements = useElements();
   const stripe = useStripe();
-
+  const history = useHistory();
   //for confirmation page
   const [apptInfo, setApptInfo] = useState([]);
   const [apptConfirmed, setApptConfirmed] = useState(false);
@@ -117,7 +119,9 @@ export default function Scheduler(props) {
         purchase_price: props.cost, //TREATMENT INFO #2
         purchase_date: dateFormat3(props.purchaseDate),
       })
-      .then((res) => console.log(res));
+      .then((res) => {
+        console.log(res);
+      });
     setApptInfo({
       first_name: props.fName,
       email: props.email,
@@ -127,6 +131,7 @@ export default function Scheduler(props) {
       duration: props.duration,
       image_url: props.image_url,
     });
+    history.push("/apptconfirm");
     console.log(apptInfo);
     setApptConfirmed(true);
   }
@@ -247,13 +252,9 @@ export default function Scheduler(props) {
           aria-label={"click button to book your appointment"}
           hidden={!props.infoSubmitted ? "hidden" : ""}
         >
-          <Link
-            to="/apptconfirm"
-            hidden={submitted ? "hidden" : ""}
-            onClick={bookAppt}
-          >
+          <Button hidden={submitted ? "hidden" : ""} onClick={bookAppt}>
             Pay Now
-          </Link>
+          </Button>
         </div>
       </div>
     </div>

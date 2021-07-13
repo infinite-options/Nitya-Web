@@ -7,9 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Scheduler from "./Scheduler";
 
 export default function StripeElement(props) {
-  console.log(
-    "stripePromise is set to: " + JSON.stringify(props.stripePromise)
-  );
+  console.log("stripePromise is set to: " + props.stripePromise);
 
   return (
     <Elements stripe={props.stripePromise}>

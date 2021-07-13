@@ -31,6 +31,7 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import ConfirmationPage from "./Components/Appointment/confirmationPage";
 
 export const MyContext = React.createContext();
 
@@ -123,6 +124,9 @@ export default function App(props) {
                 <CheckoutForm />
               </Elements>
             </MyContext.Provider>
+          </Route>
+          <Route path="/apptconfirm">
+            <ConfirmationPage />
           </Route>
           <Route exact path="/signup" component={SignUp} />
         </Switch>

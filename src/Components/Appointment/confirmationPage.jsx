@@ -79,39 +79,32 @@ const useStyles = makeStyles({
 export default function ConfirmationPage(props) {
   console.log("props:" + props);
   //for confirmation page
-  const [apptInfo, apptInfoLoaded] = useContext(ApptContext);
-  const [elementToBeRendered, setElementToBeRendered] = useState([]);
+  //const [apptInfo, apptInfoLoaded] = useContext(ApptContext);
+  // const [elementToBeRendered, setElementToBeRendered] = useState([]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (apptInfoLoaded) {
       apptInfo.forEach((element) => {
         setElementToBeRendered(element);
       });
     }
-  });
+  }); */
 
   const classes = useStyles();
   return (
-    <div style={{ backgroundColor: "#DADADA" }}>
+    <div id="apptconfirm" style={{ backgroundColor: "#DADADA" }}>
       <ScrollToTop />
       <div className={classes.container}>
         <p>Booking Confirmed</p>
-        <p>We have sent a confirmation email to {elementToBeRendered.email}</p>
+        <p>We have sent a confirmation email to </p>
 
         <Row>
           <Col>
             <p className={classes.content} style={{ textAlign: "left" }}>
-              {elementToBeRendered.title}
               <br />
-              {elementToBeRendered.duration} |
-              {elementToBeRendered.purchase_price}
             </p>
             <br />
-            <img
-              src={elementToBeRendered.image_url}
-              className={classes.img}
-              alt=""
-            />
+
             <br />
             <br />
             <p className={classes.content} style={{ textAlign: "left" }}>
@@ -122,8 +115,7 @@ export default function ConfirmationPage(props) {
           </Col>
           <Col>
             <p>If anything changes we will contact you at:</p>
-            <p>{elementToBeRendered.first_name}</p>
-            <p>{elementToBeRendered.phone_no}</p>
+
             <div>
               <p>How to prepare for your consultation:</p>
               <p>

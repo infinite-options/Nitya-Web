@@ -263,7 +263,7 @@ export default function AppointmentPage(props) {
           console.log("(1 PaymentDetails) setting state with stripePromise");
 
           setStripePromise(tempStripePromise);
-
+          console.log(tempStripePromise);
           console.log("(1 PaymentDetails) stripePromise set!");
         })
         .catch((err) => {
@@ -290,7 +290,7 @@ export default function AppointmentPage(props) {
           let tempStripePromise = loadStripe(result.data.publicKey);
 
           console.log("(2 PaymentDetails) setting state with stripePromise");
-
+          console.log(tempStripePromise);
           setStripePromise(tempStripePromise);
 
           console.log("(2 PaymentDetails) stripePromise set!");
