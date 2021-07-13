@@ -1,7 +1,7 @@
 .main-footer {
   color: white;
   background-color: #b28d42;
-  padding-top: 3em;
+  padding-top: 2em;
   position: relative;
   bottom: 0;
   min-width: 100%;
@@ -18,9 +18,9 @@
 
 .list-unstyled {
   display: flexbox;
-  align-items: center;
+  align-items: left;
   text-decoration: none;
-  text-align: center;
+  text-align: left;
 }
 #main-col {
   border-left: 1px solid #f0dfae;

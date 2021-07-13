@@ -61,7 +61,7 @@ export default function LoginNavBar({ ...props }) {
         <AppBar color="white" position="static" elevation={0}>
           <Toolbar>
             <Box flexGrow={1} />
-            <Box>
+            {/* <Box>
               <Button
                 className={classes.authButton}
                 variant="contained"
@@ -81,8 +81,8 @@ export default function LoginNavBar({ ...props }) {
                   Login
                 </Button>
               )}
-            </Box>
-            <Box>
+            </Box> */}
+            {/* <Box>
               {auth.isLoggedIn && (
                 <Button
                   className={classes.authButton}
@@ -94,7 +94,7 @@ export default function LoginNavBar({ ...props }) {
                   Logout
                 </Button>
               )}
-            </Box>
+            </Box> */}
           </Toolbar>
         </AppBar>
       </div>

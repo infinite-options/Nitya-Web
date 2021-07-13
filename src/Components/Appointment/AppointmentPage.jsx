@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import StripeElement from "./StripeElement";
 import { useParams } from "react-router";
 import ScrollToTop from "../../Blog/ScrollToTop";
@@ -436,6 +437,7 @@ export default function AppointmentPage(props) {
   return (
     <div style={{ backgroundColor: "#DADADA" }}>
       <ScrollToTop />
+
       <br />
       <div className={classes.container}>
         <Row style={{ padding: "0px", backgroundColor: "#B28D42" }}>
@@ -607,6 +609,7 @@ export default function AppointmentPage(props) {
                   <StripeElement
                     stripePromise={stripePromise}
                     treatmentID={treatmentID}
+                    treatmentName={elementToBeRendered.title}
                     notes={notes}
                     infoSubmitted={infoSubmitted}
                     fName={fName}
@@ -616,6 +619,8 @@ export default function AppointmentPage(props) {
                     selectedTime={selectedTime}
                     purchaseDate={purchaseDate}
                     cost={cost}
+                    duration={elementToBeRendered.duration}
+                    image_url={elementToBeRendered.image_url}
                   />
                 </div>
                 <div aria-label={"click button to book your appointment"}>

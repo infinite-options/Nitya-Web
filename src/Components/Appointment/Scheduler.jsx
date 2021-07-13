@@ -2,14 +2,82 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import { makeStyles } from "@material-ui/core/styles";
-import { MyContext } from "../../App";
+import { Switch, Route, Link } from "react-router-dom";
+import AppointmentConfirmationPage from "./confirmationPage";
+
+const useStyles = makeStyles({
+  container: {
+    margin: "50px auto",
+    width: "980px",
+    padding: "50px 50px",
+    backgroundColor: "white",
+  },
+  button: {
+    backgroundColor: "white",
+    border: "2px solid #B28D42",
+    color: "#B28D42",
+    padding: "15px 90px",
+    textAlign: "center",
+    textDecoration: "none",
+    display: "block",
+    fontSize: "20px",
+    borderRadius: "50px",
+    margin: "2px auto",
+    "&:hover": {
+      background: "#B28D42",
+      color: "white",
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "&:active": {
+      outline: "none",
+      boxShadow: "none",
+    },
+  },
+  buttonDisable: {
+    backgroundColor: "#B28D42",
+    border: "none",
+    color: "white",
+    padding: "15px 100px",
+    textAlign: "center",
+    textDecoration: "none",
+    display: "block",
+    fontSize: "20px",
+    borderRadius: "50px",
+    margin: "0 auto",
+    opacity: "50%",
+    boxShadow: "none",
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "&:active": {
+      outline: "none",
+      boxShadow: "none",
+    },
+  },
+});
+
+export const ApptContext = React.createContext();
 
 export default function Scheduler(props) {
   const elements = useElements();
   const stripe = useStripe();
 
+  //for confirmation page
+  const [apptInfo, setApptInfo] = useState([]);
+  const [apptConfirmed, setApptConfirmed] = useState(false);
+
   // for hide and show
   const [submitted, setSubmitted] = useState(false);
+
+  // form use states, Axios.Post
+  const [fName, setFName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
+  const [notes, setNotes] = useState("");
 
   //String formatting functions for the date variable
   const doubleDigitMonth = (date) => {
@@ -50,6 +118,17 @@ export default function Scheduler(props) {
         purchase_date: dateFormat3(props.purchaseDate),
       })
       .then((res) => console.log(res));
+    setApptInfo({
+      first_name: props.fName,
+      email: props.email,
+      phone_no: props.phoneNum,
+      treatment: props.treatmentName,
+      purchase_price: props.cost,
+      duration: props.duration,
+      image_url: props.image_url,
+    });
+    console.log(apptInfo);
+    setApptConfirmed(true);
   }
 
   const [changeLoadingState, setLoadingState] = useState(false);
@@ -58,7 +137,7 @@ export default function Scheduler(props) {
     sendToDatabase();
     const temp = {
       tax: 5,
-      total: 10,
+      total: 20,
     };
 
     var clientSecret;
@@ -87,7 +166,7 @@ export default function Scheduler(props) {
           })
           .then(function (res) {
             console.log("createPaymentMethod res: " + JSON.stringify(res));
-
+            console.log(result.data.billingDetails);
             console.log("calling confirmedCardPayment...");
 
             try {
@@ -124,88 +203,57 @@ export default function Scheduler(props) {
     setSubmitted(true);
   }
 
-  const useStyles = makeStyles({
-    container: {
-      margin: "50px auto",
-      width: "980px",
-      padding: "50px 50px",
-      backgroundColor: "white",
-    },
-    button: {
-      backgroundColor: "white",
-      border: "2px solid #B28D42",
-      color: "#B28D42",
-      padding: "15px 90px",
-      textAlign: "center",
-      textDecoration: "none",
-      display: "block",
-      fontSize: "20px",
-      borderRadius: "50px",
-      margin: "2px auto",
-      "&:hover": {
-        background: "#B28D42",
-        color: "white",
-      },
-      "&:focus": {
-        outline: "none",
-        boxShadow: "none",
-      },
-      "&:active": {
-        outline: "none",
-        boxShadow: "none",
-      },
-    },
-    buttonDisable: {
-      backgroundColor: "#B28D42",
-      border: "none",
-      color: "white",
-      padding: "15px 100px",
-      textAlign: "center",
-      textDecoration: "none",
-      display: "block",
-      fontSize: "20px",
-      borderRadius: "50px",
-      margin: "0 auto",
-      opacity: "50%",
-      boxShadow: "none",
-      "&:focus": {
-        outline: "none",
-        boxShadow: "none",
-      },
-      "&:active": {
-        outline: "none",
-        boxShadow: "none",
-      },
-    },
-  });
-
   const classes = useStyles();
   return (
     <div>
-      <CardElement
-        elementRef={(c) => (this._element = c)}
-        // className={props.classes.element}
-        // options={options}
-        style={{
-          backgroundColor: "white",
-          padding: "10px",
-          boxSizing: "border-box",
-          borderRadius: "20px",
-          fontColor: "#52330D",
-          fontSize: "20px",
-          margin: "5px auto",
-          border: "2px solid #52330D",
-          width: "100%",
-          fontFamily: "AvenirHeavy",
-          outline: "none",
-        }}
-      />
-
-      <div aria-label={"click button to book your appointment"}>
-        <div hidden={!props.infoSubmitted ? "hidden" : ""}>
-          <button className={classes.button} onClick={bookAppt}>
+      <div>
+        <br></br>
+        <div hidden={!submitted ? "hidden" : ""}>
+          <Switch>
+            <Route path="/apptconfirm">
+              <ApptContext.Provider value={{ apptInfo, apptConfirmed }}>
+                <AppointmentConfirmationPage
+                  first_name={props.fName}
+                  email={props.email}
+                  phone_no={props.phoneNum}
+                  treatment={props.treatmentName}
+                  purchase_price={props.cost}
+                  duration={props.duration}
+                  image_url={props.image_url}
+                />
+              </ApptContext.Provider>
+            </Route>
+          </Switch>
+        </div>
+        <CardElement
+          elementRef={(c) => (this._element = c)}
+          // className={props.classes.element}
+          // options={options}
+          style={{
+            backgroundColor: "white",
+            padding: "10px",
+            boxSizing: "border-box",
+            borderRadius: "20px",
+            fontColor: "#52330D",
+            fontSize: "20px",
+            margin: "5px auto",
+            border: "2px solid #52330D",
+            width: "100%",
+            fontFamily: "AvenirHeavy",
+            outline: "none",
+          }}
+        />
+        <div
+          aria-label={"click button to book your appointment"}
+          hidden={!props.infoSubmitted ? "hidden" : ""}
+        >
+          <Link
+            to="/apptconfirm"
+            hidden={submitted ? "hidden" : ""}
+            onClick={bookAppt}
+          >
             Pay Now
-          </button>
+          </Link>
         </div>
       </div>
     </div>

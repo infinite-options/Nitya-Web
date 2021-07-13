@@ -13,48 +13,97 @@ function Footer() {
     <div className="main-footer">
       <div className="container">
         <Row>
-          {/* <Col>
+          <Col
+            style={{
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          ></Col>
+          <Col
+            style={{
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <Row>
-              {/* <img
-                src={Logo}
-                // style={
-                //   height= "100px",
-                //   width= "100px",}
-              /> */}
-            {/* </Row> */}
-            {/* <Row>
-              <div className="col-sm">
+              <img src={Logo} style={{ width: "100%" }} />
+              <div style={{ fontSize: "15px", textAlign: "left" }}>
                 &copy;{new Date().getFullYear()} by Leena Marathay
               </div>
-            </Row> */}
-          {/* </Col>  */}
-
+            </Row>
+          </Col>
+          {/* className="col-sm" */}
           {/* Column1 */}
-          <Col style={{borderRight:"1px solid white", height:"150px", display:"flex", justifyContent:"center", }}>
-            <h4 className="list-unstyled" style={{fontSize:"20px"}}>
+          <Col
+            style={{
+              height: "150px",
+              display: "flex",
+              justifyContent: "left",
+              paddingTop: "50px",
+            }}
+          >
+            <h4 className="list-unstyled" style={{ fontSize: "15px" }}>
               <li>6055 Meridian Ave, Ste.</li>
               <li> 40A, San Jose, CA 95120</li>
             </h4>
           </Col>
-
-          {/* Column2 */}
-          <Col style={{borderRight:"1px solid white", height:"150px", width:"800px"}}>
-            <ui className="list-unstyled" >
-              <h1 style={{fontSize:"35px"}}>Leena Marathay</h1>
-              <li style={{fontSize:"20px"}}>NAMA Certified Ayurvedic Practitioner</li>
-            </ui>
-          </Col>
-
-          
-
           {/* Column3 */}
-          <Col style={{height:"150px"}}>
-            <ui className="list-unstyled" style={{fontSize:"20px"}}>
+          <Col style={{ height: "150px", paddingTop: "50px" }}>
+            <ui
+              className="list-unstyled"
+              style={{ fontSize: "15px", textAlign: "left" }}
+            >
               <li>Office: 408 471 7004</li>
-
               <li>Email: Leena@nityaayurveda.com</li>
             </ui>
           </Col>
+
+          {/* Column2 */}
+          <Col
+            style={{
+              height: "150px",
+              width: "800px",
+              paddingTop: "50px",
+            }}
+          >
+            <ui className="list-unstyled">
+              <h1 style={{ fontSize: "15px", textAlign: "left" }}>
+                Leena Marathay
+              </h1>
+              <li style={{ fontSize: "15px", textAlign: "left" }}>
+                NAMA Certified Ayurvedic Practitioner
+              </li>
+            </ui>
+          </Col>
+
+          <Col
+            style={{
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Row>
+              <img
+                src={Namacb}
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  float: "center",
+                }}
+                alt="An Image of NAMACB CAP"
+              />
+            </Row>
+          </Col>
+          <Col
+            style={{
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          ></Col>
 
           {/* Column4 */}
           {/* <Col>
@@ -71,7 +120,7 @@ function Footer() {
             </ui>
           </Col> */}
         </Row>
-        <hr />
+        {/* <hr /> */}
         <Row>
           {/* <Col></div>
           <Col>
@@ -112,6 +161,7 @@ function Footer() {
           </div>
           <Col></div>
         </div> */}
+        <br />
       </div>
     </div>
   );
