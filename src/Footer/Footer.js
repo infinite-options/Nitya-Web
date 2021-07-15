@@ -34,76 +34,73 @@ function Footer() {
               </div>
             </Row>
           </Col>
-          {/* className="col-sm" */}
-          {/* Column1 */}
-          <Col
-            style={{
-              height: "150px",
-              display: "flex",
-              justifyContent: "left",
-              paddingTop: "50px",
-            }}
-          >
-            <h4 className="list-unstyled" style={{ fontSize: "15px" }}>
-              <li>6055 Meridian Ave, Ste.</li>
-              <li> 40A, San Jose, CA 95120</li>
-            </h4>
-          </Col>
-          {/* Column3 */}
-          <Col style={{ height: "150px", paddingTop: "50px" }}>
-            <ui
-              className="list-unstyled"
-              style={{ fontSize: "15px", textAlign: "left" }}
-            >
-              <li>Office: 408 471 7004</li>
-              <li>Email: Leena@nityaayurveda.com</li>
-            </ui>
-          </Col>
-
-          {/* Column2 */}
-          <Col
-            style={{
-              height: "150px",
-              width: "800px",
-              paddingTop: "50px",
-            }}
-          >
-            <ui className="list-unstyled">
-              <h1 style={{ fontSize: "15px", textAlign: "left" }}>
-                Leena Marathay
-              </h1>
-              <li style={{ fontSize: "15px", textAlign: "left" }}>
-                NAMA Certified Ayurvedic Practitioner
-              </li>
-            </ui>
-          </Col>
-
-          <Col
-            style={{
-              height: "200px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
+          <Col>
             <Row>
-              <img
-                src={Namacb}
+              {/* className="col-sm" */}
+              {/* Column1 */}
+              <Col
                 style={{
-                  width: "80px",
-                  height: "80px",
-                  float: "center",
+                  height: "150px",
+                  display: "flex",
+                  justifyContent: "left",
+                  paddingTop: "50px",
                 }}
-                alt="An Image of NAMACB CAP"
-              />
+              >
+                <h4 className="list-unstyled" style={{ fontSize: "15px" }}>
+                  <li>6055 Meridian Ave, Ste.</li>
+                  <li> 40A, San Jose, CA 95120</li>
+                </h4>
+              </Col>
+              {/* Column3 */}
+              <Col style={{ height: "150px", paddingTop: "50px" }}>
+                <ui
+                  className="list-unstyled"
+                  style={{ fontSize: "15px", textAlign: "left" }}
+                >
+                  <li>Office: 408 471 7004</li>
+                  <li>Email: Leena@nityaayurveda.com</li>
+                </ui>
+              </Col>
+
+              {/* Column2 */}
+              <Col
+                style={{
+                  height: "150px",
+                  width: "800px",
+                  paddingTop: "50px",
+                }}
+              >
+                <ui className="list-unstyled">
+                  <h1 style={{ fontSize: "15px", textAlign: "left" }}>
+                    Leena Marathay
+                  </h1>
+                  <li style={{ fontSize: "15px", textAlign: "left" }}>
+                    NAMA Certified Ayurvedic Practitioner
+                  </li>
+                </ui>
+              </Col>
+            </Row>
+            <Row>
+              <Col></Col>
+              <Col
+                style={{
+                  paddingBottom: "50px",
+                }}
+              >
+                <img
+                  src={Namacb}
+                  style={{
+                    width: "80px",
+                    height: "80px",
+                    float: "center",
+                  }}
+                  alt="An Image of NAMACB CAP"
+                />
+              </Col>
+              <Col></Col>
             </Row>
           </Col>
-          <Col
-            style={{
-              height: "200px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          ></Col>
+          <Col></Col>
 
           {/* Column4 */}
           {/* <Col>
@@ -119,9 +116,6 @@ function Footer() {
               />
             </ui>
           </Col> */}
-        </Row>
-        {/* <hr /> */}
-        <Row>
           {/* <Col></div>
           <Col>
             <ui className="list-unstyled">
@@ -161,7 +155,6 @@ function Footer() {
           </div>
           <Col></div>
         </div> */}
-        <br />
       </div>
     </div>
   );
