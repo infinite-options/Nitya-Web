@@ -4,27 +4,10 @@ import Img from "../../card2.png";
 import { makeStyles } from "@material-ui/core/styles";
 import ScrollToTop from "../../Blog/ScrollToTop";
 
-
-
 const useStyles = makeStyles({
   container: {
-    // display: "flex",
-    // justifyContent: "center",
-    // alignItems: "center",
-    // position: "relative",
-    //top: "70px",
-    /*minHeight: "710px",
-    minWidth: "600px",
-    height: "auto",
-    width: "auto",
-    */
-   marginLeft:"40px",
-   marginRight: "48px",
-   marginTop:"95px",
-    // height: "70vh",
-    // width: "80vw",
     width: "980px",
-    height: "625px",
+    height: "auto",
     //padding: "50px",
     backgroundColor: "white",
   },
@@ -45,7 +28,7 @@ const useStyles = makeStyles({
     opacity: "1",
     width: "443px",
     height: "32px",
-    marginTop:"45px",
+    marginTop: "45px",
   },
 
   content: {
@@ -57,7 +40,7 @@ const useStyles = makeStyles({
     //lineHeight: "1.4",
     //textAlign: "left",
     //marginRight:"23px",
-    marginTop:"23px",
+    marginTop: "23px",
 
     width: "410px",
     height: "468px",
@@ -79,7 +62,7 @@ const useStyles = makeStyles({
     width: "450px",
     // height: "463px",
     objectFit: "cover",
-    marginLeft:"-35px",
+    marginLeft: "-35px",
     //marginTop:"23px",
     //marginBottom:"62px",
     //marginRight:"48px",
@@ -101,7 +84,6 @@ export default function Home() {
           <p className={classes.title}>Leena Marathay</p>
           <Row className={classes.rows}>
             <Col classname="firstCol">
-
               <p className={classes.content}>
                 Leena is a NAMA (National Ayurvedic Medical Association)
                 certified Ayurvedic Practitioner and an Ayurvedic Health and
@@ -122,13 +104,13 @@ export default function Home() {
               </p>
               ​
             </Col>
-            <Col classname="secCol" >
+            <Col classname="secCol">
               <div className={classes.image}>
-              <img
-                src={Img}
-                className={classes.img}
-                alt="An image of Leena Marathay"
-              />
+                <img
+                  src={Img}
+                  className={classes.img}
+                  alt="An image of Leena Marathay"
+                />
               </div>
             </Col>
           </Row>

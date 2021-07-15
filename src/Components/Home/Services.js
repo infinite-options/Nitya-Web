@@ -10,24 +10,22 @@ import "./Services.css";
 const Services = (props) => {
   const useStyles = makeStyles({
     container: {
+      marginTop: "95px",
 
-    marginTop: "95px",
-
-     height: "1381px",
-     width: "980px",
-      
+      height: "1381px",
+      width: "980px",
 
       backgroundColor: "white",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
     },
-    
+
     ButtonGroup: {
       top: 0,
-      marginTop:"30px",
+      marginTop: "30px",
     },
-    
+
     btn1: {
       width: "153px",
       height: "32px",
@@ -100,7 +98,9 @@ const Services = (props) => {
           </div>
   */}
 
-          <p style={{width:"fit-content" , height:"fit-content"}}>{rSelected}</p>
+          <p style={{ width: "fit-content", height: "fit-content" }}>
+            {rSelected}
+          </p>
         </div>
       </div>
     </div>
