@@ -4,6 +4,7 @@ import { Row, Col } from "reactstrap";
 import { makeStyles } from "@material-ui/core/styles";
 import "./calendar.css";
 import { ApptContext } from "./Scheduler";
+import { MyContext } from "../../App";
 
 const useStyles = makeStyles({
   container: {
@@ -77,18 +78,37 @@ const useStyles = makeStyles({
 });
 
 export default function ConfirmationPage(props) {
-  console.log("props:" + props);
-  //for confirmation page
-  //const [apptInfo, apptInfoLoaded] = useContext(ApptContext);
-  // const [elementToBeRendered, setElementToBeRendered] = useState([]);
-
-  /* useEffect(() => {
-    if (apptInfoLoaded) {
-      apptInfo.forEach((element) => {
-        setElementToBeRendered(element);
+  // console.log("ApptContext:" + ApptContext);
+  const apptInfo = props.location;
+  console.log("apptInfo:" + apptInfo);
+  const { serviceArr, servicesLoaded } = useContext(MyContext);
+  const [elementToBeRendered, setElementToBeRendered] = useState([]);
+  useEffect(() => {
+    console.log("servicesLoaded: " + servicesLoaded);
+    if (servicesLoaded) {
+      serviceArr.forEach((element) => {
+        if (true) {
+          setElementToBeRendered(element);
+          console.log("duration" + elementToBeRendered.duration);
+        }
       });
     }
-  }); */
+    console.log("elementToBeRendered: " + elementToBeRendered);
+  });
+
+  //for confirmation page
+  // const [apptInfo, apptInfoLoaded] = useContext(ApptContext);
+  // const [elementToBeRendered, setElementToBeRendered] = useState([]);
+
+  // useEffect(() => {
+  //   console.log("use effect called" + apptInfoLoaded);
+  //   if (apptInfoLoaded) {
+  //     apptInfo.forEach((element) => {
+  //       setElementToBeRendered(element);
+  //       console.log("elementToBeRendered:" + elementToBeRendered);
+  //     });
+  //   }
+  // });
 
   const classes = useStyles();
   return (

@@ -2,12 +2,14 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import { makeStyles } from "@material-ui/core/styles";
-import { Switch, Route, Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
-import AppointmentConfirmationPage from "./confirmationPage";
 import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
+  h1: {
+    fontSize: "24px",
+    color: "#B28D42",
+    fontFamily: "Hoefler",
+  },
   container: {
     margin: "50px auto",
     width: "980px",
@@ -67,19 +69,11 @@ export const ApptContext = React.createContext();
 export default function Scheduler(props) {
   const elements = useElements();
   const stripe = useStripe();
-  const history = useHistory();
   //for confirmation page
-  const [apptInfo, setApptInfo] = useState([]);
   const [apptConfirmed, setApptConfirmed] = useState(false);
 
   // for hide and show
   const [submitted, setSubmitted] = useState(false);
-
-  // form use states, Axios.Post
-  const [fName, setFName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNum, setPhoneNum] = useState("");
-  const [notes, setNotes] = useState("");
 
   //String formatting functions for the date variable
   const doubleDigitMonth = (date) => {
@@ -122,17 +116,6 @@ export default function Scheduler(props) {
       .then((res) => {
         console.log(res);
       });
-    setApptInfo({
-      first_name: props.fName,
-      email: props.email,
-      phone_no: props.phoneNum,
-      treatment: props.treatmentName,
-      purchase_price: props.cost,
-      duration: props.duration,
-      image_url: props.image_url,
-    });
-    history.push("/apptconfirm");
-    console.log(apptInfo);
     setApptConfirmed(true);
   }
 
@@ -207,29 +190,11 @@ export default function Scheduler(props) {
       });
     setSubmitted(true);
   }
-
   const classes = useStyles();
   return (
     <div>
       <div>
         <br></br>
-        <div hidden={!submitted ? "hidden" : ""}>
-          <Switch>
-            <Route path="/apptconfirm">
-              <ApptContext.Provider value={{ apptInfo, apptConfirmed }}>
-                <AppointmentConfirmationPage
-                  first_name={props.fName}
-                  email={props.email}
-                  phone_no={props.phoneNum}
-                  treatment={props.treatmentName}
-                  purchase_price={props.cost}
-                  duration={props.duration}
-                  image_url={props.image_url}
-                />
-              </ApptContext.Provider>
-            </Route>
-          </Switch>
-        </div>
         <CardElement
           elementRef={(c) => (this._element = c)}
           // className={props.classes.element}
@@ -252,10 +217,17 @@ export default function Scheduler(props) {
           aria-label={"click button to book your appointment"}
           hidden={!props.infoSubmitted ? "hidden" : ""}
         >
-          <Button hidden={submitted ? "hidden" : ""} onClick={bookAppt}>
+          <button
+            className={classes.button}
+            hidden={submitted ? "hidden" : ""}
+            onClick={bookAppt}
+          >
             Pay Now
-          </Button>
+          </button>
         </div>
+      </div>
+      <div hidden={!apptConfirmed ? "hidden" : ""}>
+        <p className={classes.h1}>Your Appointment is confirmed. </p>
       </div>
     </div>
   );

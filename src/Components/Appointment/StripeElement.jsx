@@ -22,9 +22,6 @@ export default function StripeElement(props) {
         purchaseDate={props.purchaseDate}
         selectedTime={props.selectedTime}
         cost={props.cost}
-        treatmentName={props.treatmentName}
-        duration={props.duration}
-        image_url={props.image_url}
       />
     </Elements>
   );

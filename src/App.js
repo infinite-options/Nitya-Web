@@ -125,12 +125,8 @@ export default function App(props) {
               </Elements>
             </MyContext.Provider>
           </Route>
-          <Route path="/apptconfirm">
-            <ConfirmationPage />
-          </Route>
           <Route exact path="/signup" component={SignUp} />
         </Switch>
-
         <Footer />
       </AuthContext.Provider>
     </Router>

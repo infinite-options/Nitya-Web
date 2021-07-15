@@ -19,7 +19,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ShareOutline from "@material-ui/icons/ShareOutlined";
 import SearchIcon from "@material-ui/icons/Search";
 import BlogEntries from "./BlogEntries";
-import NityaLogo from "../nitya_logo.png";
+import NityaLogo from "../Nitya Ayurveda Logo.png";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,30 +30,42 @@ const useStyles = makeStyles((theme) => ({
     minWidth: "600px",
     height: "auto",
     width: "auto",
-    padding: "100px",
+    // padding: "100px",
     backgroundColor: "white",
   },
   appbar: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#B28D42",
     boxShadow: "none",
-    paddingBottom: "30px",
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    marginBottom: "60px",
     color: "#000000",
   },
   navbarDisplayFlex: {
     display: "flex",
-    marginLeft: 0,
     justifyContent: "space-between",
   },
   navDisplayFlex: {
     display: "flex",
+    marginLeft: 0,
     justifyContent: "space-between",
   },
   menuBtns: {
-    backgroundColor: "#d3a625",
+    backgroundColor: "#B28D42",
+    fontSize: "18px",
     color: "#ffffff",
     boxShadow: "none",
-    border: "1px solid #d3a625",
-    margin: "10px",
+    // border: "1px solid #d3a625",
+    borderRadius: "10%",
+    margin: " 0 20px",
+    "&:hover": {
+      textDecoration: "underline",
+    },
+    "&:focus": {
+      textDecoration: "underline",
+      outline: "none",
+      boxShadow: "none",
+    },
   },
 
   search: {
@@ -78,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: "#594d2c",
+    color: "#B28D42",
   },
   inputRoot: {
     color: "#594d2cs",
@@ -118,11 +130,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: "10px",
   },
   desc: {
-    marginLeft: "-20px",
+    // marginLeft: "-5px",
   },
   title: {
-    fontFamily: "DidoteTextW01-Italic",
-    color: "#594d2c",
+    fontFamily: "DidoteTextW01",
+    color: "#B28D42",
     fontSize: "2rem",
     lineHeight: "1.6",
   },
@@ -130,7 +142,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.2rem",
     fontFamily: "'Open Sans', sans-serif",
     wordWrap: "break-word",
-    color: "#8d6f19",
+    color: "black",
     lineHeight: "1.4",
     textAlign: "justify",
     paddingTop: "30px",
@@ -192,19 +204,21 @@ function Blogpage(props) {
 
   return (
     <div className="blogpage" id="blogpage">
-      <h1
-        style={{
-          textAlign: "center",
-          fontFamily: "DidoteTextW01-Italic",
-          fontStyle: "italic",
-          fontSize: "4.5rem",
-          wordWrap: "break-word",
-          color: "#d3a625",
-        }}
-      >
-        Blog
-      </h1>
+      <br />
+
       <div className={classes.container}>
+        <h1
+          style={{
+            textAlign: "center",
+            fontFamily: "DidoteTextW01",
+            fontSize: "4rem",
+            wordWrap: "break-word",
+            color: "#d3a625",
+            padding: "2rem",
+          }}
+        >
+          Ayurvedic Musings
+        </h1>
         <AppBar className={classes.appbar} position="static">
           <Toolbar>
             <Container maxWidth="md" className={classes.navbarDisplayFlex}>
@@ -283,8 +297,8 @@ function Blogpage(props) {
                                       : post.blogImage
                                   }
                                   style={{
-                                    width: "50%",
-                                    height: "50%",
+                                    width: "400px",
+                                    // height: "80%",
                                     objectFit: "cover",
                                     objectPosition: "center -20px",
                                   }}
@@ -327,7 +341,7 @@ function Blogpage(props) {
                           >
                             <MenuItem
                               style={{
-                                color: "#594d2c",
+                                color: "#B28D42",
                                 width: "200px",
                                 height: "50px",
                                 padding: "0",
@@ -363,7 +377,7 @@ function Blogpage(props) {
                             </div>
                           </div>
                         </Link>
-                        <hr style={{ color: "#8d6f19" }}></hr>
+                        <hr style={{ borderTop: "2px solid #B28D42" }}></hr>
                         <div className={classes.cardActions}>
                           <p>
                             <span>Views &nbsp;&nbsp; Comments</span>
@@ -411,8 +425,8 @@ function Blogpage(props) {
                                     : post.blogImage
                                 }
                                 style={{
-                                  width: "50%",
-                                  height: "50%",
+                                  width: "400px",
+                                  // height: "80%",
                                   objectFit: "cover",
                                   objectPosition: "center -20px",
                                 }}
@@ -455,7 +469,7 @@ function Blogpage(props) {
                         >
                           <MenuItem
                             style={{
-                              color: "#594d2c",
+                              color: "#B28D42",
                               width: "200px",
                               height: "50px",
                               padding: "0",
@@ -491,7 +505,7 @@ function Blogpage(props) {
                           </div>
                         </div>
                       </Link>
-                      <hr style={{ color: "#8d6f19" }}></hr>
+                      <hr style={{ borderTop: "2px solid #B28D42" }}></hr>
                       <div className={classes.cardActions}>
                         <p>
                           <span>Views &nbsp;&nbsp; Comments</span>
