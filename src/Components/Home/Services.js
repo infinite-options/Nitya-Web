@@ -68,6 +68,7 @@ const Services = (props) => {
   const classes = useStyles();
 
   const [rSelected, setRSelected] = useState(<Consulting />);
+  const [activeComponent, setActiveComponent] = useState("consulting");
 
   return (
     <div className="page-container">
@@ -78,14 +79,22 @@ const Services = (props) => {
             <ButtonGroup className="ButtonGroup">
               <Button
                 id="btn1"
-                onClick={() => setRSelected(<Consulting />)}
+                className={activeComponent === "consulting" ? "selected" : ""}
+                onClick={() => {
+                  setRSelected(<Consulting />);
+                  setActiveComponent("consulting");
+                }}
                 active={rSelected === <Consulting />}
               >
                 Consulting
               </Button>
               <Button
                 id="btn2"
-                onClick={() => setRSelected(<Treatments />)}
+                className={activeComponent === "treatments" ? "selected" : ""}
+                onClick={() => {
+                  setRSelected(<Treatments />);
+                  setActiveComponent("treatments");
+                }}
                 active={rSelected === <Treatments />}
               >
                 Body Therapies

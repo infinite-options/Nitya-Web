@@ -23,6 +23,10 @@
   margin-top: 30px;
 }
 
+.selected {
+  background-color: #b28d42 !important;
+}
+
 #btn1 {
   width: 129px;
   height: 39px;
@@ -39,7 +43,7 @@
   margin-right: 50px;
   padding: 1px 1px;
 }
-#btn1.hover {
+/* #btn1.hover {
   background-color: transparent;
   color: #b28d42;
   border: #b28d42;
@@ -48,7 +52,7 @@
   background-color: #b28d42;
   color: white;
   border: 1px solid #b28d42;
-}
+} */
 
 #btn2 {
   width: 140px;
@@ -63,7 +67,7 @@
   border: none;
 }
 
-#btn2.hover {
+/* #btn2.hover {
   background-color: transparent;
   color: #b28d42;
   border: #b28d42;
@@ -72,4 +76,4 @@
   background-color: #b28d42;
   color: white;
   border: 1px solid #b28d42;
-}
+} */

@@ -89,14 +89,14 @@
   /* margin-left: 10rem; 
   margin-right: 10rem; */
 }
-.treatments {
-  /* margin-left: 200px;
+/* .treatments {
+  margin-left: 200px;
   margin-right: 200px;
   margin-left: 10rem; 
-  margin-right: 10rem; */
-  /* display: flex;
-  justify-content: center; */
-}
+  margin-right: 10rem;
+  display: flex;
+  justify-content: center;
+} */
 .page-container {
   background-color: #dbdbdb;
   display: flex;
