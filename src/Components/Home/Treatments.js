@@ -15,7 +15,7 @@ import LearnMoreBTN from "../Services/LearnMoreBtn";
 import BookNowBTN from "../Appointment/BookNowBtn";
 
 const useStyles = makeStyles({
-  container:{
+  container: {
     //width: "80vw",
     //height: "70vh",
     //width: "100%",
@@ -31,14 +31,12 @@ const useStyles = makeStyles({
     // height: "800px",
     //height: "42rem",
     height: "360px",
-    width: "888.73px",
-    backgroundColor: "#B28D42",
+    border: "none",
     //outline: "none",
     //float: "right",
-    marginBottom:"44px",
+    marginBottom: "44px",
     // marginLeft: "-100px",
     // marginRight: "-80px",
-
   },
   images: {
     display: "block",
@@ -58,13 +56,13 @@ const useStyles = makeStyles({
     //objectFit: "cover",
     //display: "inline-block",
   },
-  img:{
-    width:"476.73px",
+  img: {
+    width: "476.73px",
     objectFit: "cover",
     height: "360px",
-
   },
   body: {
+    backgroundColor: "#B28D42",
     // minWidth: "420px",
     //marginLeft:"525px",
     height: "360px",
@@ -76,7 +74,7 @@ const useStyles = makeStyles({
     //float:"right",
     // paddingTop: "4rem",
     // padding: "4rem",
-    paddingTop:"44px",
+    paddingTop: "44px",
     //paddingRight:"50px",
     //paddingLeft:"57px",
   },
@@ -86,7 +84,7 @@ const useStyles = makeStyles({
     // fontSize: "1.4rem",
 
     // color: "black",
-    
+
     textAlign: "center",
     font: "normal normal normal 24px/26px Hoefler Text",
     letterSpacing: "0.6px",
@@ -99,13 +97,11 @@ const useStyles = makeStyles({
     font: "normal normal normal 22px/26px SF Pro Display",
     letterSpacing: "0.55px",
     color: "#FFFFFF",
-
   },
   LMbtn: {
     // textAlign: "center",
     display: "flex",
-    justifyContent:"center",
-
+    justifyContent: "center",
   },
   divBody: {
     //width:"400px",
@@ -142,30 +138,31 @@ export default function Consulting() {
 
   return (
     <div className="treatments" id="treatments" aria-label="treatments section">
-      <br /><br />
-      <Row className={classes.container} >
+      <br />
+      <br />
+      <Row className={classes.container}>
         {data
           .filter((service) => service.category === "Treatment")
           .map((filteredService) => (
-            <Col >
+            <Col style={{ padding: "0px 60px" }}>
               <Card className={classes.card}>
                 {/* <Col className="no-gutters"> */}
                 <Row>
                   {/* <Row className="d-none d-sm-block d-md-block"> */}
                   <div className={classes.images}>
-                  <img
-                    className={classes.img}
-                    variant="top"
-                    src={filteredService.image_url}
-                    alt={"An image of" + filteredService.title}
-                  />
+                    <img
+                      className={classes.img}
+                      variant="top"
+                      src={filteredService.image_url}
+                      alt={"An image of" + filteredService.title}
+                    />
                   </div>
                   {/* <Row style={{ display: "flex", justifyContent: "center" }}> */}
-                  <CardBody className={classes.body} >
-                    <CardTitle className={classes.title} >
+                  <CardBody className={classes.body}>
+                    <CardTitle className={classes.title}>
                       {filteredService.title}
                     </CardTitle>
-                    <CardText className={classes.text} >
+                    <CardText className={classes.text}>
                       {filteredService.description} <br />
                       {/* <NavHashLink to="#home">Learn More</NavHashLink> <br /> */}
                       {/* <LearnMoreBTN apptID={filteredService.treatment_uid} /> */}
@@ -173,8 +170,8 @@ export default function Consulting() {
                     {/* <Button className={classes.btn} variant="primary">
                         Book Now
                       </Button> */}
-                      <LearnMoreBTN  />
-                      <br />
+                    <LearnMoreBTN />
+                    <br />
                     <BookNowBTN apptID={filteredService.treatment_uid} />
                   </CardBody>
                 </Row>
@@ -188,7 +185,6 @@ export default function Consulting() {
       {/* <div className={classes.LMbtn}>
         <LearnMoreBTN  />
       </div> */}
-      
     </div>
   );
 }

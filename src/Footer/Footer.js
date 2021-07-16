@@ -35,25 +35,27 @@ function Footer() {
               </div>
             </Row>
           </Col>
-          <Col>
+          <Col md="auto">
             <Row>
               {/* className="col-sm" */}
               {/* Column1 */}
               <Col
+                md="auto"
                 style={{
                   height: "150px",
                   display: "flex",
                   justifyContent: "left",
                   paddingTop: "50px",
+                  width: "236px",
                 }}
               >
                 <h4 className="list-unstyled" style={{ fontSize: "15px" }}>
-                  <li>6055 Meridian Ave, Ste.</li>
-                  <li> 40A, San Jose, CA 95120</li>
+                  <li>6055 Meridian Ave, Ste. 40A,</li>
+                  <li>San Jose, CA 95120</li>
                 </h4>
               </Col>
               {/* Column3 */}
-              <Col style={{ height: "150px", paddingTop: "50px" }}>
+              <Col md="auto" style={{ height: "150px", paddingTop: "50px" }}>
                 <ui
                   className="list-unstyled"
                   style={{ fontSize: "15px", textAlign: "left" }}
@@ -65,9 +67,9 @@ function Footer() {
 
               {/* Column2 */}
               <Col
+                md="auto"
                 style={{
                   height: "150px",
-                  width: "800px",
                   paddingTop: "50px",
                 }}
               >
@@ -82,8 +84,9 @@ function Footer() {
               </Col>
             </Row>
             <Row>
-              <Col></Col>
+              <Col md="auto" style={{ width: "236px" }}></Col>
               <Col
+                md="auto"
                 style={{
                   paddingBottom: "50px",
                   display: "flex",
@@ -102,13 +105,30 @@ function Footer() {
                 <img
                   src={CAAM}
                   style={{
-                    width: "198",
+                    // width: "198",
                     height: "80px",
-                    marginLeft: "20px",
+                    marginLeft: "40px",
                   }}
                 ></img>
+                <div
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    marginLeft: "40px",
+                  }}
+                >
+                  <InstagramIcon
+                    fontSize="large"
+                    onClick={(event) =>
+                      (window.location.href =
+                        "https://www.instagram.com/nityaayurveda/")
+                    }
+                    style={{ height: "45px", width: "45px" }}
+                    aria-hidden="false"
+                    aria-label="Instagram"
+                  />
+                </div>
               </Col>
-              <Col></Col>
             </Row>
           </Col>
           <Col></Col>
