@@ -174,18 +174,20 @@ export default function ConfirmationPage(props) {
         </div>
         <div
           style={{
-            // border: 'dashed',
+            border: 'dashed',
             height: 'calc(100% - 174px)',
-            display: 'flex',
-
+            display: 'inline-flex',
+            width: '100%'
           }}
         >
           <div
             style={{
-              // border: 'solid red',
-              borderRight: '1px solid #B28D42',
+              border: 'solid purple',
+              // borderRight: '1px solid #B28D42',
               height: '100%',
-              width: 'calc(50%-30px)',
+              // minWidth: 'calc(50%-30px)',
+              // width: 'calc(50%-30px)',
+              width: '50%',
               marginLeft: '30px',
               paddingRight: '30px'
             }}
@@ -266,10 +268,11 @@ export default function ConfirmationPage(props) {
           </div>
           <div
             style={{
-              borderLeft: '1px solid #B28D42',
-              // border: 'solid cyan',
+              // borderLeft: '1px solid #B28D42',
+              border: 'solid cyan',
               height: '100%',
-              width: 'calc(50%-30px)',
+              // width: 'calc(50%-30px)',
+              width: '50%',
               marginRight: '30px',
               paddingLeft: '30px'
             }}
@@ -297,18 +300,31 @@ export default function ConfirmationPage(props) {
             </span>
             <br />
             <br />
-            <span
+            <div
               style={{
                 color: "#b28d42",
+                // display: 'inline-block',
+                width: '50%',
+                border: 'dashed'
               }}
             >
               Bringing these things to the consultation will help us accelerate the process.
-            </span>
+            </div>
             <br />
             <br />
-            <span>
-            List of your current medication, diet, and food preferences
-            </span>
+            {/* <span>
+              List of your current medication, diet, and food preferences
+            </span> */}
+            <div
+              style={{
+                color: "#b28d42",
+                // display: 'inline-block',
+                width: '50%',
+                border: 'dashed'
+              }}
+            >
+              List of your current medication, diet, and food preferences
+            </div>
           </div>
         </div>
       </div>
