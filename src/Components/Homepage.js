@@ -1,23 +1,10 @@
 import React, { Component } from "react";
-// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
-//import Navbar from "./Navbar/Navbar";
-//import Footer from "./Footer/Footer";
-// import Home from "./Components/Home";
-// import About from "./Components/About";
-// import Services from "./Components/Services";
-// import Contact from "./Components/Contact";
 import ScrollToTop from "../Blog/ScrollToTop";
-
-
 import Home from "./Home/Home";
 import About from "./Home/About";
 import Services from "./Home/Services";
-// import Blog from "./Home/Blog";
+import ServicePage from "./Home/ServicesPage";
 import Contact from "./Home/Contact";
-// import Footer from "./Footer/Footer";
-
-// import Footer from "./src/Footer/Footer";
 
 class Homepage extends Component {
   render() {
@@ -27,7 +14,7 @@ class Homepage extends Component {
           <div className="page-container ">
             <ScrollToTop />
             <Home />
-            <About />
+            {/* <About />
             <p
               style={{
                 textAlign: "center",
@@ -37,12 +24,14 @@ class Homepage extends Component {
                 wordWrap: "break-word",
                 color: "#d3a625",
                 lineHeight: "0",
-                paddingBottom: "30px",
+                paddingBottom: "20px",
               }}
             >
               Services
-            </p>
+            </p> */}
             <Services />
+            {/* <ServicePage /> */}
+            <About />
             <Contact />
           </div>
         </div>
