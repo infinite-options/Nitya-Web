@@ -29,7 +29,7 @@ function Footer() {
             }}
           >
             <Row>
-              <img src={Logo} style={{ width: "100%" }} />
+              <img src={Logo} style={{ height: "150px" }} />
               <div style={{ fontSize: "15px", textAlign: "left" }}>
                 &copy;{new Date().getFullYear()} by Leena Marathay
               </div>
@@ -49,10 +49,14 @@ function Footer() {
                   width: "236px",
                 }}
               >
-                <h4 className="list-unstyled" style={{ fontSize: "15px" }}>
-                  <li>6055 Meridian Ave, Ste. 40A,</li>
-                  <li>San Jose, CA 95120</li>
-                </h4>
+                <ui className="list-unstyled">
+                  <li style={{ fontSize: "15px", textAlign: "left" }}>
+                    Leena Marathay
+                  </li>
+                  <li style={{ fontSize: "15px", textAlign: "left" }}>
+                    NAMA Certified Ayurvedic Practitioner
+                  </li>
+                </ui>
               </Col>
               {/* Column3 */}
               <Col md="auto" style={{ height: "150px", paddingTop: "50px" }}>
@@ -73,18 +77,21 @@ function Footer() {
                   paddingTop: "50px",
                 }}
               >
-                <ui className="list-unstyled">
-                  <h1 style={{ fontSize: "15px", textAlign: "left" }}>
-                    Leena Marathay
-                  </h1>
-                  <li style={{ fontSize: "15px", textAlign: "left" }}>
-                    NAMA Certified Ayurvedic Practitioner
-                  </li>
+                <ui className="list-unstyled" style={{ fontSize: "15px" }}>
+                  <li>6055 Meridian Ave, Ste. 40A,</li>
+                  <li>San Jose, CA 95120</li>
                 </ui>
               </Col>
             </Row>
             <Row>
-              <Col md="auto" style={{ width: "236px" }}></Col>
+              <Col md="auto" style={{ width: "236px" }}>
+                <p
+                  className="list-unstyled"
+                  style={{ fontSize: "15px", textDecoration: "underline" }}
+                >
+                  Admin Login
+                </p>
+              </Col>
               <Col
                 md="auto"
                 style={{
@@ -123,7 +130,7 @@ function Footer() {
                       (window.location.href =
                         "https://www.instagram.com/nityaayurveda/")
                     }
-                    style={{ height: "45px", width: "45px" }}
+                    style={{ height: "45px", width: "45px", cursor: "pointer" }}
                     aria-hidden="false"
                     aria-label="Instagram"
                   />
@@ -132,60 +139,7 @@ function Footer() {
             </Row>
           </Col>
           <Col></Col>
-
-          {/* Column4 */}
-          {/* <Col>
-            <ui className="list-unstyled">
-              <img
-                src={Namacb}
-                style={{
-                  width: "200px",
-                  height: "200px",
-                  float: "center",
-                }}
-                alt="An Image of NAMACB CAP"
-              />
-            </ui>
-          </Col> */}
-          {/* <Col></div>
-          <Col>
-            <ui className="list-unstyled">
-              <li>
-                <img
-                  src={Namacb}
-                  style={{
-                    width: "200px",
-                    height: "200px",
-                    float: "center",
-                  }}
-                  alt="An Image of NAMACB CAP"
-                />
-              </li>
-            </ui>
-          </div> */}
-          {/* <Col>
-            <ul className="list-icons ">
-              <li className="footer-icons">
-                <InstagramIcon
-                  fontSize="large"
-                  onClick={(event) =>
-                    (window.location.href =
-                      "https://www.instagram.com/nityaayurveda/")
-                  }
-                  aria-hidden="false"
-                  aria-label="Instagram"
-                />
-              </li>
-            </ul>
-          </div> */}
         </Row>
-        {/* <Row>
-          <Col></div>
-          <div className="col-sm">
-            &copy;{new Date().getFullYear()} by Leena Marathay
-          </div>
-          <Col></div>
-        </div> */}
       </div>
     </div>
   );
