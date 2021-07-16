@@ -1,0 +1,62 @@
+
+#container {
+    width:  980px ;
+    height:  476px ;
+    /* background-color:  white ; */
+    
+}
+
+#title {
+    text-align:  center ;
+    font:  italic normal normal 54px/65px Hoefler Text ;
+    letter-spacing:  0px ;
+    /* color:  #B28D42 ;
+    opacity:  1 ; */
+    padding-top:  90px ; 
+    padding-bottom: 20px ;
+}
+
+#btn {
+    /* background-color:  #B28D42 ;
+    color:  white ;
+    border:  1px solid #B28D42 ; */
+    /* border-radius:  100px ; */
+    width:  243px ;
+    height: 49px ;
+    margin-bottom: 12px ;
+    font-size: 15px ;
+    
+}
+
+#img {
+    width: 555px ;
+    height: 476px ;
+}
+
+#carousel{
+    margin-bottom:  -50px ;
+    margin-top: 10px ;
+}
+
+#leftCol {
+    width:  425px ;
+    float:  left ;
+    /* background-color:  white ; */
+}
+
+#rightCol {
+    width:  555px ;
+    float:  right ;
+    background-position:  36% 58% ;
+    background-size:  120% ;
+    /* filter:  saturate(130%) ; */
+}
+
+
+@media screen and (max-width: 980px){
+    
+}
+
+@media screen and (max-width:450px){
+
+}
