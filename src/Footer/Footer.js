@@ -1,5 +1,6 @@
 import React from "react";
 import Namacb from "../namacb.png";
+import CAAM from "../CAAM_logo.png";
 import Logo from "../Group 15.svg";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -85,6 +86,8 @@ function Footer() {
               <Col
                 style={{
                   paddingBottom: "50px",
+                  display: "flex",
+                  flexDirection: "row",
                 }}
               >
                 <img
@@ -96,6 +99,14 @@ function Footer() {
                   }}
                   alt="An Image of NAMACB CAP"
                 />
+                <img
+                  src={CAAM}
+                  style={{
+                    width: "198",
+                    height: "80px",
+                    marginLeft: "20px",
+                  }}
+                ></img>
               </Col>
               <Col></Col>
             </Row>
