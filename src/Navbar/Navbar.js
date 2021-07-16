@@ -73,8 +73,8 @@ const Navbar = () => {
         <img
           src={logo}
           style={{
-            width: 250,
-            height: 150,
+            width: 125,
+            height: 75,
             objectFit: "cover",
           }}
           alt="Nitya Ayurveda’s Logo"

@@ -13,6 +13,7 @@ const useStyles = makeStyles({
     width: "980px",
     padding: "50px 50px",
     backgroundColor: "white",
+    // backgroundColor: "blue"
   },
   button: {
     backgroundColor: "white",
@@ -69,7 +70,7 @@ export default function Scheduler(props) {
   const stripe = useStripe();
   const history = useHistory();
   //for confirmation page
-  const [apptInfo, setApptInfo] = useState([]);
+  const [apptInfo, setApptInfo] = useState({});
   const [apptConfirmed, setApptConfirmed] = useState(false);
 
   // for hide and show
@@ -103,25 +104,40 @@ export default function Scheduler(props) {
     );
   };
 
+  useEffect(() => {
+    console.log("RERENDER -- apptInfo: ", apptInfo);
+    // setApptConfirmed(true);
+    // console.log("apptInfo length: ", apptInfo.length);
+    if(JSON.stringify(apptInfo) !== "{}") {
+      history.push({
+        pathname: '/apptconfirm',
+        state: {
+          apptInfo
+          // test_value: "test_string"
+        }
+      });
+    }
+  }, [apptInfo])
+
   function sendToDatabase() {
     const postURL =
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
-    axios
-      .post(postURL, {
-        first_name: props.fName,
-        last_name: "",
-        email: props.email,
-        phone_no: props.phoneNum,
-        appt_treatment_uid: props.treatmentID, //TREATMENT INFO #1
-        notes: props.notes,
-        appt_date: dateFormat3(props.date),
-        appt_time: props.selectedTime,
-        purchase_price: props.cost, //TREATMENT INFO #2
-        purchase_date: dateFormat3(props.purchaseDate),
-      })
-      .then((res) => {
-        console.log(res);
-      });
+    // axios
+    //   .post(postURL, {
+    //     first_name: props.fName,
+    //     last_name: "",
+    //     email: props.email,
+    //     phone_no: props.phoneNum,
+    //     appt_treatment_uid: props.treatmentID, //TREATMENT INFO #1
+    //     notes: props.notes,
+    //     appt_date: dateFormat3(props.date),
+    //     appt_time: props.selectedTime,
+    //     purchase_price: props.cost, //TREATMENT INFO #2
+    //     purchase_date: dateFormat3(props.purchaseDate),
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //   });
     setApptInfo({
       first_name: props.fName,
       email: props.email,
@@ -131,9 +147,9 @@ export default function Scheduler(props) {
       duration: props.duration,
       image_url: props.image_url,
     });
-    history.push("/apptconfirm");
-    console.log(apptInfo);
-    setApptConfirmed(true);
+    // history.push("/apptconfirm", {apptInfo});
+    // console.log(apptInfo);
+    // setApptConfirmed(true);
   }
 
   const [changeLoadingState, setLoadingState] = useState(false);
@@ -190,11 +206,11 @@ export default function Scheduler(props) {
                   if (err.response) {
                     console.log("error: " + JSON.stringify(err.response));
                   }
-                  changeLoadingState(false);
+                  setLoadingState(false);
                 });
             } catch (e) {
               console.log("error trying to pay: ", e);
-              changeLoadingState(false);
+              setLoadingState(false);
             }
           });
       })
@@ -202,18 +218,19 @@ export default function Scheduler(props) {
         console.log(err);
         if (err.response) {
           console.log("error: " + JSON.stringify(err.response));
-          changeLoadingState(false);
+          setLoadingState(false);
         }
       });
     setSubmitted(true);
   }
 
   const classes = useStyles();
+  console.log("(Scheduler) props: ", props);
   return (
     <div>
       <div>
         <br></br>
-        <div hidden={!submitted ? "hidden" : ""}>
+        {/* <div hidden={!submitted ? "hidden" : ""}>
           <Switch>
             <Route path="/apptconfirm">
               <ApptContext.Provider value={{ apptInfo, apptConfirmed }}>
@@ -229,7 +246,7 @@ export default function Scheduler(props) {
               </ApptContext.Provider>
             </Route>
           </Switch>
-        </div>
+        </div> */}
         <CardElement
           elementRef={(c) => (this._element = c)}
           // className={props.classes.element}

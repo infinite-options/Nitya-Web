@@ -10,7 +10,8 @@ import "./Navbar.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "white",
+    // backgroundColor: "white",
+    // backgroundColor: "red"
   },
   authButton: {
     color: "#ffffff",

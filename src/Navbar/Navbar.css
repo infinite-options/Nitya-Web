@@ -1,5 +1,6 @@
 .navbar {
-  height: 150px;
+  /* height: 150px; */
+  height: 100px;
   width: 100%;
   background: white;
   color: #8d6f1a;
@@ -13,6 +14,7 @@
   width: 100%;
   z-index: 500;
   cursor: pointer;
+  border-bottom: solid;
 }
 
 .nav-links {

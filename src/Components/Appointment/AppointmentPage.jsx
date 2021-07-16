@@ -193,7 +193,8 @@ export default function AppointmentPage(props) {
 
   // for hide & show
   const [infoSubmitted, setInfoSubmitted] = useState(false);
-  const [bookNowClicked, setBookNowClicked] = useState(false);
+  // const [bookNowClicked, setBookNowClicked] = useState(false);
+  const [bookNowClicked, setBookNowClicked] = useState(true);
   const [timeSelected, setTimeSelected] = useState(false);
   //import context
   const { serviceArr, servicesLoaded } = useContext(MyContext);
