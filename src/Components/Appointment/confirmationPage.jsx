@@ -398,7 +398,7 @@ export default function ConfirmationPage(props) {
                 color: "#b28d42",
               }}
             >
-              San Jose, CA 95120, USA
+              San Jose, CA, 95120
             </span>
             <br />
             <br />

@@ -124,7 +124,7 @@ const useStyles = makeStyles({
 });
 
 const location = {
-  address: "6055 Meridian Ave #40, San Jose, CA 95120, USA",
+  address: "6055 Meridian Ave #40, San Jose, CA, 95120",
   lat: 37.23022,
   lng: -121.88534,
 };
@@ -171,8 +171,8 @@ export default function Contact() {
                 className={classes.content}
                 aria-label="6055 Meridian Ave suite 40"
               >
-                6055 Meridian Ave #40, <br />
-                San Jose, CA 95120, USA
+                6055 Meridian Ave #40 <br />
+                San Jose, CA, 95120
               </p>
               <p className={classes.content}>Office: 408 471 7004</p>
               <iframe

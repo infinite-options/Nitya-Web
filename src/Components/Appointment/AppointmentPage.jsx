@@ -184,6 +184,8 @@ const useStyles = makeStyles({
   },
   center: {
     margin: "0 auto",
+    // border: 'solid',
+    // height: '200px'
   },
   timeslotButton: {
     backgroundColor: "white",
@@ -244,6 +246,8 @@ const useStyles = makeStyles({
 });
 
 export default function AppointmentPage(props) {
+  console.log("(AppointmentPage) props: ", props);
+
   const classes = useStyles();
   moment().format();
 
@@ -281,17 +285,50 @@ export default function AppointmentPage(props) {
   const [duration, setDuration] = useState(null);
   const cost = elementToBeRendered.cost;
 
+  // useEffect(() => {
+  //   console.log()
+  // }, []);
+
   useEffect(() => {
     if (servicesLoaded) {
       serviceArr.forEach((element) => {
         if (element.treatment_uid === treatment_uid) {
           setElementToBeRendered(element);
-          console.log("duration" + elementToBeRendered.duration);
+          console.log("element to be rendered: ", elementToBeRendered);
+          console.log("duration: ", elementToBeRendered.duration);
+          // setDuration(parseDuration(elementToBeRendered.duration));
           setDuration(elementToBeRendered.duration);
         }
       });
     }
   });
+
+  // parse duration
+  const parseDuration = (rawDuration) => {
+    if(rawDuration === undefined){
+      return "";
+    }
+    console.log("rawDuration: ", rawDuration);
+    let parsedDuration = "";
+
+    let durationTokens = rawDuration.split(':');
+    console.log("durationTokens: ", durationTokens);
+    
+    if(Number(durationTokens[0]) > 0) {
+      parsedDuration = parsedDuration + durationTokens[0] + " hr ";
+    }
+
+    let minsNum = Number(durationTokens[1]);
+    let secsNum = Number(durationTokens[2]);
+
+    if(secsNum >= 31) {
+      minsNum++;
+    }
+
+    parsedDuration = parsedDuration + minsNum + " min"
+
+    return parsedDuration;
+  }
 
   // handle form changes
   const handleFullNameChange = (newFName) => {
@@ -566,7 +603,7 @@ export default function AppointmentPage(props) {
                 // textAlign: "center",
               }}
             >
-              {elementToBeRendered.duration} | {elementToBeRendered.cost}
+              {parseDuration(elementToBeRendered.duration)} | {elementToBeRendered.cost}
             </p>
 
             <button
@@ -693,7 +730,7 @@ export default function AppointmentPage(props) {
                     }}
                   >{elementToBeRendered.title}</span>
                   <br />
-                  {elementToBeRendered.duration} | {elementToBeRendered.cost}
+                  {parseDuration(elementToBeRendered.duration)} | {elementToBeRendered.cost}
                 </p>
                 {/* <br /> */}
                 <img
@@ -706,36 +743,63 @@ export default function AppointmentPage(props) {
                 <p className={classes.content2} style={{ textAlign: "left" }}>
                   6055 Meridian Ave #40
                   <br />
-                  San Jose, CA 95120, USA
+                  San Jose, CA, 95120
                   <br />
                   <br />
                   Office: (408) 471-7004
                 </p>
               </Col>
               <Col>
-                <SimpleForm
-                  field="Full Name"
-                  onHandleChange={handleFullNameChange}
-                />
+                <div
+                  style={{
+                    marginBottom: '10px'
+                  }}
+                >
+                  <SimpleForm
+                    field="Full Name"
+                    onHandleChange={handleFullNameChange}
+                  />
+                </div>
 
-                <br></br>
+                <div
+                  style={{
+                    marginBottom: '10px'
+                  }}
+                >
                 <SimpleForm
-                  field="Email Name"
+                  field="Email Address"
                   onHandleChange={handleEmailChange}
                 />
-                <br></br>
-
+                </div>
+                <div
+                  style={{
+                    marginBottom: '10px'
+                  }}
+                >
                 <SimpleForm
                   field="Phone Number"
                   onHandleChange={handlePhoneNumChange}
                 />
-                <br></br>
+                </div>
+
+                <div
+                  style={{
+                    marginBottom: '10px'
+                  }}
+                >
                 <SimpleFormText
-                  field="Notes"
+                  field="Type your message here"
                   onHandleChange={handleNotesChange}
                 />
-                <br></br>
-                <div style={{ background: "white" }}>
+                </div>
+                {/* <br></br> */}
+                <div 
+                  hidden={!infoSubmitted}
+                  style={{ 
+                    background: "white",
+                    // border: "dashed"
+                  }}
+                >
                   <StripeElement
                     stripePromise={stripePromise}
                     treatmentID={treatmentID}

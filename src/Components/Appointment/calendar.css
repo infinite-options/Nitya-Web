@@ -31,15 +31,16 @@
   border: none;
   /* width: 70px;
   height: 70px; */
-  width: 69px;
-  height: 69px;
+  /* width: 69px;
+  height: 69px; */
+  height: 60px;
   outline: none;
   /* font-family: "AvenirMedium"; */
   font-size: 24px;
 }
 .react-calendar button:enabled:hover {
   margin: 0 auto;
-  padding: 10px;
+  /* padding: 10px; */
   cursor: pointer;
 }
 .react-calendar__navigation {
@@ -112,8 +113,9 @@
 .react-calendar__month-view__days__day--weekend {
   /* width: 70px;
   height: 70px; */
-  width: 69px;
-  height: 69px;
+  /* width: 69px; */
+  /* height: 69px; */
+
   font-family: avenir;
   /* color: #d10000; */
   color: rgb(255,255,255,0.5);

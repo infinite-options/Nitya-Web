@@ -681,7 +681,8 @@ const StripeCheckout = (props) => {
         }}
       />
 
-      <div className={props.classes.label}>
+      {/* <div className={props.classes.label}> */}
+      <div>
         <CardElement
           elementRef={(c) => (this._element = c)}
           className={props.classes.element}

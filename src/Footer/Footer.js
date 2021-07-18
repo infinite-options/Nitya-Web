@@ -78,8 +78,8 @@ function Footer() {
                 }}
               >
                 <ui className="list-unstyled" style={{ fontSize: "15px" }}>
-                  <li>6055 Meridian Ave, Ste. 40A,</li>
-                  <li>San Jose, CA 95120</li>
+                  <li>6055 Meridian Ave, Ste. 40A</li>
+                  <li>San Jose, CA, 95120</li>
                 </ui>
               </Col>
             </Row>
