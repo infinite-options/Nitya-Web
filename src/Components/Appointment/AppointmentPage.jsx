@@ -21,9 +21,15 @@ const useStyles = makeStyles({
     padding: "50px 50px",
     backgroundColor: "white",
   },
+  // h1: {
+  //   fontSize: "24px",
+  //   color: "#B28D42",
+  //   fontFamily: "Hoefler",
+  // },
   h1: {
     fontSize: "24px",
     color: "#B28D42",
+    paddingTop: "15px",
     fontFamily: "Hoefler",
   },
   content: {
@@ -179,6 +185,10 @@ const useStyles = makeStyles({
     width: "50%",
     // height: "350px",
     height: "100%",
+    // display: "inline-block",
+    // overflow: "auto",
+    // display: "inline-block",
+    // flexDirection: "column",
     // border: "dashed"
     //padding: "20px",
   },
@@ -188,11 +198,13 @@ const useStyles = makeStyles({
     // height: '200px'
   },
   timeslotButton: {
+    width: "240px",
+    height: "60px",
+    maxWidth: "80%",
     backgroundColor: "white",
     border: "2px solid #B28D42",
-
     color: "#B28D42",
-    padding: "15px 90px",
+    // padding: "15px 90px",
     textAlign: "center",
     textDecoration: "none",
     fontSize: "20px",
@@ -219,24 +231,29 @@ const useStyles = makeStyles({
 
   timeslotButtonBox: {
     width: "100%",
-    // border: "1px solid",
+    // border: "1px solid green",
+    // overflow: "hidden",
+    // overflowY: "scroll",
     // height: "300px",
     borderTop: "1px solid rgb(178,141,66,0.5)",
-    height: "426px",
-    margin: "0 auto",
+    // height: "426px",
+    // flexGrow: "1",
+    // overflow: "hidden",
+    height: "calc(100% - 100px)",
+    // margin: "0 auto",
     overflowY: "scroll",
     overflowX: "hidden",
     "&::-webkit-scrollbar": {
       width: "10px",
       // border: "1px solid black",
       borderRadius: "20px",
-      padding: "1px 0",
+      // padding: "1px 0",
       backgroundColor: "white",
     },
     "&::-webkit-scrollbar-thumb": {
       border: "1px solid #000",
       borderRadius: "20px",
-      padding: "1px 0",
+      // padding: "1px 0",
       backgroundColor: "#52330D"
     },
   },
@@ -277,6 +294,7 @@ export default function AppointmentPage(props) {
 
   //for axios.get
   const [date, setDate] = useState(new Date());
+  const [minDate, setMinDate] = useState(new Date());
   const [dateString, setDateString] = useState(null);
   const [dateHasBeenChanged, setDateHasBeenChanged] = useState(true);
   const [dateString1, setDateString1] = useState(null);
@@ -487,7 +505,10 @@ export default function AppointmentPage(props) {
   const dateChange = (date) => {
     setDate(date);
     dateStringChange(date);
-    setTimeSelected(true);
+    // setTimeSelected(true);
+    if(timeSelected === true) {
+      setTimeSelected(false);
+    }
   };
 
   function formatTime(date, time) {
@@ -568,7 +589,13 @@ export default function AppointmentPage(props) {
     <div style={{ backgroundColor: "#DADADA" }}>
       <ScrollToTop />
       <br />
-      <div className={classes.container}>
+      <div 
+        className={classes.container}
+        style={{
+          // border: "dashed",
+          maxWidth: "96%"
+        }}
+      >
         <Row style={{ padding: "0px", backgroundColor: "#B28D42" }}>
           <Col style={{ padding: "0px" }}>
             <img
@@ -621,6 +648,10 @@ export default function AppointmentPage(props) {
           <div
             className={classes.CalendarContainer}
             aria-label={"find a day to meet"}
+            style={{
+              // border: "dashed",
+              maxWidth: "96%"
+            }}
           >
             <Row className={classes.calendarTimeTable}>
               <Col className={classes.calendarBox}>
@@ -634,43 +665,69 @@ export default function AppointmentPage(props) {
                 >
                   Find a date to meet with us
                 </h1>
+                {console.log("(Calendar) date: ", date)}
                 <Calendar
                   backgroundColor="#d3a625"
                   calendarType="US"
                   onClickDay={dateChange}
                   value={date}
+                  minDate={minDate}
                   className={classes.center}
+                  next2Label={null}
+                  prev2Label={null}
                 />
               </Col>
               <Col className={classes.timeslotBox}>
-                <h1 
-                  className={classes.h1} 
-                  style={{ 
-                    textAlign: "left",
-                    // border: "dashed",
-                    marginTop: "20px"
-                  }}
-                >
-                  What's a good time for you?
-                </h1>
-                <p
+                <div
                   style={{
-                    textAlign: "left",
-                    color: "#B28D42",
-                    // fontFamily: "AvenirHeavy",
-                    fontSize: "15px",
-                    // border: "dashed"
+                    height: "100px",
+                    maxHeight: "100px",
+                    // display: "inline-block",
+                    // alignItems: "center",
+                    // maxHeight: "100px",
+                    // width: "100%",
+                    // border: "1px solid blue"
                   }}
                 >
-                  UTC - 07:00 Pacific Time
-                </p>
+                  <div
+                    className={classes.h1} 
+                    style={{ 
+                      textAlign: "left",
+                      // border: "1px solid red",
+                      // marginTop: "20px",
+                      height: "50%"
+                    }}
+                  >
+                    What's a good time for you?
+                  </div>
+                  <div
+                    style={{
+                      textAlign: "left",
+                      color: "#B28D42",
+                      // fontFamily: "AvenirHeavy",
+                      fontSize: "15px",
+                      // border: "dashed"
+                      // border: "1px solid red",
+                      height: "50%"
+                    }}
+                  >
+                    UTC - 07:00 Pacific Time
+                  </div>
+                </div>
                 <div className={classes.timeslotButtonBox}>
                   {renderAvailableApptsVertical()}
                 </div>
               </Col>
             </Row>
           </div>
-          <div className={classes.container} style={{ padding: "40px 40px" }}>
+          <div 
+            className={classes.container} 
+            style={{ 
+              padding: "40px 40px",
+              // border: "dashed",
+              maxWidth: "96%"
+            }}
+          >
             <Row>
               <Col>
                 {/* <h1 className={classes.selectTime}>Confirm Meeting</h1> */}
