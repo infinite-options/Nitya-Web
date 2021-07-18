@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+
 import StripeElement from "./StripeElement";
 import { useParams } from "react-router";
 import ScrollToTop from "../../Blog/ScrollToTop";
@@ -31,6 +32,18 @@ const useStyles = makeStyles({
     color: "#B28D42",
     textAlign: "center",
   },
+  content2: {
+    fontSize: "20px",
+    // fontFamily: "SFProDisplayRegular",
+    color: "#B28D42",
+    textAlign: "center",
+  },
+  content3: {
+    fontSize: "22px",
+    // fontFamily: "SFProDisplayRegular",
+    color: "#B28D42",
+    textAlign: "center",
+  },
   selectTime: {
     fontSize: "32px",
     color: "#52330D",
@@ -38,11 +51,50 @@ const useStyles = makeStyles({
     margin: "0 auto",
     textAlign: "center",
   },
-
+  selectTime2: {
+    fontSize: "24px",
+    color: "#B28D42",
+    fontFamily: "AvenirHeavy",
+    margin: "0 auto",
+    textAlign: "center",
+  },
   CalendarContainer: {
     margin: "auto",
     width: "980px",
     backgroundColor: "white",
+  },
+  bookButton: {
+    width: "200px",
+    height: "50px",
+    backgroundColor: "#B28D42",
+    border: "2px solid #B28D42",
+    color: "white",
+    // padding: "0 10px 0 10px",
+    textDecoration: "none",
+    fontSize: "20px",
+    borderRadius: "50px",
+    fontFamily: "AvenirHeavy",
+    "&:hover": {
+      borderColor: "#52330D",
+      background: "#52330D",
+      color: "#white"
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "&:active": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "&:disabled": {
+      backgroundColor: "#B28D42",
+      color: "white",
+      opacity: "50%",
+      "&:hover": {
+        borderColor: "#B28D42"
+      },
+    }
   },
   button: {
     backgroundColor: "white",
@@ -103,16 +155,31 @@ const useStyles = makeStyles({
   calendarTimeTable: {
     width: "100%",
     margin: "0 auto",
+    // border: "solid blue",
+    height: "520px"
   },
+  // calendarBox: {
+  //   width: "50%",
+  //   height: "550px",
+  //   padding: "20px",
+  //   backgroundColor: "#B28D42",
+  // },
   calendarBox: {
     width: "50%",
-    height: "550px",
+    height: "100%",
     padding: "20px",
     backgroundColor: "#B28D42",
   },
+  // timeslotBox: {
+    // width: "50%",
+    // height: "350px",
+    //padding: "20px",
+  // },
   timeslotBox: {
     width: "50%",
-    height: "350px",
+    // height: "350px",
+    height: "100%",
+    // border: "dashed"
     //padding: "20px",
   },
   center: {
@@ -149,8 +216,11 @@ const useStyles = makeStyles({
   },
 
   timeslotButtonBox: {
-    width: "90%",
-    height: "300px",
+    width: "100%",
+    // border: "1px solid",
+    // height: "300px",
+    borderTop: "1px solid rgb(178,141,66,0.5)",
+    height: "426px",
     margin: "0 auto",
     overflowY: "scroll",
     overflowX: "hidden",
@@ -165,7 +235,7 @@ const useStyles = makeStyles({
       border: "1px solid #000",
       borderRadius: "20px",
       padding: "1px 0",
-      backgroundColor: "#52330D",
+      backgroundColor: "#52330D"
     },
   },
   img: {
@@ -264,6 +334,7 @@ export default function AppointmentPage(props) {
 
           setStripePromise(tempStripePromise);
 
+          console.log(tempStripePromise);
           console.log("(1 PaymentDetails) stripePromise set!");
         })
         .catch((err) => {
@@ -291,6 +362,7 @@ export default function AppointmentPage(props) {
 
           console.log("(2 PaymentDetails) setting state with stripePromise");
 
+          console.log(tempStripePromise);
           setStripePromise(tempStripePromise);
 
           console.log("(2 PaymentDetails) stripePromise set!");
@@ -385,27 +457,35 @@ export default function AppointmentPage(props) {
     if (time == null) {
       return "?";
     } else {
-      time = time.split(":");
-      // fetch
-      var hours = Number(time[0]);
-      var minutes = Number(time[1]);
-      var seconds = Number(time[2]);
+      // time = time.split(":");
+      // // fetch
+      // var hours = Number(time[0]);
+      // var minutes = Number(time[1]);
+      // var seconds = Number(time[2]);
 
-      // calculate
-      var strTime;
+      // // calculate
+      // var strTime;
 
-      if (hours > 0 && hours <= 12) {
-        strTime = "" + hours;
-      } else if (hours > 12) {
-        strTime = "" + (hours - 12);
-      } else if (hours == 0) {
-        strTime = "12";
-      }
+      // if (hours > 0 && hours <= 12) {
+      //   strTime = "" + hours;
+      // } else if (hours > 12) {
+      //   strTime = "" + (hours - 12);
+      // } else if (hours == 0) {
+      //   strTime = "12";
+      // }
 
-      strTime += minutes < 10 ? ":0" + minutes : ":" + minutes; // get minutes
-      strTime += seconds < 10 ? ":0" + seconds : ":" + seconds; // get seconds
-      strTime += hours >= 12 ? " P.M." : " A.M."; // get AM/PM
+      // strTime += minutes < 10 ? ":0" + minutes : ":" + minutes; // get minutes
+      // strTime += seconds < 10 ? ":0" + seconds : ":" + seconds; // get seconds
+      // strTime += hours >= 12 ? " P.M." : " A.M."; // get AM/PM
 
+      var newDate = new Date(date + " " + time);
+      var hours = newDate.getHours();
+      var minutes = newDate.getMinutes();
+      var ampm = hours >= 12 ? "pm" : "am";
+      hours = hours % 12;
+      hours = hours ? hours : 12; // the hour '0' should be '12'
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      var strTime = hours + ":" + minutes + " " + ampm;
       return strTime;
     }
   }
@@ -473,17 +553,17 @@ export default function AppointmentPage(props) {
               {elementToBeRendered.title}
             </h1>
             <br />
-            <p className={classes.content} style={{ color: "white" }}>
+            <p className={classes.content2} style={{ color: "white" }}>
               {elementToBeRendered.description}
             </p>
             <br />
             <p
-              className={classes.content}
+              className={classes.content3}
               style={{
-                fontFamily: "SFProDisplayMedium",
+                // fontFamily: "SFProDisplayMedium",
                 color: "white",
-                margin: "0 auto",
-                textAlign: "center",
+                // margin: "0 auto",
+                // textAlign: "center",
               }}
             >
               {elementToBeRendered.duration} | {elementToBeRendered.cost}
@@ -526,8 +606,15 @@ export default function AppointmentPage(props) {
                 />
               </Col>
               <Col className={classes.timeslotBox}>
-                <h1 className={classes.h1} style={{ textAlign: "left" }}>
-                  What time is good for you?
+                <h1 
+                  className={classes.h1} 
+                  style={{ 
+                    textAlign: "left",
+                    // border: "dashed",
+                    marginTop: "20px"
+                  }}
+                >
+                  What's a good time for you?
                 </h1>
                 <p
                   style={{
@@ -535,6 +622,7 @@ export default function AppointmentPage(props) {
                     color: "#B28D42",
                     // fontFamily: "AvenirHeavy",
                     fontSize: "15px",
+                    // border: "dashed"
                   }}
                 >
                   UTC - 07:00 Pacific Time
@@ -548,25 +636,48 @@ export default function AppointmentPage(props) {
           <div className={classes.container} style={{ padding: "40px 40px" }}>
             <Row>
               <Col>
-                <h1 className={classes.selectTime}>Confirm Meeting</h1>
+                {/* <h1 className={classes.selectTime}>Confirm Meeting</h1> */}
+                <h1 className={classes.selectTime2}>
+                  Appointment scheduled for:
+                </h1>
                 <br></br>
                 <h1
                   style={{
-                    fontSize: "42x",
-                    fontFamily: "AvenirHeavy",
+                    // fontSize: "42x",
+                    // fontFamily: "AvenirHeavy",
+                    fontSize: "30px",
                     margin: "0 auto",
                     textAlign: "center",
+                    color: "#EB2020"
                   }}
                   hidden={timeSelected ? "hidden" : ""}
                 >
                   Please pick a day and time to meet
                 </h1>
-                <h1
+                {/* <h1
                   className={classes.date}
                   hidden={!timeSelected ? "hidden" : ""}
                 >
                   <span style={{}}>{dateString1}</span> at{" "}
                   <span style={{}}>
+                    {formatTime(apiDateString, selectedTime)}
+                  </span>
+                </h1> */}
+                <h1
+                  // className={classes.date}
+                  style={{
+                    // fontSize: "42x",
+                    // fontFamily: "AvenirHeavy",
+                    fontSize: "30px",
+                    margin: "0 auto",
+                    textAlign: "center",
+                    // color: "#EB2020"
+                  }}
+                  hidden={!timeSelected ? "hidden" : ""}
+                >
+                  <span>
+                    {dateString1}
+                    at{" "}
                     {formatTime(apiDateString, selectedTime)}
                   </span>
                 </h1>
@@ -575,12 +686,16 @@ export default function AppointmentPage(props) {
             <br />
             <Row>
               <Col>
-                <p className={classes.content} style={{ textAlign: "left" }}>
-                  {elementToBeRendered.title}
+                <p className={classes.content2} style={{ textAlign: "left" }}>
+                  <span
+                    style={{
+                      fontWeight: "600"
+                    }}
+                  >{elementToBeRendered.title}</span>
                   <br />
                   {elementToBeRendered.duration} | {elementToBeRendered.cost}
                 </p>
-                <br />
+                {/* <br /> */}
                 <img
                   src={elementToBeRendered.image_url}
                   className={classes.img}
@@ -588,15 +703,18 @@ export default function AppointmentPage(props) {
                 />
                 <br />
                 <br />
-                <p className={classes.content} style={{ textAlign: "left" }}>
-                  6055 Meridian Ave #40, San Jose, CA 95120, USA
+                <p className={classes.content2} style={{ textAlign: "left" }}>
+                  6055 Meridian Ave #40
                   <br />
-                  Office: 408 471 7004
+                  San Jose, CA 95120, USA
+                  <br />
+                  <br />
+                  Office: (408) 471-7004
                 </p>
               </Col>
               <Col>
                 <SimpleForm
-                  field="First Name"
+                  field="Full Name"
                   onHandleChange={handleFullNameChange}
                 />
 
@@ -621,6 +739,7 @@ export default function AppointmentPage(props) {
                   <StripeElement
                     stripePromise={stripePromise}
                     treatmentID={treatmentID}
+                    treatmentName={elementToBeRendered.title}
                     notes={notes}
                     infoSubmitted={infoSubmitted}
                     fName={fName}
@@ -630,17 +749,36 @@ export default function AppointmentPage(props) {
                     selectedTime={selectedTime}
                     purchaseDate={purchaseDate}
                     cost={cost}
+                    duration={elementToBeRendered.duration}
+                    image_url={elementToBeRendered.image_url}
                   />
                 </div>
-                <div aria-label={"click button to book your appointment"}>
-                  <div hidden={timeSelected ? "hidden" : ""}>
+                <div 
+                  aria-label={"click button to book your appointment"}
+                  style={{
+                    display: 'flex', 
+                    justifyContent: 'center'
+                  }}
+                >
+                  {/* <div hidden={timeSelected ? "hidden" : ""}>
                     <button className={classes.buttonDisable}>Confirm</button>
-                  </div>
-                  <div hidden={timeSelected !== infoSubmitted ? "" : "hidden"}>
-                    <button className={classes.button} onClick={toggleKeys}>
+                  </div> */}
+                  {/* <div hidden={timeSelected !== infoSubmitted ? "" : "hidden"}> */}
+
+                    <button 
+                      className={classes.bookButton} 
+                      disabled = {!timeSelected}
+                      hidden={infoSubmitted}
+                      // className={timeSelected ? (
+                      //   classes.button
+                      // ) : (
+                      //   classes.buttonDisable
+                      // )}
+                      onClick={toggleKeys}
+                    >
                       Book Appointment
                     </button>
-                  </div>
+                  {/* </div> */}
                 </div>
               </Col>
             </Row>

@@ -61,6 +61,39 @@ const useStyles = makeStyles({
       boxShadow: "none",
     },
   },
+  payButton: {
+    width: "200px",
+    height: "50px",
+    backgroundColor: "#B28D42",
+    border: "2px solid #B28D42",
+    color: "white",
+    // padding: "0 10px 0 10px",
+    textDecoration: "none",
+    fontSize: "20px",
+    borderRadius: "50px",
+    fontFamily: "AvenirHeavy",
+    "&:hover": {
+      borderColor: "#52330D",
+      background: "#52330D",
+      color: "#white"
+    },
+    "&:focus": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "&:active": {
+      outline: "none",
+      boxShadow: "none",
+    },
+    "&:disabled": {
+      backgroundColor: "#B28D42",
+      color: "white",
+      opacity: "50%",
+      "&:hover": {
+        borderColor: "#B28D42"
+      },
+    }
+  },
 });
 
 export const ApptContext = React.createContext();
@@ -268,10 +301,19 @@ export default function Scheduler(props) {
         <div
           aria-label={"click button to book your appointment"}
           hidden={!props.infoSubmitted ? "hidden" : ""}
+          style={{
+            // border: "dashed",
+            display: "flex",
+            justifyContent: "center"
+          }}
         >
-          <Button hidden={submitted ? "hidden" : ""} onClick={bookAppt}>
+          <button 
+            hidden={submitted ? "hidden" : ""} 
+            onClick={bookAppt}
+            className={classes.payButton}
+          >
             Pay Now
-          </Button>
+          </button>
         </div>
       </div>
     </div>

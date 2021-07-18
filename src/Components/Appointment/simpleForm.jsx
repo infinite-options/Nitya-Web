@@ -41,7 +41,7 @@ class Form extends Component {
               fontSize: "20px",
               border: "2px solid #B28D42",
               width: "100%",
-              fontFamily: "AvenirHeavy",
+              // fontFamily: "AvenirHeavy",
               outline: "none",
             }}
           />

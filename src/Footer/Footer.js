@@ -1,5 +1,6 @@
 import React from "react";
 import Namacb from "../namacb.png";
+import CAAM from "../CAAM_logo.png";
 import Logo from "../Group 15.svg";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import FacebookIcon from "@material-ui/icons/Facebook";
@@ -28,140 +29,117 @@ function Footer() {
             }}
           >
             <Row>
-              <img src={Logo} style={{ width: "100%" }} />
+              <img src={Logo} style={{ height: "150px" }} />
               <div style={{ fontSize: "15px", textAlign: "left" }}>
                 &copy;{new Date().getFullYear()} by Leena Marathay
               </div>
             </Row>
           </Col>
-          {/* className="col-sm" */}
-          {/* Column1 */}
-          <Col
-            style={{
-              height: "150px",
-              display: "flex",
-              justifyContent: "left",
-              paddingTop: "50px",
-            }}
-          >
-            <h4 className="list-unstyled" style={{ fontSize: "15px" }}>
-              <li>6055 Meridian Ave, Ste.</li>
-              <li> 40A, San Jose, CA 95120</li>
-            </h4>
-          </Col>
-          {/* Column3 */}
-          <Col style={{ height: "150px", paddingTop: "50px" }}>
-            <ui
-              className="list-unstyled"
-              style={{ fontSize: "15px", textAlign: "left" }}
-            >
-              <li>Office: 408 471 7004</li>
-              <li>Email: Leena@nityaayurveda.com</li>
-            </ui>
-          </Col>
-
-          {/* Column2 */}
-          <Col
-            style={{
-              height: "150px",
-              width: "800px",
-              paddingTop: "50px",
-            }}
-          >
-            <ui className="list-unstyled">
-              <h1 style={{ fontSize: "15px", textAlign: "left" }}>
-                Leena Marathay
-              </h1>
-              <li style={{ fontSize: "15px", textAlign: "left" }}>
-                NAMA Certified Ayurvedic Practitioner
-              </li>
-            </ui>
-          </Col>
-
-          <Col
-            style={{
-              height: "200px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
+          <Col md="auto">
             <Row>
-              <img
-                src={Namacb}
+              {/* className="col-sm" */}
+              {/* Column1 */}
+              <Col
+                md="auto"
                 style={{
-                  width: "80px",
-                  height: "80px",
-                  float: "center",
+                  height: "150px",
+                  display: "flex",
+                  justifyContent: "left",
+                  paddingTop: "50px",
+                  width: "236px",
                 }}
-                alt="An Image of NAMACB CAP"
-              />
-            </Row>
-          </Col>
-          <Col
-            style={{
-              height: "200px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          ></Col>
+              >
+                <ui className="list-unstyled">
+                  <li style={{ fontSize: "15px", textAlign: "left" }}>
+                    Leena Marathay
+                  </li>
+                  <li style={{ fontSize: "15px", textAlign: "left" }}>
+                    NAMA Certified Ayurvedic Practitioner
+                  </li>
+                </ui>
+              </Col>
+              {/* Column3 */}
+              <Col md="auto" style={{ height: "150px", paddingTop: "50px" }}>
+                <ui
+                  className="list-unstyled"
+                  style={{ fontSize: "15px", textAlign: "left" }}
+                >
+                  <li>Office: 408 471 7004</li>
+                  <li>Email: Leena@nityaayurveda.com</li>
+                </ui>
+              </Col>
 
-          {/* Column4 */}
-          {/* <Col>
-            <ui className="list-unstyled">
-              <img
-                src={Namacb}
+              {/* Column2 */}
+              <Col
+                md="auto"
                 style={{
-                  width: "200px",
-                  height: "200px",
-                  float: "center",
+                  height: "150px",
+                  paddingTop: "50px",
                 }}
-                alt="An Image of NAMACB CAP"
-              />
-            </ui>
-          </Col> */}
-        </Row>
-        {/* <hr /> */}
-        <Row>
-          {/* <Col></div>
-          <Col>
-            <ui className="list-unstyled">
-              <li>
+              >
+                <ui className="list-unstyled" style={{ fontSize: "15px" }}>
+                  <li>6055 Meridian Ave, Ste. 40A,</li>
+                  <li>San Jose, CA 95120</li>
+                </ui>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="auto" style={{ width: "236px" }}>
+                <p
+                  className="list-unstyled"
+                  style={{ fontSize: "15px", textDecoration: "underline" }}
+                >
+                  Admin Login
+                </p>
+              </Col>
+              <Col
+                md="auto"
+                style={{
+                  paddingBottom: "50px",
+                  display: "flex",
+                  flexDirection: "row",
+                }}
+              >
                 <img
                   src={Namacb}
                   style={{
-                    width: "200px",
-                    height: "200px",
+                    width: "80px",
+                    height: "80px",
                     float: "center",
                   }}
                   alt="An Image of NAMACB CAP"
                 />
-              </li>
-            </ui>
-          </div> */}
-          {/* <Col>
-            <ul className="list-icons ">
-              <li className="footer-icons">
-                <InstagramIcon
-                  fontSize="large"
-                  onClick={(event) =>
-                    (window.location.href =
-                      "https://www.instagram.com/nityaayurveda/")
-                  }
-                  aria-hidden="false"
-                  aria-label="Instagram"
-                />
-              </li>
-            </ul>
-          </div> */}
+                <img
+                  src={CAAM}
+                  style={{
+                    // width: "198",
+                    height: "80px",
+                    marginLeft: "40px",
+                  }}
+                ></img>
+                <div
+                  style={{
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    marginLeft: "40px",
+                  }}
+                >
+                  <InstagramIcon
+                    fontSize="large"
+                    onClick={(event) =>
+                      (window.location.href =
+                        "https://www.instagram.com/nityaayurveda/")
+                    }
+                    style={{ height: "45px", width: "45px", cursor: "pointer" }}
+                    aria-hidden="false"
+                    aria-label="Instagram"
+                  />
+                </div>
+              </Col>
+            </Row>
+          </Col>
+          <Col></Col>
         </Row>
-        {/* <Row>
-          <Col></div>
-          <div className="col-sm">
-            &copy;{new Date().getFullYear()} by Leena Marathay
-          </div>
-          <Col></div>
-        </div> */}
-        <br />
       </div>
     </div>
   );

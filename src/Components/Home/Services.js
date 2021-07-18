@@ -10,24 +10,22 @@ import "./Services.css";
 const Services = (props) => {
   const useStyles = makeStyles({
     container: {
+      marginTop: "95px",
 
-    marginTop: "95px",
-
-     height: "1381px",
-     width: "980px",
-      
+      height: "1381px",
+      width: "980px",
 
       backgroundColor: "white",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
     },
-    
+
     ButtonGroup: {
       top: 0,
-      marginTop:"30px",
+      marginTop: "30px",
     },
-    
+
     btn1: {
       width: "153px",
       height: "32px",
@@ -70,6 +68,7 @@ const Services = (props) => {
   const classes = useStyles();
 
   const [rSelected, setRSelected] = useState(<Consulting />);
+  const [activeComponent, setActiveComponent] = useState("consulting");
 
   return (
     <div className="page-container">
@@ -80,14 +79,22 @@ const Services = (props) => {
             <ButtonGroup className="ButtonGroup">
               <Button
                 id="btn1"
-                onClick={() => setRSelected(<Consulting />)}
+                className={activeComponent === "consulting" ? "selected" : ""}
+                onClick={() => {
+                  setRSelected(<Consulting />);
+                  setActiveComponent("consulting");
+                }}
                 active={rSelected === <Consulting />}
               >
                 Consulting
               </Button>
               <Button
                 id="btn2"
-                onClick={() => setRSelected(<Treatments />)}
+                className={activeComponent === "treatments" ? "selected" : ""}
+                onClick={() => {
+                  setRSelected(<Treatments />);
+                  setActiveComponent("treatments");
+                }}
                 active={rSelected === <Treatments />}
               >
                 Body Therapies
@@ -100,7 +107,9 @@ const Services = (props) => {
           </div>
   */}
 
-          <p style={{width:"fit-content" , height:"fit-content"}}>{rSelected}</p>
+          <p style={{ width: "fit-content", height: "fit-content" }}>
+            {rSelected}
+          </p>
         </div>
       </div>
     </div>

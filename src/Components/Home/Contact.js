@@ -17,14 +17,13 @@ const useStyles = makeStyles({
     //position: "relative",
     //top: "70px",
     //marginLeft: "90px",
-    marginTop: "30px",
     /*minHeight: "710px",
     minWidth: "600px",
     height: "auto",
     width: "auto",
     */
-   width: "980px",
-   height: "609px",
+    width: "980px",
+    height: "609px",
     //padding: "50px",
     backgroundColor: "white",
     // display: "flex",
@@ -51,7 +50,6 @@ const useStyles = makeStyles({
     color: "#B28D42",
     opacity: "1",
   },
-  
   content: {
     //font: "normal normal normal 32px/38px SF Pro Display",
     marginTop: "21px",
@@ -67,20 +65,19 @@ const useStyles = makeStyles({
     letterSpacing: "0px",
     color: "#B28D42",
     opacity: "1",
-    width:"490px",
+    width: "490px",
   },
 
-  
   form: {
     font: "normal normal normal 22px/26px SF Pro Display",
     letterSpacing: "0px",
     color: "#B28D42",
     opacity: "1",
-    borderRadius:"10px" , 
-    border: "1px solid #a8841d", 
-    borderWidth:"0.15em", 
-    width:"440px", 
-    height:"61px", 
+    borderRadius: "10px",
+    border: "1px solid #a8841d",
+    borderWidth: "0.15em",
+    width: "440px",
+    height: "61px",
   },
 
   btn: {
@@ -90,9 +87,9 @@ const useStyles = makeStyles({
     borderColor: "#b28d42",
     borderRadius: "100px",
     // marginLeft:  "150px",
-    width:"243px",
-    height:"60px",
-    fontSize:"15px",
+    width: "243px",
+    height: "60px",
+    fontSize: "15px",
     //backgroundColor: "b28d42",
     //color: "#ffffff",
     //border: "1px solid #b28d42",
@@ -110,13 +107,13 @@ const useStyles = makeStyles({
     //color: "red",
     //borderColor: "yellow",
   },
-  Col1:{
-    width:"462px",
+  Col1: {
+    width: "462px",
     marginTop: "40px",
-    height:"600px",
+    height: "600px",
   },
-  Col2:{
-    width:"518px",
+  Col2: {
+    width: "518px",
     display: "flex",
     justifyContent: "center",
     marginTop: "49px",
@@ -163,39 +160,39 @@ export default function Contact() {
     setData(newData);
   }
   return (
-    <div className="page-container" style={{marginTop:"-90px" }}>
-      <br />
-      <div className="contact" id="contact" >
+    <div className="page-container">
+      <div className="contact" id="contact">
         <ScrollToTop />
-        <div className={classes.container} >
+        <div className={classes.container}>
           <Row>
             <Col className={classes.Col1}>
               <p className={classes.title}>Contact Us</p>
-              <p className={classes.content} aria-label="6055 Meridian Ave suite 40">
+              <p
+                className={classes.content}
+                aria-label="6055 Meridian Ave suite 40"
+              >
                 6055 Meridian Ave #40, <br />
                 San Jose, CA 95120, USA
               </p>
-              <p className={classes.content}>
-                Office: 408 471 7004
-              </p>
+              <p className={classes.content}>Office: 408 471 7004</p>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.732452474541!2d-121.8872221846979!3d37.230325779862234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e314406ce969d%3A0x82fb75802c5ef489!2s6055%20Meridian%20Ave%20%2340%2C%20San%20Jose%2C%20CA%2095120!5e0!3m2!1sen!2sus!4v1618695078070!5m2!1sen!2sus"
                 width="389px"
                 height="220px"
-                style={{ border: 0, borderRadius:"30px", height:"15rem"}}
+                style={{ border: 0, borderRadius: "30px", height: "15rem" }}
                 allowfullscreen=""
                 loading="lazy"
               ></iframe>
             </Col>
             <Col className={classes.Col2}>
-            <Form onSubmit={(e) => submit(e)}>
+              <Form onSubmit={(e) => submit(e)}>
                 <FormGroup>
                   <Input
                     type="text"
                     name="name"
                     id="name"
                     placeholder="Full Name"
-                    style={{width:"457px"}}
+                    style={{ width: "457px" }}
                     onChange={(e) => handle(e)}
                     value={data.name}
                     className={classes.form}
@@ -208,10 +205,11 @@ export default function Contact() {
                     name="email"
                     id="email"
                     placeholder="Email"
-                    style={{width:"457px"}}
+                    style={{ width: "457px" }}
                     onChange={(e) => handle(e)}
                     value={data.email}
-                    className={classes.form}                  />
+                    className={classes.form}
+                  />
                 </FormGroup>
 
                 <FormGroup>
@@ -220,10 +218,11 @@ export default function Contact() {
                     name="subject"
                     id="subject"
                     placeholder="Subject"
-                    style={{width:"457px"}}
+                    style={{ width: "457px" }}
                     onChange={(e) => handle(e)}
                     value={data.subject}
-                    className={classes.form}                  />
+                    className={classes.form}
+                  />
                 </FormGroup>
 
                 <FormGroup>
@@ -232,20 +231,21 @@ export default function Contact() {
                     name="text"
                     id="message"
                     placeholder="Type your message here"
-                    style={{width:"457px", height:"139px"}}
+                    style={{ width: "457px", height: "139px" }}
                     onChange={(e) => handle(e)}
                     value={data.message}
-                    className={classes.form}                  />
+                    className={classes.form}
+                  />
                 </FormGroup>
                 <br />
                 <div
-                  style={{display:"flex", justifyContent:"center"}}
+                  style={{ display: "flex", justifyContent: "center" }}
                   aria-label={"click button to submit your messsage session."}
                 >
                   <Button className={classes.btn}>Submit</Button>
                 </div>
                 <br />
-                <div style={{display:"flex", justifyContent:"center"}}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
                   <InstagramIcon
                     //backgroundColor="#B28D42"
                     fontSize="large"
@@ -255,15 +255,12 @@ export default function Contact() {
                     }
                     aria-hidden="false"
                     aria-label="Instagram"
-                    style={{color:"#b28d42", }}
+                    style={{ color: "#b28d42" }}
                   />
                 </div>
               </Form>
             </Col>
           </Row>
-
-
-
 
           {/* <div className="column">
             <p className={classes.title}>Contact Us</p>
@@ -375,8 +372,8 @@ export default function Contact() {
                     style={{color:"black"}}
                   />
                 </li>
-                  </ul>*/} 
-          {/* </div>*/} 
+                  </ul>*/}
+          {/* </div>*/}
         </div>
       </div>
     </div>

@@ -6,8 +6,8 @@ import { useLocation } from 'react-router-dom';
 import "./calendar.css";
 import { ApptContext } from "./Scheduler";
 import herbsImg from '../../images/herbsImg.png';
-import MapSection from "../Home/Map";
-import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
+// import MapSection from "../Home/Map";
+// import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
 
 const google = window.google;
 
@@ -410,7 +410,7 @@ export default function ConfirmationPage(props) {
               Office: (408) 471-7004
             </span>
             <br />
-            <div
+            {/* <div
               id = "map"
               style={{
                 height: '200px',
@@ -420,7 +420,7 @@ export default function ConfirmationPage(props) {
               }}
             >
               MAPS
-            </div>
+            </div> */}
             {/* <div
               style={{
                 position: 'relative',

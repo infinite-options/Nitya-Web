@@ -10,8 +10,6 @@ import SignUp from "../Components/Home/SignUp";
 import LogIn from "../Components/Home/LogIn";
 import "./Navbar.css";
 
-
-
 const useStyles = makeStyles((theme) => ({
   authModal: {
     position: "absolute",
@@ -73,8 +71,8 @@ const Navbar = () => {
         <img
           src={logo}
           style={{
-            width: 125,
-            height: 75,
+            width: 250,
+            height: 150,
             objectFit: "cover",
           }}
           alt="Nitya Ayurveda’s Logo"
@@ -116,18 +114,21 @@ const Navbar = () => {
           </Link>
         </li>
       </ul>
-      <ul className={"nav-log"}>
+
+      <ul className="right"></ul>
+
+      {/* <ul className={"nav-log"}>
         <li className="nav-item" className="nav-link" className="log-in">
           <LoginNavBar
             isLoginShown={isLoginShown}
             setIsLoginShown={setIsLoginShown}
             isSignUpShown={isSignUpShown}
             setIsSignUpShown={setIsSignUpShown}
-          />
-          {/* START: Login/SignUp Modal */}
-          <Box display="flex" justifyContent="flex-end">
-            {/* Login Modal */}
-            <Box
+          /> */}
+      {/* START: Login/SignUp Modal */}
+      {/* <Box display="flex" justifyContent="flex-end"> */}
+      {/* Login Modal */}
+      {/* <Box
               position="absolute"
               width="50%"
               display="flex"
@@ -141,10 +142,10 @@ const Navbar = () => {
               >
                 <LogIn />
               </Box>
-            </Box>
+            </Box> */}
 
-            {/* Sign Up Modal */}
-            <Box display="flex" justifyContent="flex-end">
+      {/* Sign Up Modal */}
+      {/* <Box display="flex" justifyContent="flex-end">
               <Box
                 position="absolute"
                 width="50%"
@@ -163,7 +164,7 @@ const Navbar = () => {
             </Box>
           </Box>
         </li>
-      </ul>
+      </ul> */}
     </nav>
   );
 };

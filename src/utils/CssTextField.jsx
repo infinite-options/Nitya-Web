@@ -4,7 +4,6 @@ import withStyles from "@material-ui/styles/withStyles";
 const CssTextField = withStyles({
   root: {
     backgroundColor: "#ffffff",
-    // backgroundColor: "red",
     "& label.Mui-focused": {
       border: "3px solid #8d6f1a",
       color: "#8d6f1a",

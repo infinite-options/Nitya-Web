@@ -30,7 +30,7 @@ class Form extends Component {
             borderWidth: "2px",
             width: "100%",
             height: "150px",
-            fontFamily: "AvenirHeavy",
+            // fontFamily: "AvenirHeavy",
             outline: "none",
           }}
         />
