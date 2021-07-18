@@ -155,22 +155,22 @@ export default function Scheduler(props) {
   function sendToDatabase() {
     const postURL =
       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
-    // axios
-    //   .post(postURL, {
-    //     first_name: props.fName,
-    //     last_name: "",
-    //     email: props.email,
-    //     phone_no: props.phoneNum,
-    //     appt_treatment_uid: props.treatmentID, //TREATMENT INFO #1
-    //     notes: props.notes,
-    //     appt_date: dateFormat3(props.date),
-    //     appt_time: props.selectedTime,
-    //     purchase_price: props.cost, //TREATMENT INFO #2
-    //     purchase_date: dateFormat3(props.purchaseDate),
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   });
+    axios
+      .post(postURL, {
+        first_name: props.fName,
+        last_name: "",
+        email: props.email,
+        phone_no: props.phoneNum,
+        appt_treatment_uid: props.treatmentID, //TREATMENT INFO #1
+        notes: props.notes,
+        appt_date: dateFormat3(props.date),
+        appt_time: props.selectedTime,
+        purchase_price: props.cost, //TREATMENT INFO #2
+        purchase_date: dateFormat3(props.purchaseDate),
+      })
+      .then((res) => {
+        console.log(res);
+      });
     setApptInfo({
       first_name: props.fName,
       email: props.email,
@@ -188,7 +188,7 @@ export default function Scheduler(props) {
   const [changeLoadingState, setLoadingState] = useState(false);
 
   async function bookAppt() {
-    sendToDatabase();
+    // sendToDatabase();
     const temp = {
       tax: 5,
       total: 20,
@@ -233,16 +233,19 @@ export default function Scheduler(props) {
                   console.log(
                     "confirmedCardPayment result: " + JSON.stringify(result)
                   );
+                  sendToDatabase();
                 })
                 .catch((err) => {
                   console.log(err);
                   if (err.response) {
                     console.log("error: " + JSON.stringify(err.response));
                   }
+                  setSubmitted(false);
                   setLoadingState(false);
                 });
             } catch (e) {
               console.log("error trying to pay: ", e);
+              setSubmitted(false);
               setLoadingState(false);
             }
           });
@@ -251,6 +254,7 @@ export default function Scheduler(props) {
         console.log(err);
         if (err.response) {
           console.log("error: " + JSON.stringify(err.response));
+          setSubmitted(false);
           setLoadingState(false);
         }
       });
@@ -308,7 +312,8 @@ export default function Scheduler(props) {
           }}
         >
           <button 
-            hidden={submitted ? "hidden" : ""} 
+            // hidden={submitted ? "hidden" : ""} 
+            disabled={submitted}
             onClick={bookAppt}
             className={classes.payButton}
           >
