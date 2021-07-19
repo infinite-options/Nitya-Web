@@ -12,15 +12,9 @@ import { /*Button,*/ Row, Col } from "reactstrap";
 function Footer() {
   return (
     <div className="main-footer">
-      <div className="container">
+      <div className="main-container">
         <Row>
-          <Col
-            style={{
-              height: "200px",
-              display: "flex",
-              justifyContent: "center",
-            }}
-          ></Col>
+          <Col></Col>
           <Col
             style={{
               height: "200px",
@@ -46,7 +40,6 @@ function Footer() {
                   display: "flex",
                   justifyContent: "left",
                   paddingTop: "50px",
-                  width: "236px",
                 }}
               >
                 <ui className="list-unstyled">
@@ -84,7 +77,7 @@ function Footer() {
               </Col>
             </Row>
             <Row>
-              <Col md="auto" style={{ width: "236px" }}>
+              <Col style={{ padding: "15px" }}>
                 <p
                   className="list-unstyled"
                   style={{ fontSize: "15px", textDecoration: "underline" }}
@@ -139,6 +132,84 @@ function Footer() {
             </Row>
           </Col>
           <Col></Col>
+        </Row>
+      </div>
+      <div className="mobile-container" style={{ padding: "15px" }}>
+        <Row style={{ padding: "10px" }}>
+          <Col style={{ textAlign: "center" }}>
+            <img src={Logo} style={{ height: "100px" }} />
+            <p style={{ fontSize: "15px", margin: "0px", marginTop: "5px" }}>
+              &copy;{new Date().getFullYear()} by Leena Marathay
+            </p>
+          </Col>
+        </Row>
+        <Row
+          style={{ display: "flex", justifyContent: "center", padding: "10px" }}
+        >
+          <Col className="grid-cell">
+            <ui className="list-unstyled" style={{ fontSize: "15px" }}>
+              <li>6055 Meridian Ave, Ste. 40A,</li>
+              <li>San Jose, CA 95120</li>
+            </ui>
+          </Col>
+          <Col className="grid-cell">
+            <ui
+              className="list-unstyled"
+              style={{ fontSize: "15px", textAlign: "left" }}
+            >
+              <li>Office: 408 471 7004</li>
+              <li>Email: Leena@nityaayurveda.com</li>
+            </ui>
+          </Col>
+        </Row>
+        <Row
+          style={{ display: "flex", justifyContent: "center", padding: "10px" }}
+        >
+          <Col className="grid-cell">
+            <ui className="list-unstyled">
+              <li style={{ fontSize: "15px", textAlign: "left" }}>
+                Leena Marathay
+              </li>
+              <li style={{ fontSize: "15px", textAlign: "left" }}>
+                NAMA Certified Ayurvedic Practitioner
+              </li>
+            </ui>
+          </Col>
+          <Col className="grid-cell">
+            <img
+              src={Namacb}
+              style={{
+                width: "80px",
+                height: "80px",
+                float: "center",
+              }}
+              alt="An Image of NAMACB CAP"
+            />
+          </Col>
+        </Row>
+        <Row
+          style={{ display: "flex", justifyContent: "center", padding: "10px" }}
+        >
+          <Col className="grid-cell">
+            <img
+              src={CAAM}
+              style={{
+                height: "80px",
+              }}
+            ></img>
+          </Col>
+          <Col className="grid-cell">
+            <InstagramIcon
+              fontSize="large"
+              onClick={(event) =>
+                (window.location.href =
+                  "https://www.instagram.com/nityaayurveda/")
+              }
+              style={{ height: "45px", width: "45px", cursor: "pointer" }}
+              aria-hidden="false"
+              aria-label="Instagram"
+            />
+          </Col>
         </Row>
       </div>
     </div>

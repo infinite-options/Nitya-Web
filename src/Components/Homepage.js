@@ -10,7 +10,7 @@ class Homepage extends Component {
   render() {
     return (
       <>
-        <div className="homepage" id="homepage">
+        <div className="homepage" id="homepage" style={{ minWidth: "1000px" }}>
           <div className="page-container ">
             <ScrollToTop />
             <Home />

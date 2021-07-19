@@ -6,7 +6,7 @@
   min-width: 100%;
   font-size: 1.5rem;
 }
-.container {
+.main-container {
   display: flexbox;
   align-items: center;
   min-width: 100%;
@@ -48,4 +48,20 @@
   align-items: center;
   text-decoration: none;
   text-align: center;
+}
+.mobile-container {
+  display: none;
+}
+
+@media screen and (max-width: 1330px) {
+  .main-container {
+    display: none;
+  }
+  .mobile-container {
+    display: block;
+    min-width: 100%;
+  }
+  .grid-cell {
+    max-width: 360px;
+  }
 }
