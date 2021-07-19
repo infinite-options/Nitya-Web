@@ -99,7 +99,7 @@ const Navbar = () => {
           </Link>
         </li> */}
         <li className="nav-item">
-          <Link to="/servicespage" className="nav-link" onClick={closeMenu}>
+          <Link to="/services" className="nav-link" onClick={closeMenu}>
             Services
           </Link>
         </li>
