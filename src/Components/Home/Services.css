@@ -1,0 +1,79 @@
+#servicesContainer {
+  /* // position:  relative ;
+    // top:  40px ; */
+  margin-top: 50px;
+  /*minHeight:  710px ;
+    minWidth:  600px ;
+    height:  auto ;
+    width:  auto ;
+    */
+  height: 1381px;
+  width: 980px;
+
+  /* // padding:  50px ; */
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  /* // justifyContent:  center ; */
+  align-items: center;
+}
+
+.ButtonGroup {
+  top: 0;
+  margin-top: 30px;
+}
+
+.selected {
+  background-color: #b28d42 !important;
+}
+
+#btn1 {
+  width: 129px;
+  height: 39px;
+  font: normal normal normal 20px Hoefler Text;
+  letter-spacing: 0px;
+  color: white;
+  opacity: 1;
+  background-color: #dadada;
+  /* //border:  1px solid #88898a ; */
+  border: none;
+  /* //borderRadius:  0px ; */
+  /* // color:  #b28d42 ; */
+  /* // fontSize:  2.5rem ; */
+  margin-right: 50px;
+  padding: 1px 1px;
+}
+/* #btn1.hover {
+  background-color: transparent;
+  color: #b28d42;
+  border: #b28d42;
+}
+#btn1:focus {
+  background-color: #b28d42;
+  color: white;
+  border: 1px solid #b28d42;
+} */
+
+#btn2 {
+  width: 140px;
+  height: 39px;
+  font: normal normal normal 20px Hoefler Text;
+  letter-spacing: 0px;
+  background-color: #dadada;
+  color: white;
+  opacity: 1;
+  /* background-color:  transparent ; */
+  padding: 1px 1px;
+  border: none;
+}
+
+/* #btn2.hover {
+  background-color: transparent;
+  color: #b28d42;
+  border: #b28d42;
+}
+#btn2:focus {
+  background-color: #b28d42;
+  color: white;
+  border: 1px solid #b28d42;
+} */

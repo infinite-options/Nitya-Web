@@ -40,10 +40,9 @@ const useStyles = makeStyles({
     // marginRight: "-80px",
 
   },
-  images: {
+  img: {
     display: "block",
     width: "476.73px",
-    overflow: "hidden",
     height: "360px",
     //float: "left",
     //height: "20rem",
@@ -57,12 +56,6 @@ const useStyles = makeStyles({
     // width: "420px",
     //objectFit: "cover",
     //display: "inline-block",
-  },
-  img:{
-    width:"476.73px",
-    objectFit: "cover",
-    height: "360px",
-
   },
   body: {
     // minWidth: "420px",
@@ -157,14 +150,12 @@ export default function Consulting() {
                 {/* <Col className="no-gutters"> */}
                 <Row>
                   {/* <Row className="d-none d-sm-block d-md-block"> */}
-                  <div className={classes.images}>
                   <img
                     className={classes.img}
                     variant="top"
                     src={filteredService.image_url}
                     alt={"An image of" + filteredService.title}
                   />
-                  </div>
                   {/* <Row style={{ display: "flex", justifyContent: "center" }}> */}
                   <CardBody className={classes.body} >
                     <CardTitle className={classes.title} >
@@ -180,7 +171,7 @@ export default function Consulting() {
                       </Button> */}
                       <LearnMoreBTN  />
                       <br />
-                    <BookNowBTN apptID={filteredService.treatment_uid} />
+                    <BookNowBTN apptID={filteredService.treatment_uid} style={{display: "flex", justifyContent:"center",}} />
                   </CardBody>
                 </Row>
                 {/* </Col> */}
