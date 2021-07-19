@@ -1,138 +1,172 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { FiMenu, FiX } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import Scroll from "react-scroll";
+// import Box from "@material-ui/core/Box";
+import { makeStyles } from "@material-ui/core/styles";
 import { animateScroll as scroll } from "react-scroll";
-import PersonIcon from "@material-ui/icons/Person";
-import InstagramIcon from "@material-ui/icons/Instagram";
 import logo from "../nitya_logo.png";
+// import LoginNavBar from "./LoginNavBar";
+// import SignUp from "../Components/Home/SignUp";
+// import LogIn from "../Components/Home/LogIn";
 import "./Navbar.css";
 
-const scrollToTop = () => {
-  scroll.scrollToTop();
-};
-export default function Navbar() {
-  return (
-    <>
-      <nav className="navbar">
-        <div className="nav-center">
-          <div className="navbar-logo">
-            <img
-              src={logo}
-              style={{ width: 200, height: 150 }}
-              alt="logo"
-              onClick={scrollToTop}
-            />
-          </div>
-          <ul className="nav-menu">
-            <li className="nav-links">
-              <Link
-                to="/home"
-                spy={true}
-                smooth={true}
-                offset={-150}
-                duration={1000}
-                activeClass="active"
-              >
-                Home
-              </Link>
-            </li>
-            <li className="nav-links">
-              <Link
-                to="/about"
-                activeClass="active"
-                spy={true}
-                smooth={true}
-                offset={-150}
-                duration={1000}
-              >
-                About
-              </Link>
-            </li>
-            <li className="nav-links">
-              <Link
-                to="/services"
-                activeClass="active"
-                spy={true}
-                smooth={true}
-                offset={-250}
-                duration={1000}
-              >
-                Services
-              </Link>
-            </li>
-            <li className="nav-links">
-              <Link to="/blog" activeClass="active" spy={true}>
-                Blog
-              </Link>
-            </li>
-            <li className="nav-links">
-              <Link
-                to="/contact"
-                activeClass="active"
-                spy={true}
-                smooth={true}
-                offset={-150}
-                duration={1000}
-              >
-                Contact
-              </Link>
-            </li>
-          </ul>
+const useStyles = makeStyles((theme) => ({
+  authModal: {
+    position: "absolute",
+    width: "500px",
+  },
+}));
 
-          <ul className="log-in">
-            <li className="nav-links">
-              <Link
-                to="LogIn"
-                className="nav-links"
-                spy={true}
-                smooth={true}
-                offset={-150}
-                duration={1000}
-              >
-                <PersonIcon
-                  fontSize="medium"
-                  aria-hidden="false"
-                  aria-label="Facebook"
-                  style={{ color: "#8d6f1a" }}
-                />
-              </Link>
-            </li>
-            <li className="nav-links">
-              <Link
-                to="LogIn"
-                className="nav-links"
-                spy={true}
-                smooth={true}
-                offset={-150}
-                duration={1000}
-              >
-                Log In
-              </Link>
-            </li>
-            <li className="nav-links">
-              <Link
-                to="LogIn"
-                className="nav-links"
-                spy={true}
-                smooth={true}
-                offset={-150}
-                duration={1000}
-              >
-                <InstagramIcon
-                  fontSize="medoum"
-                  onClick={(event) =>
-                    (window.location.href =
-                      "https://www.instagram.com/nityaayurveda/")
-                  }
-                  aria-hidden="false"
-                  aria-label="Instagram"
-                  style={{ color: "8d6f1a" }}
-                />
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </>
-  );
+function useOutsideAlerter(ref) {
+  useEffect(() => {
+    /**
+     * Alert if clicked on outside of element
+     */
+    function handleClickOutside(event) {
+      if (
+        ref.current &&
+        !ref.current.contains(event.target) &&
+        !ref.current.hidden
+      ) {
+        ref.current.hidden = true;
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
 }
+
+const Navbar = () => {
+  const classes = useStyles();
+  const [open, setOpen] = useState(false);
+  const [isLoginShown, setIsLoginShown] = useState(false); // checks if user is logged in
+  const [isSignUpShown, setIsSignUpShown] = useState(false);
+
+  const loginWrapperRef = useRef(null);
+  useOutsideAlerter(loginWrapperRef, setIsLoginShown);
+
+  const signupWrapperRef = useRef(null);
+  useOutsideAlerter(signupWrapperRef, setIsSignUpShown);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
+  const closeMenu = () => {
+    setOpen(false);
+  };
+
+  const scrollToTop = () => {
+    scroll.scrollToTop();
+  };
+
+  return (
+    <nav className="navbar">
+      <Link to="/" className="nav-logo">
+        <img
+          src={logo}
+          style={{
+            width: 250,
+            height: 150,
+            objectFit: "cover",
+          }}
+          alt="Nitya Ayurveda’s Logo"
+          onClick={scrollToTop}
+        />
+      </Link>
+      <div onClick={handleClick} className="nav-icon">
+        {open ? <FiX /> : <FiMenu />}
+      </div>
+      <ul className={open ? "nav-links active" : "nav-links"}>
+        <li className="nav-item">
+          <Link to="/" className="nav-link" onClick={closeMenu}>
+            Home
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/about" className="nav-link" onClick={closeMenu}>
+            About
+          </Link>
+        </li>
+        {/* <li className="nav-item">
+          <Link to="/services" className="nav-link" onClick={closeMenu}>
+            Services
+          </Link>
+        </li> */}
+        <li className="nav-item">
+          <Link to="/servicespage" className="nav-link" onClick={closeMenu}>
+            Services
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/blog" className="nav-link" onClick={closeMenu}>
+            Blog
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/contact" className="nav-link" onClick={closeMenu}>
+            Contact
+          </Link>
+        </li>
+      </ul>
+
+      <ul className="right"></ul>
+
+      {/* <ul className={"nav-log"}>
+        <li className="nav-item" className="nav-link" className="log-in">
+          <LoginNavBar
+            isLoginShown={isLoginShown}
+            setIsLoginShown={setIsLoginShown}
+            isSignUpShown={isSignUpShown}
+            setIsSignUpShown={setIsSignUpShown}
+          /> */}
+      {/* START: Login/SignUp Modal */}
+      {/* <Box display="flex" justifyContent="flex-end"> */}
+      {/* Login Modal */}
+      {/* <Box
+              position="absolute"
+              width="50%"
+              display="flex"
+              justifyContent="center"
+              zIndex={40}
+            >
+              <Box
+                ref={loginWrapperRef}
+                className={classes.authModal}
+                hidden={!isLoginShown}
+              >
+                <LogIn />
+              </Box>
+            </Box> */}
+
+      {/* Sign Up Modal */}
+      {/* <Box display="flex" justifyContent="flex-end">
+              <Box
+                position="absolute"
+                width="50%"
+                display="flex"
+                justifyContent="center"
+                zIndex={40}
+              >
+                <Box
+                  ref={signupWrapperRef}
+                  className={classes.authModal}
+                  hidden={!isSignUpShown}
+                >
+                  <SignUp />
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </li>
+      </ul> */}
+    </nav>
+  );
+};
+
+export default Navbar;
