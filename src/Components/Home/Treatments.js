@@ -31,8 +31,7 @@ const useStyles = makeStyles({
     // height: "800px",
     //height: "42rem",
     height: "360px",
-    width: "888.73px",
-    backgroundColor: "#B28D42",
+    border: "none",
     //outline: "none",
     //float: "right",
     marginBottom: "44px",
@@ -63,6 +62,7 @@ const useStyles = makeStyles({
     height: "360px",
   },
   body: {
+    backgroundColor: "#B28D42",
     // minWidth: "420px",
     //marginLeft:"525px",
     height: "360px",
@@ -144,7 +144,7 @@ export default function Consulting() {
         {data
           .filter((service) => service.category === "Treatment")
           .map((filteredService) => (
-            <Col>
+            <Col style={{ padding: "0px 60px" }}>
               <Card className={classes.card}>
                 {/* <Col className="no-gutters"> */}
                 <Row>
