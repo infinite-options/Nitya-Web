@@ -17,14 +17,13 @@ function Footer() {
           <Col></Col>
           <Col
             style={{
-              height: "200px",
               display: "flex",
               justifyContent: "center",
             }}
           >
             <Row>
-              <img src={Logo} style={{ height: "150px" }} />
-              <div style={{ fontSize: "15px", textAlign: "left" }}>
+              <img src={Logo} style={{ height: "120px" }} />
+              <div style={{ fontSize: "13px", textAlign: "left" }}>
                 &copy;{new Date().getFullYear()} by Leena Marathay
               </div>
             </Row>
@@ -43,10 +42,10 @@ function Footer() {
                 }}
               >
                 <ui className="list-unstyled">
-                  <li style={{ fontSize: "15px", textAlign: "left" }}>
+                  <li style={{ fontSize: "13px", textAlign: "left" }}>
                     Leena Marathay
                   </li>
-                  <li style={{ fontSize: "15px", textAlign: "left" }}>
+                  <li style={{ fontSize: "13px", textAlign: "left" }}>
                     NAMA Certified Ayurvedic Practitioner
                   </li>
                 </ui>
@@ -55,7 +54,7 @@ function Footer() {
               <Col md="auto" style={{ height: "150px", paddingTop: "50px" }}>
                 <ui
                   className="list-unstyled"
-                  style={{ fontSize: "15px", textAlign: "left" }}
+                  style={{ fontSize: "13px", textAlign: "left" }}
                 >
                   <li>Office: 408 471 7004</li>
                   <li>Email: Leena@nityaayurveda.com</li>
@@ -70,17 +69,17 @@ function Footer() {
                   paddingTop: "50px",
                 }}
               >
-                <ui className="list-unstyled" style={{ fontSize: "15px" }}>
+                <ui className="list-unstyled" style={{ fontSize: "13px" }}>
                   <li>6055 Meridian Ave, Ste. 40A,</li>
                   <li>San Jose, CA 95120</li>
                 </ui>
               </Col>
             </Row>
             <Row>
-              <Col style={{ padding: "15px" }}>
+              <Col md="auto" style={{ padding: "15px", width: "261px" }}>
                 <p
                   className="list-unstyled"
-                  style={{ fontSize: "15px", textDecoration: "underline" }}
+                  style={{ fontSize: "13px", textDecoration: "underline" }}
                 >
                   Admin Login
                 </p>
@@ -138,7 +137,7 @@ function Footer() {
         <Row style={{ padding: "10px" }}>
           <Col style={{ textAlign: "center" }}>
             <img src={Logo} style={{ height: "100px" }} />
-            <p style={{ fontSize: "15px", margin: "0px", marginTop: "5px" }}>
+            <p style={{ fontSize: "13px", margin: "0px", marginTop: "5px" }}>
               &copy;{new Date().getFullYear()} by Leena Marathay
             </p>
           </Col>
@@ -147,7 +146,7 @@ function Footer() {
           style={{ display: "flex", justifyContent: "center", padding: "10px" }}
         >
           <Col className="grid-cell">
-            <ui className="list-unstyled" style={{ fontSize: "15px" }}>
+            <ui className="list-unstyled" style={{ fontSize: "13px" }}>
               <li>6055 Meridian Ave, Ste. 40A,</li>
               <li>San Jose, CA 95120</li>
             </ui>
@@ -155,7 +154,7 @@ function Footer() {
           <Col className="grid-cell">
             <ui
               className="list-unstyled"
-              style={{ fontSize: "15px", textAlign: "left" }}
+              style={{ fontSize: "13px", textAlign: "left" }}
             >
               <li>Office: 408 471 7004</li>
               <li>Email: Leena@nityaayurveda.com</li>
@@ -167,10 +166,10 @@ function Footer() {
         >
           <Col className="grid-cell">
             <ui className="list-unstyled">
-              <li style={{ fontSize: "15px", textAlign: "left" }}>
+              <li style={{ fontSize: "13px", textAlign: "left" }}>
                 Leena Marathay
               </li>
-              <li style={{ fontSize: "15px", textAlign: "left" }}>
+              <li style={{ fontSize: "13px", textAlign: "left" }}>
                 NAMA Certified Ayurvedic Practitioner
               </li>
             </ui>
