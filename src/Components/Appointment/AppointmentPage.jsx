@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 
-// import StripeElement from "./StripeElement";
+import StripeElement from "./StripeElement";
 import { useParams } from "react-router";
 import ScrollToTop from "../../Blog/ScrollToTop";
-// import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { Row, Col } from "reactstrap";
 import SimpleForm from "./simpleForm";
@@ -383,14 +383,14 @@ export default function AppointmentPage(props) {
               JSON.stringify(result)
           );
 
-          // let tempStripePromise = loadStripe(result.data.publicKey);
+          let tempStripePromise = loadStripe(result.data.publicKey);
 
-          // console.log("(1 PaymentDetails) setting state with stripePromise");
+          console.log("(1 PaymentDetails) setting state with stripePromise");
 
-          // setStripePromise(tempStripePromise);
+          setStripePromise(tempStripePromise);
 
-          // console.log(tempStripePromise);
-          // console.log("(1 PaymentDetails) stripePromise set!");
+          console.log(tempStripePromise);
+          console.log("(1 PaymentDetails) stripePromise set!");
         })
         .catch((err) => {
           console.log(err);
@@ -413,14 +413,14 @@ export default function AppointmentPage(props) {
               JSON.stringify(result)
           );
 
-          // let tempStripePromise = loadStripe(result.data.publicKey);
+          let tempStripePromise = loadStripe(result.data.publicKey);
 
-          // console.log("(2 PaymentDetails) setting state with stripePromise");
+          console.log("(2 PaymentDetails) setting state with stripePromise");
 
-          // console.log(tempStripePromise);
-          // setStripePromise(tempStripePromise);
+          console.log(tempStripePromise);
+          setStripePromise(tempStripePromise);
 
-          // console.log("(2 PaymentDetails) stripePromise set!");
+          console.log("(2 PaymentDetails) stripePromise set!");
         })
         .catch((err) => {
           console.log(err);
@@ -860,7 +860,7 @@ export default function AppointmentPage(props) {
                     // border: "dashed"
                   }}
                 >
-                  {/* <StripeElement
+                  <StripeElement
                     stripePromise={stripePromise}
                     treatmentID={treatmentID}
                     treatmentName={elementToBeRendered.title}
@@ -875,7 +875,7 @@ export default function AppointmentPage(props) {
                     cost={cost}
                     duration={elementToBeRendered.duration}
                     image_url={elementToBeRendered.image_url}
-                  /> */}
+                  />
                 </div>
                 <div
                   aria-label={"click button to book your appointment"}
