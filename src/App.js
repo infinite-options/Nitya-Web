@@ -17,27 +17,27 @@ import ServicePage from "./Components/ServicePage";
 import AppointmentPage from "./Components/Appointment/AppointmentPage";
 
 //Stripe-related imports
-import CheckoutForm from "./Components/Stripe/CheckoutForm";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  CardElement,
-  Elements,
-  useElements,
-  useStripe,
-} from "@stripe/react-stripe-js";
+// import CheckoutForm from "./Components/Stripe/CheckoutForm";
+// import { loadStripe } from "@stripe/stripe-js";
+// import {
+//   CardElement,
+//   Elements,
+//   useElements,
+//   useStripe,
+// } from "@stripe/react-stripe-js";
 import ConfirmationPage from "./Components/Appointment/confirmationPage";
 
 export const MyContext = React.createContext();
 
 function App() {
-  const ELEMENTS_OPTIONS = {
-    fonts: [
-      {
-        cssSrc: "https://fonts.googleapis.com/css?family=Roboto",
-      },
-    ],
-  };
-  const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
+  // const ELEMENTS_OPTIONS = {
+  //   fonts: [
+  //     {
+  //       cssSrc: "https://fonts.googleapis.com/css?family=Roboto",
+  //     },
+  //   ],
+  // };
+  // const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
   const url =
     "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
@@ -69,23 +69,23 @@ function App() {
         <Route exact path="/service" component={ServicePage} />
         {/* <Route exact path="/appt" component={AppointmentPage} /> */}
 
-        <Route exact path="/:treatmentID/service/">
+        {/* <Route exact path="/:treatmentID/service/">
           <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
             <ServicePage />
           </MyContext.Provider>
-        </Route>
+        </Route> */}
         <Route exact path="/:treatmentID/appt/">
           <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
             <AppointmentPage />
           </MyContext.Provider>
         </Route>
-        <Route exact path="/:treatmentID/appt/stripe">
+        {/* <Route exact path="/:treatmentID/appt/stripe">
           <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
             <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
               <CheckoutForm />
             </Elements>
           </MyContext.Provider>
-        </Route>
+        </Route> */}
         <Route path="/apptconfirm">
           <ConfirmationPage />
         </Route>
