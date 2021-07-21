@@ -22,10 +22,13 @@
     "font-awesome": "^4.7.0",
     "google-map-react": "^2.1.9",
     "google-maps-react": "^2.0.6",
+    "js-cookie": "^2.2.1",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.2",
     "react-calendar": "^3.3.1",
     "react-dom": "^17.0.1",
+    "react-facebook-login": "^4.1.1",
+    "react-google-login": "^5.2.2",
     "react-icons": "^4.2.0",
     "react-markdown": "^5.0.3",
     "react-multi-carousel": "^2.6.3",
@@ -37,6 +40,7 @@
     "reactstrap": "^8.9.0",
     "styled-components": "^5.2.1",
     "typeface-raleway": "^1.1.13",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^1.1.1"
   },
   "scripts": {
