@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import FacebookLogin from "react-facebook-login";
 import GoogleLogin from "react-google-login";
+import AppleLogin from "react-apple-login";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { Grid } from "@material-ui/core";
@@ -182,6 +183,9 @@ function SocialLogin(props) {
           cookiePolicy={"single_host_origin"}
           style={{ borderRadius: "10px" }}
         />
+      </Grid>
+      <Grid item xs={12}>
+        <AppleLogin clientId="" redirectURI="" />
       </Grid>
     </Grid>
   );
