@@ -1,67 +1,146 @@
-import React from "react";
+import { React, useState } from "react";
 
 import ScrollToTop from "../../Blog/ScrollToTop";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+
+import SocialLogin from "./SocialLogin";
+
+const eye = <FontAwesomeIcon icon={faEye} />;
 
 export default function SignUp(props) {
+  const pageColor = "#b28d42";
   const useStyles = makeStyles({
-    signup: {
+    pageText: {
+      fontSize: "24px",
+      color: pageColor,
+    },
+    root: {
+      backgroundColor: "#DADADA",
+      padding: "50px",
+    },
+    container: {
+      marginLeft: "auto",
+      marginRight: "auto",
+      textAlign: "center",
+      backgroundColor: "white",
+      width: "883px",
+      padding: "20px",
+    },
+    formContainer: {
       display: "flex",
-      justifyContent: "center",
-      color: "#594d2c",
+      flexDirection: "column",
+      width: "457px",
+      marginLeft: "auto",
+      marginRight: "auto",
     },
-    heading: {
-      fontFamily: "DidoteTextW01-Italic",
-      fontSize: "4rem",
+    formTextInput: {
+      width: "457px",
+      padding: "10px 20px",
+      margin: "7px",
+      borderRadius: "25px",
+      border: "2px solid " + pageColor,
+      outline: "none",
+      "&::placeholder": {
+        color: pageColor,
+      },
     },
-    content: {
-      fontFamily: "'Open Sans', sans-serif",
-      fontSize: "1.5rem",
+    button: {
+      height: "60px",
+      width: "243px",
+      marginLeft: "auto",
+      marginRight: "auto",
+      color: "white",
+      backgroundColor: pageColor,
+      borderRadius: "25px",
+      border: "none",
+      "&:focus": {
+        outline: "none",
+      },
     },
-    fbBtn: {
-      backgroundColor: "#3b5998",
-      width: "180px",
+    inputWrapper: {
+      position: "relative",
     },
-    gBtn: {
-      backgroundColor: "#4285f4",
-    },
-    btn: {
-      border: "solid #594d2c 1px",
-      borderRadius: 0,
-      color: "#594d2c",
-      width: "300px",
+    eye: {
+      color: pageColor,
+      position: "absolute",
+      top: "20px",
+      right: "28px",
+      cursor: "pointer",
     },
   });
   const classes = useStyles();
+  const [password1Shown, setPassword1Shown] = useState(false);
+  const [password2Shown, setPassword2Shown] = useState(false);
+  const togglePasswordVisiblity = (id, passwordShown) => {
+    if (id === 1) setPassword1Shown(!passwordShown);
+    else setPassword2Shown(!passwordShown);
+  };
 
   return (
-    <div className={classes.signup} id="signup">
-      <ScrollToTop />
-
+    <div className={classes.root}>
       <div className={classes.container}>
-        <div>
-          <br></br>
-          <p className={classes.heading}>Sign Up</p>
-          <br></br>
-          <p className={classes.content}>
-            Already a member?
-            <a href="/login" aria-label={"click link to log in"}>
-              Log In
-            </a>
-          </p>
+        <div className={classes.pageText} style={{ paddingBottom: "20px" }}>
+          Sign Up
         </div>
-        <br></br>
-        <hr></hr>
-        <div aria-label={"click button to sign up"} style={{ padding: 10 }}>
-          <Button className={classes.btn}>Sign up with email</Button>
+        <SocialLogin />
+        <div className={classes.pageText} style={{ padding: "10px" }}>
+          Or
         </div>
+        <form className={classes.formContainer}>
+          <div className={classes.inputWrapper}>
+            <input
+              className={classes.formTextInput}
+              type="text"
+              placeholder="Email Address"
+            />
+          </div>
 
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
-        <br></br>
+          <div className={classes.inputWrapper}>
+            <input
+              className={classes.formTextInput}
+              type={password1Shown ? "text" : "password"}
+              placeholder=" Create Password"
+            />
+            <i
+              className={classes.eye}
+              onClick={() => togglePasswordVisiblity(1, password1Shown)}
+            >
+              {eye}
+            </i>
+          </div>
+          <div className={classes.inputWrapper}>
+            <input
+              className={classes.formTextInput}
+              type={password2Shown ? "text" : "password"}
+              placeholder=" Confirm Password"
+            />
+            <i
+              className={classes.eye}
+              onClick={() => togglePasswordVisiblity(2, password2Shown)}
+            >
+              {eye}
+            </i>
+          </div>
+
+          <div style={{ padding: "15px" }}>
+            <input type="submit" value="Sign Up" className={classes.button} />
+          </div>
+        </form>
+        <div className={classes.pageText} style={{ marginTop: "40px" }}>
+          Already have an account?
+        </div>
+        <button
+          className={classes.button}
+          style={{ marginBottom: "30px" }}
+          onClick={() => {
+            window.location.href = "/login";
+          }}
+        >
+          Login
+        </button>
       </div>
     </div>
   );

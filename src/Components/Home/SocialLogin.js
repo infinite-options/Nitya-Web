@@ -7,6 +7,11 @@ import axios from "axios";
 import { Grid } from "@material-ui/core";
 import { AuthContext } from "../../auth/AuthContext";
 import { withRouter } from "react-router";
+import { makeStyles } from "@material-ui/core/styles";
+
+import AppleLoginBtn from "../../Apple-Login_Btn.png";
+import FacebookLoginBtn from "../../Facebook-Login-Btn.png";
+import GoogleLoginBtn from "../../Google-Login-Btn.png";
 
 function SocialLogin(props) {
   const Auth = useContext(AuthContext);
@@ -159,8 +164,33 @@ function SocialLogin(props) {
       });
   };
 
+  const useStyles = makeStyles({
+    socialLoginBtn: {
+      padding: "0px",
+      border: "none",
+      backgroundColor: "transparent",
+      borderRadius: "15px",
+      outline: "none",
+    },
+    socialLogin: {
+      height: "52px",
+    },
+  });
+  const classes = useStyles();
+
   return (
     <Grid container spacing={1} xs={12}>
+      <Grid item xs={12}>
+        <AppleLogin
+          clientId=""
+          redirectURI=""
+          render={() => (
+            <button className={classes.socialLoginBtn}>
+              <img src={AppleLoginBtn} className={classes.socialLogin} />
+            </button>
+          )}
+        />
+      </Grid>
       <Grid item xs={12}>
         <FacebookLogin
           appId={process.env.REACT_APP_FACEBOOK_APP_ID}
@@ -168,8 +198,9 @@ function SocialLogin(props) {
           fields="name,email,picture"
           onClick="return false"
           callback={responseFacebook}
-          size="small"
-          textButton="Continue with Facebook"
+          textButton=""
+          cssClass={classes.socialLoginBtn}
+          icon={<img src={FacebookLoginBtn} className={classes.socialLogin} />}
         />
       </Grid>
       <Grid item xs={12}>
@@ -178,14 +209,14 @@ function SocialLogin(props) {
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           isSignedIn={false}
-          buttonText="Continue with Google"
           disable={false}
           cookiePolicy={"single_host_origin"}
-          style={{ borderRadius: "10px" }}
+          render={() => (
+            <button className={classes.socialLoginBtn}>
+              <img src={GoogleLoginBtn} className={classes.socialLogin} />
+            </button>
+          )}
         />
-      </Grid>
-      <Grid item xs={12}>
-        <AppleLogin clientId="" redirectURI="" />
       </Grid>
     </Grid>
   );
