@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import { withRouter } from "react-router";
 import axios from "axios";
@@ -6,6 +7,10 @@ import { Grid, Paper, Button, Typography, Box } from "@material-ui/core";
 import { AuthContext } from "../../auth/AuthContext";
 import CssTextField from "../../utils/CssTextField";
 import SocialLogin from "./SocialLogin";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
+
+const eye = <FontAwesomeIcon icon={faEye} />;
 
 function AdminLogin(props) {
   const [emailValue, setEmail] = useState("");
@@ -111,6 +116,7 @@ function AdminLogin(props) {
   };
 
   const verifyLoginInfo = (e) => {
+    console.log("Verifying");
     // Attempt to login
     // Get salt for account
     axios
@@ -123,6 +129,8 @@ function AdminLogin(props) {
         }
       )
       .then((res) => {
+        console.log("response recieved: ");
+        console.log(res);
         // console.log(emailValue, passwordValue);
         let saltObject = res;
         if (saltObject.data.code === 200) {
@@ -332,9 +340,134 @@ function AdminLogin(props) {
     return <Typography style={{ color: "red" }}>{errorMessage}</Typography>;
   };
 
+  const pageColor = "#b28d42";
+  const useStyles = makeStyles({
+    pageText: {
+      fontSize: "24px",
+      color: pageColor,
+    },
+    root: {
+      backgroundColor: "#DADADA",
+      padding: "50px",
+    },
+    container: {
+      marginLeft: "auto",
+      marginRight: "auto",
+      textAlign: "center",
+      backgroundColor: "white",
+      width: "883px",
+      padding: "20px",
+    },
+    formContainer: {
+      display: "flex",
+      flexDirection: "column",
+      width: "457px",
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+    formTextInput: {
+      width: "457px",
+      padding: "10px 20px",
+      margin: "7px",
+      borderRadius: "25px",
+      border: "2px solid " + pageColor,
+      outline: "none",
+      "&::placeholder": {
+        color: pageColor,
+      },
+    },
+    button: {
+      height: "60px",
+      width: "243px",
+      marginLeft: "auto",
+      marginRight: "auto",
+      color: "white",
+      backgroundColor: pageColor,
+      borderRadius: "25px",
+      border: "none",
+      "&:focus": {
+        outline: "none",
+      },
+    },
+    inputWrapper: {
+      position: "relative",
+    },
+    eye: {
+      color: pageColor,
+      position: "absolute",
+      top: "20px",
+      right: "28px",
+      cursor: "pointer",
+    },
+  });
+
+  const classes = useStyles();
+  const [password1Shown, setPassword1Shown] = useState(false);
+  const togglePasswordVisiblity = (passwordShown) => {
+    setPassword1Shown(!passwordShown);
+  };
+
   return (
-    <div>
-      <Paper style={paperStyle}>
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <div className={classes.pageText} style={{ paddingBottom: "20px" }}>
+          Login
+        </div>
+        <SocialLogin />
+        <div className={classes.pageText} style={{ padding: "10px" }}>
+          Or
+        </div>
+        <form className={classes.formContainer}>
+          <div className={classes.inputWrapper}>
+            <input
+              className={classes.formTextInput}
+              type="text"
+              placeholder="Email Address"
+              value={emailValue}
+              onChange={handleEmailChange}
+            />
+          </div>
+
+          <div className={classes.inputWrapper}>
+            <input
+              className={classes.formTextInput}
+              type={password1Shown ? "text" : "password"}
+              placeholder="Password"
+              value={passwordValue}
+              onChange={handlePasswordChange}
+            />
+            <i
+              className={classes.eye}
+              onClick={() => togglePasswordVisiblity(password1Shown)}
+            >
+              {eye}
+            </i>
+          </div>
+
+          <div style={{ padding: "15px" }}>
+            <input
+              type="submit"
+              value="Login"
+              className={classes.button}
+              onClick={verifyLoginInfo}
+            />
+          </div>
+        </form>
+        <div>{showError()}</div>
+        <div className={classes.pageText} style={{ marginTop: "40px" }}>
+          Don't have an account?
+        </div>
+        <button
+          className={classes.button}
+          style={{ marginBottom: "30px" }}
+          onClick={() => {
+            window.location.href = "/signup";
+          }}
+        >
+          Sign Up
+        </button>
+      </div>
+      {/* <Paper style={paperStyle}>
         <Grid container spacing={1} xs={12}>
           <Grid item xs={12}>
             <Box my={1} style={{ fontSize: "20px", color: "#8d6f1a" }}>
@@ -393,7 +526,7 @@ function AdminLogin(props) {
           </Grid>
           <SocialLogin setError={setError} setErrorMessage={setErrorMessage} />
         </Grid>
-      </Paper>
+      </Paper> */}
     </div>
   );
 }
