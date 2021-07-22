@@ -71,7 +71,7 @@ const Services = (props) => {
   const [activeComponent, setActiveComponent] = useState("consulting");
 
   return (
-    <div className="page-container">
+    <div className="page-container" style={{ padding: "0px" }}>
       <div className="services" id="services" aria-label={"service block"}>
         <div id="servicesContainer">
           <ScrollToTop />

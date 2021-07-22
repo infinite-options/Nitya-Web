@@ -179,8 +179,8 @@ function Footer() {
             <img
               src={Namacb}
               style={{
-                width: "80px",
-                height: "80px",
+                width: "50px",
+                height: "50px",
                 float: "center",
               }}
               alt="An Image of NAMACB CAP"
@@ -194,7 +194,7 @@ function Footer() {
             <img
               src={CAAM}
               style={{
-                height: "80px",
+                height: "50px",
               }}
             ></img>
           </Col>

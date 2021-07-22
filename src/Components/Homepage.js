@@ -11,7 +11,7 @@ class Homepage extends Component {
     return (
       <>
         <div className="homepage" id="homepage" style={{ minWidth: "1000px" }}>
-          <div className="page-container ">
+          <div className="page-container " style={{ padding: "0px" }}>
             <ScrollToTop />
             <Home />
             {/* <About />
@@ -29,7 +29,10 @@ class Homepage extends Component {
             >
               Services
             </p> */}
-            <Services />
+            <div style={{ padding: "50px" }}>
+              <Services />
+            </div>
+
             {/* <ServicePage /> */}
             <About />
             <Contact />

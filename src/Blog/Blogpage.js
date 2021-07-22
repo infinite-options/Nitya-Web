@@ -21,27 +21,36 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ShareOutline from "@material-ui/icons/ShareOutlined";
 import SearchIcon from "@material-ui/icons/Search";
+import defaultImg from "../Blog-Default-Img.png";
+
+import { ReactComponent as ShareBtn } from "../ios-share-alt.svg";
 
 const useStyles = makeStyles((theme) => ({
+  blogpage: {
+    marginLeft: "auto",
+    marginRight: "auto",
+  },
   container: {
-    position: "relative",
-    top: "40px",
-    marginBottom: "100px",
-    left: "200px",
-    right: "80px",
-    height: "auto",
-    width: "1430px",
     backgroundColor: "white",
-    paddingTop: 0,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    marginRight: "200px",
+    marginLeft: "200px",
+    fontFamily: "Hoefler Text",
+    "@media (max-width: 1430px)": {
+      marginRight: "100px",
+      marginLeft: "100px",
+    },
+    "@media (max-width: 1100px)": {
+      marginRight: "50px",
+      marginLeft: "50px",
+    },
   },
   appbar: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#b28d42",
     boxShadow: "none",
-    paddingBottom: "30px",
+    padding: "4px",
+    "@media (max-width: 880px)": {
+      display: "none",
+    },
   },
   navbarDisplayFlex: {
     display: "flex",
@@ -51,19 +60,17 @@ const useStyles = makeStyles((theme) => ({
   navDisplayFlex: {
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
+    minWidth: "60%",
   },
   linkText: {
     textDecoration: "none",
     textTransform: "capitalize",
-    color: "#594d2c",
+    color: "white",
   },
   search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
+    display: "inline-block",
+    borderRadius: "15px",
     marginLeft: 0,
     width: "100%",
     [theme.breakpoints.up("sm")]: {
@@ -71,64 +78,85 @@ const useStyles = makeStyles((theme) => ({
       width: "auto",
     },
   },
-  searchIcon: {
-    padding: theme.spacing(0, 0),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
+  searchIconDiv: {
+    marginTop: "auto",
+    marginBottom: "auto",
+    marginLeft: "10px",
+  },
+  searchContainer: {
     display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "#594d2c",
   },
   inputRoot: {
     color: "#594d2cs",
   },
   inputInput: {
+    padding: "10px",
     boxShadow: "none",
     outline: "none",
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(1)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "12ch",
-      "&:focus": {
-        width: "20ch",
-      },
+    width: "450px",
+    borderRadius: "15px",
+    border: "none",
+    "&::placeholder": {
+      color: "#b28d42",
+    },
+    "@media (max-width: 1430px)": {
+      width: "200px",
     },
   },
 
   card: {
     display: "flex",
     boxShadow: "none",
-    maxWidth: "auto",
-    height: "500px",
+    paddingTop: "30px",
+    paddingBottom: "30px",
     paddingLeft: "30px",
     paddingRight: "30px",
+    "@media (max-width: 1100px)": {},
+  },
+  cardRow: {
+    "@media (max-width: 1100px)": {
+      display: "none",
+    },
+  },
+  cardMobile: {
+    display: "none",
+    "@media (max-width: 1100px)": {
+      display: "block",
+      textAlign: "center",
+    },
+  },
+  blogImg: {
+    width: "436px",
+    height: "327px",
+    "@media (max-width: 570px)": {
+      width: "90%",
+      height: "90%",
+    },
   },
   header: {
-    display: "flex-inline",
-    fontFamily: "'Open Sans', sans-serif",
+    display: "flex",
+    justifyContent: "space-between",
     color: "#8d6f19",
     fontSize: "1.2rem",
     paddingBottom: "10px",
+    width: "250px",
+    "@media (max-width: 570px)": {
+      width: "100px",
+    },
   },
   desc: {
     marginLeft: "-50px",
   },
   title: {
-    fontFamily: "DidoteTextW01-Italic",
-    color: "#594d2c",
+    color: "#b28d42",
     fontSize: "2rem",
     lineHeight: "1.6",
   },
   content: {
     fontSize: "1.2rem",
-    fontFamily: "'Open Sans', sans-serif",
+    fontFamily: "SF Pro Display",
     wordWrap: "break-word",
-    color: "#8d6f19",
+    color: "black",
     lineHeight: "1.4",
     textAlign: "justify",
     paddingTop: "30px",
@@ -189,6 +217,57 @@ function Blogpage(props) {
     alert("Searched");
   };
 
+  const convertDate = (date) => {
+    if (date) {
+      const year = date.substring(0, 4);
+      let month = date.substring(5, 7);
+      const day = date.substring(8, 10);
+
+      switch (month) {
+        case "01":
+          month = "Jan";
+          break;
+        case "02":
+          month = "Feb";
+          break;
+        case "03":
+          month = "Mar";
+          break;
+        case "04":
+          month = "Apr";
+          break;
+        case "05":
+          month = "May";
+          break;
+        case "06":
+          month = "Jun";
+          break;
+        case "07":
+          month = "Jul";
+          break;
+        case "08":
+          month = "Aug";
+          break;
+        case "09":
+          month = "Sep";
+          break;
+        case "10":
+          month = "Oct";
+          break;
+        case "11":
+          month = "Nov";
+          break;
+        case "12":
+          month = "Dec";
+          break;
+        default:
+          month = date.substring(5, 7);
+      }
+      return month + " " + day + ", " + year;
+    }
+    return "";
+  };
+
   const navLinks = [
     { title: `all posts`, path: `/all posts` },
     { title: `healthy tips`, path: `/healthy tips` },
@@ -197,20 +276,18 @@ function Blogpage(props) {
   ];
 
   return (
-    <div className="blogpage" id="blogpage">
-      <h1
-        style={{
-          textAlign: "center",
-          fontFamily: "DidoteTextW01-Italic",
-          fontStyle: "italic",
-          fontSize: "4.5rem",
-          wordWrap: "break-word",
-          color: "#d3a625",
-        }}
-      >
-        Blog
-      </h1>
+    <div className={classes.blogpage} id="blogpage">
       <div className={classes.container}>
+        <div
+          style={{
+            textAlign: "center",
+            color: "#b28d42",
+            fontSize: "31px",
+            padding: "20px",
+          }}
+        >
+          Ayurvedic Musings
+        </div>
         <AppBar className={classes.appbar} position="static">
           <Toolbar>
             <Container maxWidth="md" className={classes.navbarDisplayFlex}>
@@ -233,17 +310,19 @@ function Blogpage(props) {
                 ))}
               </List>
             </Container>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
+            <div className={classes.searchContainer}>
+              <div className={classes.search}>
+                <form onSubmit={submitSearch}>
+                  <input
+                    type="text"
+                    className={classes.inputInput}
+                    placeholder="Search..."
+                  />
+                </form>
               </div>
-              <form onSubmit={submitSearch}>
-                <input
-                  type="text"
-                  className={classes.inputInput}
-                  placeholder="Search..."
-                />
-              </form>
+              <div className={classes.searchIconDiv}>
+                <SearchIcon fontSize="large" />
+              </div>
             </div>
           </Toolbar>
         </AppBar>
@@ -251,31 +330,41 @@ function Blogpage(props) {
         {data.map((post) => (
           <div className="blogPostContainer">
             <Card className={classes.card}>
-              <Row>
-                {!!post.blogImage && (
-                  <div>
-                    <Col>
-                      <img
-                        src={post.blogImage}
-                        style={{
-                          width: "550px",
-                          height: "450px",
-                        }}
-                        onError={(e) => (e.target.style.display = "none")}
-                      />
-                    </Col>
-                  </div>
-                )}
+              <Row className={classes.cardRow}>
+                <div>
+                  <Col>
+                    <img
+                      src={
+                        post.blogImage !== "NULL" && post.blogImage
+                          ? post.blogImage
+                          : defaultImg
+                      }
+                      className={classes.blogImg}
+                      onError={(e) => (e.target.style.display = "none")}
+                    />
+                  </Col>
+                </div>
                 <Col className={classes.desc}>
                   <div className={classes.header}>
-                    {post.postedOn}
-                    <IconButton
+                    {convertDate(post.postedOn)}
+                    <div
+                      style={{
+                        height: "6px",
+                        width: "6px",
+                        backgroundColor: "#d28d42",
+                        borderRadius: "3px",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                      }}
+                    />
+                    3 mins
+                    {/* <IconButton
                       onClick={handleClick}
                       style={{ float: "right" }}
                       aria-label="click to share post"
                     >
                       <MoreVertIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <Menu
                       elevation={0}
                       getContentAnchorEl={null}
@@ -293,7 +382,7 @@ function Blogpage(props) {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      <MenuItem
+                      {/* <MenuItem
                         style={{
                           color: "#594d2c",
                           width: "200px",
@@ -311,7 +400,7 @@ function Blogpage(props) {
                           <ShareOutline />
                         </IconButton>
                         Share
-                      </MenuItem>
+                      </MenuItem> */}
                     </Menu>
                   </div>
                   <Link
@@ -327,26 +416,110 @@ function Blogpage(props) {
                       </div>
                     </div>
                   </Link>
-                  <hr style={{ color: "#8d6f19" }}></hr>
+                  <hr style={{ color: "#b28d42" }}></hr>
                   <div className={classes.cardActions}>
                     <p>
                       <span>Views &nbsp;&nbsp; Comments</span>
                     </p>
 
-                    <IconButton style={{ color: "red", float: "right" }}>
-                      <FavoriteBorderIcon />
-                    </IconButton>
+                    <div>
+                      <IconButton style={{ color: "#b28d42" }}>
+                        <FavoriteBorderIcon />
+                      </IconButton>
+                      <IconButton>
+                        <ShareBtn style={{ height: "24px" }} />
+                      </IconButton>
+                    </div>
                   </div>
                 </Col>
               </Row>
             </Card>
+            <Card className={classes.cardMobile}>
+              <img
+                src={
+                  post.blogImage !== "NULL" && post.blogImage
+                    ? post.blogImage
+                    : defaultImg
+                }
+                className={classes.blogImg}
+                onError={(e) => (e.target.style.display = "none")}
+              />
+              <Col className={classes.desc} style={{ margin: "0px" }}>
+                <div className={classes.header} style={{ marginTop: "20px" }}>
+                  {convertDate(post.postedOn)}
+                  <div
+                    style={{
+                      height: "6px",
+                      width: "6px",
+                      backgroundColor: "#d28d42",
+                      borderRadius: "3px",
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                    }}
+                  />
+                  3 mins
+                  {/* <IconButton
+                      onClick={handleClick}
+                      style={{ float: "right" }}
+                      aria-label="click to share post"
+                    >
+                      <MoreVertIcon />
+                    </IconButton> */}
+                  <Menu
+                    elevation={0}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  ></Menu>
+                </div>
+                <Link
+                  to={`/${post.blog_uid}/fullblog`}
+                  style={{ textDecoration: "none" }}
+                >
+                  <div>
+                    <div className={classes.title}>
+                      <p>{post.blogTitle}</p>
+                    </div>
+                    <div className={classes.content}>
+                      <p>{post.blogText}</p>
+                    </div>
+                  </div>
+                </Link>
+                <hr style={{ color: "#b28d42" }}></hr>
+                <div className={classes.cardActions}>
+                  <p>
+                    <span>Views &nbsp;&nbsp; Comments</span>
+                  </p>
+
+                  <div>
+                    <IconButton style={{ color: "#b28d42" }}>
+                      <FavoriteBorderIcon />
+                    </IconButton>
+                    <IconButton>
+                      <ShareBtn style={{ height: "24px" }} />
+                    </IconButton>
+                  </div>
+                </div>
+              </Col>
+            </Card>
           </div>
         ))}
-        <div style={{ paddingBottom: "30px" }}>
+        {/* <div style={{ paddingBottom: "30px" }}>
           <Button variant="contained" className={classes.btn} href="/addpost">
             Add Blog Entry
           </Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
