@@ -119,6 +119,7 @@ function AdminLogin(props) {
     console.log("Verifying");
     // Attempt to login
     // Get salt for account
+    e.preventDefault();
     axios
       .post(
         "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/AccountSalt",

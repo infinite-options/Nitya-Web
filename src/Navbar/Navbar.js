@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { animateScroll as scroll } from "react-scroll";
 import logo from "../nitya_logo.png";
+import InstagramIcon from "@material-ui/icons/Instagram";
 // import LoginNavBar from "./LoginNavBar";
 // import SignUp from "../Components/Home/SignUp";
 // import LogIn from "../Components/Home/LogIn";
@@ -115,7 +116,15 @@ const Navbar = () => {
         </li>
       </ul>
 
-      <ul className="right"></ul>
+      <ul className="right">
+        <InstagramIcon
+          fontSize="large"
+          className="instagram-icon"
+          onClick={(event) =>
+            (window.location.href = "https://www.instagram.com/nityaayurveda/")
+          }
+        />
+      </ul>
 
       {/* <ul className={"nav-log"}>
         <li className="nav-item" className="nav-link" className="log-in">

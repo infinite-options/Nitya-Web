@@ -28,8 +28,8 @@
 
 .right {
   width: 250px;
-  visibility: hidden;
   margin-left: auto;
+  padding-top: 30px;
 }
 
 .nav-link {
@@ -50,6 +50,15 @@
   display: none;
   font-size: 2rem;
   cursor: pointer;
+}
+
+.instagram-icon {
+  color: #8d6f1a;
+  height: 50px;
+}
+
+.instagram-icon:hover {
+  color: #d3a625;
 }
 
 @media screen and (max-width: 1250px) and (min-width: 1050px) {
@@ -96,5 +105,6 @@
   .right {
     width: 0px;
     margin-left: 0px;
+    display: none;
   }
 }
