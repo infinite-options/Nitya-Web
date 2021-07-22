@@ -19,26 +19,30 @@ function Footer() {
             style={{
               display: "flex",
               justifyContent: "center",
+              height: "120px",
             }}
           >
-            <Row>
-              <img src={Logo} style={{ height: "120px" }} />
-              <div style={{ fontSize: "13px", textAlign: "left" }}>
+            <div>
+              <img
+                src={Logo}
+                style={{
+                  height: "101px",
+                }}
+              />
+              <div style={{ fontSize: "13px", textAlign: "center" }}>
                 &copy;{new Date().getFullYear()} by Leena Marathay
               </div>
-            </Row>
+            </div>
           </Col>
           <Col md="auto">
-            <Row>
+            <Row style={{ paddingTop: " 30px", paddingBottom: "15px" }}>
               {/* className="col-sm" */}
               {/* Column1 */}
               <Col
                 md="auto"
                 style={{
-                  height: "150px",
                   display: "flex",
                   justifyContent: "left",
-                  paddingTop: "50px",
                 }}
               >
                 <ui className="list-unstyled">
@@ -51,7 +55,7 @@ function Footer() {
                 </ui>
               </Col>
               {/* Column3 */}
-              <Col md="auto" style={{ height: "150px", paddingTop: "50px" }}>
+              <Col md="auto">
                 <ui
                   className="list-unstyled"
                   style={{ fontSize: "13px", textAlign: "left" }}
@@ -62,32 +66,30 @@ function Footer() {
               </Col>
 
               {/* Column2 */}
-              <Col
-                md="auto"
-                style={{
-                  height: "150px",
-                  paddingTop: "50px",
-                }}
-              >
+              <Col md="auto" style={{}}>
                 <ui className="list-unstyled" style={{ fontSize: "13px" }}>
                   <li>6055 Meridian Ave, Ste. 40A,</li>
                   <li>San Jose, CA 95120</li>
                 </ui>
               </Col>
             </Row>
-            <Row>
-              <Col md="auto" style={{ padding: "15px", width: "261px" }}>
+            <Row style={{ paddingTop: " 15px", paddingBottom: "30px" }}>
+              <Col md="auto" style={{ width: "261px" }}>
                 <p
-                  className="list-unstyled"
-                  style={{ fontSize: "13px", textDecoration: "underline" }}
+                  style={{
+                    fontSize: "13px",
+                    textDecoration: "underline",
+                    margin: "0px",
+                  }}
                 >
-                  Admin Login
+                  <a href="/login" style={{ color: "white" }}>
+                    Admin Login
+                  </a>
                 </p>
               </Col>
               <Col
                 md="auto"
                 style={{
-                  paddingBottom: "50px",
                   display: "flex",
                   flexDirection: "row",
                 }}
@@ -95,8 +97,7 @@ function Footer() {
                 <img
                   src={Namacb}
                   style={{
-                    width: "80px",
-                    height: "80px",
+                    height: "64px",
                     float: "center",
                   }}
                   alt="An Image of NAMACB CAP"
@@ -105,7 +106,7 @@ function Footer() {
                   src={CAAM}
                   style={{
                     // width: "198",
-                    height: "80px",
+                    height: "54px",
                     marginLeft: "40px",
                   }}
                 ></img>
@@ -113,7 +114,7 @@ function Footer() {
                   style={{
                     marginTop: "auto",
                     marginBottom: "auto",
-                    marginLeft: "40px",
+                    marginLeft: "39px",
                   }}
                 >
                   <InstagramIcon

@@ -116,23 +116,37 @@ function AdminLogin(props) {
   };
 
   const verifyLoginInfo = (e) => {
-    console.log("Verifying");
+    // console.log("Verifying");
     // Attempt to login
     // Get salt for account
+    console.log(emailValue);
     axios
       .post(
         "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/AccountSalt",
         {
-          // params: {
           email: emailValue,
-          // }
         }
       )
       .then((res) => {
-        console.log("response recieved: ");
-        console.log(res);
-        // console.log(emailValue, passwordValue);
         let saltObject = res;
+        // axios
+        //   .post(
+        //     "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/AccountSalt",
+        //     {
+        //       email: emailValue,
+        //     }
+        //     // {
+        //     //   params: {
+        //     //     email: emailValue,
+        //     //   },
+        //     // }
+        //   )
+        // .then((res) => {
+        // console.log("response recieved: ");
+        // console.log(res);
+        // console.log(emailValue, passwordValue);
+        // let saltObject = res;
+        console.log(saltObject);
         if (saltObject.data.code === 200) {
           let hashAlg = saltObject.data.result[0].password_algorithm;
           let salt = saltObject.data.result[0].password_salt;
