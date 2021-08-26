@@ -13,18 +13,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    position: "relative",
+
     top: "40px",
     marginBottom: "100px",
-    left: "200px",
     right: "80px",
     height: "auto",
-    width: "1430px",
+    width: "100%",
     backgroundColor: "white",
     paddingTop: 0,
     paddingBottom: "20px",
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
     fontSize: "1.5rem",
@@ -70,6 +68,9 @@ function AddPost(props) {
           blogCategory,
           author,
           postedOn,
+          slug: 'NULL'
+
+          // postedOn,
         }),
         headers: { "Content-Type": "application/json" },
       }
@@ -102,9 +103,8 @@ function AddPost(props) {
                 <div>
                   <TextField
                     id="blogTitle"
-                    label="Title"
                     value={blogTitle}
-                    style={{ margin: 8 }}
+                    style={{ margin: 8, }}
                     placeholder="Title"
                     helperText="Enter Blog Title Here"
                     fullWidth
@@ -134,7 +134,6 @@ function AddPost(props) {
                 <div>
                   <TextField
                     id="blogText"
-                    label="Details"
                     value={blogText}
                     style={{ margin: 8 }}
                     placeholder="Blog Text"
@@ -196,9 +195,9 @@ function AddPost(props) {
                     value={blogCategory}
                     onChange={handleChange}
                   >
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
+                    <MenuItem value={"Healty Tips"}>Healthy Tips</MenuItem>
+                    <MenuItem value={"Recipes"}>Recipes</MenuItem>
+                    <MenuItem value={"Living Well"}>Living Well</MenuItem>
                   </Select>
                 </div>
                 <div>
@@ -235,6 +234,7 @@ function AddPost(props) {
                   type="button"
                   id="submit"
                   name="submit"
+                  onClick={submit}
                 >
                   Add Post
                 </Button>
