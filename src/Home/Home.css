@@ -1,0 +1,923 @@
+@font-face {
+  font-family: Hoefler Text;
+  src: url("../fonts/Hoefler-Text.ttc");
+  font-family: Hoefler Text Bold;
+  src: url("../fonts/HoeflerText\ Bold.otf");
+  font-family: SF Pro Display Regular;
+  src: url("../fonts/SF-Pro-Display-Regular.otf");
+}
+
+/* -------------- Scroll View Style ------------------------------------------------*/
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #757575;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+
+/* -------------- Parent Conatiner in Home.jsx ------------------------------------------------*/
+
+/*Parent Container For Home.jsx */
+.HomeContainer {
+  background-color: #dadada;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0%;
+  margin: 0%;
+  /* grid-template-columns: repeat(1, auto); */
+}
+
+/* -------------- Child Conatiners in Home.jsx ------------------------------------------------*/
+
+/* Card Format for all Intro, About, Service & Contact */
+.Card {
+  width: 60rem;
+  /* width: clamp(200px, 50%, 600px); */
+  height: auto;
+
+  margin: 3% 0% 3% 0%;
+  /* padding: 5%;  */
+
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.CardGrid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  /* grid-column-gap: 5% ; */
+  justify-content: center;
+  margin: 0px;
+  /* padding: 0%; */
+  padding: 3%;
+}
+.IntroGrid {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+.CardImage {
+  object-fit: contain;
+  height: 100%;
+  width: 30rem;
+}
+
+.CardTitle {
+  font-family: Hoefler Text Bold;
+  color: #d3a625;
+  font-size: 52px;
+  font-style: italic;
+  /* font-weight: bold; */
+  margin-right: 0rem;
+  padding: 0px;
+  text-align: center;
+}
+
+.CardText {
+  font-family: SF Pro Display Regular;
+  color: #d3a625;
+  font-size: 20px;
+  margin-right: 1.8rem;
+  /* padding-left:5%; */
+  /* padding-right:5%; */
+  flex: 1;
+}
+
+.CardParagraphs {
+  font-size: 18px;
+  color: #000000;
+  background-color: #dadada;
+  padding: 5px 20px 5px 20px;
+}
+
+.CardButton {
+  text-transform: none;
+  background-color: #d3a625;
+  color: white;
+
+  font-size: 24px;
+
+  width: 75%;
+  height: 3rem;
+
+  margin-right: 1.8rem;
+  margin-top: 2rem;
+  border: 0px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+.ContactButton {
+  text-transform: none;
+  background-color: #d3a625;
+  color: white;
+
+  font-size: 24px;
+
+  width: 75%;
+  height: 3rem;
+
+  margin-right: 1.8rem;
+  margin-top: 2rem;
+  border: 0px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.ButtonGrid {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(2, auto);
+  grid-column-gap: 5%;
+
+  margin: 0px;
+  /* padding: 0%; */
+  /* padding:3%; */
+}
+
+.MapContainer {
+  cursor: pointer;
+  background:url(../Assets/Images/loading.gif) center center no-repeat;
+}
+/* -------------- Services ------------------------------------------------*/
+
+/* Title "Services" on Home.jsx */
+.Service_Title {
+  font-family: Hoefler Text Bold;
+  color: #d3a625;
+  font-size: 52px;
+  font-style: italic;
+  text-align: center;
+  /* align-items: center;*/
+  /* font-weight: bold;  */
+  margin: 2rem;
+  /* background-color:#DADADA; */
+}
+
+/* Services Switch Button Container for "Consulting" & "Treatments" */
+.Services_Button_Contianer {
+  display: flex;
+  justify-content: center;
+}
+
+/* Services Switch Button Styles for "Consulting" & "Treatments" */
+.Services_Button {
+  text-transform: none;
+  background-color: black;
+  font-size: 24px;
+  width: 50%;
+  height: 3rem;
+  margin-left: 2rem;
+}
+
+/* Title Text For each Service Card */
+.Services_Title_Font {
+  font-family: Hoefler Text;
+  font-size: 28px;
+  text-align: center;
+  letter-spacing: 0.6px;
+  color: #000000;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+/* Body Text for each Service Card */
+.Services_Body_Font {
+  font-family: SF Pro Display Regular;
+  text-align: center;
+  font-size: 16px;
+  font-weight: normal;
+  letter-spacing: 0.55px;
+  color: #000000;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-top: 1rem;
+}
+
+.ServiceContainer {
+  display: flex;
+  width: 100%;
+  margin-top: 1rem;
+  background-color: #dadada;
+  max-height: 282px;
+}
+
+/* -------------- Contact ------------------------------------------------*/
+
+/* Title Text "Contact Us" in Contact.jsx */
+.Title_Contact {
+  font-family: Hoefler Text;
+  font-style: italic;
+  font-size: 54px;
+  color: #d3a625;
+}
+
+/* Body Text Address in Contact.jsx */
+.Body_Contact {
+  font-size: 16px;
+  margin-top: 1rem;
+}
+
+/* Map Conatiner in Contact.jsx */
+.Contact_Map {
+  border: 0;
+  width: 100%;
+  border-radius: 0%;
+  height: 100%;
+  margin-right: 1.8rem;
+}
+
+@media only screen and (max-width: 900px) {
+  .ContactMapImg {
+    object-fit: cover;
+    width: 312px;
+    height: 150px;
+  }
+}
+
+/* Input for all the contact.jsx */
+.CardInput {
+  font-family: SF Pro Display Regular;
+  width: 20rem;
+  height: 3rem;
+  margin-top: 1rem;
+  font-size: 16px;
+  margin-right: 1.8rem;
+  border: 2px solid red;
+}
+
+.NewInput {
+  width: 75%;
+  height: 3rem;
+
+  margin-right: 1.8rem;
+  /* margin-right:1.8rem; */
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: 33.3% 33.3% 33.3%;
+  /* grid-row-gap: 10%; */
+  background-color: #fff;
+  color: #444;
+  margin-top: 2rem;
+}
+
+.FooterTextWrapper {
+  color: #c3a336;
+  font-size: 18px;
+  /* display:flex;
+ justify-content:space-evenly; */
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.FooterItem {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.FooterText {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border-right: 2px solid #424242;
+  /* margin-top:1rem; */
+  padding: 1rem;
+}
+
+.FooterTitle {
+  color: #c3a336;
+  font-size: 28px;
+  text-align: center;
+}
+.SeminarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d3a625 0% 0% no-repeat padding-box;
+  opacity: 1;
+  min-height: 40px;
+  padding: 10px 10px;
+  width: 100%;
+  margin-right: 20px;
+}
+.title {
+  font-family: Hoefler Text;
+  font-size: 32px;
+  font-style: italic;
+}
+.subTitle {
+  font-size: 28px;
+}
+.inputField {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 2px solid #d3a625;
+  border-radius: 25px;
+  height: 40px;
+  width: 50%;
+  text-align: left;
+  font: normal normal normal 19px/23px SF Pro Display;
+  color: #000000;
+  letter-spacing: 0.47px;
+  padding: 0.5rem;
+  margin-top: 2rem;
+}
+.donationField {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 2px solid #d3a625;
+  border-radius: 25px;
+  height: 40px;
+  width: 50%;
+  text-align: left;
+  font: normal normal normal 19px/23px SF Pro Display;
+  color: #000000;
+  letter-spacing: 0.47px;
+  padding: 0.5rem;
+  margin-top: 1rem;
+}
+.textTitle {
+  text-align: center;
+  font: normal normal normal 23px SF Pro Display;
+  color: #000000;
+}
+.textConfirm {
+  text-align: center;
+  font: normal normal normal 23px SF Pro Display;
+  color: #d3a625;
+}
+.registerBtn {
+  background: #d3a625;
+  border-radius: 50px;
+  border: none;
+  font: normal normal normal 24px/29px Hoefler Text;
+  color: #ffffff;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  width: 18rem;
+}
+.showRegBtn {
+  background: #d3a625;
+  border-radius: 50px;
+  border: none;
+  font: normal normal normal 24px/29px Hoefler Text;
+  color: #ffffff;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  margin-left: 5rem;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  width: 18rem;
+}
+.seminarBtn {
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border-radius: 50px;
+  font: normal normal normal 24px/29px Hoefler Text;
+  color: #d3a625;
+  text-transform: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.7rem 4rem;
+}
+
+.ServiceImg {
+  width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+
+.ServiceCard {
+  width: 100%;
+  margin: 0%;
+}
+
+
+
+@media screen and (min-width: 500px) and (max-width: 900px) {
+  .Card {
+    width: 80%;
+    height: auto;
+    margin: 5% 0% 5% 0%;
+    background-color: white;
+  }
+
+  .CardGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 3%;
+  }
+  .IntroGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 3%;
+  }
+
+  .CardTitle {
+    font-family: Hoefler Text Bold;
+    color: #d3a625;
+    font-size: 52px;
+    font-style: italic;
+    margin-right: 0rem;
+    padding: 0px;
+    text-align: center;
+  }
+
+  .CardButton {
+    text-transform: none;
+    background-color: #d3a625;
+    color: white;
+    font-size: 24px;
+    width: 75%;
+    height: 3rem;
+    margin-right: 0rem;
+    margin-top: 2rem;
+    border: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .ContactButton {
+    text-transform: none;
+    background-color: #d3a625;
+    color: white;
+    font-size: 17px;
+    width: 100%;
+    height: 3rem;
+    margin-right: 0rem;
+    margin-top: 2rem;
+    border: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .CardImage {
+    object-fit: contain;
+    height: 20rem;
+    width: 100%;
+  }
+
+  .CardText {
+    font-family: SF Pro Display Regular;
+    color: #d3a625;
+    font-size: 20px;
+    margin-right: 0rem;
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+
+  .CardParagraphs {
+    font-size: 18px;
+    color: #000000;
+    background-color: #dadada;
+    padding: 5px 20px 5px 20px;
+  }
+
+  .Services_Title_Font {
+    font-family: Hoefler Text;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0.6px;
+    color: #000000;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  /* Body Text for each Service Card */
+  .Services_Body_Font {
+    font-family: SF Pro Display Regular;
+    text-align: center;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 0.55px;
+    color: #000000;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 1rem;
+  }
+
+  .ServiceContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    background-color: #dadada;
+    width: 120%;
+    margin-left: 4rem;
+  }
+  .ServiceCard {
+    width: 100%;
+    margin: 0%;
+  }
+  .ServiceImg {
+    width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+  }
+
+  .title {
+    font-family: Hoefler Text;
+    font-size: 18px;
+    font-style: italic;
+  }
+  .subTitle {
+    font-size: 16px;
+  }
+  .inputField {
+    height: 30%;
+    width: 80%;
+  }
+  .donationField {
+    height: 30%;
+    width: 80%;
+  }
+  .textTitle {
+    text-align: center;
+    font: normal normal normal 14px SF Pro Display;
+    color: #000000;
+  }
+  .textConfirm {
+    text-align: center;
+    font: normal normal normal 14px SF Pro Display;
+    color: #d3a625;
+  }
+  .registerBtn {
+    background: #d3a625;
+    border-radius: 50px;
+    border: none;
+    font: normal normal normal 13px hoefler Text;
+    color: #ffffff;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    width: 7rem;
+  }
+  .showRegBtn {
+    background: #d3a625;
+    border-radius: 50px;
+    border: none;
+    font: normal normal normal 13px hoefler Text;
+    color: #ffffff;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    width: 7rem;
+  }
+  .CardTitle {
+    font-family: Hoefler Text Bold;
+    color: #d3a625;
+    font-size: 26px;
+    font-style: italic;
+    /* font-weight: bold; */
+    margin-right: 0rem;
+    padding: 0px;
+    text-align: center;
+  }
+  .wrapper {
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    /* grid-row-gap: 10%; */
+    background-color: #fff;
+    color: #444;
+    margin-top: 2rem;
+  }
+  .seminarBtn {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border-radius: 50px;
+    font: normal normal normal 17px/20px Hoefler Text;
+    color: #d3a625;
+    text-transform: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.7rem 2rem;
+    margin-right: 2rem;
+  }
+  .NewInput {
+    width: 95%;
+    height: 3rem;
+  }
+  .FooterTextWrapper {
+    color: #c3a336;
+    font-size: 12px;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    align-items: flex-start;
+    /* margin-top: 2rem; */
+  }
+
+  .FooterText {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-right: 2px solid #424242;
+    /* margin-top:1rem; */
+    /* padding: 1rem; */
+  }
+
+  .FooterTitle {
+    color: #c3a336;
+    font-size: 20px;
+    text-align: center;
+    /* padding-left: 20%;
+    padding-bottom: 5%; */
+  }
+    
+}
+
+@media screen and (min-width: 200px) and (max-width: 500px) {
+  .Card {
+    width: 100%;
+    height: auto;
+    margin: 5% 0% 5% 0%;
+    background-color: white;
+  }
+
+  .CardGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 3%;
+  }
+
+  .IntroGrid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0px;
+    padding: 3%;
+  }
+
+  .CardTitle {
+    font-family: Hoefler Text Bold;
+    color: #d3a625;
+    font-size: 52px;
+    font-style: italic;
+    margin-right: 0rem;
+    padding: 0px;
+    text-align: center;
+  }
+
+  .CardButton {
+    text-transform: none;
+    background-color: #d3a625;
+    color: white;
+    font-size: 24px;
+    width: 75%;
+    height: 3rem;
+    margin-right: 0rem;
+    margin-top: 2rem;
+    border: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .ContactButton {
+    text-transform: none;
+    background-color: #d3a625;
+    color: white;
+    font-size: 17px;
+    width: 100%;
+    height: 3rem;
+    margin-right: 0rem;
+    margin-top: 2rem;
+    border: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .CardImage {
+    object-fit: contain;
+    height: 20rem;
+    width: 100%;
+    padding:0%
+  }
+
+  .CardText {
+    font-family: SF Pro Display Regular;
+    color: #d3a625;
+    font-size: 20px;
+    margin-right: 0rem;
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+
+  .CardParagraphs {
+    font-size: 18px;
+    color: #000000;
+    background-color: #dadada;
+    padding: 5px 20px 5px 20px;
+  }
+
+  .Services_Title_Font {
+    font-family: Hoefler Text;
+    font-size: 16px;
+    text-align: center;
+    letter-spacing: 0.6px;
+    color: #000000;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  /* Body Text for each Service Card */
+  .Services_Body_Font {
+    font-family: SF Pro Display Regular;
+    text-align: center;
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 0.55px;
+    color: #000000;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 1rem;
+  }
+
+  .ServiceContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+    background-color: #dadada;
+    width: 120%;
+    margin-left: 4rem;
+  }
+
+  .ServiceCard {
+    width: 100%;
+    margin: 0%;
+  }
+
+  .ServiceImg {
+    width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+  }
+
+  .title {
+    font-family: Hoefler Text;
+    font-size: 18px;
+    font-style: italic;
+  }
+
+  .subTitle {
+    font-size: 16px;
+  }
+
+  .inputField {
+    height: 30%;
+    width: 80%;
+  }
+
+  .donationField {
+    height: 30%;
+    width: 80%;
+  }
+
+  .textTitle {
+    text-align: center;
+    font: normal normal normal 14px SF Pro Display;
+    color: #000000;
+  }
+
+  .textConfirm {
+    text-align: center;
+    font: normal normal normal 14px SF Pro Display;
+    color: #d3a625;
+  }
+
+  .registerBtn {
+    background: #d3a625;
+    border-radius: 50px;
+    border: none;
+    font: normal normal normal 13px hoefler Text;
+    color: #ffffff;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    width: 7rem;
+  }
+
+  .showRegBtn {
+    background: #d3a625;
+    border-radius: 50px;
+    border: none;
+    font: normal normal normal 13px hoefler Text;
+    color: #ffffff;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    cursor: pointer;
+    width: 7rem;
+  }
+
+  .CardTitle {
+    font-family: Hoefler Text Bold;
+    color: #d3a625;
+    font-size: 26px;
+    font-style: italic;
+    /* font-weight: bold; */
+    margin-right: 0rem;
+    padding: 0px;
+    text-align: center;
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 33.3% 33.3% 33.3%;
+    /* grid-row-gap: 10%; */
+    background-color: #fff;
+    color: #444;
+    margin-top: 2rem;
+  }
+
+  .seminarBtn {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border-radius: 50px;
+    font: normal normal normal 17px/20px Hoefler Text;
+    color: #d3a625;
+    text-transform: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.7rem 2rem;
+    margin-right: 2rem;
+  }
+
+  .NewInput {
+    width: 95%;
+    height: 3rem;
+  }
+
+  .FooterTextWrapper {
+    color: #c3a336;
+    font-size: 12px;
+    display: grid;
+    grid-template-columns: repeat(1, auto);
+    align-items: flex-start;
+    /* margin-top: 2rem; */
+  }
+
+  .FooterText {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    border-right: 2px solid #424242;
+    /* margin-top:1rem; */
+    /* padding: 1rem; */
+  }
+
+  .FooterTitle {
+    color: #c3a336;
+    font-size: 20px;
+    text-align: center;
+    /* padding-left: 20%;
+    padding-bottom: 5%; */
+  }
+  .MobileImage{
+    width: 90%;
+  }
+  
+}

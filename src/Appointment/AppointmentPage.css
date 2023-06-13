@@ -1,0 +1,108 @@
+@font-face {
+    font-family: Hoefler Text;
+    src: url('../fonts/Hoefler-Text.ttc');
+    font-family: SF Pro ;
+    src: url('../fonts/SF-Pro.ttf');
+    font-family: SF Pro Display Regular;
+    src: url('../fonts/SF-Pro-Display-Regular.otf');
+    font-family: SF Pro Display Semibold;
+    src: url('../fonts/SF-Pro-Display-Semibold.otf');
+  
+  }
+.BodyFontAppt{
+  font-family:SF Pro Display Regular ;
+  color: #D3A625;
+  font-size: 18px;
+  text-align: center;
+  width: 100%;
+}
+
+.TitleFontAppt{
+  font-family:Hoefler Text ;
+  font-style: italic;
+  color:#D3A625;
+  font-weight:500;
+  font-size: 30px;
+  text-align: center;
+  width: 100%;
+}
+
+.ApptContainer{
+  display:flex;
+  padding:5%;
+}
+
+.CalendarContainer{
+  /* margin: auto;
+  width: 60%;
+  background-color: white  */
+
+  width: 60rem;
+  /* width: clamp(200px, 50%, 600px); */
+  height: auto;
+
+  margin: 3% 0% 3% 0%;
+  /* padding: 5%;  */
+
+  background-color: white;
+}
+
+.ApptConfirmContainer{
+  display:flex;
+  justify-content:space-between;
+  align-items: center;
+  padding: 1%;
+}
+
+.ApptConfirmTextBox{
+  margin-top:2rem;
+  width:50%;
+}
+
+.ApptPageTitle{
+  font-family: Hoefler Text ;
+  font-size: 36px;
+  margin: 1rem;
+
+}
+
+.ApptPageHeader{
+  font-size: 24px;
+  margin: 1rem;
+
+}
+
+.ApptPageText{
+
+  font-size: 18px;
+  margin: 1rem;
+
+}
+
+
+
+
+@media screen and (max-width: 700px) {
+
+  .ApptContainer{
+    display:flex;
+    flex-direction: column;
+    padding:5%;
+  }
+  .CalendarContainer{
+    margin: auto;
+    width: 90%;
+    background-color: white 
+  }
+
+  .ApptConfirmContainer{
+    display:flex;
+    flex-direction: column;
+    justify-content:space-evenly;
+  }
+
+  .ApptConfirmTextBox{
+    margin-top:2rem;
+    width: 100%;
+  }
+}

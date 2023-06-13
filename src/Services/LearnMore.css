@@ -1,0 +1,39 @@
+@font-face {
+  font-family: Hoefler Text;
+  src: url("../fonts/Hoefler-Text.ttc");
+  font-family: SF Pro Display Regular;
+  src: url("../fonts/SF-Pro-Display-Regular.otf");
+}
+
+.LearnMoreTitle {
+  font-family: Hoefler Text;
+  font-size: 48px;
+  margin: 1rem;
+}
+
+.LearnMoreHeader {
+  font-size: 24px;
+  margin: 1rem;
+}
+
+.LearnMoreText {
+  font-size: 18px;
+  margin: 1rem;
+}
+@media only screen and (max-width: 570px) {
+  .LearnMoreTitle {
+    font-family: Hoefler Text;
+    font-size: 48px;
+    margin: 1rem;
+  }
+
+  .LearnMoreHeader {
+    font-size: 24px;
+    margin: 1rem;
+  }
+
+  .LearnMoreText {
+    font-size: 18px;
+    margin: 1rem;
+  }
+}
