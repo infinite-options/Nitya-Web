@@ -397,6 +397,7 @@ export default function AppointmentPage(props) {
     console.log("TimeSlotsAA", timeAASlots);
 
     let result = timeSlots.filter((o1) => timeAASlots.some((o2) => o1 === o2));
+
     console.log("Merged", result, selectedButton);
     return (
       <Grid container xs={11}>

@@ -152,7 +152,7 @@
 .ButtonGrid {
   display: grid;
   justify-content: center;
-  grid-template-columns: repeat(2, auto);
+  grid-template-columns: repeat(3, auto);
   grid-column-gap: 5%;
 
   margin: 0px;

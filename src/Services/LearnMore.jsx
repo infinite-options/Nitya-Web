@@ -10,7 +10,6 @@ import "../Home/Home.css";
 
 export default function LearnMore(props) {
   const location = useLocation();
-  console.log(location.state);
 
   const { serviceArr: data } = useContext(MyContext);
 

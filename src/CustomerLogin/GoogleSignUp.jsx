@@ -10,7 +10,7 @@ import Google from "../Assets/Images/Google.svg";
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 let CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 let CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
-let SCOPES = "https://www.googleapis.com/auth/calendar";
+let SCOPES = "https://www.googleapis.com/auth/calendar.events";
 const useStyles = makeStyles({
   loginbuttons: {
     display: "flex",
