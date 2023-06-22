@@ -871,7 +871,7 @@ function Availability() {
               {" "}
               {arr.map((item) =>
                 availabilityOnlineHours.map((day) =>
-                  day.day === "Wednesday" ? (
+                  day.day === "Thursday" ? (
                     <td
                       style={{
                         padding: "5px",
@@ -1094,7 +1094,7 @@ function Availability() {
               {" "}
               {arr.map((item) =>
                 availabilityOfficeHours.map((day) =>
-                  day.day === "Wednesday" ? (
+                  day.day === "Thursday" ? (
                     <td
                       style={{
                         padding: "5px",
