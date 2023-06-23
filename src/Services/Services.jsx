@@ -12,7 +12,7 @@ import ServiceDropdown from "./ServiceDropdown.jsx";
 export default function Services() {
   const [state, setState] = useState(0);
   const { serviceArr } = useContext(MyContext);
-  console.log("Services: " + JSON.stringify(serviceArr));
+  //console.log("Services: " + JSON.stringify(serviceArr));
   
 
   return (
@@ -60,7 +60,7 @@ export default function Services() {
                   Therapies
                 </Button>
               </div>
-              <ServiceDropdown data={{serviceArr, serviceType: "Treatment"}} />
+              <ServiceDropdown data={{serviceArr, serviceType: "Therapy"}} />
             </div>
             <div className="service-dropdown">
               <div className="service-dropbtn">
@@ -86,7 +86,7 @@ export default function Services() {
           </Box>
 
           <Box hidden={state !== 1}>
-            <ServiceList data={{serviceArr, serviceType:"Treatment"}} />    
+            <ServiceList data={{serviceArr, serviceType:"Therapy"}} />    
           </Box>
 
           <Box hidden={state !== 2}>
