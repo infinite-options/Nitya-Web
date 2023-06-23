@@ -93,6 +93,11 @@ function AddPost(props) {
     }
   };
 
+  // Due to SQL String Syntax we should replace single quote to two single quote. If backend starts to handle this problem, you may remove this function.
+  const textToDoubleApostrophes = (text) => {
+    return text.replace(/'/g, "''");
+  }
+
   useEffect(() => {
     if (blog_uid) {
       axios
@@ -123,12 +128,12 @@ function AddPost(props) {
       .post(
         "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addBlog",
         {
-          blogTitle,
-          blogText,
+          blogTitle: textToDoubleApostrophes(blogTitle),
+          blogText: textToDoubleApostrophes(blogText),
           blogImage: file,
-          blogSummary,
+          blogSummary: textToDoubleApostrophes(blogSummary),
           blogCategory,
-          author,
+          author: textToDoubleApostrophes(author),
           postedOn,
           slug: "NULL",
         }
