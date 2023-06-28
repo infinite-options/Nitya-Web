@@ -17,8 +17,6 @@ export default function Intro() {
         />
         <link rel="canonical" href="/about" />
       </Helmet>
-
-      <ScrollToTop />
       <div className="Card">
         <div className="CardGrid">
           <div className="IntroGrid">

@@ -40,8 +40,6 @@ export default function Home() {
 
   return (
     <div className="HomeContainer">
-      <ScrollToTop />
-
       {seminarActive ? (
         <Grid className="SeminarHeader">
           <Typography

@@ -205,7 +205,6 @@ export default function SeminarRegister() {
         <link rel="canonical" href="/seminaregister" />
       </Helmet>
 
-      {/* <ScrollToTop /> */}
       <div className="Card">
         <img
           src={SeminarImg}

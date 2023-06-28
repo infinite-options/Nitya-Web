@@ -19,6 +19,7 @@ const Navbar = () => {
   const closeMenu = () => {
     setOpen(false);
     setProjects(false);
+    window.scrollTo(0, 0);
   };
 
   const closeMenuHome = () => {
@@ -26,6 +27,7 @@ const Navbar = () => {
     setProjects(false);
     setOnClickAbout(!onClickAbout);
     console.log("about", onClickAbout);
+    window.scrollTo(0, 0);
   };
 
   const closeMenuProjects = () => {
@@ -33,6 +35,7 @@ const Navbar = () => {
     setProjects(true);
     setOnClickProject(!onClickproject);
     console.log("clickPro", onClickproject);
+    window.scrollTo(0, 0);
   };
 
   const closeMenuTeams = () => {
@@ -40,6 +43,7 @@ const Navbar = () => {
     setProjects(true);
     setOnClickTeams(!onClickteams);
     console.log("click", onClickteams);
+    window.scrollTo(0, 0);
   };
 
   return (

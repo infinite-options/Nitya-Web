@@ -17,7 +17,6 @@ export default function About() {
         <link rel="canonical" href="/about" />
       </Helmet>
 
-      <ScrollToTop />
       <div className="Card">
         <div className="CardGrid">
           <div>
