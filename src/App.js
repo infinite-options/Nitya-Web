@@ -26,6 +26,7 @@ import { AuthContext } from "./auth/AuthContext";
 import SeminarRegister from "./Seminar/SeminarRegister";
 import DonationElement from "./Seminar/DonationElement";
 import Availability from "./Admin/Availability";
+import ManageService from "./Services/ManageService";
 
 export const MyContext = React.createContext();
 
@@ -137,6 +138,12 @@ function App() {
               <Route path="/learnMore">
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
                   <LearnMore />
+                </MyContext.Provider>
+              </Route>
+
+              <Route path="/manageService">
+                <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
+                  <ManageService />
                 </MyContext.Provider>
               </Route>
 

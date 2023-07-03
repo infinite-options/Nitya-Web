@@ -2,9 +2,11 @@ import LearnMoreBTN from "./LearnMoreBtn";
 import BookNowBTN from "../Services/BookNowBtn";
 import loadinggif from "../Assets/Images/loading.gif";
 import "../Home/Home.css";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 export default function ServiceList(props) {
   const {serviceArr, serviceType} = props.data;
+  const editable = props.mode;
   const data = serviceArr;
   return (
     <div className="ServiceCard">
@@ -21,7 +23,7 @@ export default function ServiceList(props) {
                   display: "flex",
                   backgroundColor: "#DADADA",
                   marginTop: "2rem",
-                  maxHeight: "282px",
+                  height: "auto",
                 }} key={filteredService.treatment_uid}
               >
                 <div
@@ -31,14 +33,14 @@ export default function ServiceList(props) {
                     flex: "1",
                     backgroundColor: "#DADADA",
                     justifyContent: "center",
-                    maxHeight: "100%",
+                    
                   }}
                 >
                   <img
                     style={{
                       maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: " scale-down",
+                      maxHeight: "300px",
+                      objectFit: "scale-down",
                     }}
                     className="ServiceImg"
                     src={filteredService.image_url}
@@ -68,6 +70,19 @@ export default function ServiceList(props) {
                     <BookNowBTN
                       apptID={filteredService.treatment_uid}
                     />
+                    <div hidden={!editable}>
+                    <Link
+                      to={{
+                        pathname: "/manageLearnMore",
+                        state: {
+                          apptID: filteredService.treatment_uid,
+                        },
+                      }}
+                      style={{ color: "red", fontSize: "16px" }}
+                    >
+                      Edit service
+                    </Link>
+                    </div>
                   </div>
                 </div>
               </div>

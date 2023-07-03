@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../auth/AuthContext";
+import { Link } from "react-router-dom";
 import { Box, Button } from "@material-ui/core";
 import { Helmet } from "react-helmet";
 import { MyContext } from "../App.js";
@@ -24,6 +26,7 @@ export default function Services() {
 
   const [state, setState] = useState(restoreServiceState());
   const { serviceArr } = useContext(MyContext);
+  const Auth = useContext(AuthContext);
 
   return (
     <div className="HomeContainer">
@@ -104,6 +107,20 @@ export default function Services() {
           <Box hidden={state !== 2}>
             <ServiceList data={{serviceArr, serviceType:"Package"}} />    
           </Box>
+
+          <Box hidden={Auth.isAuth !== false}>
+            <Button >
+              <Link
+                to={{
+                  pathname: '/manageService',
+                }}
+                style={{ textDecoration: "none" }}
+              >
+                <p>Edit Service</p>
+              </Link>
+            </Button>
+          </Box>  
+          
         </div>
     </div>
   );
