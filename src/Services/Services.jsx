@@ -27,6 +27,7 @@ export default function Services() {
   const [state, setState] = useState(restoreServiceState());
   const { serviceArr } = useContext(MyContext);
   const Auth = useContext(AuthContext);
+  console.log(serviceArr);
 
   return (
     <div className="HomeContainer">
@@ -107,8 +108,13 @@ export default function Services() {
           <Box hidden={state !== 2}>
             <ServiceList data={{serviceArr, serviceType:"Package"}} />    
           </Box>
-
-          <Box hidden={Auth.isAuth !== false}>
+          
+         
+            <Box hidden={Auth.isAuth !== false}>
+          
+           {/*
+          <Box hidden={Auth.isAuth === false}>
+            */}
             <Button >
               <Link
                 to={{
