@@ -41,15 +41,15 @@ export default function ManageService(props) {
                 description: description, 
                 cost: cost,
                 availability: "Available",
-                display_order: displayOrder,
+                display_order: displayOrder.toString(),
                 duration: duration,
                 image_url: file,
                 treatment_notes: note,
             }
         ).then((response) => {
             console.log(response);
+            window.location.reload();
         });
-        
     }
 
     function deleteService(uid) {
@@ -60,6 +60,7 @@ export default function ManageService(props) {
       )
       .then((response) => {
         console.log(response.data);
+        window.location.reload();
       });
     }
 
@@ -113,14 +114,13 @@ export default function ManageService(props) {
                             />
                         </div>
                         <div>
-                        <FormControl>
                             <TextField 
-                                id="filled-basic"
+                                id="standard-helperText"
                                 label="Order"
                                 value={displayOrder}
-                                onClick={(e)=>setDisplayOrder(e.target.value)}
+                                variant="standard"
+                                onChange={(e)=>setDisplayOrder(e.target.value)}
                             />
-                        </FormControl>  
                         </div>
                         <div>
                             <div style={{

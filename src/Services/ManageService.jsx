@@ -8,7 +8,6 @@ import axios from "axios";
 
 export default function ManageService() {
     const { serviceArr: data } = useContext(MyContext);
-    const [, update] = useState();
 
     function addService() {
         axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addTreatment",
@@ -25,8 +24,8 @@ export default function ManageService() {
             }
         ).then((response) => {
             console.log(response);
+            window.location.reload();
         });
-        update([]);
     }
     
     return (
