@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import axios from "axios";
+import ToggleButton from '@mui/material/ToggleButton';
 import { MyContext } from "../App";
 import BookNowBTN from "./BookNowBtn";
 import ScrollToTop from "../Blog/ScrollToTop";
 import "./LearnMore.css";
 import { Markup } from "interweave";
 import "../Home/Home.css";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 export default function LearnMore(props) {
   const location = useLocation();
@@ -104,6 +105,8 @@ export default function LearnMore(props) {
                     Cancellation Policy: To cancel or reschedule, please contact
                     us 24 hours in advance.
                   </div>
+                  
+                  <Addon />
                 </div>
               </div>
             </div>
@@ -113,4 +116,42 @@ export default function LearnMore(props) {
       )}
     </div>
   );
+}
+
+function Addon(props) {
+  const [selected1, setSelected1] = useState(false);
+  const [selected2, setSelected2] = useState(false);
+  const [selected3, setSelected3] = useState(false);
+
+  return(
+    <div style={{"margin" : "20px"}}>
+      Enhance your Treatment by adding an additional Therapy
+      <AddonChoice data={["Choice 1", "$100", selected1, setSelected1]}/>
+      <AddonChoice data={["Choice 2", "$200", selected2, setSelected2]}/>
+      <AddonChoice data={["Choice 3", "$300", selected3, setSelected3]}/>
+
+    </div>
+  );
+}
+
+function AddonChoice(props) {
+  const [text, cost, selected, setSelected] = props.data;
+
+  return(
+    <div style={{"margin" : "10px"}}>
+      <ToggleButton
+            value="check"
+            selected={selected}
+            onChange={() => {
+              setSelected(!selected);
+            }}
+            style={{"marginRight" : "20px"}}
+          >
+            {text} for {cost}
+      </ToggleButton>
+
+      <Link>What is {text}?</Link>
+    </div>
+  );
+
 }
