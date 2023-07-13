@@ -17,7 +17,7 @@ export default function ManageService(props) {
     const [blogImage, setBlogImage] = useState("");
     const [blogEditImage, setBlogEditImage] = useState("");
     const [file, setFile] = useState(data.image_url);
-    const text_height = 20;
+    const text_height = 25;
 
     function updateImage() {        
         let formData = new FormData();
@@ -70,9 +70,9 @@ export default function ManageService(props) {
         <div>
             <div className="ServiceRow">
                 <Grid container spacing={2}>
-                    <Grid item xs={2}>
+                    <Grid item xs={5}>
                         <div>
-                            <TextField
+                            <TextField fullWidth 
                                 id="standard-helperText"
                                 label="Title"
                                 value={title}
@@ -80,48 +80,67 @@ export default function ManageService(props) {
                                 onChange={(e)=>setTitle(e.target.value)}            
                             />      
                         </div>
-                        <div>
-                            <FormControl style={{minWidth: 120}}>
-                                <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    value={category}
-                                    onChange={(e)=>setCategory(e.target.value)}
-                                    >
-                                    <MenuItem value={"Consultation"}>Consultation</MenuItem>
-                                    <MenuItem value={"Therapy"}>Therapy</MenuItem>
-                                    <MenuItem value={"Package"}>Package</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <div>
-                        <TextField
-                                id="standard-helperText"
-                                label="Cost"
-                                value={cost}
-                                variant="standard"
-                                onChange={(e)=>setCost(e.target.value)}                 
-                            />
-                        </div>
-                        <div>
-                            <TextField
-                                id="standard-helperText"
-                                label="Duration"
-                                value={duration}
-                                variant="standard"
-                                onChange={(e)=>setDuration(e.target.value)}                 
-                            />
-                        </div>
-                        <div>
-                            <TextField 
-                                id="standard-helperText"
-                                label="Order"
-                                value={displayOrder}
-                                variant="standard"
-                                onChange={(e)=>setDisplayOrder(e.target.value)}
-                            />
-                        </div>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <div>
+                                    <FormControl style={{minWidth: 120}} fullWidth >
+                                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={category}
+                                            onChange={(e)=>setCategory(e.target.value)}
+                                            >
+                                            <MenuItem value={"Consultation"}>Consultation</MenuItem>
+                                            <MenuItem value={"Therapy"}>Therapy</MenuItem>
+                                            <MenuItem value={"Package"}>Package</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </div>
+                                <div>
+                                    <TextField fullWidth 
+                                        id="standard-helperText"
+                                        label="Cost"
+                                        value={cost}
+                                        variant="standard"
+                                        onChange={(e)=>setCost(e.target.value)}                 
+                                    />
+                                </div>
+                            </Grid>
+                            <Grid item xs={6}>                                
+                                <div>
+                                    <TextField fullWidth 
+                                        id="standard-helperText"
+                                        label="Order"
+                                        value={displayOrder}
+                                        variant="standard"
+                                        onChange={(e)=>setDisplayOrder(e.target.value)}
+                                    />
+                                </div>
+                                <div>
+                                    <TextField fullWidth 
+                                        id="standard-helperText"
+                                        label="Duration"
+                                        value={duration}
+                                        variant="standard"
+                                        onChange={(e)=>setDuration(e.target.value)}                 
+                                    />
+                                </div>
+                            </Grid>
+                        </Grid>
+                        
+                        <TextField 
+                            id="standard-multiline-static"
+                            label="Description"
+                            multiline
+                            minRows={2}
+                            maxRows={2}
+                            defaultValue={description}
+                            variant="standard"
+                            onChange={(e)=>setDescription(e.target.value)}
+                            fullWidth
+                        />  
+                        
                         <div>
                             <div style={{
                                 width: "100%",
@@ -199,28 +218,14 @@ export default function ManageService(props) {
                                     )}
                                 </ImageUploading>
                             </div>
-                        </div>                    
+                        </div>
                     </Grid>
-                    <Grid item xs={4}>
-                        <TextField
-                            id="standard-multiline-static"
-                            label="Description"
-                            multiline
-                            minRows={text_height}
-                            maxRows={text_height}
-                            defaultValue={description}
-                            variant="standard"
-                            onChange={(e)=>setDescription(e.target.value)}
-                            fullWidth
-                        />
-                    </Grid>
-                    <Grid item xs={5}>
+                    <Grid item xs>
                         <TextField
                             id="standard-multiline-static"
                             label="Treatment Note"
                             multiline
                             minRows={text_height}
-                            maxRows={text_height}
                             defaultValue={note}
                             variant="standard"
                             onClick={(e)=>setNote(e.target.value)}
