@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { AuthContext } from "../auth/AuthContext";
 import { Link } from "react-router-dom";
 import { Box, Button } from "@material-ui/core";
 import { Helmet } from "react-helmet";
 import { MyContext } from "../App.js";
-import ScrollToTop from "../Blog/ScrollToTop";
 import "../Home/Home.css";
 import "./ServiceDropdown.css";
 

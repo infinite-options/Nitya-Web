@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import ManageServiceCard from './ManageServiceCard';
 import './ManageService.css';
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { MyContext } from "../App";
 import ScrollToTop from "../Blog/ScrollToTop";
 import axios from "axios";
@@ -36,7 +36,7 @@ export default function ManageService() {
                     <Button fullWidth onClick={()=>addService()}>Add</Button>
                 </div> 
                 
-                {data != "" ? 
+                {data !== "" ? 
                 data.map((service, i) => (
                     <ManageServiceCard service={service} key={i}/>
                 )) : <>Loading</>}                

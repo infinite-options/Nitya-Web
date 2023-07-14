@@ -1,4 +1,4 @@
-import { Button, TextField, Select, InputLabel, Input, InputAdornment, FormControl, MenuItem } from "@material-ui/core";
+import { Button, TextField, Select, InputLabel, FormControl, MenuItem } from "@material-ui/core";
 import Grid from '@mui/material/Grid';
 import { useState } from "react";
 import ImageUploading from "react-images-uploading";
@@ -14,8 +14,8 @@ export default function ManageService(props) {
     const [note, setNote] = useState(data.treatment_notes);
     const [displayOrder, setDisplayOrder] = useState(data.display_order);
     const [images, setImages] = useState([]);
-    const [blogImage, setBlogImage] = useState("");
-    const [blogEditImage, setBlogEditImage] = useState("");
+    const [, setBlogImage] = useState("");
+    const [blogEditImage, ] = useState("");
     const [file, setFile] = useState(data.image_url);
     const text_height = 25;
 
@@ -189,12 +189,12 @@ export default function ManageService(props) {
                                         {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
                                         {imageList.map(
                                             (image, index) => (
-                                            setBlogImage(image.data_url),
+                                            setBlogImage(image.data_url)
                                             (
                                                 <div key={index} className="image-item">
                                                 <img
                                                     src={
-                                                    blogEditImage == ""
+                                                    blogEditImage === ""
                                                         ? image.data_url
                                                         : blogEditImage
                                                     }

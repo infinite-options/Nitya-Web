@@ -1,18 +1,19 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import ToggleButton from '@mui/material/ToggleButton';
 import { MyContext } from "../App";
 import BookNowBTN from "./BookNowBtn";
 import ScrollToTop from "../Blog/ScrollToTop";
 import "./LearnMore.css";
 import { Markup } from "interweave";
 import "../Home/Home.css";
-import { Link } from "react-router-dom/cjs/react-router-dom";
+import Addon from "./Addon";
 
 export default function LearnMore(props) {
   const location = useLocation();
 
   const { serviceArr: data } = useContext(MyContext);
+  
+  const [addons, setAddons] = useState(addonDatabase());
 
   const parseDuration = (rawDuration) => {
     if (rawDuration === undefined) {
@@ -45,7 +46,7 @@ export default function LearnMore(props) {
       <ScrollToTop />
       {/* <div className="Card"> */}
 
-      {data != "" ? (
+      {data !== "" ? (
         data
           .filter((service) => location.state.apptID === service.treatment_uid)
           .map((filteredService) => (
@@ -106,7 +107,7 @@ export default function LearnMore(props) {
                     us 24 hours in advance.
                   </div>
                   
-                  <Addon />
+                  <Addon title={filteredService.title} data={addons}/>
                 </div>
               </div>
             </div>
@@ -118,40 +119,13 @@ export default function LearnMore(props) {
   );
 }
 
-function Addon(props) {
-  const [selected1, setSelected1] = useState(false);
-  const [selected2, setSelected2] = useState(false);
-  const [selected3, setSelected3] = useState(false);
-
-  return(
-    <div style={{"margin" : "20px"}}>
-      Enhance your Treatment by adding an additional Therapy
-      <AddonChoice data={["Choice 1", "$100", selected1, setSelected1]}/>
-      <AddonChoice data={["Choice 2", "$200", selected2, setSelected2]}/>
-      <AddonChoice data={["Choice 3", "$300", selected3, setSelected3]}/>
-
-    </div>
-  );
-}
-
-function AddonChoice(props) {
-  const [text, cost, selected, setSelected] = props.data;
-
-  return(
-    <div style={{"margin" : "10px"}}>
-      <ToggleButton
-            value="check"
-            selected={selected}
-            onChange={() => {
-              setSelected(!selected);
-            }}
-            style={{"marginRight" : "20px"}}
-          >
-            {text} for {cost}
-      </ToggleButton>
-
-      <Link>What is {text}?</Link>
-    </div>
-  );
-
+function addonDatabase() {
+  const data = [
+    { therapy:"Kati Basti", cost: "$100", duration:"60", selected: false },
+    { therapy:"Hrud Basti", cost: "$100", duration:"60", selected: false },
+    { therapy:"Janu Basti", cost: "$100", duration:"60", selected: false },
+    { therapy:"Pindaswedan", cost: "$150", duration:"50", selected: false },
+    { therapy:"Udvartan", cost: "$120", duration:"30", selected: false },
+  ];
+  return data;
 }
