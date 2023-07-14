@@ -36,7 +36,16 @@ export default function Addon(props) {
               {addonContents.therapy} for {addonContents.cost} : {addonContents.duration}min
         </ToggleButton>
   
-        <Link>What is {addonContents.therapy}?</Link>
+        <Link 
+            to={{
+                pathname: "/learnMore",
+                state: {
+                    apptID: addonContents.path,
+                },
+            }}
+        >
+            What is {addonContents.therapy}?
+        </Link>
       </div>
     );
   

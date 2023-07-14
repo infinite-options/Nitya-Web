@@ -121,11 +121,10 @@ export default function LearnMore(props) {
 
 function addonDatabase() {
   const data = [
-    { therapy:"Kati Basti", cost: "$100", duration:"60", selected: false },
-    { therapy:"Hrud Basti", cost: "$100", duration:"60", selected: false },
-    { therapy:"Janu Basti", cost: "$100", duration:"60", selected: false },
-    { therapy:"Pindaswedan", cost: "$150", duration:"50", selected: false },
-    { therapy:"Udvartan", cost: "$120", duration:"30", selected: false },
+    { therapy:"Kati Basti", cost: "$100", duration:"60", selected: false, path:"330-000002" },
+    { therapy:"Hrud Basti", cost: "$100", duration:"60", selected: false, path:"330-000016" },
+    { therapy:"Janu Basti", cost: "$100", duration:"60", selected: false, path:"330-000017" },
+    { therapy:"Pindaswedan", cost: "$150", duration:"50", selected: false, path:"330-000019" },
   ];
   return data;
 }
