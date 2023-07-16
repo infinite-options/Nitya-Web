@@ -10,6 +10,7 @@ export default function ManageService(props) {
     const [category, setCategory] = useState(data.category);
     const [description, setDescription] = useState(data.description);
     const [cost, setCost] = useState(data.cost);    
+    const [addon_cost, setAddonCost] = useState(()=>data.addon_cost === null ? "$0" : data.addon_cost);    
     const [duration, setDuration] = useState(data.duration);
     const [note, setNote] = useState(data.treatment_notes);
     const [displayOrder, setDisplayOrder] = useState(data.display_order);
@@ -40,6 +41,7 @@ export default function ManageService(props) {
                 category: category,
                 description: description, 
                 cost: cost,
+                addon_cost: addon_cost,
                 availability: "Available",
                 display_order: displayOrder.toString(),
                 duration: duration,
@@ -96,7 +98,7 @@ export default function ManageService(props) {
                                             <MenuItem value={"Package"}>Package</MenuItem>
                                         </Select>
                                     </FormControl>
-                                </div>
+                                </div>  
                                 <div>
                                     <TextField fullWidth 
                                         id="standard-helperText"
@@ -107,16 +109,7 @@ export default function ManageService(props) {
                                     />
                                 </div>
                             </Grid>
-                            <Grid item xs={6}>                                
-                                <div>
-                                    <TextField fullWidth 
-                                        id="standard-helperText"
-                                        label="Order"
-                                        value={displayOrder}
-                                        variant="standard"
-                                        onChange={(e)=>setDisplayOrder(e.target.value)}
-                                    />
-                                </div>
+                            <Grid item xs={6}>
                                 <div>
                                     <TextField fullWidth 
                                         id="standard-helperText"
@@ -125,7 +118,16 @@ export default function ManageService(props) {
                                         variant="standard"
                                         onChange={(e)=>setDuration(e.target.value)}                 
                                     />
-                                </div>
+                                </div>  
+                                <div>
+                                    <TextField fullWidth 
+                                        id="standard-helperText"
+                                        label="Addon Cost"
+                                        value={addon_cost}
+                                        variant="standard"
+                                        onChange={(e)=>setAddonCost(e.target.value)}                 
+                                    />
+                                </div>     
                             </Grid>
                         </Grid>
                         
@@ -231,6 +233,15 @@ export default function ManageService(props) {
                             onClick={(e)=>setNote(e.target.value)}
                             fullWidth
                         />
+                        <div>
+                            <TextField  
+                                id="standard-helperText"
+                                label="Order"
+                                value={displayOrder}
+                                variant="standard"
+                                onChange={(e)=>setDisplayOrder(e.target.value)}
+                            />
+                        </div>  
                     </Grid>
                     <Grid item xs={1}>
                         <Button onClick={()=>updateService()}>Save</Button>

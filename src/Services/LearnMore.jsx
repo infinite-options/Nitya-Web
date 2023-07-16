@@ -13,7 +13,7 @@ export default function LearnMore(props) {
 
   const { serviceArr: data } = useContext(MyContext);
   
-  const [addons, setAddons] = useState(addonDatabase());
+  const [addons, setAddons] = useState(getAddons());
 
   const parseDuration = (rawDuration) => {
     if (rawDuration === undefined) {
@@ -107,7 +107,7 @@ export default function LearnMore(props) {
                     us 24 hours in advance.
                   </div>
                   
-                  <Addon title={filteredService.title} data={addons}/>
+                  <Addon title={filteredService.title} data={[addons, data]}/>
                 </div>
               </div>
             </div>
@@ -119,12 +119,12 @@ export default function LearnMore(props) {
   );
 }
 
-function addonDatabase() {
-  const data = [
-    { therapy:"Kati Basti", cost: "$100", duration:"60", selected: false, path:"330-000002" },
-    { therapy:"Hrud Basti", cost: "$100", duration:"60", selected: false, path:"330-000016" },
-    { therapy:"Janu Basti", cost: "$100", duration:"60", selected: false, path:"330-000017" },
-    { therapy:"Pindaswedan", cost: "$150", duration:"50", selected: false, path:"330-000019" },
+function getAddons() {
+  const addon_uid = [
+    { therapy:"330-000002", selected:false },
+    { therapy:"330-000016", selected:false },
+    { therapy:"330-000017", selected:false },
+    { therapy:"330-000019", selected:false },
   ];
-  return data;
+  return addon_uid;
 }

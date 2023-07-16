@@ -14,10 +14,11 @@ export default function ManageService() {
             {
                 title: "Service Title",
                 category: "Consultation",
-                description: "Desciption", 
+                description: "Description", 
                 cost: "$0",
+                addon_cost: "$0",
                 display_order: "0",
-                duration: "00:00:59",
+                duration: "00:00:00",
                 image_url: "",
                 treatment_notes: "Treatment Note",
                 availability: "Available",
