@@ -9,7 +9,7 @@ export default function ServiceDropdown(props) {
         <div className="serivce-dropdown-content">
             {serviceArr.length > 0 ? (
             serviceArr
-                .filter((service) => service.category === serviceType)
+                .filter((service) => (service.category === serviceType && service.availability === "Available"))
                 .map((filteredService) => (
                     <div key={filteredService.treatment_uid}>
                         <Link

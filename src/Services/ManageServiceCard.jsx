@@ -1,4 +1,4 @@
-import { Button, TextField, Select, InputLabel, FormControl, MenuItem } from "@material-ui/core";
+import { Button, TextField, Select, InputLabel, FormControl, MenuItem, Checkbox, FormControlLabel } from "@material-ui/core";
 import Grid from '@mui/material/Grid';
 import { useState } from "react";
 import ImageUploading from "react-images-uploading";
@@ -19,6 +19,11 @@ export default function ManageService(props) {
     const [blogEditImage, ] = useState("");
     const [file, setFile] = useState(data.image_url);
     const text_height = 25;
+    const [availability, setAvailability] = useState(data.availability);
+
+    function getAddonState(addonCost) {
+        return addonCost === "$0" ? "FALSE" : "TRUE";
+    }
 
     function updateImage() {        
         let formData = new FormData();
@@ -42,11 +47,12 @@ export default function ManageService(props) {
                 description: description, 
                 cost: cost,
                 addon_cost: addon_cost,
-                availability: "Available",
+                availability: availability,
                 display_order: displayOrder.toString(),
                 duration: duration,
                 image_url: file,
                 treatment_notes: note,
+                addon_allowed: getAddonState(addon_cost),
             }
         ).then((response) => {
             console.log(response);
@@ -100,7 +106,8 @@ export default function ManageService(props) {
                                     </FormControl>
                                 </div>  
                                 <div>
-                                    <TextField fullWidth 
+                                    <TextField 
+                                        fullWidth 
                                         id="standard-helperText"
                                         label="Cost"
                                         value={cost}
@@ -108,6 +115,16 @@ export default function ManageService(props) {
                                         onChange={(e)=>setCost(e.target.value)}                 
                                     />
                                 </div>
+                                <div>
+                                    <TextField  
+                                        fullWidth
+                                        id="standard-helperText"
+                                        label="Order"
+                                        value={displayOrder}
+                                        variant="standard"
+                                        onChange={(e)=>setDisplayOrder(e.target.value)}
+                                    />
+                                </div>  
                             </Grid>
                             <Grid item xs={6}>
                                 <div>
@@ -118,16 +135,32 @@ export default function ManageService(props) {
                                         variant="standard"
                                         onChange={(e)=>setDuration(e.target.value)}                 
                                     />
-                                </div>  
+                                </div>    
                                 <div>
-                                    <TextField fullWidth 
+                                    <TextField 
+                                        fullWidth 
                                         id="standard-helperText"
                                         label="Addon Cost"
                                         value={addon_cost}
                                         variant="standard"
-                                        onChange={(e)=>setAddonCost(e.target.value)}                 
+                                        onChange={(e)=>setAddonCost(e.target.value)}          
                                     />
-                                </div>     
+                                </div> 
+                                
+                                <FormControl style={{minWidth: 120}} fullWidth >
+                                    <InputLabel id="demo-simple-select-label">Treatment Availability</InputLabel>
+                                    <Select
+                                        fullWidth
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={availability}
+                                        onChange={(e)=>setAvailability(e.target.value)}
+                                    >
+                                        <MenuItem value={"Available"}>Available</MenuItem>
+                                        <MenuItem value={"Not Available"}>Not Available</MenuItem>
+                                    </Select>
+                                </FormControl>
+                                
                             </Grid>
                         </Grid>
                         
@@ -233,15 +266,6 @@ export default function ManageService(props) {
                             onClick={(e)=>setNote(e.target.value)}
                             fullWidth
                         />
-                        <div>
-                            <TextField  
-                                id="standard-helperText"
-                                label="Order"
-                                value={displayOrder}
-                                variant="standard"
-                                onChange={(e)=>setDisplayOrder(e.target.value)}
-                            />
-                        </div>  
                     </Grid>
                     <Grid item xs={1}>
                         <Button onClick={()=>updateService()}>Save</Button>

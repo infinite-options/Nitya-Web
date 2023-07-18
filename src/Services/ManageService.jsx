@@ -22,6 +22,7 @@ export default function ManageService() {
                 image_url: "",
                 treatment_notes: "Treatment Note",
                 availability: "Available",
+                addon_allowed: "FALSE",
             }
         ).then((response) => {
             console.log(response);

@@ -16,7 +16,7 @@ export default function ServiceList(props) {
       >
         {data.length > 0 ? (
           data
-            .filter((service) => service.category === serviceType)
+            .filter((service) => (service.category === serviceType && service.availability === "Available"))
             .map((filteredService) => (
               <div
                 style={{
