@@ -141,6 +141,10 @@ export default function AppointmentPage(props) {
   //strip use states
   const access_token = location.state.accessToken;
   console.log("(AppointmentPageConfirm) accessToken: ", access_token);
+  const totalCost = location.state.totalCost;
+  const totalDuration = location.state.totalDuration;
+  const durationText = location.state.durationText;
+  console.log(totalDuration);
 
   const { treatmentID } = useParams();
   const [stripePromise, setStripePromise] = useState(null);
@@ -459,8 +463,8 @@ export default function AppointmentPage(props) {
                     {elementToBeRendered.title}
                   </span>
                   <br />
-                  {parseDuration(elementToBeRendered.duration)} |{" "}
-                  {elementToBeRendered.cost}
+                  {durationText} |{" "}
+                  ${totalCost}
                 </p>
                 <img
                   src={elementToBeRendered.image_url}

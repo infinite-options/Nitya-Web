@@ -4,15 +4,17 @@ import ToggleButton from '@mui/material/ToggleButton';
 
 export default function Addon(props) {
     const title = props.title;
-    const [addons, data] = props.data;
+    const [addons, data] = props.addons;
+    const [, setAddons] = props.state;
+    console.log(addons);
   
     return(
       <div style={{"margin" : "20px"}}>
         Enhance your Treatment by adding an additional Therapy
-        {addons.map((addon) => {
+        {addons.map((addon, i) => {
           const therapy_contents = getContents(addon.therapy, data);
           if(title !== therapy_contents.title) {
-              return <AddonChoice data={[addon, therapy_contents]}/>;
+              return <AddonChoice data={[addon, therapy_contents]} state={[addons, setAddons, i]}/>;
           }
         })}  
       </div>
@@ -21,6 +23,7 @@ export default function Addon(props) {
   
   function AddonChoice(props) {
     const [addon, therapy_contents] = props.data;
+    const [addons, setAddons, i] = props.state;
     const [selected, setSelected] = useState(false);
   
     return(
@@ -29,8 +32,9 @@ export default function Addon(props) {
               value="check"
               selected={selected}
               onChange={() => {
+                addons[i].selected = !selected;
+                setAddons(addons);
                 setSelected(!selected);
-                addon.selected = selected;
               }}
               style={{"marginRight" : "20px"}}
             >

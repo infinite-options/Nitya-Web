@@ -61,7 +61,7 @@ export default function LearnMore(props) {
                   {filteredService.cost}
                 </div>
                 <BookNowBTN
-                  apptID={filteredService.treatment_uid}
+                  apptID={filteredService.treatment_uid} addons={addons}
                 />
                 <div style={{ margin: "2rem" }}>
                   <img
@@ -95,7 +95,7 @@ export default function LearnMore(props) {
                     {filteredService.cost}
                   </div>
                   <BookNowBTN
-                    apptID={filteredService.treatment_uid}
+                    apptID={filteredService.treatment_uid} addons={addons}
                   />
 
                   {/* <div className="LearnMoreText">
@@ -107,7 +107,7 @@ export default function LearnMore(props) {
                     us 24 hours in advance.
                   </div>
                   
-                  <Addon title={filteredService.title} data={[addons, data]}/>
+                  <Addon title={filteredService.title} addons={[addons, data]} state={[addons, setAddons]}/>
                 </div>
               </div>
             </div>

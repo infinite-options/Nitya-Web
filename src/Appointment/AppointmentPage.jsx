@@ -109,6 +109,78 @@ export default function AppointmentPage(props) {
   const isFirstLoad = useRef(true);
   const [isCalDisabled, setCalDisabled] = useState(false);
 
+  let location = useLocation();
+  let addons = [];
+  if(location.state !== undefined) {
+    addons = location.state;
+  }
+  const addons_list = () => {
+    const addon_list = [];
+    for (let i = 0; i < addons.length; i++) {
+      if(addons[i].selected) {
+        const addon_uid = addons[i].therapy;
+        for (let j = 0; j < serviceArr.length; j++) {
+          const service = serviceArr[j];
+          if(addon_uid === service.treatment_uid) {
+            addon_list.push(service);
+          }
+        }
+      }      
+    }
+    return addon_list;
+  }
+  const totalCost = () => {
+    let total = 0;
+    serviceArr.forEach(service => {
+      if (service.treatment_uid === treatment_uid) {
+        total += costToInt(service.cost);
+      }
+    });
+    addons_list().forEach(addon => {
+      total += costToInt(addon.addon_cost);
+    });
+    return total;
+  }
+  const totalDuration = () => {
+    let total = 0;
+    serviceArr.forEach(service => {
+      if (service.treatment_uid === treatment_uid) {
+        total += hoursToSeconds(service.duration);
+      }
+    });
+    addons_list().forEach(addon => {
+      total += hoursToSeconds(addon.duration);
+    });
+    return secondsToHours(total);
+  }
+  console.log(addons_list());
+  
+
+  function hoursToSeconds(value) {
+    const splitedValue = value.split(":");
+    return parseInt(splitedValue[0])*(60*60)+parseInt(splitedValue[1])*60+parseInt(splitedValue[2])+1;
+  }
+  function secondsToHours(value) {
+    const hour = Math.floor(value/(60*60));    
+    const min = Math.floor((value%(60*60))/60);
+    const sec = (value%(60*60))%60;
+    return hour+':'+min+':'+sec;
+  }
+  function costToInt(cost_str) {
+    return parseInt(cost_str.slice(1));
+  }
+  function durationToString(duration) {
+    const splitedValue = duration.split(":");
+    const hour = parseInt(splitedValue[0]);
+    const min = parseInt(splitedValue[1]);
+    const sec = parseInt(splitedValue[2]);
+    let output = "";
+    output += hour !== 0 ? hour+"hr " : ""; 
+    output += min !== 0 ? min+"min " : ""; 
+    output += sec !== 0 ? sec+"sec " : ""; 
+    return output;
+  }
+
   function convert(value) {
     var a = value.split(":"); // split it at the colons
 
@@ -575,6 +647,15 @@ export default function AppointmentPage(props) {
                   {parseDuration(elementToBeRendered.duration)} |{" "}
                   {elementToBeRendered.cost}
                 </div>
+                <div className="ApptPageText">
+                  {addons_list().map(addon=> (
+                    <div>{"+ "} {addon.title} | {durationToString(secondsToHours(hoursToSeconds(addon.duration)))} | {addon.addon_cost}</div>
+                  ))}
+                </div>              
+                <div className="ApptPageHeader">
+                    Total: ${totalCost()} | {durationToString(totalDuration())}
+                </div>
+                
 
                 <div style={{ margin: "2rem" }}>
                   <img
@@ -669,6 +750,9 @@ export default function AppointmentPage(props) {
                         time: selectedTime,
                         mode: attendMode,
                         accessToken: accessToken,
+                        totalCost: totalCost(),
+                        totalDuration: totalDuration(),
+                        durationText: durationToString(totalDuration()),
                       },
                     })
                   }

@@ -48,6 +48,7 @@ export default function BookNowBTN(props) {
   const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
   const CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
   const [tID, setTID] = useState(props.apptID);
+  const addons = props.addons;
   // const [accessToken, setAccessToken] = useState("");
   const [signedin, setSignedIn] = useState(false);
   const [bookNow, setBookNow] = useState(false);
@@ -225,9 +226,9 @@ export default function BookNowBTN(props) {
         :<Link
           to={{
             pathname: `/${tID}/appt`,
+            state: props.addons
           }}
           // to={`/${tID}/appt`}
-          // params={{ accessToken: accessToken }}
           style={{ textDecoration: "none" }}
         >
           <p className="BookNowBtn">Book Now</p>

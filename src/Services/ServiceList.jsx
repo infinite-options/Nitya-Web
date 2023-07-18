@@ -68,7 +68,7 @@ export default function ServiceList(props) {
                       apptID={filteredService.treatment_uid}
                     />
                     <BookNowBTN
-                      apptID={filteredService.treatment_uid}
+                      apptID={filteredService.treatment_uid} addons={[]}
                     />
                     <div hidden={!editable}>
                     <Link
