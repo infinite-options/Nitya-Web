@@ -129,7 +129,7 @@ export default function AppointmentPage(props) {
     }
     return addon_list;
   }
-  const totalCost = () => {
+  const getTotalCost = () => {
     let total = 0;
     serviceArr.forEach(service => {
       if (service.treatment_uid === treatment_uid) {
@@ -141,7 +141,7 @@ export default function AppointmentPage(props) {
     });
     return total;
   }
-  const totalDuration = () => {
+  const getTotalDuration = () => {
     let total = 0;
     serviceArr.forEach(service => {
       if (service.treatment_uid === treatment_uid) {
@@ -155,6 +155,8 @@ export default function AppointmentPage(props) {
   }
   console.log(addons_list());
   
+  const totalCost = getTotalCost();
+  const totalDuration = getTotalDuration();
 
   function hoursToSeconds(value) {
     const splitedValue = value.split(":");
@@ -653,7 +655,7 @@ export default function AppointmentPage(props) {
                   ))}
                 </div>              
                 <div className="ApptPageHeader">
-                    Total: ${totalCost()} | {durationToString(totalDuration())}
+                    Total: ${totalCost} | {durationToString(totalDuration)}
                 </div>
                 
 
@@ -750,9 +752,9 @@ export default function AppointmentPage(props) {
                         time: selectedTime,
                         mode: attendMode,
                         accessToken: accessToken,
-                        totalCost: totalCost(),
-                        totalDuration: totalDuration(),
-                        durationText: durationToString(totalDuration()),
+                        totalCost: totalCost,
+                        totalDuration: totalDuration,
+                        durationText: durationToString(totalDuration),
                       },
                     })
                   }

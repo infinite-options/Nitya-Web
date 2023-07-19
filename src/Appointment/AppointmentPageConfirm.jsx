@@ -699,10 +699,10 @@ export default function AppointmentPage(props) {
                     age={age}
                     gender={selectGender}
                     purchaseDate={purchaseDate}
-                    cost={totalCost()}
+                    cost={totalCost}
                     treatmentDate={location.state.date}
                     treatmentTime={location.state.time}
-                    duration={totalDuration()}
+                    duration={totalDuration}
                     image_url={elementToBeRendered.image_url}
                   />
                 </div>
