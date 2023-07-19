@@ -12,6 +12,26 @@ export default function LearnMore(props) {
   const location = useLocation();
 
   const { serviceArr: data } = useContext(MyContext);
+  function getAddons() {
+    const addon_uids = getAddon_uids();
+    const outputs = [];
+    for (let i = 0; i < addon_uids.length; i++) {
+      const uid = addon_uids[i];
+      outputs.push({therapy:uid, selected: false});
+    }
+    return outputs;
+  }
+  
+  function getAddon_uids() {
+    const addon_uid = [];
+    for (let i = 0; i < data.length; i++) {
+      const service = data[i];
+      if(service.availability === "Available" && service.addon_cost !== '$0' && service.addon_cost !== null) {
+        addon_uid.push(service.treatment_uid);
+      }
+    }
+    return addon_uid;
+  }
   
   const [addons, setAddons] = useState(getAddons());
 
@@ -40,6 +60,9 @@ export default function LearnMore(props) {
 
     return parsedDuration;
   };
+
+  
+
 
   return (
     <div className="HomeContainer">
@@ -117,14 +140,4 @@ export default function LearnMore(props) {
       )}
     </div>
   );
-}
-
-function getAddons() {
-  const addon_uid = [
-    { therapy:"330-000002", selected:false },
-    { therapy:"330-000016", selected:false },
-    { therapy:"330-000017", selected:false },
-    { therapy:"330-000019", selected:false },
-  ];
-  return addon_uid;
 }
