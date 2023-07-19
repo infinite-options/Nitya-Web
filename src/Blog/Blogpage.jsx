@@ -505,6 +505,30 @@ function Blogpage(props) {
         </div>
         {console.log(Auth)}
       </div>
+      
+      <Box hidden={Auth.isAuth === false}>
+        <Button 
+          style={{
+            backgroundColor: "#d3a625",
+            color: "white",
+            marginTop: "1rem",
+            marginBottom: "1rem",
+          }}
+        >
+          <Link
+            to={{
+              pathname: '/manageService',
+            }}
+            style={{ 
+              textDecoration: "none",
+              color: "white",
+           }}
+          >
+            <p>Edit Service</p>
+          </Link>
+        </Button>
+      </Box>  
+
       <div hidden={Auth.isAuth === false}>
         <Button
           style={{

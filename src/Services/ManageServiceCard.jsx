@@ -256,7 +256,7 @@ export default function ManageService(props) {
                     </Grid>
                     <Grid item xs>
                         <TextField
-                            id="standard-multiline-static"
+                            id="filled-multiline-static"
                             label="Treatment Note"
                             multiline
                             minRows={text_height}

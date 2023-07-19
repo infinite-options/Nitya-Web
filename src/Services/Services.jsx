@@ -107,25 +107,6 @@ export default function Services() {
           <Box hidden={state !== 2}>
             <ServiceList data={{serviceArr, serviceType:"Package"}} />    
           </Box>
-          
-         
-           {/*
-            <Box hidden={Auth.isAuth !== false}>
-          
-          */}
-          <Box hidden={Auth.isAuth === false}>
-            <Button >
-              <Link
-                to={{
-                  pathname: '/manageService',
-                }}
-                style={{ textDecoration: "none" }}
-              >
-                <p>Edit Service</p>
-              </Link>
-            </Button>
-          </Box>  
-          
         </div>
     </div>
   );
