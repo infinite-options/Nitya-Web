@@ -15,12 +15,11 @@ export default function ManageService(props) {
     const [note, setNote] = useState(data.treatment_notes);
     const [displayOrder, setDisplayOrder] = useState(data.display_order);
     const [images, setImages] = useState([]);
-    const [, setBlogImage] = useState("");
+    const [blogImage, setBlogImage] = useState("");
     const [blogEditImage, ] = useState("");
     const [file, setFile] = useState(data.image_url);
     const text_height = 25;
     const [availability, setAvailability] = useState(data.availability);
-
     function getAddonState(addonCost) {
         return addonCost === "$0" ? "FALSE" : "TRUE";
     }
@@ -170,7 +169,7 @@ export default function ManageService(props) {
                             multiline
                             minRows={2}
                             maxRows={2}
-                            defaultValue={description}
+                            value={description}
                             variant="standard"
                             onChange={(e)=>setDescription(e.target.value)}
                             fullWidth
@@ -224,7 +223,7 @@ export default function ManageService(props) {
                                         {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
                                         {imageList.map(
                                             (image, index) => (
-                                            setBlogImage(image.data_url)
+                                            setBlogImage(image.data_url),
                                             (
                                                 <div key={index} className="image-item">
                                                 <img
@@ -261,7 +260,7 @@ export default function ManageService(props) {
                             label="Treatment Note"
                             multiline
                             minRows={text_height}
-                            defaultValue={note}
+                            value={note}
                             variant="standard"
                             onClick={(e)=>setNote(e.target.value)}
                             fullWidth
