@@ -143,7 +143,7 @@ function App() {
               </Route>
 
               <Route path="/manageService">
-                <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
+                <MyContext.Provider value={{ serviceArr, servicesLoaded, setServiceArr }}>
                   <ManageService />
                 </MyContext.Provider>
               </Route>

@@ -5,7 +5,7 @@ import ImageUploading from "react-images-uploading";
 import axios from "axios";
 
 export default function ManageService(props) {
-    const data = props.service;
+    const [data, setServiceArr] = props.service;
     const [title, setTitle] = useState(data.title);
     const [category, setCategory] = useState(data.category);
     const [description, setDescription] = useState(data.description);
@@ -38,6 +38,7 @@ export default function ManageService(props) {
     }
 
     function updateService() {
+        console.log(addon_cost);
         axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/updateTreatment",
             {
                 title: title,
@@ -50,11 +51,12 @@ export default function ManageService(props) {
                 display_order: displayOrder.toString(),
                 duration: duration,
                 image_url: file,
-                treatment_notes: note,
+                treatment_notes: textToDoubleApostrophes(note),
                 addon_allowed: getAddonState(addon_cost),
             }
         ).then((response) => {
             console.log(response);
+            //setServiceArr([]);
             window.location.reload();
         });
     }
@@ -142,7 +144,7 @@ export default function ManageService(props) {
                                         label="Addon Cost"
                                         value={addon_cost}
                                         variant="standard"
-                                        onChange={(e)=>setAddonCost(e.target.value)}          
+                                        onChange={(e)=>{setAddonCost(e.target.value);}}          
                                     />
                                 </div> 
                                 
@@ -254,7 +256,7 @@ export default function ManageService(props) {
                             </div>
                         </div>
                     </Grid>
-                    <Grid item xs>
+                    <Grid item xs={6}>
                         <TextField
                             id="filled-multiline-static"
                             label="Treatment Note"
@@ -262,7 +264,7 @@ export default function ManageService(props) {
                             minRows={text_height}
                             value={note}
                             variant="standard"
-                            onClick={(e)=>setNote(e.target.value)}
+                            onChange={(e)=>setNote(e.target.value)}
                             fullWidth
                         />
                     </Grid>
@@ -275,3 +277,8 @@ export default function ManageService(props) {
         </div>
     );
 }
+
+  // Due to SQL String Syntax we should replace single quote to two single quote. If backend starts to handle this problem, you may remove this function.
+  const textToDoubleApostrophes = (text) => {
+    return text.replace(/'/g, "''");
+  }

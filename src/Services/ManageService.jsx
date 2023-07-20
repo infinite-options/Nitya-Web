@@ -7,8 +7,7 @@ import ScrollToTop from "../Blog/ScrollToTop";
 import axios from "axios";
 
 export default function ManageService() {
-    const { serviceArr: data } = useContext(MyContext);
-
+    const { serviceArr: data, setServiceArr } = useContext(MyContext);
     function addService() {
         axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addTreatment",
             {
@@ -40,7 +39,7 @@ export default function ManageService() {
                 
                 {data !== "" ? 
                 data.map((service, i) => (
-                    <ManageServiceCard service={service} key={i}/>
+                    <ManageServiceCard service={[service, setServiceArr]} key={i}/>
                 )) : <>Loading</>}                
             </div>
         </div>
