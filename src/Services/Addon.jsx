@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import ToggleButton from '@mui/material/ToggleButton';
 
 export default function Addon(props) {
     const title = props.title;
-    const [addons, data] = props.addons;
-    const [, setAddons] = props.state;
-    console.log(addons);
+    const [, data] = props.addons;
+    const [addons, setAddons] = props.state;
+    const [, update] = useState();
+
+    function updateAddons() {
+      update([]);
+    }
   
     return(
       <div style={{"margin" : "20px"}}>
@@ -14,7 +18,7 @@ export default function Addon(props) {
         {addons.map((addon, i) => {
           const therapy_contents = getContents(addon.therapy, data);
           if(title !== therapy_contents.title) {
-              return <AddonChoice data={[addon, therapy_contents]} state={[addons, setAddons, i]}/>;
+              return <AddonChoice data={[addon, therapy_contents]} state={[addons, setAddons, i]} refresh={updateAddons}/>;
           }
         })}  
       </div>
@@ -24,17 +28,27 @@ export default function Addon(props) {
   function AddonChoice(props) {
     const [addon, therapy_contents] = props.data;
     const [addons, setAddons, i] = props.state;
-    const [selected, setSelected] = useState(false);
-  
+    const updateAddons = props.refresh;
+
+    function selectOne(i, selected) {
+      for (let i = 0; i < addons.length; i++) {
+        addons[i].selected = false;
+        if(addons[i].therapy === addon.therapy) {
+          addon.selected = selected;
+        }
+      }
+      setAddons(addons);
+    }
+
     return(
       <div style={{"margin" : "10px"}}>
         <ToggleButton
               value="check"
-              selected={selected}
+              selected={addons[i].selected}
               onChange={() => {
-                addons[i].selected = !selected;
-                setAddons(addons);
-                setSelected(!selected);
+                selectOne(i, !addons[i].selected);
+                updateAddons();
+                console.log(addons);
               }}
               style={{"marginRight" : "20px"}}
             >
