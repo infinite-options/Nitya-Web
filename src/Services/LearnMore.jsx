@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { MyContext } from "../App";
 import BookNowBTN from "./BookNowBtn";
@@ -12,6 +12,7 @@ export default function LearnMore(props) {
   const location = useLocation();
 
   const { serviceArr: data } = useContext(MyContext);
+
   function getAddons() {
     const addon_uids = getAddon_uids();
     const outputs = [];
@@ -32,8 +33,10 @@ export default function LearnMore(props) {
     }
     return addon_uid;
   }
-  
-  const [addons, setAddons] = useState(getAddons());
+
+  const addon_uids = getAddons();  
+  const [addons, setAddons] = useState(addon_uids);
+  console.log(addon_uids, addons);
 
   const parseDuration = (rawDuration) => {
     if (rawDuration === undefined) {
