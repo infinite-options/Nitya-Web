@@ -63,7 +63,7 @@ function App() {
       axios.get(url).then((res) => {
         setServiceArr(res.data.result);
         setServicesLoaded(true);
-        console.log(res.data);
+       // console.log(res.data);
       });
     }
   }, []);

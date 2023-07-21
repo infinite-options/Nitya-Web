@@ -18,7 +18,8 @@ export default function ManageService(props) {
     const [blogImage, setBlogImage] = useState("");
     const [blogEditImage, ] = useState("");
     const [file, setFile] = useState(data.image_url);
-    const text_height = 25;
+    const minRow = 1;
+    const maxRow = 25;
     const [availability, setAvailability] = useState(data.availability);
     function getAddonState(addonCost) {
         return addonCost === "$0" ? "FALSE" : "TRUE";
@@ -169,8 +170,8 @@ export default function ManageService(props) {
                             id="standard-multiline-static"
                             label="Description"
                             multiline
-                            minRows={2}
-                            maxRows={2}
+                            minRows={minRow}
+                            maxRows={maxRow}
                             value={description}
                             variant="standard"
                             onChange={(e)=>setDescription(e.target.value)}
@@ -261,7 +262,8 @@ export default function ManageService(props) {
                             id="filled-multiline-static"
                             label="Treatment Note"
                             multiline
-                            minRows={text_height}
+                            minRows={minRow}
+                            maxRows={maxRow}
                             value={note}
                             variant="standard"
                             onChange={(e)=>setNote(e.target.value)}
