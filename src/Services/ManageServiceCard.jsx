@@ -42,10 +42,10 @@ export default function ManageService(props) {
         console.log(addon_cost);
         axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/updateTreatment",
             {
-                title: title,
+                title: textToDoubleApostrophes(title),
                 treatment_uid: data.treatment_uid,
                 category: category,
-                description: description, 
+                description: textToDoubleApostrophes(description), 
                 cost: cost,
                 addon_cost: addon_cost,
                 availability: availability,
