@@ -15,6 +15,7 @@ export default function LearnMore(props) {
 
   function getAddons() {
     const addon_uids = getAddon_uids();
+    // console.log("Test/uid", addon_uids);
     const outputs = [];
     for (let i = 0; i < addon_uids.length; i++) {
       const uid = addon_uids[i];
@@ -25,6 +26,7 @@ export default function LearnMore(props) {
   
   function getAddon_uids() {
     const addon_uid = [];
+    // console.log("Test/data", data);
     for (let i = 0; i < data.length; i++) {
       const service = data[i];
       if(service.availability === "Available" && service.addon_cost !== '$0' && service.addon_cost !== null) {
@@ -34,9 +36,13 @@ export default function LearnMore(props) {
     return addon_uid;
   }
 
-  const addon_uids = getAddons();  
-  const [addons, setAddons] = useState(addon_uids);
-  console.log(addon_uids, addons);
+  const [addons, setAddons] = useState(getAddons());
+  // console.log("Test/Addon", getAddons());
+  // console.log("Test/state", addons);
+  useEffect(()=>{
+    setAddons(getAddons());
+    // console.log("Test/UseEffect", addons);
+  }, [data]);
 
   const parseDuration = (rawDuration) => {
     if (rawDuration === undefined) {
