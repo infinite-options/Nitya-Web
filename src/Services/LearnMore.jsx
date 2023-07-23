@@ -132,9 +132,10 @@ export default function LearnMore(props) {
                     Cancellation Policy: To cancel or reschedule, please contact
                     us 24 hours in advance.
                   </div>
-                  
-                  <Addon title={filteredService.title} addons={[addons, data]} state={[addons, setAddons]}/>
-                </div>
+                  <div hidden={filteredService.category !== "Therapy"}>
+                    <Addon title={filteredService.title} addons={[addons, data]} state={[addons, setAddons]}/>
+                  </div>
+                  </div>
               </div>
             </div>
           ))
