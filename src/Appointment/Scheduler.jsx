@@ -324,6 +324,7 @@ export default function Scheduler(props) {
   // }, [customerUidState]);
 
   async function bookAppt() {
+    console.log(props);
     const price = props.cost.split(" ", 1);
 
     setCustomerUidState(!customerUidState);

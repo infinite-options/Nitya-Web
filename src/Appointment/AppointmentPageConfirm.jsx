@@ -141,7 +141,7 @@ export default function AppointmentPage(props) {
   //strip use states
   const access_token = location.state.accessToken;
   console.log("(AppointmentPageConfirm) accessToken: ", access_token);
-  const totalCost = location.state.totalCost;
+  const totalCost = "$"+location.state.totalCost;
   const totalDuration = location.state.totalDuration;
   const durationText = location.state.durationText;
   console.log(totalDuration);
@@ -179,6 +179,10 @@ export default function AppointmentPage(props) {
   const [showDialog, setShowDialog] = useState(false);
   const [dialogText, setDialogText] = useState("");
   const [dialogTitle, setDialogTitle] = useState("");
+
+  
+  // console.log("Cost", totalCost);
+  // console.log("Cost",cost);
 
   useEffect(() => {
     if (servicesLoaded) {
@@ -464,7 +468,7 @@ export default function AppointmentPage(props) {
                   </span>
                   <br />
                   {durationText} |{" "}
-                  ${totalCost}
+                  {totalCost}
                 </p>
                 <img
                   src={elementToBeRendered.image_url}
