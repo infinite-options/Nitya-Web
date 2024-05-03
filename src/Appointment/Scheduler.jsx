@@ -118,13 +118,7 @@ export default function Scheduler(props) {
 
   // This one is for doing the sendToDatabase Post Call
   const dateFormat3 = (date) => {
-    return (
-      date.getFullYear() +
-      "-" +
-      doubleDigitMonth(date) +
-      "-" +
-      doubleDigitDay(date)
-    );
+    return date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date);
   };
 
   useEffect(() => {
@@ -173,8 +167,7 @@ export default function Scheduler(props) {
       purchase_price: props.cost, //TREATMENT INFO #2
       purchase_date: dateFormat3(props.purchaseDate),
     });
-    const postURL =
-      "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
+    const postURL = "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
     axios
       .post(postURL, {
         first_name: props.firstName,
@@ -238,13 +231,8 @@ export default function Scheduler(props) {
     console.log(end_time);
     var event = {
       summary: props.treatmentName,
-      location: "6055 Meridian Ave #40, San Jose, CA, 95120",
-      description:
-        "Name: " +
-        props.firstName + " " + props.lastName +
-        "\n" +
-        "Phone No: " +
-        props.phoneNum.replace(/[^a-z\d\s]+/gi, ""),
+      location: "1610 Blossom Hill Road, #1, San Jose, CA, 95124",
+      description: "Name: " + props.firstName + " " + props.lastName + "\n" + "Phone No: " + props.phoneNum.replace(/[^a-z\d\s]+/gi, ""),
       creator: {
         email: "support@nityaayurveda.com",
         self: true,
@@ -274,13 +262,9 @@ export default function Scheduler(props) {
       Authorization: "Bearer " + props.accessToken,
     };
     axios
-      .post(
-        `https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${API_KEY}`,
-        event,
-        {
-          headers: headers,
-        }
-      )
+      .post(`https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${API_KEY}`, event, {
+        headers: headers,
+      })
       .then((response) => {})
       .catch((error) => {
         console.log("error", error);
@@ -341,8 +325,7 @@ export default function Scheduler(props) {
       payment_summary: temp,
     };
     console.log(props.customerUid);
-    const postURL =
-      "https://huo8rhh76i.execute-api.us-west-1.amazonaws.com/dev/api/v2/createPaymentIntent";
+    const postURL = "https://huo8rhh76i.execute-api.us-west-1.amazonaws.com/dev/api/v2/createPaymentIntent";
     axios
       .post(postURL, {
         customer_uid: props.customerUid,
@@ -374,9 +357,7 @@ export default function Scheduler(props) {
                   setup_future_usage: "off_session",
                 })
                 .then(function (result) {
-                  console.log(
-                    "confirmedCardPayment result: " + JSON.stringify(result)
-                  );
+                  console.log("confirmedCardPayment result: " + JSON.stringify(result));
                   console.log(result.data);
                   if (result.error) {
                     console.log(result.error);
@@ -391,14 +372,9 @@ export default function Scheduler(props) {
                       jsonObject_sent: JSON.stringify(paymentJSON),
                     };
                     // sendToDatabase();
-                    axios
-                      .post(
-                        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent",
-                        body
-                      )
-                      .then((response) => {
-                        console.log("response", response.data.result);
-                      });
+                    axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
+                      console.log("response", response.data.result);
+                    });
 
                     setSubmitted(false);
                     setLoadingState(false);
@@ -420,14 +396,9 @@ export default function Scheduler(props) {
                 jsonObject_sent: JSON.stringify(paymentJSON),
               };
               // sendToDatabase();
-              axios
-                .post(
-                  "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent",
-                  body
-                )
-                .then((response) => {
-                  console.log("response");
-                });
+              axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
+                console.log("response");
+              });
               console.log("error trying to pay: ", e);
 
               setSubmitted(false);
@@ -447,15 +418,10 @@ export default function Scheduler(props) {
           jsonObject_sent: JSON.stringify(paymentJSON),
         };
         // sendToDatabase();
-        axios
-          .post(
-            "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent",
-            body
-          )
-          .then((response) => {
-            console.log("response", response.data.result);
-            setErrorMessage("Payment Error");
-          });
+        axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
+          console.log("response", response.data.result);
+          setErrorMessage("Payment Error");
+        });
         if (err.response) {
           console.log("error: " + JSON.stringify(err.response));
           setSubmitted(false);
@@ -506,13 +472,8 @@ export default function Scheduler(props) {
             outline: "none",
           }}
         />
-        <div
-          className="text-center"
-          style={errorMessage === "" ? { visibility: "hidden" } : {}}
-        >
-          <p style={{ color: "red", fontSize: "12px" }}>
-            {errorMessage || "error"}
-          </p>
+        <div className="text-center" style={errorMessage === "" ? { visibility: "hidden" } : {}}>
+          <p style={{ color: "red", fontSize: "12px" }}>{errorMessage || "error"}</p>
         </div>
         <div
           aria-label={"click button to book your appointment"}
@@ -523,11 +484,7 @@ export default function Scheduler(props) {
             justifyContent: "center",
           }}
         >
-          <button
-            disabled={submitted}
-            onClick={bookAppt}
-            className={classes.payButton}
-          >
+          <button disabled={submitted} onClick={bookAppt} className={classes.payButton}>
             Pay Now
           </button>
         </div>

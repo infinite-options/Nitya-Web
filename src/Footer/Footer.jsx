@@ -18,8 +18,8 @@ export default function Footer() {
 
       <div className="FooterTextWrapper">
         <div className="FooterText">
-          <div>6055 Meridian Ave, Ste. 40A,</div>
-          <div>San Jose, CA 95120</div>
+          <div>1610 Blossom Hill Rd, Ste #1,</div>
+          <div>San Jose, CA 95124</div>
         </div>
 
         <div className="FooterText">
@@ -28,9 +28,9 @@ export default function Footer() {
         </div>
 
         <div className="FooterText" style={{ border: "0px" }}>
-          <div>Office:{" "}
-            <a href="tel:+14084717004" 
-              style={{textDecoration: "None", cursor: "pointer", color: "#D3A625"}}>
+          <div>
+            Office:{" "}
+            <a href="tel:+14084717004" style={{ textDecoration: "None", cursor: "pointer", color: "#D3A625" }}>
               408 471 7004
             </a>
           </div>
@@ -39,11 +39,7 @@ export default function Footer() {
       </div>
       <div className="FooterTextWrapper">
         <div className="FooterItem">
-          <img
-            src={Namacb}
-            style={{ height: "7rem", justifySelf: "center", alignSelf: "center" }}
-            alt="NAMA"
-          />
+          <img src={Namacb} style={{ height: "7rem", justifySelf: "center", alignSelf: "center" }} alt="NAMA" />
         </div>
         <div className="FooterItem">
           <div style={{ marginTop: "3rem", marginBottom: "2rem", textAlign: "center" }}>
@@ -63,14 +59,12 @@ export default function Footer() {
             </button>
           </div>
         </div>
-        <div className="FooterItem" style={{alignItems: "center"}}>
+        <div className="FooterItem" style={{ alignItems: "center" }}>
           <InstagramIcon
             fontSize="large"
             className="instagram-icon"
             style={{ color: "black", justifySelf: "center", alignSelf: "center", marginLeft: "0" }}
-            onClick={(event) =>
-              (window.location.href = "https://www.instagram.com/nityaayurveda/")
-            }
+            onClick={(event) => (window.location.href = "https://www.instagram.com/nityaayurveda/")}
           />
         </div>
       </div>

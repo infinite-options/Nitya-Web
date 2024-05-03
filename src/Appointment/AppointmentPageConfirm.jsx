@@ -141,7 +141,7 @@ export default function AppointmentPage(props) {
   //strip use states
   const access_token = location.state.accessToken;
   console.log("(AppointmentPageConfirm) accessToken: ", access_token);
-  const totalCost = "$"+location.state.totalCost;
+  const totalCost = "$" + location.state.totalCost;
   const totalDuration = location.state.totalDuration;
   const durationText = location.state.durationText;
   console.log(totalDuration);
@@ -180,7 +180,6 @@ export default function AppointmentPage(props) {
   const [dialogText, setDialogText] = useState("");
   const [dialogTitle, setDialogTitle] = useState("");
 
-  
   // console.log("Cost", totalCost);
   // console.log("Cost",cost);
 
@@ -286,9 +285,7 @@ export default function AppointmentPage(props) {
 
     if (email !== 0) {
       if (
-        !email.match(
-          /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
+        !email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
       ) {
         setErrorMessage("Please enter a valid email.");
         return;
@@ -301,16 +298,12 @@ export default function AppointmentPage(props) {
       role: "CUSTOMER",
       phone_num: phoneNum.replace(/[^a-z\d\s]+/gi, ""),
       email: email,
-      is_ret_client_appt: ['330-000005','330-000006'].includes(treatmentID),
+      is_ret_client_appt: ["330-000005", "330-000006"].includes(treatmentID),
     };
     // sendToDatabase();
     try {
-      const resp = await axios.post(
-        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/findCustomer",
-        body
-      );
-      if (resp.data.customer_uid) 
-        setCustomerUid(resp.data.customer_uid);
+      const resp = await axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/findCustomer", body);
+      if (resp.data.customer_uid) setCustomerUid(resp.data.customer_uid);
       if (resp.data.warning) {
         setDialogTitle("Warning");
         setDialogText(resp.data.warning);
@@ -328,14 +321,9 @@ export default function AppointmentPage(props) {
       // Fetch public key
       console.log("fetching public key");
       axios
-        .get(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST"
-        )
+        .get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST")
         .then((result) => {
-          console.log(
-            "(1 PaymentDetails) Stripe-key then result (1): " +
-              JSON.stringify(result)
-          );
+          console.log("(1 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
 
           let tempStripePromise = loadStripe(result.data.publicKey);
 
@@ -349,9 +337,7 @@ export default function AppointmentPage(props) {
         .catch((err) => {
           console.log(err);
           if (err.response) {
-            console.log(
-              "(1 PaymentDetails) error: " + JSON.stringify(err.response)
-            );
+            console.log("(1 PaymentDetails) error: " + JSON.stringify(err.response));
           }
         });
     } else {
@@ -359,14 +345,9 @@ export default function AppointmentPage(props) {
 
       console.log("fetching public key live");
       axios
-        .get(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYA"
-        )
+        .get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYA")
         .then((result) => {
-          console.log(
-            "(2 PaymentDetails) Stripe-key then result (1): " +
-              JSON.stringify(result)
-          );
+          console.log("(2 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
 
           let tempStripePromise = loadStripe(result.data.publicKey);
 
@@ -380,9 +361,7 @@ export default function AppointmentPage(props) {
         .catch((err) => {
           console.log(err);
           if (err.response) {
-            console.log(
-              "(2 PaymentDetails) error: " + JSON.stringify(err.response)
-            );
+            console.log("(2 PaymentDetails) error: " + JSON.stringify(err.response));
           }
         });
     }
@@ -421,12 +400,7 @@ export default function AppointmentPage(props) {
   return (
     <div className="HomeContainer">
       <ScrollToTop />
-      <Popup 
-        showDialog={showDialog} 
-        onClose={handleDialogClose} 
-        title={dialogTitle} 
-        text={dialogText} 
-      />
+      <Popup showDialog={showDialog} onClose={handleDialogClose} title={dialogTitle} text={dialogText} />
       <br />
       {bookNowClicked || location.state.signedin ? (
         <div className="Card" style={{ alignItems: "center" }}>
@@ -434,9 +408,7 @@ export default function AppointmentPage(props) {
             <div>
               <div>
                 <div className={classes.selectTime2}>
-                  <div className="TitleFontAppt">
-                    Appointment scheduled for:
-                  </div>
+                  <div className="TitleFontAppt">Appointment scheduled for:</div>
                 </div>
                 <br></br>
 
@@ -448,9 +420,7 @@ export default function AppointmentPage(props) {
                   }}
                 >
                   <span>
-                    {moment(location.state.date).format("ll")} at{" "}
-                    {formatTime(location.state.date, location.state.time)} -{" "}
-                    {location.state.mode}
+                    {moment(location.state.date).format("ll")} at {formatTime(location.state.date, location.state.time)} - {location.state.mode}
                   </span>
                 </h1>
               </div>
@@ -467,21 +437,15 @@ export default function AppointmentPage(props) {
                     {elementToBeRendered.title}
                   </span>
                   <br />
-                  {durationText} |{" "}
-                  {totalCost}
+                  {durationText} | {totalCost}
                 </p>
-                <img
-                  src={elementToBeRendered.image_url}
-                  className={classes.img}
-                  style={{ objectFit: "cover", textAlign: "left" }}
-                  alt=""
-                />
+                <img src={elementToBeRendered.image_url} className={classes.img} style={{ objectFit: "cover", textAlign: "left" }} alt="" />
                 <br />
                 <br />
                 <p className={classes.content2} style={{ textAlign: "left" }}>
-                  6055 Meridian Ave #40
+                  1610 Blossom Hill Rd, Ste #1
                   <br />
-                  San Jose, CA, 95120
+                  San Jose, CA, 95124
                   <br />
                   <br />
                   Office: (408) 471-7004
@@ -491,7 +455,7 @@ export default function AppointmentPage(props) {
                 <div
                   style={{
                     marginBottom: "10px",
-                    display: "flex"
+                    display: "flex",
                   }}
                 >
                   {firstName === "" ? required : ""}
@@ -512,7 +476,7 @@ export default function AppointmentPage(props) {
                       outline: "none",
                     }}
                   />
-                  {required? "": <span>&nbsp;</span>}
+                  {required ? "" : <span>&nbsp;</span>}
                   {lastName === "" ? required : ""}
                   <input
                     name="variable"
@@ -541,26 +505,8 @@ export default function AppointmentPage(props) {
                     marginBottom: "10px",
                   }}
                 >
-                  <FormControlLabel
-                    control={
-                      <YellowRadio
-                        checked={gender.female}
-                        onChange={(e) => handleGender(e)}
-                        name="female"
-                      />
-                    }
-                    label="Female"
-                  />
-                  <FormControlLabel
-                    control={
-                      <YellowRadio
-                        checked={gender.male}
-                        onChange={(e) => handleGender(e)}
-                        name="male"
-                      />
-                    }
-                    label="Male"
-                  />
+                  <FormControlLabel control={<YellowRadio checked={gender.female} onChange={(e) => handleGender(e)} name="female" />} label="Female" />
+                  <FormControlLabel control={<YellowRadio checked={gender.male} onChange={(e) => handleGender(e)} name="male" />} label="Male" />
                   {/* <SimpleForm field="Age" onHandleChange={handleAgeChange} /> */}
                   {age === "" ? required : ""}
                   <input
@@ -589,7 +535,7 @@ export default function AppointmentPage(props) {
                 <div
                   style={{
                     marginBottom: "10px",
-                    display: "flex"
+                    display: "flex",
                   }}
                 >
                   {/* <SimpleForm
@@ -619,7 +565,7 @@ export default function AppointmentPage(props) {
                 <div
                   style={{
                     marginBottom: "10px",
-                    display: "flex"
+                    display: "flex",
                   }}
                 >
                   {/* <SimpleForm
@@ -695,10 +641,7 @@ export default function AppointmentPage(props) {
                     email={email}
                     phoneNum={phoneNum}
                     date={moment(location.state.date).format("ll")}
-                    selectedTime={formatTime(
-                      location.state.date,
-                      location.state.time
-                    )}
+                    selectedTime={formatTime(location.state.date, location.state.time)}
                     mode={location.state.mode}
                     age={age}
                     gender={selectGender}
@@ -710,13 +653,8 @@ export default function AppointmentPage(props) {
                     image_url={elementToBeRendered.image_url}
                   />
                 </div>
-                <div
-                  className="text-center"
-                  style={errorMessage === "" ? { visibility: "hidden" } : {}}
-                >
-                  <p style={{ color: "red", fontSize: "12px" }}>
-                    {errorMessage || "error"}
-                  </p>
+                <div className="text-center" style={errorMessage === "" ? { visibility: "hidden" } : {}}>
+                  <p style={{ color: "red", fontSize: "12px" }}>{errorMessage || "error"}</p>
                 </div>
                 <div
                   aria-label={"click button to book your appointment"}
@@ -725,11 +663,7 @@ export default function AppointmentPage(props) {
                     justifyContent: "center",
                   }}
                 >
-                  <button
-                    className={classes.bookButton}
-                    hidden={infoSubmitted}
-                    onClick={toggleKeys}
-                  >
+                  <button className={classes.bookButton} hidden={infoSubmitted} onClick={toggleKeys}>
                     Book Appointment
                   </button>
                 </div>

@@ -19,17 +19,17 @@ export default function LearnMore(props) {
     const outputs = [];
     for (let i = 0; i < addon_uids.length; i++) {
       const uid = addon_uids[i];
-      outputs.push({therapy:uid, selected: false});
+      outputs.push({ therapy: uid, selected: false });
     }
     return outputs;
   }
-  
+
   function getAddon_uids() {
     const addon_uid = [];
     // console.log("Test/data", data);
     for (let i = 0; i < data.length; i++) {
       const service = data[i];
-      if(service.availability === "Available" && service.addon_cost !== '$0' && service.addon_cost !== null) {
+      if (service.availability === "Available" && service.addon_cost !== "$0" && service.addon_cost !== null) {
         addon_uid.push(service.treatment_uid);
       }
     }
@@ -39,7 +39,7 @@ export default function LearnMore(props) {
   const [addons, setAddons] = useState(getAddons());
   // console.log("Test/Addon", getAddons());
   // console.log("Test/state", addons);
-  useEffect(()=>{
+  useEffect(() => {
     setAddons(getAddons());
     // console.log("Test/UseEffect", addons);
   }, [data]);
@@ -70,9 +70,6 @@ export default function LearnMore(props) {
     return parsedDuration;
   };
 
-  
-
-
   return (
     <div className="HomeContainer">
       <ScrollToTop />
@@ -89,12 +86,9 @@ export default function LearnMore(props) {
                   {filteredService.description} <br />
                 </div>
                 <div className="LearnMoreHeader">
-                  {parseDuration(filteredService.duration)} |{" "}
-                  {filteredService.cost}
+                  {parseDuration(filteredService.duration)} | {filteredService.cost}
                 </div>
-                <BookNowBTN
-                  apptID={filteredService.treatment_uid} addons={addons}
-                />
+                <BookNowBTN apptID={filteredService.treatment_uid} addons={addons} />
                 <div style={{ margin: "2rem" }}>
                   <img
                     style={{
@@ -114,34 +108,26 @@ export default function LearnMore(props) {
                   <Markup content={filteredService.treatment_notes} />
                 </div>
                 <div style={{ textAlign: "center" }}>
-                  <div
-                    className="LearnMoreHeader"
-                    style={{ fontWeight: "bold" }}
-                  >
+                  <div className="LearnMoreHeader" style={{ fontWeight: "bold" }}>
                     {" "}
                     Book Online
                   </div>
                   <div className="LearnMoreHeader">{filteredService.title}</div>
                   <div className="LearnMoreHeader">
-                    {parseDuration(filteredService.duration)} |{" "}
-                    {filteredService.cost}
+                    {parseDuration(filteredService.duration)} | {filteredService.cost}
                   </div>
-                  <BookNowBTN
-                    apptID={filteredService.treatment_uid} addons={addons}
-                  />
+                  <BookNowBTN apptID={filteredService.treatment_uid} addons={addons} />
 
                   {/* <div className="LearnMoreText">
                     6055 Meridian Ave, Ste. 40, San Jose, CA 95120, US
+                    1610 Blossom Hill Rd, Ste #1 , San Jose, CA 95124, US
                     4084717004 leena@nityaayurveda.com
                   </div> */}
-                  <div style={{ fontWeight: "600", marginTop: "1rem" }}>
-                    Cancellation Policy: To cancel or reschedule, please contact
-                    us 24 hours in advance.
-                  </div>
+                  <div style={{ fontWeight: "600", marginTop: "1rem" }}>Cancellation Policy: To cancel or reschedule, please contact us 24 hours in advance.</div>
                   <div hidden={filteredService.category !== "Therapy"}>
-                    <Addon title={filteredService.title} addons={[addons, data]} state={[addons, setAddons]}/>
+                    <Addon title={filteredService.title} addons={[addons, data]} state={[addons, setAddons]} />
                   </div>
-                  </div>
+                </div>
               </div>
             </div>
           ))

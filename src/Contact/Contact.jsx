@@ -13,8 +13,7 @@ import mapImg from "../Assets/Images/Map.webp";
 import "../Home/Home.css";
 
 export default function Contact() {
-  const url =
-    "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addContact";
+  const url = "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addContact";
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -87,76 +86,28 @@ export default function Contact() {
             </div>
             <div className="CardText">
               {" "}
-              6055 Meridian Ave Ste #40 <br></br> San Jose, CA 95120, USA{" "}
+              1610 Blossom Hill Rd, Ste #1 <br></br> San Jose, CA 95124, USA{" "}
             </div>
             <div className="CardText" style={{ marginBottom: "1rem" }}>
               {" "}
-              Office:
-              {" "}
-              <a href="tel:+14084717004" 
-                style={{textDecoration: "None", cursor: "pointer", color: "#D3A625"}}>
-                  408 471 7004
+              Office:{" "}
+              <a href="tel:+14084717004" style={{ textDecoration: "None", cursor: "pointer", color: "#D3A625" }}>
+                408 471 7004
               </a>
             </div>
 
-            <input
-              type="text"
-              name="name"
-              id="name"
-              className="NewInput"
-              placeholder="  Full Name"
-              onChange={(e) => handle(e)}
-              value={data.name}
-            />
+            <input type="text" name="name" id="name" className="NewInput" placeholder="  Full Name" onChange={(e) => handle(e)} value={data.name} />
 
-            <input
-              type="phone"
-              name="phone"
-              id="phone"
-              className="NewInput"
-              placeholder="  Phone"
-              onChange={(e) => handle(e)}
-              value={data.phone}
-            />
+            <input type="phone" name="phone" id="phone" className="NewInput" placeholder="  Phone" onChange={(e) => handle(e)} value={data.phone} />
 
-            <input
-              type="email"
-              name="email"
-              id="email"
-              className="NewInput"
-              placeholder="  Email"
-              onChange={(e) => handle(e)}
-              value={data.email}
-              required
-            />
+            <input type="email" name="email" id="email" className="NewInput" placeholder="  Email" onChange={(e) => handle(e)} value={data.email} required />
             {data.email === "" ? required : ""}
 
-            <input
-              type="text"
-              name="subject"
-              id="subject"
-              placeholder="  Subject"
-              className="NewInput"
-              onChange={(e) => handle(e)}
-              value={data.subject}
-            />
+            <input type="text" name="subject" id="subject" placeholder="  Subject" className="NewInput" onChange={(e) => handle(e)} value={data.subject} />
 
-            <input
-              type="text"
-              name="message"
-              id="message"
-              placeholder="  Type Message Here"
-              className="NewInput"
-              onChange={(e) => handle(e)}
-              value={data.message}
-            />
-            <div
-              className="text-center"
-              style={errorMessage === "" ? { visibility: "hidden" } : {}}
-            >
-              <p style={{ color: "red", fontSize: "12px" }}>
-                {errorMessage || "error"}
-              </p>
+            <input type="text" name="message" id="message" placeholder="  Type Message Here" className="NewInput" onChange={(e) => handle(e)} value={data.message} />
+            <div className="text-center" style={errorMessage === "" ? { visibility: "hidden" } : {}}>
+              <p style={{ color: "red", fontSize: "12px" }}>{errorMessage || "error"}</p>
             </div>
 
             <button
@@ -170,28 +121,24 @@ export default function Contact() {
             </button>
           </div>
           <div onClick={() => setMapClicked(true)} className="MapContainer">
-            {isMapClicked?
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.732452474541!2d-121.8872221846979!3d37.230325779862234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e314406ce969d%3A0x82fb75802c5ef489!2s6055%20Meridian%20Ave%20%2340%2C%20San%20Jose%2C%20CA%2095120!5e0!3m2!1sen!2sus!4v1618695078070!5m2!1sen!2sus"
-              className="Contact_Map"
-              allowfullscreen=""
-              loading="lazy"
-            ></iframe>
-            :<img width="330" height="590" src={mapImg} className="ContactMapImg" alt="map" />}
+            {isMapClicked ? (
+              <iframe
+                // src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.732452474541!2d-121.8872221846979!3d37.230325779862234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e314406ce969d%3A0x82fb75802c5ef489!2s6055%20Meridian%20Ave%20%2340%2C%20San%20Jose%2C%20CA%2095120!5e0!3m2!1sen!2sus!4v1618695078070!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.4933191234104!2d-121.90686878683185!3d37.23600137200993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e36ab01586fa9%3A0xe80e7882881a56a0!2s1610%20Blossom%20Hill%20Rd%20%231%2C%20San%20Jose%2C%20CA%2095124!5e0!3m2!1sen!2sus!4v1714712803119!5m2!1sen!2sus"
+                className="Contact_Map"
+                allowfullscreen=""
+                loading="lazy"
+              ></iframe>
+            ) : (
+              <img width="330" height="590" src={mapImg} className="ContactMapImg" alt="map" />
+            )}
           </div>
         </div>
       </div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">{"Message Recieved"}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Thanks for your Message! We have sent a copy to your email.
-          </DialogContentText>
+          <DialogContentText id="alert-dialog-description">Thanks for your Message! We have sent a copy to your email.</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
