@@ -100,6 +100,16 @@ const Navbar = () => {
             Blog
           </Link>
         </li>
+
+        <li className="nav-item">
+          <Link
+            to={{ pathname: "/waiver", state: { click: onClickAbout } }}
+            className="nav-link"
+            onClick={closeMenuHome}
+          >
+            Waiver
+          </Link>
+        </li>
       </ul>
 
       <div className="emptyDiv1">

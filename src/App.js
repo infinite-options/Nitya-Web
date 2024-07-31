@@ -27,6 +27,7 @@ import SeminarRegister from "./Seminar/SeminarRegister";
 import DonationElement from "./Seminar/DonationElement";
 import Availability from "./Admin/Availability";
 import ManageService from "./Services/ManageService";
+import Waiver from "./Waiver/Waiver";
 
 export const MyContext = React.createContext();
 
@@ -161,6 +162,10 @@ function App() {
 
               <Route path="/contact">
                 <Contact />
+              </Route>
+
+              <Route path="/waiver">
+                <Waiver />
               </Route>
 
               <Route path="/services">
