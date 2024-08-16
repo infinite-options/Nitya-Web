@@ -229,6 +229,9 @@ function Blogpage(props) {
   const logout = () => {
     Auth.setIsAuth(false);
     Auth.setIsLoggedIn(false);
+    Cookies.remove("login-session", { path: '/' });
+    Cookies.remove("customer_uid", { path: '/' });
+    Cookies.remove("role", { path: '/' });  
     history.push("/");
   };
 

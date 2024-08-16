@@ -177,6 +177,7 @@ function AddPost(props) {
     formData.append("filename", source.name);
     formData.append("item_video", source);
 
+
     axios
       .post(
         "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadVideo",
@@ -220,7 +221,6 @@ function AddPost(props) {
             style={{
               display: "flex",
               marginTop: "2rem",
-              marginLeft: "2rem",
               justifyContent: "space-evenly",
             }}
           >
@@ -274,14 +274,15 @@ function AddPost(props) {
               display: "flex",
               marginTop: "2rem",
               marginLeft: "2rem",
-              justifyContent: "space-evenly",
+              justifyContent: "flex-start",
+              marginLeft:"14%"
             }}
           >
             <div>
               <TextField
                 id="blogTitle"
                 value={blogTitle}
-                style={{ width: "200%" }}
+                style={{ width: "340%" }}
                 placeholder="Title"
                 helperText="Enter Blog Title Here"
                 width="100%"
@@ -299,10 +300,8 @@ function AddPost(props) {
             style={{
               display: "flex",
               marginTop: "2rem",
-              marginLeft: "2rem",
-
               justifyContent: "center",
-              alignItems: "center",
+              alignItems: "flex-start",
             }}
           >
             <Col
@@ -310,7 +309,6 @@ function AddPost(props) {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
                 alignItems: "center",
                 marginRight: "4rem",
               }}
@@ -387,7 +385,7 @@ function AddPost(props) {
               }}
             >
               Video Upload?
-              <div>
+              <div style={{marginLeft:"30%"}}>
                 <input
                   ref={inputRef}
                   className="VideoInput_input"
@@ -402,7 +400,7 @@ function AddPost(props) {
                       width="100%"
                       height="50%"
                       controls
-                      src={source}
+                      src={file}
                     />
                   )}
                   {/* <div className="VideoInput_footer">

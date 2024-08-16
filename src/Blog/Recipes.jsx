@@ -285,6 +285,7 @@ function Blogpage(props) {
     { title: `living well`, path: `/living well` },
   ];
 
+
   return (
     <div className="HomeContainer">
       <div className={classes.blogpage} id="blogpage">

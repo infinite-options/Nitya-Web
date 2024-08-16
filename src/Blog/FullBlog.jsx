@@ -24,6 +24,9 @@ import ScrollToTop from "./ScrollToTop";
 import { Markup } from "interweave";
 import "../Home/Home.css";
 
+
+
+
 const useStyles = makeStyles((theme) => ({
   container: {
     marginBottom: "5%",
@@ -201,7 +204,7 @@ function FullBlog(props) {
   const classes = useStyles();
   const [getBlogId, setBlogId] = useState([]);
   const { blog_uid } = useParams();
-  const [play, setPlay] = useState(false);
+  const [play, setPlay] = useState(true);
 
   const getDataById = async () => {
     const res = await fetch(
@@ -215,7 +218,7 @@ function FullBlog(props) {
       setBlogId(getBlogId);
     });
   }, []);
-
+  
   const handleClick = (e) => {
     setanchorEl(e.currentTarget);
   };
@@ -228,6 +231,7 @@ function FullBlog(props) {
     e.preventDefault();
     alert("Searched");
   };
+  console.log(getBlogId)
 
   const convertDate = (date) => {
     if (date) {
@@ -414,6 +418,7 @@ function FullBlog(props) {
                       flexDirection: "column",
                       justifyContent: "center",
                       alignItems: "center",
+                      width:'100%'
                     }}
                   >
                     <div className={classes.title}>
@@ -438,8 +443,8 @@ function FullBlog(props) {
                         <ReactPlayer url={post.blogImage} playing={play} />
                       </div>
                     )}
-                    <div className={classes.content}>
-                      <p className={classes.title}>{post.blogTitle}</p>
+                    <div className={classes.content} style={{alignSelf:"flex-start"}}>
+                      <p className={classes.title} style={{width:"100%"}}>{post.blogTitle}</p>
 
                       <Markup content={post.blogText} />
                     </div>

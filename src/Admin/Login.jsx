@@ -215,8 +215,7 @@ function Login(props) {
                     if (res.data.code === 200) {
                       history.push("/blog");
                       Auth.setIsAuth(true);
-                      Auth.isLoggedIn(true);
-
+                      Auth.setIsLoggedIn(true);
                       setError("");
                       console.log("Login success");
                       let customerInfo = res.data.result[0];
@@ -225,6 +224,7 @@ function Login(props) {
                       Cookies.set("login-session", "good");
                       Cookies.set("customer_uid", customerInfo.customer_uid);
                       Cookies.set("role", customerInfo.role);
+
 
                       let newAccountType = customerInfo.role.toLowerCase();
                       console.log(newAccountType);
