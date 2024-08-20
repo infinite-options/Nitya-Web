@@ -16,6 +16,8 @@
     "@tinymce/tinymce-react": "^3.13.0",
     "axios": "^0.24.0",
     "bootstrap": "^5.2.3",
+    "file-saver": "^2.0.5",
+    "html-to-image": "^1.11.11",
     "interweave": "^12.9.0",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",

@@ -15,7 +15,7 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #ffffff;
+  background: #757575;
 }
 
 /* Handle */
@@ -918,6 +918,31 @@
   }
   .MobileImage{
     width: 90%;
+  }
+  
+  /* .InfoText{
+    font-family: Hoefler Text Bold;
+    color: #d3a625;
+    font-size: 26px;
+    font-style: italic;
+    font-weight: bold; 
+    margin-right: 0rem;
+    padding: 0px;
+    text-align: center;
+  }  */
+  .download-button {
+    font-family: Hoefler Text Bold;
+    color: #d3a625;
+    font-size: 26px;
+    font-style: italic;
+    /* font-weight: bold; */
+    margin-right: 0rem;
+    padding: 0px;
+    text-align: center;
+  }
+  
+  .download-button:hover {
+    background-color: #d3a625; /* Darker shade for hover effect */
   }
   
 }

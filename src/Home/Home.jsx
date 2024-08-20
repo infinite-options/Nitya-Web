@@ -7,6 +7,7 @@ import Services from "../Services/Services.jsx";
 import Contact from "../Contact/Contact.jsx";
 import ScrollToTop from "../Blog/ScrollToTop";
 import "./Home.css";
+import NewClient from "../NewClient/NewClient.jsx";
 
 export default function Home() {
   const history = useHistory();
@@ -71,6 +72,9 @@ export default function Home() {
       </div>
       <div>
         <Services />
+      </div>
+      <div>
+        <NewClient />
       </div>
       <div>
         <Contact />
