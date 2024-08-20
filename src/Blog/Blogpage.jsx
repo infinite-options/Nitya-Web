@@ -146,6 +146,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "@media (max-width: 1430px)": {
       width: "200px",
+      
     },
   },
 
@@ -404,6 +405,7 @@ function Blogpage(props) {
           </AppBar>
 
           {data.map((post) => (
+
             <div className="blogPostContainer">
               <div>
                 <div className={classes.cardRow}>
@@ -475,7 +477,7 @@ function Blogpage(props) {
                         />
                         <EditSharpIcon
                           size="lg"
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer"}}
                           onClick={() => {
                             history.push(`/${post.blog_uid}/addpost`);
                           }}

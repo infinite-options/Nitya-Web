@@ -254,7 +254,7 @@ export default function Scheduler(props) {
         { email: "Lmarathay@gmail.com" },
       ],
     };
-    console.log(event);
+    console.log("event:",event);
     //publishTheCalenderEvent(event)
     const headers = {
       "Content-Type": "application/json",

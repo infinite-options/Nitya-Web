@@ -439,7 +439,7 @@ function FullBlog(props) {
                       </div>
                     )}
                     <div className={classes.content}>
-                      <p className={classes.title}>{post.blogTitle}</p>
+                    <p className={classes.title}>{post.blogTitle}</p>
 
                       <Markup content={post.blogText} />
                     </div>
