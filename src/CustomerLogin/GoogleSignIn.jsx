@@ -74,7 +74,7 @@ function GoogleSignIn(props) {
           Auth.setIsAuth(true);
           Auth.setIsLoggedIn(true);
           console.log("Login success");
-          let customerInfo = res.data.result.result[0];
+          let customerInfo = res.data.result[0];
           console.log("Login success, customerInfo");
           Auth.setIsAuth(true);
           Cookies.set("login-session", "good");
@@ -141,13 +141,13 @@ function GoogleSignIn(props) {
           Auth.isLoggedIn(true);
           setError("");
           console.log("Login success");
-          let customerInfo = res.data.result.result[0];
+          let customerInfo = res.data.result[0];
           console.log("Login success, customerInfo");
           Auth.setIsAuth(true);
           Cookies.set("login-session", "good");
           Cookies.set("customer_uid", customerInfo.customer_uid);
           Cookies.set("role", customerInfo.role);
-          setAccessToken(res.data.result.result[0].user_access_token);
+          setAccessToken(res.data.result[0].user_access_token);
           let newAccountType = customerInfo.role.toLowerCase();
           console.log(newAccountType);
           switch (newAccountType) {

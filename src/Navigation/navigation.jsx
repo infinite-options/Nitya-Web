@@ -101,7 +101,7 @@ const Navbar = () => {
           </Link>
         </li>
 
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link
             to={{ pathname: "/waiver", state: { click: onClickAbout } }}
             className="nav-link"
@@ -109,7 +109,7 @@ const Navbar = () => {
           >
             Waiver
           </Link>
-        </li>
+        </li> */}
       </ul>
 
       <div className="emptyDiv1">

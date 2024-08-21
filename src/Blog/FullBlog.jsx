@@ -23,6 +23,8 @@ import { useParams } from "react-router";
 import ScrollToTop from "./ScrollToTop";
 import { Markup } from "interweave";
 import "../Home/Home.css";
+import Carousel from 'react-material-ui-carousel';
+
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -332,6 +334,7 @@ function FullBlog(props) {
         <div className={classes.container}>
           {getBlogId.map((post) => (
             <div>
+              {console.log('post (full blog): ', post)}
               <Card className={classes.card}>
                 <div
                   style={{
@@ -419,25 +422,31 @@ function FullBlog(props) {
                     <div className={classes.title}>
                       <p>{post.blogTitle}</p>
                     </div>
-                    {!!post.blogImage &&
-                    post.blogImage.split("/")[4] == "blogs" ? (
-                      <img
-                        src={post.blogImage}
-                        // style={{
-                        //   width: "1000px",
-                        //   height: "600px",
-                        // }}
-                        className={classes.blogImg}
-                        onError={(e) => (e.target.style.display = "none")}
-                      />
-                    ) : (
-                      <div
-                        className={classes.blogImg}
-                        onClick={() => setPlay(!play)}
-                      >
-                        <ReactPlayer url={post.blogImage} playing={play} />
+                    {console.log('split blog image array: ', post.blogImage.split(","))}
+                    {post.blogImage.split(",").slice(1).map((blogImage)=> (
+                      <div>
+                        {!!blogImage &&
+                        blogImage.split("/")[4] == "blogs" ? (
+                          <img
+                            src={blogImage}
+                            // style={{
+                            //   width: "1000px",
+                            //   height: "600px",
+                            // }}
+                            className={classes.blogImg}
+                            onError={(e) => (e.target.style.display = "none")}
+                          />
+                        ) : (
+                          <div
+                            className={classes.blogImg}
+                            onClick={() => setPlay(!play)}
+                          >
+                            <ReactPlayer url={post.blogImage} playing={play} />
                       </div>
                     )}
+                      </div>
+                    ))}
+                    
                     <div className={classes.content}>
                       <p className={classes.title}>{post.blogTitle}</p>
 

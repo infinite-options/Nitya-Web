@@ -1,12 +1,21 @@
 import React, { useState, useRef } from 'react';
 // import { usePDF } from 'react-to-pdf';
 import { useReactToPrint } from "react-to-print";
-
-import { Container, Paper, Grid, TextField, Typography, Radio, RadioGroup, FormControlLabel, TextareaAutosize, Button, Box } from '@mui/material';
+import Logo from "../Assets/Images/Logo.png";
+import { Container, Paper, Grid, TextField, Typography, Radio, RadioGroup, FormControlLabel, TextareaAutosize, Button, Box, Checkbox } from '@mui/material';
 import SignaturePad from 'react-signature-canvas';
 import './Waiver.css'
+import { CheckBox } from '@material-ui/icons';
+import axios from "axios";
+import html2canvas from 'html2canvas';
+import { jsPDF } from "jspdf";
+// import Pdf from 'react-to-pdf';
 const Waiver = () => {
     // const { toPDF, targetRef } = {};
+    const [name, setName] = useState('');
+    const handleNameChange = (event) => {
+        setName(event.target.value.replace(/\s/g, ''));
+    };
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
@@ -20,69 +29,98 @@ const Waiver = () => {
         setImageURL(sigCanvas.current.getTrimmedCanvas().toDataURL("image/png"));
         return sigCanvas.current.getTrimmedCanvas().toDataURL("image/png");
     }
-    // const [clientInitials0, setClientInitials0] = React.useState('');
-    // const [clientInitials1, setClientInitials1] = React.useState('');
-    // const [clientInitials2, setClientInitials2] = React.useState('');
-    // const [clientInitials3, setClientInitials3] = React.useState('');
-    // const [clientInitials4, setClientInitials4] = React.useState('');
-    // const [clientInitials5, setClientInitials5] = React.useState('');
-    // const [clientInitials6, setClientInitials6] = React.useState('');
-    // const [clientInitials7, setClientInitials7] = React.useState('');
-    // const [clientInitials8, setClientInitials8] = React.useState('');
-    // const handleChangeClientInitials0 = (event) => {
-    //     setClientInitials0(event.target.value);
-    // };
+    const [checked, setChecked] = React.useState(true);
 
-    // const handleChangeClientInitials1 = (event) => {
-    //     setClientInitials1(event.target.value);
-    // };
+    const handleChange = (event) => {
+        setChecked(event.target.checked);
+    };
+    // TODO: TESTING JSPDF LIBRARY (WORKS)
+    
+    // const input = document.getElementById('pdf-content'); 
+    //     // Specify the id of the element you want to convert to PDF
+    //     html2canvas(input).then((canvas) => {
+    //         // const imgData = canvas.toDataURL('image/png', 0.1);
+    //         const pdf = new jsPDF('p', 'mm', 'a4', true);
+    //         const imgData = canvas.toDataURL('image/jpeg', 0.3);
+    //         // pdf.addImage(imgData, 'PNG', 0, 0);
+    //         pdf.addImage(imgData, "JPEG", 5, 0, 210, 297, undefined, 'FAST');
+    //         // this.imgFile = canvas.toDataURL("image/jpeg", 0.3);
+    //         // var doc = new jsPDF('p', 'mm', 'a4', true);
+    //         // doc.addImage(this.imgFile, "JPEG", 5, 0, 210, 297, undefined,'FAST');
+    //         pdf.save('waiver.pdf'); 
+    //         // Specify the name of the downloaded PDF file
+    //         console.log('pdf downloaded: ', pdf)
+    //         const pdfBlob = pdf.output('blob');
+    //         console.log('pdfBlob: ', pdfBlob)
+    //         const formData = new FormData();
+    //         // formData.append('file', pdfBlob, 'waiver.pdf');
+    //         formData.append('filename', pdfBlob, 'waiver.pdf');
+    //         formData.append('file-0', pdfBlob, 'waiver.txt');
+    //         axios
+    //         .post(
+    //             `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument`,
+    //             formData
+    //         )
+    //         .then((response) => {
+    //             console.log("RESPONSE: ", response.data);
+    //             window.location.reload();
+    //         });
+    //     });
+    console.log('compoentRef: ', componentRef);
+    
+    const handleDownloadPDF = () => { // WORKS
+        console.log('POSTING PDF');
+        const input = document.getElementById('pdf-content'); 
+        // Specify the id of the element you want to convert to PDF
+        var imgWidth = 210; 
+        var pageHeight = 295;  
 
-    // const handleChangeClientInitials2 = (event) => {
-    //     setClientInitials2(event.target.value);
-    // };
+        var position = 0; // give some top padding to first page
 
-    // const handleChangeClientInitials3 = (event) => {
-    //     setClientInitials3(event.target.value);
-    // };
-
-    // const handleChangeClientInitials4 = (event) => {
-    //     setClientInitials4(event.target.value);
-    // };
-
-    // const handleChangeClientInitials5 = (event) => {
-    //     setClientInitials5(event.target.value);
-    // };
-
-    // const handleChangeClientInitials6 = (event) => {
-    //     setClientInitials6(event.target.value);
-    // };
-
-    // const handleChangeClientInitials7 = (event) => {
-    //     setClientInitials7(event.target.value);
-    // };
-
-    // const handleChangeClientInitials8 = (event) => {
-    //     setClientInitials8(event.target.value);
-    // };
-
-
-    // const [consentObj, setConsentObj] = useState({
-    //     clientInitials1: '',
-    //     clientInitials2: '',
-    //     clientInitials3: '',
-    //     clientInitials4: '',
-    //     clientInitials5: '',
-    //     clientInitials6: '',
-    //     clientInitials7: '',
-    //     clientInitials8: '',
-    // });
+        html2canvas(input).then((canvas) => {
+            var imgHeight = canvas.height * imgWidth / canvas.width;
+            var heightLeft = imgHeight;
+            // const imgData = canvas.toDataURL('image/png', 0.1);
+            const pdf = new jsPDF('p', 'mm', 'a4', true);
+            const imgData = canvas.toDataURL('image/jpeg', 0.3);
+            // pdf.addImage(imgData, 'PNG', 0, 0);
+            pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight, undefined, 'FAST');
+            heightLeft -= pageHeight;
+            while (heightLeft >= 0) {
+                position += heightLeft - imgHeight; // top padding for other pages
+                pdf.addPage();
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
+            if (checked) {
+                pdf.save(`${name}_Waiver.pdf`);
+            }
+            // Specify the name of the downloaded PDF file
+            console.log('pdf downloaded: ', pdf)
+            const pdfBlob = pdf.output('blob');
+            console.log('pdfBlob: ', pdfBlob)
+            const formData = new FormData();
+            // formData.append('file', pdfBlob, 'waiver.pdf');
+            formData.append('filename', `${name}_Waiver`);
+            formData.append('file-0', pdfBlob, 'waiver.txt');
+            axios
+            .post(
+                `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument`,
+                formData
+            )
+            .then((response) => {
+                console.log("RESPONSE: ", response.data);
+                window.location.reload();
+            });
+        });
+      };
+    // handleDownloadPDF();
 
     const sigCanvas = useRef({});
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
         console.log('Form data submitted:', data);
-        // savePNG();
         const formObj = {
             date: data.get('date'),
             name: data.get('name'),
@@ -108,6 +146,7 @@ const Waiver = () => {
             signatureImage: savePNG(),
             consent: false,
         };
+        // setName(data.get('name'));
         let consent;
         let i = 0;
         if (data.get('client-initials-0')) {
@@ -128,20 +167,63 @@ const Waiver = () => {
             formObj.consent = true;
         }
         console.log('formObj: ', formObj);
+        // if (checked) {
+        //     handlePrint();
+        // }
+        handleDownloadPDF();
+        //----Posting The PDF Working
+        // const blob = new Blob([JSON.stringify(formObj)], {
+        //     type: "application/json",
+        //   });
+        // let formData = new FormData();
+        // const waiverFile = new File([blob], "waiver.pdf", {
+        //     type: "application/json",
+        //   });
+        // console.log('waiverFile: ', waiverFile);
+        // const waiverText = new File([blob], "waiver.txt", {
+        //     type: "application/json",
+        //   });
+        // console.log('waiverText: ', waiverText);
+        // formData.append('filename', waiverFile, 'waiver.pdf');
+        // formData.append('file-0', waiverText, 'waiver.txt');
+        // console.log('blob: ', blob);
+        // axios
+        // .post(
+        //     `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument`,
+        //     formData
+        // )
+        // .then((response) => {
+        //     console.log("delete", response.data);
+        //     window.location.reload();
+        // });
     };
 
     const consentChange = (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
     }
-    console.log('imageURL: ', imageURL);
+
+    
     return (
+        <div>
+
         <Box sx={{ backgroundColor: "#DADADA", padding: "5%" }}>
-            <Container component={Paper} sx={{ backgroundColor: "white", padding: 3, maxWidth: "sm" }} ref={componentRef}>
+            <Container component={Paper} sx={{ backgroundColor: "white", padding: 3, maxWidth: "sm" }} ref={componentRef} id="pdf-content">
                 {/*  download="waiver" */}
-                <a href="waiver.pdf" target="_blank"> 
-                    <Button sx={{mb:"20px"}}>Download here or fill out form below</Button>
-                </a>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <img className="nav-logo" src={Logo} />
+                        Client Consent & Waiver Form
+                        Leena Marathay, Ayurvedic Doctor Level Certified, NAMACB, CMP
+                        Lmarathay@gmail.com  ∙  (408) 471-7004
+                    
+                    </Grid>
+                    <Grid item xs={12}>
+                        <a href="waiver.pdf" target="_blank"> 
+                            <Button sx={{mb:"20px"}}>Download here or fill out form below</Button>
+                        </a>
+                    </Grid>
+                </Grid>
                 <Box component="form" onSubmit={handleSubmit}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -161,8 +243,9 @@ const Waiver = () => {
                                 label="Name"
                                 type="text"
                                 name="name"
-                                // onChange={handleChange}
+                                onChange={handleNameChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -175,6 +258,7 @@ const Waiver = () => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                                required
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -184,6 +268,7 @@ const Waiver = () => {
                                 name="age"
                                 // onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -193,6 +278,7 @@ const Waiver = () => {
                                 name="address"
                                 // onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -202,6 +288,7 @@ const Waiver = () => {
                                 name="city"
                                 // onChange={handleChange}
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -210,6 +297,7 @@ const Waiver = () => {
                                 type="text"
                                 name="state"
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -218,6 +306,7 @@ const Waiver = () => {
                                 type="text"
                                 name="zip"
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -226,6 +315,7 @@ const Waiver = () => {
                                 type="tel"
                                 name="homeTel"
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -234,6 +324,7 @@ const Waiver = () => {
                                 type="tel"
                                 name="cellTel"
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -242,6 +333,7 @@ const Waiver = () => {
                                 type="email"
                                 name="email"
                                 fullWidth
+                                required
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -485,11 +577,7 @@ const Waiver = () => {
                         </Typography>
                         </Grid>
                         <Grid container>
-                            <Grid item>
-                                <Typography sx={{color:'gray'}}>
-                                    I HAVE CAREFULLY READ THIS AGREEMENT AND FULLY UNDERSTAND ITS CONTENTS. I AM AWARE THAT THIS IS A WAIVER AND RELEASE OF POTENTIAL LIABILITY AND A CONTRACT BETWEEN MYSELF AND LEENA MARATHAY AND NITYA AYURVEDA AND I SIGN IT OF MY OWN FREE WILL.
-                                </Typography>
-                            </Grid>
+                            
                             <Grid item xs={12}>
                                 {/* <TextField 
                                     id="client-signature"
@@ -506,6 +594,11 @@ const Waiver = () => {
                                 {/* <Button onClick={savePNG}>Save</Button> */}
                                 <Button onClick={clear}>UNDO</Button>
                                 <Typography>(Client's signature)</Typography>
+                                <Grid item>
+                                <Typography sx={{color:'gray'}}>
+                                    I HAVE CAREFULLY READ THIS AGREEMENT AND FULLY UNDERSTAND ITS CONTENTS. I AM AWARE THAT THIS IS A WAIVER AND RELEASE OF POTENTIAL LIABILITY AND A CONTRACT BETWEEN MYSELF AND LEENA MARATHAY AND NITYA AYURVEDA AND I SIGN IT OF MY OWN FREE WILL.
+                                </Typography>
+                            </Grid>
                             </Grid>
                             <Grid container item sx={{justifyContent:"space-between"}}>
                                 <Grid item xs={5}>
@@ -513,7 +606,7 @@ const Waiver = () => {
                                         id="client-signature" 
                                         label="" 
                                         variant="standard" 
-                                        sx={{ marginBottom: '2px', width:"100%" }}
+                                        sx={{ marginBottom: '2px', width:"100%"}}
                                     />
                                     <Typography>(Client prints his/her name)</Typography>
                                 </Grid>
@@ -535,20 +628,52 @@ const Waiver = () => {
                             </Grid>
                         </Grid>
                         <Grid item xs={12} style={{ textAlign: "center" }}>
+                            <FormControlLabel
+                                label="Would you like to save your submission as PDF?"
+                                control={
+                                    <Checkbox
+                                    checked={checked}
+                                    onChange={handleChange}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    > 
+                                    </Checkbox>
+                                }
+                            ></FormControlLabel>
+                            
+                            {/* <Button variant="contained" color="primary" onClick={handlePrint}>
+                                Download PDF
+                            </Button> */}
+                        </Grid>
+                        
+                        <Grid item xs={12} style={{ textAlign: "center" }}>
                             <Button variant="contained" color="primary" type="submit">
                                 Submit
                             </Button>
                         </Grid>
                         <Grid item xs={12} style={{ textAlign: "center" }}>
-                            <Button variant="contained" color="primary" onClick={handlePrint}>
-                                Download PDF
-                            </Button>
+                            * Please Note This Waiver Will be Sent to Leena Marathay
                         </Grid>
+                        
                     </Grid>
                 </Box>
             </Container>
         </Box>
+        </div>
     );
 };
 
 export default Waiver;
+
+
+// TESTING JSPDF
+    // const jsPDFTest = () => {
+    //     const doc = new jsPDF();
+    //     let pdfjs = document.querySelector('#divID');
+    //     pdf.addImage(imgData, 'PNG', 0, 0);
+    //     const imgData = canvas.toDataURL('image/png');
+    
+    //     pdf.save('downloaded-file.pdf'); 
+    //     doc.text("Hello world!", 10, 10);
+    //     doc.save("a4.pdf");
+    //     console.log('imageURL: ', imageURL);
+    // }

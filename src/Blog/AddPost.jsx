@@ -14,6 +14,7 @@ import { useParams } from "react-router";
 import ScrollToTop from "./ScrollToTop";
 import axios from "axios";
 
+
 const useStyles = makeStyles((theme) => ({
   container: {
     top: "40px",
@@ -97,6 +98,7 @@ function AddPost(props) {
   const textToDoubleApostrophes = (text) => {
     return text.replace(/'/g, "''");
   }
+  console.log('images: ', images);
 
   useEffect(() => {
     if (blog_uid) {
@@ -123,7 +125,7 @@ function AddPost(props) {
     // updateData()
 
     e.preventDefault();
-
+    console.log('submitted file: ', file);
     axios
       .post(
         "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addBlog",
@@ -148,46 +150,85 @@ function AddPost(props) {
     setBlogCategory(event.target.value);
   };
 
-  const updateData = () => {
-    // postData.item_photo = file.obj; // change to File object
+  useEffect(() => {
+    if (file) {
+      console.log('new file value:', file);
+      // just to check if logged
+    }
+  }, [file]);
+    const updateData = () => {
+      // let filename;
+      // let filephoto; 
+      let newFile = ''; 
 
-    let formData = new FormData();
+      for (const image of images) {
 
-    console.log("FIle", images[0].file);
-    formData.append("filename", images[0].file.name);
-    formData.append("item_photo", images[0].file);
+      // postData.item_photo = file.obj; // change to File object
 
-    axios
-      .post(
-        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadImage",
-        formData
-      )
-      .then((response) => {
-        console.log("image", response.data);
-        setFile(response.data);
-        //  history.push("/blog")
-      });
-  };
-  const updateVideo = () => {
-    // postData.item_photo = file.obj; // change to File object
+      let formData = new FormData();
 
-    let formData = new FormData();
+      console.log("files:", images); 
+      // append every filename
+      // console.log('current image:', image)
+      // formData.append("filename", image.file.name);
+      // formData.append("item_photo", image.file);
 
-    console.log("File", source);
-    formData.append("filename", source.name);
-    formData.append("item_video", source);
+      console.log('formData: ', formData)
+      console.log('new image: ', image);
+      formData.append("filename", image.file.name);
+      formData.append("item_photo", image.file);
+      // formData.append("filename", images[0].file.name);
+      // formData.append("item_photo", images[0].file);
+      
+      
 
-    axios
-      .post(
-        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadVideo",
-        formData
-      )
-      .then((response) => {
-        console.log("video", response.data);
-        setFile(response.data);
-        //  history.push("/blog")
-      });
-  };
+      axios
+        .post(
+          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadImage",
+          formData
+        )
+        .then((response) => {
+          console.log("response/image", response.data);
+          newFile += ',' + response.data;
+          // console.log('newFile changed: ', newFile);
+          // setFile(response.data);
+          //  history.push("/blog")
+          // setFile(newFile);
+        })
+        .then(()=> {
+          // because post is asynchronous
+          console.log('newFile value: ', newFile)
+          setFile(newFile);
+          //       console.log('new file value: ', file);
+
+        });
+      }
+      // setFile(newFile);
+      // console.log('new file value: ', file);
+
+
+    };
+    const updateVideo = () => {
+      // postData.item_photo = file.obj; // change to File object
+
+      let formData = new FormData();
+
+      console.log("File", source);
+      formData.append("filename", source.name);
+      formData.append("item_video", source);
+      
+      axios
+        .post(
+          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadVideo",
+          formData
+        )
+        .then((response) => {
+          console.log("video", response.data);
+          setFile(response.data);
+          //  history.push("/blog")
+        });
+    };
+
 
   return (
     <div
@@ -230,6 +271,7 @@ function AddPost(props) {
                 label="Posted On"
                 value={postedOn}
                 type="date"
+                style={{ width: "100%" }}
                 defaultValue="2021-04-22"
                 helperText="Write today's date"
                 className={classes.textField}
@@ -241,6 +283,7 @@ function AddPost(props) {
             </Col>
             <Col>
               <TextField
+               style={{ width: "100%" }}
                 label="Author"
                 id="author"
                 value={author}
@@ -255,11 +298,12 @@ function AddPost(props) {
                 Blog Category
               </InputLabel>
               <Select
+              
                 labelId="demo-simple-select-label"
                 id="Blog Category"
                 value={blogCategory}
                 onChange={handleChange}
-                style={{ width: "120%" }}
+                style={{ width: "100%" }}
 
                 // onClick={log}
               >
@@ -273,16 +317,18 @@ function AddPost(props) {
             style={{
               display: "flex",
               marginTop: "2rem",
-              marginLeft: "2rem",
+              // marginLeft: "2rem",
               justifyContent: "space-evenly",
             }}
           >
+            {/* <br></br> */}
             <div>
               <TextField
                 id="blogTitle"
                 value={blogTitle}
-                style={{ width: "200%" }}
+                style={{ width: "300%" }}
                 placeholder="Title"
+                justifyContent= "center"
                 helperText="Enter Blog Title Here"
                 width="100%"
                 multiline
@@ -335,18 +381,25 @@ function AddPost(props) {
                   }) => (
                     // write your building UI
                     <div className="upload__image-wrapper">
-                      <button
-                        style={isDragging ? { color: "red" } : undefined}
+                      <Button
+                        className={classes.btn}
+                        style={{ marginLeft: "2rem", borderRadius: "24px" }}
+                        variant="contained"
+                        component="span"
+                        type="button"
+                        // style={isDragging ? { color: "red" } : undefined}
                         onClick={onImageUpload}
                         {...dragProps}
                       >
                         Click or Drop here
-                      </button>
+                      </Button>
                       &nbsp;
                       {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
+                      {console.log('imageList: ', imageList)};
                       {imageList.map(
                         (image, index) => (
                           setBlogImage(image.data_url),
+                          console.log('imagedataURL', image.data_url),
                           (
                             <div key={index} className="image-item">
                               <img
@@ -360,12 +413,15 @@ function AddPost(props) {
                               />
                               <div className="image-item__btn-wrapper">
                                 {/* <button onClick={() => onImageUpdate(index)}>Update</button> */}
-                                <button onClick={() => updateData()}>
+                                <Button
+                                className={classes.btn}
+                                style={{ marginLeft: "2rem", borderRadius: "24px" }}
+                                onClick={() => updateData()}>
                                   Upload
-                                </button>
-                                <button onClick={() => onImageRemove(index)}>
+                                </Button>
+                                <Button onClick={() => onImageRemove(index)}>
                                   Remove
-                                </button>
+                                </Button>
                               </div>
                             </div>
                           )
@@ -388,21 +444,28 @@ function AddPost(props) {
             >
               Video Upload?
               <div>
-                <input
+                <Button
                   ref={inputRef}
-                  className="VideoInput_input"
+                  // className="VideoInput_input"
+                  className={classes.btn}
+                style={{ marginLeft: "2rem", borderRadius: "24px" }}
+                variant="contained"
+                component="span"
+                // type="button"
                   type="file"
                   onChange={handleFileChange}
                   accept=".mov,.mp4"
-                />
+                >Choose File</Button>
                 <div className="image-item">
                   {source && (
                     <video
                       className="VideoInput_video"
-                      width="100%"
+                      
+                      width="50%"
                       height="50%"
                       controls
-                      src={source}
+                      src={URL.createObjectURL(source)}
+                      // was originally source
                     />
                   )}
                   {/* <div className="VideoInput_footer">
@@ -410,20 +473,19 @@ function AddPost(props) {
                     </div> */}
                   <div className="image-item__btn-wrapper">
                     {/* <button onClick={() => onImageUpdate(index)}>Update</button> */}
-                    <button onClick={() => updateVideo()}>Upload</button>
+                    <Button 
+                    className={classes.btn}
+                    style={{ marginLeft: "2rem", borderRadius: "24px" }}
+                    variant="contained"
+                    component="span"
+                    type="button"
+                    onClick={() => updateVideo()}>Upload</Button>
                   </div>
                 </div>
               </div>
             </Col>
           </Row>
-          <Row
-            style={{
-              display: "flex",
-              marginTop: "2rem",
-              marginLeft: "2rem",
-              justifyContent: "center",
-            }}
-          >
+          <Row style={{ marginTop: "2rem", marginLeft: "2rem" }}>
             <Editor
               onInit={(evt, editor) => (editorSummaryRef.current = editor)}
               apiKey="adc5ek8m7a2vvtebcvzm881l62jkqx3qpcvp6do4lbhtp20q"
@@ -435,8 +497,8 @@ function AddPost(props) {
               }
               onChange={log}
               init={{
-                height: 200,
-                width: 700,
+                height: 500,
+                width: 900,
                 menubar: false,
                 plugins: [
                   "advlist autolink lists link image charmap print preview anchor",

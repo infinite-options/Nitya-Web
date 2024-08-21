@@ -215,11 +215,12 @@ function Login(props) {
                     if (res.data.code === 200) {
                       history.push("/blog");
                       Auth.setIsAuth(true);
-                      Auth.isLoggedIn(true);
+                      Auth.setIsLoggedIn(true);
 
                       setError("");
                       console.log("Login success");
                       let customerInfo = res.data.result[0];
+                      console.log('customerInfo: ', customerInfo);
                       console.log("Login success, customerInfo");
                       Auth.setIsAuth(true);
                       Cookies.set("login-session", "good");

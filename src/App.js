@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import axios from "axios";
 import Cookies from "universal-cookie";
 import { Helmet } from "react-helmet";
-
 import Navigation from "./Navigation/navigation";
 import Home from "./Home/Home";
 import Footer from "./Footer/Footer";
@@ -28,10 +27,13 @@ import DonationElement from "./Seminar/DonationElement";
 import Availability from "./Admin/Availability";
 import ManageService from "./Services/ManageService";
 import Waiver from "./Waiver/Waiver";
+// require('dotenv').config();
 
 export const MyContext = React.createContext();
 
 function App() {
+  console.log('dotenv', process.env)
+
   const cookies = new Cookies();
   let uid =
     cookies.get("customer_uid") == null ? "" : cookies.get("customer_uid");

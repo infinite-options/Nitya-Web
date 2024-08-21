@@ -4,8 +4,11 @@ import { useLocation } from "react-router-dom";
 import "./calendar.css";
 import "../Home/Home.css";
 import "../Appointment/AppointmentPage.css";
+import { Link, useHistory } from "react-router-dom";
+import { Button } from "@material-ui/core";
 
 const google = window.google;
+
 
 const useStyles = makeStyles({
   MobileContainerDivider: {
@@ -162,8 +165,23 @@ export default function ConfirmationPage(props) {
                   paddingBottom: "2rem",
                 }}
               >
-                List of your current medication, diet, and food preferences
+                List of your current medication, diet, food preferences, and this filled out waiver
               </div>
+              <Link
+                to={{ pathname: "/waiver"}}
+                className="nav-link"
+              >
+                <Button
+                  className={classes.bookButton}
+                  style={{ marginLeft: "2rem", borderRadius: "24px" }}
+                  variant="contained"
+                  component="span"
+                  type="button"
+                  // onClick={onImageUpload}
+                >
+                  Waiver
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

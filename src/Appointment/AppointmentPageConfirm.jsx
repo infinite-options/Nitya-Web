@@ -9,6 +9,11 @@ import axios from "axios";
 import StripeElement from "./StripeElement";
 import moment from "moment";
 import { MyContext } from "../App";
+import { Link, useHistory } from "react-router-dom";
+import {
+  Button,
+} from "@material-ui/core";
+
 import SimpleForm from "./simpleForm";
 import SimpleFormText from "./simpleFormText";
 import ScrollToTop from "../Blog/ScrollToTop";
@@ -663,7 +668,31 @@ export default function AppointmentPage(props) {
                     justifyContent: "center",
                   }}
                 >
-                  <button className={classes.bookButton} hidden={infoSubmitted} onClick={toggleKeys}>
+                  <Link
+                to={{ pathname: "/waiver"}}
+                className="nav-link"
+              >
+                {/* <button
+                  className={classes.bookButton}
+                  variant="contained"
+                  component="span"
+                  type="button"
+                  // onClick={onImageUpload}
+                >
+                  Waiver
+                </button> */}
+              </Link>
+                </div>
+                <div
+                  aria-label={"click button to book your appointment"}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <button 
+                    className={classes.bookButton}
+                    hidden={infoSubmitted} onClick={toggleKeys}>
                     Book Appointment
                   </button>
                 </div>
