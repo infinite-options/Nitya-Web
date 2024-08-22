@@ -2,19 +2,40 @@ import React, { useState, useRef } from 'react';
 // import { usePDF } from 'react-to-pdf';
 import { useReactToPrint } from "react-to-print";
 import Logo from "../Assets/Images/Logo.png";
-import { Container, Paper, Grid, TextField, Typography, Radio, RadioGroup, FormControlLabel, TextareaAutosize, Button, Box, Checkbox } from '@mui/material';
+import { Container, Paper, Grid, TextField, Typography, Radio, RadioGroup, FormControlLabel, TextareaAutosize, Button, Box, Checkbox, FormLabel } from '@mui/material';
 import SignaturePad from 'react-signature-canvas';
 import './Waiver.css'
 import { CheckBox } from '@material-ui/icons';
 import axios from "axios";
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
+// import FormLabel from '@mui/material/FormLabel';
+
 // import Pdf from 'react-to-pdf';
 const Waiver = () => {
     // const { toPDF, targetRef } = {};
     const [name, setName] = useState('');
+    const [gender, setGender] = useState('');
+    const handleGenderChange = (event) => {
+        setGender(event.target.value);
+        // if (event.target.value !== 'Female') {
+        //     setIsPregnant(null); // Reset the pregnancy status if gender is not Female
+        // }
+    };
+    const [valid, setValid] = useState('');
+    const [value, setValue] = useState('');
+    const handleValidation = (e) => {
+        const reg = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        setValid(reg.test(e.target.value));
+        setValue(e.target.value);
+      };
+
+    
     const handleNameChange = (event) => {
         setName(event.target.value.replace(/\s/g, ''));
+    };
+    const handleEmailChange = (event) => {
+        setName(event.target.value);
     };
     const componentRef = useRef();
     const handlePrint = useReactToPrint({
@@ -84,17 +105,21 @@ const Waiver = () => {
             const pdf = new jsPDF('p', 'mm', 'a4', true);
             const imgData = canvas.toDataURL('image/jpeg', 0.3);
             // pdf.addImage(imgData, 'PNG', 0, 0);
-            pdf.addImage(imgData, "JPEG", 0, position, imgWidth, imgHeight, undefined, 'FAST');
+            pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight, undefined, 'FAST');
             heightLeft -= pageHeight;
-            while (heightLeft >= 0) {
-                position += heightLeft - imgHeight; // top padding for other pages
+            var position = 0;
+
+            while (heightLeft > 0) {
+                position = heightLeft - imgHeight;
                 pdf.addPage();
-                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
                 heightLeft -= pageHeight;
             }
+
             if (checked) {
                 pdf.save(`${name}_Waiver.pdf`);
             }
+
             // Specify the name of the downloaded PDF file
             console.log('pdf downloaded: ', pdf)
             const pdfBlob = pdf.output('blob');
@@ -135,6 +160,7 @@ const Waiver = () => {
             profession: data.get('profession'),
             married: data.get('married'),
             childrenAges: data.get('childrenAges'),
+            gender: data.get('male/female'),
             pregnant: data.get('pregnant'),
             intention: data.get('intention'),
             healthConcerns: data.get('healthConcerns'),
@@ -202,7 +228,14 @@ const Waiver = () => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
     }
-
+    // if (email !== 0) {
+    //     if (
+    //       !email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+    //     ) {
+    //       window.alert("Please enter a valid email.");
+    //       return;
+    //     }
+    //   }
     
     return (
         <div>
@@ -231,6 +264,7 @@ const Waiver = () => {
                                 label="Today's Date"
                                 type="date"
                                 name="date"
+                                required
                                 // onChange={handleChange}
                                 fullWidth
                                 InputLabelProps={{
@@ -332,6 +366,9 @@ const Waiver = () => {
                                 label="Email address"
                                 type="email"
                                 name="email"
+                                value={value}
+                                onChange={(e) => handleValidation(e)}
+                                error={!valid}
                                 fullWidth
                                 required
                             />
@@ -340,14 +377,30 @@ const Waiver = () => {
                             <TextField
                                 label="Profession"
                                 type="text"
+                                required
                                 name="profession"
                                 fullWidth
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <RadioGroup row name="married">
-                                <FormControlLabel value="Y" control={<Radio />} label="Married" />
-                                <FormControlLabel value="N" control={<Radio />} label="Not Married" />
+                            <FormLabel id="demo-radio-buttons-group-label">Biological Gender (For Safety Reasons)</FormLabel>
+                            <RadioGroup row name="male/female" >
+                                <FormControlLabel onChange={handleGenderChange} value="Male" control={<Radio required={true}/>} label="Male" />
+                                <FormControlLabel onChange={handleGenderChange} value="Female" control={<Radio required={true}/>} label="Female" />
+                            </RadioGroup>
+                        </Grid>
+                        <Grid item xs={12}>
+                            {gender === 'Female' && (
+                                <RadioGroup row name="pregnant" sx={{display: 'block'}} >
+                                    <FormControlLabel value="Y" control={<Radio required={true}/>} label="Pregnant" />
+                                    <FormControlLabel value="N" control={<Radio required={true}/>} label="Not Pregnant" />
+                                </RadioGroup>
+                            )}
+                        </Grid>
+                        <Grid item xs={12}>
+                            <RadioGroup row name="married" >
+                                <FormControlLabel value="Y" control={<Radio required={true}/>} label="Married" />
+                                <FormControlLabel value="N" control={<Radio required={true}/>} label="Not Married" />
                             </RadioGroup>
                         </Grid>
                         <Grid item xs={12}>
@@ -357,10 +410,6 @@ const Waiver = () => {
                                 name="childrenAges"
                                 fullWidth
                             />
-                            <RadioGroup row name="pregnant">
-                                <FormControlLabel value="Y" control={<Radio />} label="Pregnant" />
-                                <FormControlLabel value="N" control={<Radio />} label="Not Pregnant" />
-                            </RadioGroup>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -368,6 +417,7 @@ const Waiver = () => {
                                 name="intention"
                                 fullWidth
                                 multiline
+                                required
                                 rows={4}
                             />
                         </Grid>
@@ -377,6 +427,7 @@ const Waiver = () => {
                                 name="healthConcerns"
                                 fullWidth
                                 multiline
+                                required
                                 rows={4}
                             />
                         </Grid>
@@ -385,6 +436,7 @@ const Waiver = () => {
                                 label="3) Are you willing to make changes to your diet and lifestyle?"
                                 name="willingToChange"
                                 fullWidth
+                                required
                                 multiline
                                 rows={1}
                             />
@@ -394,6 +446,7 @@ const Waiver = () => {
                                 label="4) Are you open to including Ayurvedic herbs, medicated oils and medicated ghees in your diet?"
                                 name="openToAyurveda"
                                 fullWidth
+                                required
                                 multiline
                                 rows={1}
                             />
@@ -577,7 +630,9 @@ const Waiver = () => {
                         </Typography>
                         </Grid>
                         <Grid container>
-                            
+                            <Typography sx={{color:'gray'}}>
+                                    I HAVE CAREFULLY READ THIS AGREEMENT AND FULLY UNDERSTAND ITS CONTENTS. I AM AWARE THAT THIS IS A WAIVER AND RELEASE OF POTENTIAL LIABILITY AND A CONTRACT BETWEEN MYSELF AND LEENA MARATHAY AND NITYA AYURVEDA AND I SIGN IT OF MY OWN FREE WILL.
+                            </Typography>
                             <Grid item xs={12}>
                                 {/* <TextField 
                                     id="client-signature"
@@ -595,9 +650,6 @@ const Waiver = () => {
                                 <Button onClick={clear}>UNDO</Button>
                                 <Typography>(Client's signature)</Typography>
                                 <Grid item>
-                                <Typography sx={{color:'gray'}}>
-                                    I HAVE CAREFULLY READ THIS AGREEMENT AND FULLY UNDERSTAND ITS CONTENTS. I AM AWARE THAT THIS IS A WAIVER AND RELEASE OF POTENTIAL LIABILITY AND A CONTRACT BETWEEN MYSELF AND LEENA MARATHAY AND NITYA AYURVEDA AND I SIGN IT OF MY OWN FREE WILL.
-                                </Typography>
                             </Grid>
                             </Grid>
                             <Grid container item sx={{justifyContent:"space-between"}}>
@@ -605,6 +657,7 @@ const Waiver = () => {
                                     <TextField 
                                         id="client-signature" 
                                         label="" 
+                                        required
                                         variant="standard" 
                                         sx={{ marginBottom: '2px', width:"100%"}}
                                     />
@@ -616,6 +669,7 @@ const Waiver = () => {
                                         <TextField
                                             type="date"
                                             name="date"
+                                            required
                                             // onChange={handleChange}
                                             variant="standard"
                                             fullWidth
