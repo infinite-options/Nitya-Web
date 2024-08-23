@@ -1,15 +1,17 @@
 import React from "react";
 
 import { Elements } from "@stripe/react-stripe-js";
-
+import WaiverContext from "../Waiver/WaiverContext";
+import { useContext } from "react";
 import Scheduler from "./Scheduler";
 
 export default function StripeElement(props) {
   console.log("stripePromise is set to: " + props.stripePromise, props);
-
+  const {waiver, setWaiver} = useContext(WaiverContext);
   return (
     <Elements stripe={props.stripePromise}>
       <Scheduler
+        waiver={waiver}
         accessToken={props.accessToken}
         treatmentID={props.treatmentID}
         customerUid={props.customerUid}

@@ -370,6 +370,7 @@ export default function Scheduler(props) {
                       error: JSON.stringify(result.error),
                       endpoint_call: "confirmCardPayment",
                       jsonObject_sent: JSON.stringify(paymentJSON),
+                      
                     };
                     // sendToDatabase();
                     axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {

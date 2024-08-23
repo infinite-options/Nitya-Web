@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 // import { usePDF } from 'react-to-pdf';
 import { useReactToPrint } from "react-to-print";
 import Logo from "../Assets/Images/Logo.png";
@@ -7,8 +7,10 @@ import SignaturePad from 'react-signature-canvas';
 import './Waiver.css'
 import { CheckBox } from '@material-ui/icons';
 import axios from "axios";
+import { useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
+import WaiverContext from './WaiverContext';
 // import FormLabel from '@mui/material/FormLabel';
 
 // import Pdf from 'react-to-pdf';
@@ -22,6 +24,7 @@ const Waiver = () => {
         //     setIsPregnant(null); // Reset the pregnancy status if gender is not Female
         // }
     };
+    const {waiver, setWaiver} = useContext(WaiverContext);
     const [valid, setValid] = useState('');
     const [value, setValue] = useState('');
     const handleValidation = (e) => {
@@ -92,13 +95,16 @@ const Waiver = () => {
     const handleDownloadPDF = () => { // WORKS
         console.log('POSTING PDF');
         const input = document.getElementById('pdf-content'); 
-        // Specify the id of the element you want to convert to PDF
         var imgWidth = 210; 
         var pageHeight = 295;  
 
         var position = 0; // give some top padding to first page
 
-        html2canvas(input).then((canvas) => {
+        html2canvas(input,{
+            backgroundColor: null,
+            scale: 2,
+            removeContainer: true,
+        }).then((canvas) => {
             var imgHeight = canvas.height * imgWidth / canvas.width;
             var heightLeft = imgHeight;
             // const imgData = canvas.toDataURL('image/png', 0.1);
@@ -135,6 +141,7 @@ const Waiver = () => {
             )
             .then((response) => {
                 console.log("RESPONSE: ", response.data);
+                setWaiver(response.data);
                 window.location.reload();
             });
         });
@@ -253,7 +260,7 @@ const Waiver = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <a href="waiver.pdf" target="_blank"> 
-                            <Button sx={{mb:"20px"}}>Download here or fill out form below</Button>
+                            <Button sx={{mb:"20px"}}>Download empty form here or fill out form below</Button>
                         </a>
                     </Grid>
                 </Grid>
@@ -683,7 +690,7 @@ const Waiver = () => {
                         </Grid>
                         <Grid item xs={12} style={{ textAlign: "center" }}>
                             <FormControlLabel
-                                label="Would you like to save your submission as PDF?"
+                                label="Would you like to download your submission as PDF?"
                                 control={
                                     <Checkbox
                                     checked={checked}

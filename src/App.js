@@ -27,6 +27,7 @@ import DonationElement from "./Seminar/DonationElement";
 import Availability from "./Admin/Availability";
 import ManageService from "./Services/ManageService";
 import Waiver from "./Waiver/Waiver";
+import WaiverContext from "./Waiver/WaiverContext";
 // require('dotenv').config();
 
 export const MyContext = React.createContext();
@@ -46,6 +47,7 @@ function App() {
   const [isAuth, setIsAuth] = useState(uid === "" ? false : true); // checks if user is logged in
   const [authLevel, setAuthLevel] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [waiver, setWaiver] = useState('');
 
   const login = () => {
     setIsLoggedIn(true);
@@ -94,12 +96,16 @@ function App() {
             <Switch>
               <Route exact path="/:treatmentID/appt/">
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
-                  <Appointment />
+                  <WaiverContext.Provider value={{waiver}}>
+                    <Appointment />
+                  </WaiverContext.Provider>
                 </MyContext.Provider>
               </Route>
               <Route path="/:treatmentID/confirm">
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
-                  <AppointmentConfirm />
+                  <WaiverContext.Provider value={{waiver}}>
+                    <AppointmentConfirm />
+                  </WaiverContext.Provider>
                 </MyContext.Provider>
               </Route>
               <Route path="/healthy tips">
@@ -167,7 +173,9 @@ function App() {
               </Route>
 
               <Route path="/waiver">
-                <Waiver />
+                <WaiverContext.Provider value={{waiver, setWaiver}}>
+                  <Waiver />
+                </WaiverContext.Provider>
               </Route>
 
               <Route path="/services">
