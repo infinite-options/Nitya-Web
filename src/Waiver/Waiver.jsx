@@ -125,6 +125,9 @@ const Waiver = () => {
             if (checked) {
                 pdf.save(`${name}_Waiver.pdf`);
             }
+            else {
+                pdf.output(`${name}_Waiver.pdf`);
+            }
 
             // Specify the name of the downloaded PDF file
             console.log('pdf downloaded: ', pdf)
