@@ -92,7 +92,7 @@ const Waiver = () => {
     //     });
     console.log('compoentRef: ', componentRef);
     
-    const handleDownloadPDF = () => { // WORKS
+    const handleDownloadPDF = (formObj) => { // WORKS
         console.log('POSTING PDF');
         const input = document.getElementById('pdf-content'); 
         var imgWidth = 210; 
@@ -125,6 +125,9 @@ const Waiver = () => {
             if (checked) {
                 pdf.save(`${name}_Waiver.pdf`);
             }
+            else {
+                pdf.output(`${name}_Waiver.pdf`);
+            }
 
             // Specify the name of the downloaded PDF file
             console.log('pdf downloaded: ', pdf)
@@ -134,13 +137,17 @@ const Waiver = () => {
             // formData.append('file', pdfBlob, 'waiver.pdf');
             formData.append('filename', `${name}_Waiver`);
             formData.append('file-0', pdfBlob, 'waiver.txt');
+            formData.append("first_name", formObj.name.split(" ")[0]);
+            formData.append("last_name", formObj.name.split(" ")[1]);
+            formData.append("email", formObj.email);
+            formData.append("phone_no", formObj.cellTel);
             axios
             .post(
                 `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument`,
                 formData
             )
             .then((response) => {
-                console.log("RESPONSE: ", response.data);
+                console.log("RESPONSE: ", response);
                 setWaiver(response.data);
                 window.location.reload();
             });
@@ -203,7 +210,7 @@ const Waiver = () => {
         // if (checked) {
         //     handlePrint();
         // }
-        handleDownloadPDF();
+        handleDownloadPDF(formObj);
         //----Posting The PDF Working
         // const blob = new Blob([JSON.stringify(formObj)], {
         //     type: "application/json",
