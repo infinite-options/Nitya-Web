@@ -4,6 +4,9 @@ import { useLocation } from "react-router-dom";
 import "./calendar.css";
 import "../Home/Home.css";
 import "../Appointment/AppointmentPage.css";
+import { Button } from "@mui/material";
+import { useHistory } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const google = window.google;
 
@@ -78,6 +81,8 @@ export default function ConfirmationPage(props) {
   });
 
   useEffect(() => {}, []);
+
+  const history = useHistory();
 
   return (
     <div className="HomeContainer">
@@ -164,7 +169,10 @@ export default function ConfirmationPage(props) {
               >
                 List of your current medication, diet, and food preferences
               </div>
-            </div>
+              <Link to="/waiver">
+                <Button sx={{backgroundColor:"#D3A625", color:"black"}} >Click to fill out waiver</Button>
+              </Link>
+            </div>  
           </div>
         </div>
         <div className="TitleFontAppt">We'll see you at:</div>
