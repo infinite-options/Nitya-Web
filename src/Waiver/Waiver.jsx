@@ -32,11 +32,29 @@ const Waiver = () => {
     const {waiver, setWaiver} = useContext(WaiverContext);
     const [valid, setValid] = useState('');
     const [value, setValue] = useState('');
+    const [telValid, setTelValid] = useState('');
+    const [telValue, setTelValue] = useState('');
+    const [cellValid, setCellValid] = useState('');
+    const [cellValue, setCellValue] = useState('');
     const handleValidation = (e) => {
         const reg = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
         setValid(reg.test(e.target.value));
         setValue(e.target.value);
       };
+
+    const handleTelValidation = (e) => {
+        const reg = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/);
+        setTelValid(reg.test(e.target.value));
+        setTelValue(e.target.value);
+        // ^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$
+    }
+    const handleCellValidation = (e) => {
+        const reg = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/);
+        setCellValid(reg.test(e.target.value));
+        setCellValue(e.target.value);
+        // ^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$
+
+    }
 
     
     const handleNameChange = (event) => {
@@ -369,6 +387,9 @@ const Waiver = () => {
                         <Grid item xs={6}>
                             <TextField
                                 label="Tel (Home)"
+                                value={telValue}
+                                onChange={(e) => handleTelValidation(e)}
+                                error={!telValid}
                                 type="tel"
                                 name="homeTel"
                                 fullWidth
@@ -380,6 +401,9 @@ const Waiver = () => {
                                 label="Cell"
                                 type="tel"
                                 name="cellTel"
+                                value={cellValue}
+                                onChange={(e) => handleCellValidation(e)}
+                                error={!cellValid}
                                 fullWidth
                                 required
                             />
