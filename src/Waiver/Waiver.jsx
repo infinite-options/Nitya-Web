@@ -24,6 +24,11 @@ const Waiver = () => {
         //     setIsPregnant(null); // Reset the pregnancy status if gender is not Female
         // }
     };
+    const {firstName, setFirstName} = useContext(WaiverContext);
+    const {lastName, setLastName} = useContext(WaiverContext);
+    const {email, setEmail} = useContext(WaiverContext);
+    const {phoneNum, setPhoneNum} = useContext(WaiverContext);
+  
     const {waiver, setWaiver} = useContext(WaiverContext);
     const [valid, setValid] = useState('');
     const [value, setValue] = useState('');
@@ -92,7 +97,7 @@ const Waiver = () => {
     //     });
     console.log('compoentRef: ', componentRef);
     
-    const handleDownloadPDF = () => { // WORKS
+    const handleDownloadPDF = (formObj) => { // WORKS
         console.log('POSTING PDF');
         const input = document.getElementById('pdf-content'); 
         var imgWidth = 210; 
@@ -137,6 +142,14 @@ const Waiver = () => {
             // formData.append('file', pdfBlob, 'waiver.pdf');
             formData.append('filename', `${name}_Waiver`);
             formData.append('file-0', pdfBlob, 'waiver.txt');
+            // formData.append('first_name', firstName);
+            // formData.append('last_name', lastName);
+            // formData.append('email', email);
+            // formData.append('phone_no', phoneNum);
+            formData.append("first_name", formObj.name.split(" ")[0]);
+            formData.append("last_name", formObj.name.split(" ")[1]);
+            formData.append("email", formObj.email);
+            formData.append("phone_no", formObj.cellTel);
             axios
             .post(
                 `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument`,
@@ -206,7 +219,7 @@ const Waiver = () => {
         // if (checked) {
         //     handlePrint();
         // }
-        handleDownloadPDF();
+        handleDownloadPDF(formObj);
         //----Posting The PDF Working
         // const blob = new Blob([JSON.stringify(formObj)], {
         //     type: "application/json",

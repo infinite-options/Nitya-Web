@@ -48,6 +48,10 @@ function App() {
   const [authLevel, setAuthLevel] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [waiver, setWaiver] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNum, setPhoneNum] = useState('');
 
   const login = () => {
     setIsLoggedIn(true);
@@ -96,14 +100,14 @@ function App() {
             <Switch>
               <Route exact path="/:treatmentID/appt/">
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
-                  <WaiverContext.Provider value={{waiver}}>
+                  <WaiverContext.Provider value={{waiver, firstName, lastName, email, phoneNum, setFirstName, setLastName, setEmail, setPhoneNum}}>
                     <Appointment />
                   </WaiverContext.Provider>
                 </MyContext.Provider>
               </Route>
               <Route path="/:treatmentID/confirm">
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
-                  <WaiverContext.Provider value={{waiver}}>
+                  <WaiverContext.Provider value={{waiver, firstName, lastName, email, phoneNum, setFirstName, setLastName, setEmail, setPhoneNum}}>
                     <AppointmentConfirm />
                   </WaiverContext.Provider>
                 </MyContext.Provider>
