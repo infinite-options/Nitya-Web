@@ -444,7 +444,6 @@ function FullBlog(props) {
                       </div>
                     )}
                     <div className={classes.content} style={{alignSelf:"flex-start"}}>
-                      <p className={classes.title} style={{width:"100%"}}>{post.blogTitle}</p>
 
                       <Markup content={post.blogText} />
                     </div>

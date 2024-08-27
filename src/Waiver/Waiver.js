@@ -1,13 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { Container, Paper, Grid, TextField, Typography, Radio, RadioGroup, FormControlLabel, Button, Box} from '@mui/material';
+import { Container, Paper, Grid, TextField, Typography, Radio, RadioGroup, FormControlLabel, Button, Box, Checkbox} from '@mui/material';
 import SignaturePad from 'react-signature-canvas';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { CheckBox } from '@material-ui/icons';
 
 
 const Waiver = () => {
     const [gender, setGender] = useState('');
+    const [checked, setChecked] = useState(false);
 
     const refs = {
         name: useRef(null)
@@ -45,7 +47,7 @@ const Waiver = () => {
         const allMatch = initials.every(initial => initial===firstInitial);
         
         if (allMatch) {
-            await downloadForm().then((pdfBlob)=> {
+            await generatePdf().then((pdfBlob)=> {
                 submitWaiver(pdfBlob, email, number, first, last);
             })
         }
@@ -59,7 +61,7 @@ const Waiver = () => {
     const [selectedFile, setSelectedFile] = useState(null);
     
 
-    const downloadForm = () => {
+    const generatePdf = () => {
         return new Promise((resolve, reject) => {
             const input = formRef.current;
             html2canvas(input, {scale: 1.3}).then(canvas => {
@@ -81,10 +83,12 @@ const Waiver = () => {
                     pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
                     heightLeft -= pdfHeight;
                 }
-    
+                
                 const pdfBlob = pdf.output('blob');
                 setSelectedFile(pdfBlob);
-                pdf.save("waiver.pdf");
+                if(checked) {
+                    pdf.save("waiver.pdf");
+                }
                 resolve(pdfBlob);  
             }).catch(err => reject(err)); 
         });
@@ -106,12 +110,16 @@ const Waiver = () => {
                 console.error(err);
             });
         }
+
+        const handleCheck = (event) => {
+            setChecked(event.target.checked);
+        };
     return (
         
         <Box sx={{ backgroundColor: "#DADADA", padding: "5%" }}>
             <Container justifyContent="center">
                 <a href="waiver.pdf" download="waiver">
-                    <Button sx={{mb:"20px", backgroundColor:"grey", color:"black"}}>Download here or fill out form below</Button>
+                    <Button sx={{mb:"20px", backgroundColor:"#d3a625", color:"white"}}>Download here or fill out form below</Button>
                 </a>
             </Container>
             <Container component={Paper} sx={{ backgroundColor: "white", padding: 3 }} ref={formRef}>
@@ -488,6 +496,19 @@ const Waiver = () => {
                                 </Box></Typography>
                                 </Grid>
                             </Grid>
+                        </Grid>
+                        <Grid item container xs={12} justifyContent="center">
+                        <FormControlLabel
+                                label="Would you like to download your submission as PDF?"
+                                control={
+                                    <Checkbox
+                                    checked={checked}
+                                    onChange={handleCheck}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                    > 
+                                    </Checkbox>
+                                }
+                            ></FormControlLabel>
                         </Grid>
                         <Grid item xs={12} container justifyContent="center">
                                 <Button variant="contained" color="primary" type="submit" onClick={submitWaiver}>
