@@ -39,6 +39,7 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
 const useStyles = makeStyles((theme) => ({
   blogpage: {
     width: "100%",
@@ -223,9 +224,7 @@ function Blogpage(props) {
 
   const history = useHistory();
   const Auth = useContext(AuthContext);
-  console.log('authisauth: ', Auth.isAuth);
-
-  console.log('auth: ', Auth);
+  console.log(Auth);
   const handleOpenAvailabilityModal = () => history.push("/availability");
   const logout = () => {
     Auth.setIsAuth(false);
@@ -411,35 +410,11 @@ function Blogpage(props) {
                   <div className={classes.card}>
                     <div>
                       {console.log(post.blogImage.split("/")[4])}
-                      {post.blogImage.split(",").slice(1).map((blogImage)=> (
-                        <div>
-                          {blogImage.split("/")[4] == "blogs" ? (
-                          <img
-                            src={
-                              blogImage !== "NULL" && blogImage
-                                ? blogImage
-                                : defaultImg
-                            }
-                            className={classes.blogImg}
-                            onError={(e) => (e.target.style.display = "none")}
-                          />
-                        ) : (
-                          <div onClick={() => setPlay(!play)}>
-                            <ReactPlayer
-                              width="25rem"
-                              height="25rem"
-                              url={blogImage}
-                              playing={play}
-                            />
-                          </div>
-                        )}
-                          </div>
-                      ))}
-                      {/* {post.blogImage.split("/")[4] == "blogs" ? (
+                      {post.blogImage.split("/")[4] == "blogs" ? (
                         <img
                           src={
                             post.blogImage !== "NULL" && post.blogImage
-                              ? post.blogImage
+                              ? post.blogImage.split(",")[0]
                               : defaultImg
                           }
                           className={classes.blogImg}
@@ -454,7 +429,7 @@ function Blogpage(props) {
                             playing={play}
                           />
                         </div>
-                      )} */}
+                      )}
                       {/* <img
                         src={
                           post.blogImage !== "NULL" && post.blogImage
@@ -532,7 +507,6 @@ function Blogpage(props) {
       </div>
       
       <Box hidden={Auth.isAuth === false}>
-        {/* shows if it is not true */}
         <Button 
           style={{
             backgroundColor: "#d3a625",

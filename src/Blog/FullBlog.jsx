@@ -23,8 +23,9 @@ import { useParams } from "react-router";
 import ScrollToTop from "./ScrollToTop";
 import { Markup } from "interweave";
 import "../Home/Home.css";
-import Carousel from 'react-material-ui-carousel';
 
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -121,7 +122,7 @@ const useStyles = makeStyles((theme) => ({
     objectFit: "cover",
     objectPosition: "top",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     width: "80%",
@@ -154,17 +155,14 @@ const useStyles = makeStyles((theme) => ({
     color: "#D3A625",
     fontSize: "2rem",
     lineHeight: "1",
-    textAlign: "left",
+    textAlign: "center",
     fontSize: "52px",
     color: "black",
-    marginLeft: "5%",
     "@media (min-width: 700px) and (max-width: 900px)": {
       fontSize: "32px",
-      marginLeft: "1%",
     },
     "@media (min-width: 200px) and (max-width: 700px)": {
       fontSize: "32px",
-      marginLeft: "1%",
     },
   },
   content: {
@@ -334,7 +332,6 @@ function FullBlog(props) {
         <div className={classes.container}>
           {getBlogId.map((post) => (
             <div>
-              {console.log('post (full blog): ', post)}
               <Card className={classes.card}>
                 <div
                   style={{
@@ -395,7 +392,6 @@ function FullBlog(props) {
                           color: "#594d2c",
                           width: "200px",
                           height: "50px",
-                          padding: "0",
                           fontSize: "1.5rem",
                         }}
                         position="bottom"
@@ -422,35 +418,33 @@ function FullBlog(props) {
                     <div className={classes.title}>
                       <p>{post.blogTitle}</p>
                     </div>
-                    {console.log('split blog image array: ', post.blogImage.split(","))}
-                    {post.blogImage.split(",").slice(1).map((blogImage)=> (
-                      <div>
-                        {!!blogImage &&
-                        blogImage.split("/")[4] == "blogs" ? (
-                          <img
-                            src={blogImage}
-                            // style={{
-                            //   width: "1000px",
-                            //   height: "600px",
-                            // }}
-                            className={classes.blogImg}
-                            onError={(e) => (e.target.style.display = "none")}
-                          />
-                        ) : (
-                          <div
-                            className={classes.blogImg}
-                            onClick={() => setPlay(!play)}
-                          >
-                            <ReactPlayer url={post.blogImage} playing={play} />
-                      </div>
-                    )}
-                      </div>
-                    ))}
-                    
+                    {!!post.blogImage && post.blogImage.split("/")[4] == "blogs" ?
+                      <ImageList
+                        className={classes.blogImg}
+                        sx={{ display: 'flex' }}>
+                        {post.blogImage.split(",").map((image) =>
+                          <ImageListItem>
+                            {post.blogImage.split(",").length > 1 ?
+                              <img
+                                src={image}
+                                style={{
+                                  height: '300px',
+                                  width: '300px',
+                                  objectFit: 'cover',}}/>
+                              :
+                              <img
+                                src={image}
+                                className={classes.blogImg}
+                              />
+                            }
+                          </ImageListItem>
+                        )}
+                      </ImageList>
+                      :
+                      null
+                    }
                     <div className={classes.content}>
-                      <p className={classes.title}>{post.blogTitle}</p>
-
-                      <Markup content={post.blogText} />
+                      <Markup content={post.blogText}/>
                     </div>
                     <hr style={{ color: "#8d6f19" }}></hr>
                     <div className={classes.cardActions}>

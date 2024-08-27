@@ -13,7 +13,7 @@ import { Col, Form, Modal, Row } from "react-bootstrap";
 import { useParams } from "react-router";
 import ScrollToTop from "./ScrollToTop";
 import axios from "axios";
-
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -84,21 +84,37 @@ function AddPost(props) {
 
   const editorRef = useRef(null);
   const editorSummaryRef = useRef(null);
+  const blogTextMax = 5
+  const blogSummaryMax = 5
 
-  const log = () => {
-    if (editorRef.current) {
-      console.log("editor", editorRef.current.getContent());
-      console.log("editor", editorSummaryRef.current.getContent());
+  const logBlogText = () => {
+    console.log("editor", editorRef.current.getContent(), "count:", editorRef.current.plugins.wordcount.getCount());
+    if (editorRef.current.plugins.wordcount.getCount() > blogTextMax) {
+      alert("Maximum " + blogTextMax + " words allowed. Please save again after removing extra words.")
+    }
+    else {
       setBlogText(editorRef.current.getContent());
+    }
+
+    console.log(blogText)
+  };
+
+  const logBlogSummary = () => {
+    console.log("editor", editorSummaryRef.current.getContent(), "count:", editorSummaryRef.current.plugins.wordcount.getCount());
+    if (editorSummaryRef.current.plugins.wordcount.getCount() > blogSummaryMax) {
+      alert("Maximum " + blogSummaryMax + " words. Please save again after removing extra words.")
+    }
+    else {
       setblogSummary(editorSummaryRef.current.getContent());
     }
-  };
+
+    console.log(blogSummary)
+  }
 
   // Due to SQL String Syntax we should replace single quote to two single quote. If backend starts to handle this problem, you may remove this function.
   const textToDoubleApostrophes = (text) => {
     return text.replace(/'/g, "''");
   }
-  console.log('images: ', images);
 
   useEffect(() => {
     if (blog_uid) {
@@ -125,8 +141,12 @@ function AddPost(props) {
     // updateData()
 
     e.preventDefault();
-    console.log('submitted file: ', file);
-    axios
+
+    if (editorSummaryRef.current.plugins.wordcount.getCount() > blogSummaryMax || editorRef.current.plugins.wordcount.getCount() > blogTextMax) {
+      alert("One of the text editors has gone over the word limit (Summary word limit is " + blogSummaryMax + " words. Blog text word limit is " + blogTextMax + " words.) Please save after removing extra words and try publishing again.")
+    }
+    else {
+      axios
       .post(
         "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addBlog",
         {
@@ -144,43 +164,22 @@ function AddPost(props) {
         console.log(response);
         history.push("/blog");
       });
+    }
   };
 
   const handleChange = (event) => {
     setBlogCategory(event.target.value);
   };
 
-  useEffect(() => {
-    if (file) {
-      console.log('new file value:', file);
-      // just to check if logged
-    }
-  }, [file]);
-    const updateData = () => {
-      // let filename;
-      // let filephoto; 
-      let newFile = ''; 
+  const updateData = () => {
+    // postData.item_photo = file.obj; // change to File object
+    var imageList = [];
 
-      for (const image of images) {
-
-      // postData.item_photo = file.obj; // change to File object
-
+    for(var i = 0; i < images.length; i++) {
       let formData = new FormData();
-
-      console.log("files:", images); 
-      // append every filename
-      // console.log('current image:', image)
-      // formData.append("filename", image.file.name);
-      // formData.append("item_photo", image.file);
-
-      console.log('formData: ', formData)
-      console.log('new image: ', image);
-      formData.append("filename", image.file.name);
-      formData.append("item_photo", image.file);
-      // formData.append("filename", images[0].file.name);
-      // formData.append("item_photo", images[0].file);
-      
-      
+      console.log("File", images[i].file);
+      formData.append("filename", images[i].file.name);
+      formData.append("item_photo", images[i].file);
 
       axios
         .post(
@@ -188,47 +187,41 @@ function AddPost(props) {
           formData
         )
         .then((response) => {
-          console.log("response/image", response.data);
-          newFile += ',' + response.data;
-          // console.log('newFile changed: ', newFile);
-          // setFile(response.data);
-          //  history.push("/blog")
-          // setFile(newFile);
-        })
-        .then(()=> {
-          // because post is asynchronous
-          console.log('newFile value: ', newFile)
-          setFile(newFile);
-          //       console.log('new file value: ', file);
-
-        });
-      }
-      // setFile(newFile);
-      // console.log('new file value: ', file);
-
-
-    };
-    const updateVideo = () => {
-      // postData.item_photo = file.obj; // change to File object
-
-      let formData = new FormData();
-
-      console.log("File", source);
-      formData.append("filename", source.name);
-      formData.append("item_video", source);
-      
-      axios
-        .post(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadVideo",
-          formData
-        )
-        .then((response) => {
-          console.log("video", response.data);
-          setFile(response.data);
+          console.log("image", response.data);
+          imageList.push(response.data);
+          setFile(imageList);
+          var imageString = "";
+          for(var i = 0; i < imageList.length; i++) {
+            imageString = imageString + imageList[i] + ","
+          }
+          imageString = imageString.substring(0, imageString.length-1)
+          console.log("imageString", imageString)
+          setFile(imageString);
           //  history.push("/blog")
         });
-    };
+    }
+  };
+  
+  const updateVideo = () => {
+    // postData.item_photo = file.obj; // change to File object
 
+    let formData = new FormData();
+
+    console.log("File", source);
+    formData.append("filename", source.name);
+    formData.append("item_video", source);
+
+    axios
+      .post(
+        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadVideo",
+        formData
+      )
+      .then((response) => {
+        console.log("video", response.data);
+        setFile(response.data);
+        //  history.push("/blog")
+      });
+  };
 
   return (
     <div
@@ -260,79 +253,20 @@ function AddPost(props) {
           <Row
             style={{
               display: "flex",
-              marginTop: "2rem",
-              marginLeft: "2rem",
-              justifyContent: "space-evenly",
+              marginLeft: "5rem",
+              marginRight: "5rem",
+              justifyContent: "space-between",
             }}
           >
-            <Col>
-              <TextField
-                id="postedOn"
-                label="Posted On"
-                value={postedOn}
-                type="date"
-                style={{ width: "100%" }}
-                defaultValue="2021-04-22"
-                helperText="Write today's date"
-                className={classes.textField}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                onChange={(e) => setPostedOn(e.target.value)}
-              />
-            </Col>
-            <Col>
-              <TextField
-               style={{ width: "100%" }}
-                label="Author"
-                id="author"
-                value={author}
-                placeholder="Author Name"
-                className={classes.textField}
-                helperText="Enter your AuthorID"
-                onChange={(e) => setAuthor(e.target.value)}
-              />
-            </Col>
-            <Col>
-              <InputLabel id="demo-simple-select-label">
-                Blog Category
-              </InputLabel>
-              <Select
-              
-                labelId="demo-simple-select-label"
-                id="Blog Category"
-                value={blogCategory}
-                onChange={handleChange}
-                style={{ width: "100%" }}
-
-                // onClick={log}
-              >
-                <MenuItem value={"Healty Tips"}>Healthy Tips</MenuItem>
-                <MenuItem value={"Recipes"}>Recipes</MenuItem>
-                <MenuItem value={"Living Well"}>Living Well</MenuItem>
-              </Select>
-            </Col>
-          </Row>
-          <Row
-            style={{
-              display: "flex",
-              marginTop: "2rem",
-              // marginLeft: "2rem",
-              justifyContent: "space-evenly",
-            }}
-          >
-            {/* <br></br> */}
             <div>
               <TextField
                 id="blogTitle"
                 value={blogTitle}
-                style={{ width: "300%" }}
+                style={{ width: "500%" }}
                 placeholder="Title"
-                justifyContent= "center"
                 helperText="Enter Blog Title Here"
                 width="100%"
                 multiline
-                rows={2}
                 margin="normal"
                 InputLabelProps={{
                   shrink: true,
@@ -344,24 +278,47 @@ function AddPost(props) {
           <Row
             style={{
               display: "flex",
-              marginTop: "2rem",
-              marginLeft: "2rem",
-
-              justifyContent: "center",
-              alignItems: "center",
+              marginTop: "1rem",
+              marginLeft: "5rem",
+              justifyContent: "space-between",
             }}
           >
+            <Col>
+              <TextField
+                label="Author"
+                id="author"
+                value={author}
+                placeholder="Author Name"
+                className={classes.textField}
+                helperText="Enter your AuthorID"
+                onChange={(e) => setAuthor(e.target.value)}
+              />
+            </Col>
+            <Col>
+              <TextField
+                id="postedOn"
+                label="Posted On"
+                value={postedOn}
+                type="date"
+                defaultValue="2021-04-22"
+                helperText="Write today's date"
+                className={classes.textField}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                onChange={(e) => setPostedOn(e.target.value)}
+              />
+            </Col>
             <Col
-              xs={6}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                alignItems: "center",
-                marginRight: "4rem",
+                align: "right",
+                marginRight: "7.6rem",
               }}
             >
-              Image Upload?
+              Thumbnail
               <div>
                 <ImageUploading
                   multiple
@@ -381,25 +338,23 @@ function AddPost(props) {
                   }) => (
                     // write your building UI
                     <div className="upload__image-wrapper">
-                      <Button
-                        className={classes.btn}
-                        style={{ marginLeft: "2rem", borderRadius: "24px" }}
-                        variant="contained"
-                        component="span"
-                        type="button"
-                        // style={isDragging ? { color: "red" } : undefined}
+                      <button
+                        style={isDragging ? { color: "red" } : undefined}
                         onClick={onImageUpload}
                         {...dragProps}
                       >
-                        Click or Drop here
-                      </Button>
+                        Choose file
+                      </button>
+                      <div className="image-item__btn-wrapper">
+                        <button onClick={() => updateData()}>
+                          Upload All
+                        </button>
+                      </div>
                       &nbsp;
                       {/* <button onClick={onImageRemoveAll}>Remove all images</button> */}
-                      {console.log('imageList: ', imageList)};
                       {imageList.map(
                         (image, index) => (
                           setBlogImage(image.data_url),
-                          console.log('imagedataURL', image.data_url),
                           (
                             <div key={index} className="image-item">
                               <img
@@ -413,15 +368,9 @@ function AddPost(props) {
                               />
                               <div className="image-item__btn-wrapper">
                                 {/* <button onClick={() => onImageUpdate(index)}>Update</button> */}
-                                <Button
-                                className={classes.btn}
-                                style={{ marginLeft: "2rem", borderRadius: "24px" }}
-                                onClick={() => updateData()}>
-                                  Upload
-                                </Button>
-                                <Button onClick={() => onImageRemove(index)}>
+                                <button onClick={() => onImageRemove(index)}>
                                   Remove
-                                </Button>
+                                </button>
                               </div>
                             </div>
                           )
@@ -432,40 +381,59 @@ function AddPost(props) {
                 </ImageUploading>
               </div>
             </Col>
+          </Row>
+          <Row
+            style={{
+              display: "flex",
+              marginTop: "2rem",
+              marginLeft: "5rem",
+              justifyContent: "space-between",
+            }}
+          >
+            <Col>
+              <InputLabel id="demo-simple-select-label">
+                Blog Category
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="Blog Category"
+                value={blogCategory}
+                onChange={handleChange}
+                style={{ width: "120%" }}
+
+                // onClick={log}
+              >
+                <MenuItem value={"Healty Tips"}>Healthy Tips</MenuItem>
+                <MenuItem value={"Recipes"}>Recipes</MenuItem>
+                <MenuItem value={"Living Well"}>Living Well</MenuItem>
+              </Select>
+            </Col>
             <Col
-              xs={6}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                alignItems: "center",
-                marginLeft: "4rem",
+                align: "right",
+                marginTop: "-1rem",
               }}
             >
-              Video Upload?
+              Video Upload
               <div>
-                <Button
+                <input
                   ref={inputRef}
-                  // className="VideoInput_input"
-                  className={classes.btn}
-                style={{ marginLeft: "2rem", borderRadius: "24px" }}
-                variant="contained"
-                component="span"
-                // type="button"
+                  className="VideoInput_input"
                   type="file"
                   onChange={handleFileChange}
                   accept=".mov,.mp4"
-                >Choose File</Button>
+                />
                 <div className="image-item">
                   {source && (
                     <video
                       className="VideoInput_video"
-                      
-                      width="50%"
+                      width="100%"
                       height="50%"
                       controls
-                      src={URL.createObjectURL(source)}
-                      // was originally source
+                      src={source}
                     />
                   )}
                   {/* <div className="VideoInput_footer">
@@ -473,19 +441,19 @@ function AddPost(props) {
                     </div> */}
                   <div className="image-item__btn-wrapper">
                     {/* <button onClick={() => onImageUpdate(index)}>Update</button> */}
-                    <Button 
-                    className={classes.btn}
-                    style={{ marginLeft: "2rem", borderRadius: "24px" }}
-                    variant="contained"
-                    component="span"
-                    type="button"
-                    onClick={() => updateVideo()}>Upload</Button>
+                    <button onClick={() => updateVideo()}>Upload All</button>
                   </div>
                 </div>
               </div>
             </Col>
           </Row>
-          <Row style={{ marginTop: "2rem", marginLeft: "2rem" }}>
+          <Row
+            style={{
+              marginTop: "2rem",
+              marginLeft: "2rem",
+              justifyContent: "center",
+            }}
+          >
             <Editor
               onInit={(evt, editor) => (editorSummaryRef.current = editor)}
               apiKey="adc5ek8m7a2vvtebcvzm881l62jkqx3qpcvp6do4lbhtp20q"
@@ -495,9 +463,8 @@ function AddPost(props) {
                   ? "<p>Write an abstract</p>"
                   : blogEditSummary
               }
-              onChange={log}
               init={{
-                height: 500,
+                height: 200,
                 width: 900,
                 menubar: false,
                 plugins: [
@@ -514,6 +481,9 @@ function AddPost(props) {
                   "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
               }}
             />
+            <button onClick={logBlogSummary}>
+              Save Blog Summary
+            </button>
           </Row>
           <Row style={{ marginTop: "2rem", marginLeft: "2rem" }}>
             <Editor
@@ -525,7 +495,6 @@ function AddPost(props) {
                   ? "<p>Write complete blog here</p>"
                   : blogEditText
               }
-              onChange={log}
               init={{
                 height: 500,
                 width: 900,
@@ -544,6 +513,9 @@ function AddPost(props) {
                   "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
               }}
             />
+            <button onClick={logBlogText}>
+              Save Blog
+            </button>
           </Row>
           <Row
             style={{
