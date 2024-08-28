@@ -4,12 +4,12 @@ import SignaturePad from 'react-signature-canvas';
 import axios from 'axios';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { CheckBox } from '@material-ui/icons';
-
+import { useHistory } from 'react-router-dom'
 
 const Waiver = () => {
     const [gender, setGender] = useState('');
     const [checked, setChecked] = useState(false);
+    let history = useHistory();
 
     const refs = {
         name: useRef(null)
@@ -48,8 +48,22 @@ const Waiver = () => {
         
         if (allMatch) {
             await generatePdf().then((pdfBlob)=> {
-                submitWaiver(pdfBlob, email, number, first, last);
-            })
+                const formData = new FormData();
+                formData.append('filename', 'waiver.pdf');
+                formData.append('file-0', pdfBlob);
+                formData.append('first_name', first);
+                formData.append('last_name', last);
+                formData.append('email', email);
+                formData.append('phone_no', number);
+                axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument", formData)
+                    .then(function (res) {
+                        console.log(res);
+                    })
+                    .catch(function (err) {
+                        console.error(err);
+                    });
+                    })
+                history.push("/")
         }
         else {
             alert("Please make sure all initials are matching")
@@ -93,23 +107,6 @@ const Waiver = () => {
             }).catch(err => reject(err)); 
         });
     };
-    const submitWaiver = (pdfBlob, email, number, first, last) => {
-            const formData = new FormData();
-            formData.append('filename', 'waiver.pdf');
-            formData.append('file-0', pdfBlob);
-            formData.append('first_name', first);
-            formData.append('last_name', last);
-            formData.append('email', email);
-            formData.append('phone_no', number);
-
-            axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument", formData)
-            .then(function (res) {
-                console.log(res);
-            })
-            .catch(function (err) {
-                console.error(err);
-            });
-        }
 
         const handleCheck = (event) => {
             setChecked(event.target.checked);
@@ -263,7 +260,7 @@ const Waiver = () => {
                                 name="intention"
                                 fullWidth
                                 multiline
-                                rows={4}
+                                rows={3}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -273,7 +270,7 @@ const Waiver = () => {
                                 name="healthConcerns"
                                 fullWidth
                                 multiline
-                                rows={4}
+                                rows={3}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -320,6 +317,7 @@ const Waiver = () => {
                             </Typography>
                             <Typography paragraph>
                                 I understand it is my responsibility to maintain a relationship with my medical doctor and other health care providers. I have consented to use the services offered by Leena Marathay and am informed that Ayurvedic herbs and or herbal supplements may be suggested.
+                                <br />
                                 <span style={{color:"blue"}}>Client's  initials:</span>
                                 <Box component="span" sx={{ display: 'inline-flex', alignItems: 'center' }}>
                                 <TextField 
@@ -511,7 +509,7 @@ const Waiver = () => {
                             ></FormControlLabel>
                         </Grid>
                         <Grid item xs={12} container justifyContent="center">
-                                <Button variant="contained" color="primary" type="submit" onClick={submitWaiver}>
+                                <Button variant="contained" color="primary" type="submit">
                                     Submit
                                 </Button>
                             </Grid>
