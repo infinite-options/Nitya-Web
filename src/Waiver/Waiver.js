@@ -5,15 +5,12 @@ import axios from 'axios';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useHistory } from 'react-router-dom'
+import './Waiver.css'
 
 const Waiver = () => {
     const [gender, setGender] = useState('');
     const [checked, setChecked] = useState(false);
     let history = useHistory();
-
-    const refs = {
-        name: useRef(null)
-    }
 
     const handleChange = (e) => {
         setGender(e.target.value);
@@ -32,8 +29,6 @@ const Waiver = () => {
         let fullName = data.get("name");
         const [first,last] = fullName.split(' ');
         
-        console.log("HERE")
-        console.log(data.get("client-initials-1"))
         const initials=[
             data.get("client-initials-1"),
             data.get("client-initials-2"),
@@ -464,8 +459,12 @@ const Waiver = () => {
                                     I HAVE CAREFULLY READ THIS AGREEMENT AND FULLY UNDERSTAND ITS CONTENTS. I AM AWARE THAT THIS IS A WAIVER AND RELEASE OF POTENTIAL LIABILITY AND A CONTRACT BETWEEN MYSELF AND LEENA MARATHAY AND NITYA AYURVEDA AND I SIGN IT OF MY OWN FREE WILL.
                                 </Typography>
                             </Grid>
-                            <Grid item xs={12} sx={{borderStyle:"solid", borderWidth:"1px", borderColor:"#DADADA"}}>
-                                <SignaturePad ref={sigCanvas} />
+                            <Grid item xs={12}>
+                                <SignaturePad
+                                ref={sigCanvas}
+                                    canvasProps={{
+                                        className: 'signatureCanvas'
+                                    }}></SignaturePad>
                             </Grid>
                             <Grid item xs={12} sx={{mb:"10px"}}>
                                 <Typography>(Client's signature)</Typography>
