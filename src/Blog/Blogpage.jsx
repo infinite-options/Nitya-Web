@@ -410,31 +410,32 @@ function Blogpage(props) {
                 <div className={classes.cardRow}>
                   <div className={classes.card}>
                     <div>
+                      {/* TODO: edit this to have only one */}
                       {console.log(post.blogImage.split("/")[4])}
-                      {post.blogImage.split(",").slice(1).map((blogImage)=> (
-                        <div>
-                          {blogImage.split("/")[4] == "blogs" ? (
-                          <img
-                            src={
-                              blogImage !== "NULL" && blogImage
-                                ? blogImage
-                                : defaultImg
-                            }
-                            className={classes.blogImg}
-                            onError={(e) => (e.target.style.display = "none")}
-                          />
-                        ) : (
-                          <div onClick={() => setPlay(!play)}>
-                            <ReactPlayer
-                              width="25rem"
-                              height="25rem"
-                              url={blogImage}
-                              playing={play}
+                      {post.blogImage.split(",").filter(blogImage => !!blogImage)[0] ? (
+                        post.blogImage.split(",").filter(blogImage => !!blogImage)[0].split("/")[4] === "blogs" ? (
+                            <img
+                                src={
+                                    post.blogImage.split(",").filter(blogImage => !!blogImage)[0] !== "NULL" ?
+                                    post.blogImage.split(",").filter(blogImage => !!blogImage)[0] :
+                                    defaultImg
+                                }
+                                className={classes.blogImg}
+                                onError={(e) => (e.target.style.display = "none")}
                             />
-                          </div>
-                        )}
-                          </div>
-                      ))}
+                        ) : (
+                            <div onClick={() => setPlay(!play)}>
+                                <ReactPlayer
+                                    width="25rem"
+                                    height="25rem"
+                                    url={post.blogImage.split(",").filter(blogImage => !!blogImage)[0]}
+                                    playing={play}
+                                />
+                            </div>
+                        )
+                    ) : (
+                        <div>No media available</div>
+                    )}
                       {/* {post.blogImage.split("/")[4] == "blogs" ? (
                         <img
                           src={

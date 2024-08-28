@@ -7,6 +7,7 @@ import "./LearnMore.css";
 import { Markup } from "interweave";
 import "../Home/Home.css";
 import Addon from "./Addon";
+import WaiverBtn from "../Waiver/WaiverBtn";
 
 export default function LearnMore(props) {
   const location = useLocation();
@@ -88,6 +89,8 @@ export default function LearnMore(props) {
                 <div className="LearnMoreHeader">
                   {parseDuration(filteredService.duration)} | {filteredService.cost}
                 </div>
+                <div style={{ fontWeight: "300", marginTop: "1rem" }}>Already booked? Fill out this waiver.</div>
+                    <WaiverBtn></WaiverBtn>
                 <BookNowBTN apptID={filteredService.treatment_uid} addons={addons} />
                 <div style={{ margin: "2rem" }}>
                   <img
@@ -124,6 +127,7 @@ export default function LearnMore(props) {
                     4084717004 leena@nityaayurveda.com
                   </div> */}
                   <div style={{ fontWeight: "600", marginTop: "1rem" }}>Cancellation Policy: To cancel or reschedule, please contact us 24 hours in advance.</div>
+                  
                   <div hidden={filteredService.category !== "Therapy"}>
                     <Addon title={filteredService.title} addons={[addons, data]} state={[addons, setAddons]} />
                   </div>

@@ -4,8 +4,9 @@ import { useReactToPrint } from "react-to-print";
 import Logo from "../Assets/Images/Logo.png";
 import { Container, Paper, Grid, TextField, Typography, Radio, RadioGroup, FormControlLabel, TextareaAutosize, Button, Box, Checkbox, FormLabel } from '@mui/material';
 import SignaturePad from 'react-signature-canvas';
+import MenuItem from '@mui/material/MenuItem';
 import './Waiver.css'
-import { CheckBox } from '@material-ui/icons';
+import { CheckBox, SettingsEthernetSharp } from '@material-ui/icons';
 import axios from "axios";
 import { useEffect } from 'react';
 import html2canvas from 'html2canvas';
@@ -24,6 +25,8 @@ const Waiver = () => {
         //     setIsPregnant(null); // Reset the pregnancy status if gender is not Female
         // }
     };
+    const [test, setTest] = useState(false);
+    // setTest(false);
     const {firstName, setFirstName} = useContext(WaiverContext);
     const {lastName, setLastName} = useContext(WaiverContext);
     const {email, setEmail} = useContext(WaiverContext);
@@ -34,29 +37,124 @@ const Waiver = () => {
     const [value, setValue] = useState('');
     const [telValid, setTelValid] = useState('');
     const [telValue, setTelValue] = useState('');
+    const states = [
+        'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
+        'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia',
+        'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas',
+        'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts',
+        'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
+        'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico',
+        'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma',
+        'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina',
+        'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
+        'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
+      ];
+      
     const [cellValid, setCellValid] = useState('');
     const [cellValue, setCellValue] = useState('');
-    const handleValidation = (e) => {
-        const reg = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-        setValid(reg.test(e.target.value));
-        setValue(e.target.value);
-      };
-
-    const handleTelValidation = (e) => {
-        const reg = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/);
-        setTelValid(reg.test(e.target.value));
-        setTelValue(e.target.value);
-        // ^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$
-    }
-    const handleCellValidation = (e) => {
-        const reg = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/);
-        setCellValid(reg.test(e.target.value));
-        setCellValue(e.target.value);
-        // ^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$
-
-    }
-
+    const [childrenValid, setChildrenValid] = useState(true);
+    const [childrenValue, setChildrenValue] = useState('');
+    const handleChildrenAgesValidation = (e) => {
+        const input = e.target.value;
+        // Regular expression to match only numbers, commas, and spaces
+        const reg = new RegExp(/^[0-9, ]*$/);
     
+        if (input === "") {
+            setChildrenValid(true);
+        } else {
+            setChildrenValid(reg.test(input)); // check the opposite of the reg test
+        }
+    
+        setChildrenValue(input);
+    };
+    const shouldShowChildrenAgesError = childrenValue.length > 0 && !childrenValid;
+
+    const handleEmailValidation = (e) => {
+        const email = e.target.value;
+
+        const reg = new RegExp(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+        // setValid(reg.test(e.target.value));
+        // setValue(e.target.value);
+        if (e.target.value === "") {
+            setValid(true); // No error if the field is empty
+        } else {
+            setValid(reg.test(e.target.value));
+        }
+    
+        setValue(email);
+      };
+    const shouldShowEmailError = value.length > 0 && !valid;
+
+      const [initials, setInitials]= useState({
+        clientInitials0:'',
+        clientInitials1:'',
+        clientInitials2:'',
+        clientInitials3:'',
+        clientInitials4:'',
+        clientInitials5:'',
+        clientInitials6:'',
+        clientInitials7:'',
+        clientInitials8:'',
+    })
+    const [errors, setErrors]= useState({
+        clientInitials0: false,
+        clientInitials1:false,
+        clientInitials2:false,
+        clientInitials3:false,
+        clientInitials4:false,
+        clientInitials5:false,
+        clientInitials6:false,
+        clientInitials7:false,
+        clientInitials8:false,
+    })
+
+    const validateInitials = (name, value) => {
+        const newInitials = { ...initials, [name]: value };
+        const allInitials = Object.values(newInitials);
+        const firstInitial = allInitials[0];
+    
+        const allMatch = allInitials.every(initial => initial === firstInitial);
+    
+        const newErrors = {};
+        Object.keys(newInitials).forEach(key => {
+            newErrors[key] = newInitials[key] !== firstInitial;
+        });
+    
+        setErrors(newErrors);
+        setInitials(newInitials);
+    };
+
+    const handleInitialChange = (e) => {
+        const { name, value } = e.target;
+        validateInitials(name, value);
+    };
+
+      const checkInitials = () => {
+        const values = Object.values(initials);
+        return values.every((val) => val === values[0] && val !== '');
+    };
+    const handleTelValidation = (e) => {
+        const value = e.target.value;
+        const reg = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/);
+        setTelValue(value);
+        const isValid = value.length >= 10 && reg.test(value);
+        setTelValid(isValid);
+      };
+    
+    const handleCellValidation = (e) => {
+    const value = e.target.value;
+    const reg = new RegExp(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/);
+    setCellValue(value);
+    const isValid = value.length >= 10 && reg.test(value);
+    setCellValid(isValid);
+    };
+    const shouldShowTelError = telValue.length > 0 && !telValid;
+    const shouldShowCellError = cellValue.length > 0 && !cellValid;
+    const [state, setState] = useState('');
+
+    const handleStateChange = (event) => {
+        setState(event.target.value);
+      };
     const handleNameChange = (event) => {
         setName(event.target.value.replace(/\s/g, ''));
     };
@@ -238,46 +336,12 @@ const Waiver = () => {
         //     handlePrint();
         // }
         handleDownloadPDF(formObj);
-        //----Posting The PDF Working
-        // const blob = new Blob([JSON.stringify(formObj)], {
-        //     type: "application/json",
-        //   });
-        // let formData = new FormData();
-        // const waiverFile = new File([blob], "waiver.pdf", {
-        //     type: "application/json",
-        //   });
-        // console.log('waiverFile: ', waiverFile);
-        // const waiverText = new File([blob], "waiver.txt", {
-        //     type: "application/json",
-        //   });
-        // console.log('waiverText: ', waiverText);
-        // formData.append('filename', waiverFile, 'waiver.pdf');
-        // formData.append('file-0', waiverText, 'waiver.txt');
-        // console.log('blob: ', blob);
-        // axios
-        // .post(
-        //     `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument`,
-        //     formData
-        // )
-        // .then((response) => {
-        //     console.log("delete", response.data);
-        //     window.location.reload();
-        // });
     };
 
     const consentChange = (e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
     }
-    // if (email !== 0) {
-    //     if (
-    //       !email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-    //     ) {
-    //       window.alert("Please enter a valid email.");
-    //       return;
-    //     }
-    //   }
-    
     return (
         <div>
 
@@ -305,7 +369,7 @@ const Waiver = () => {
                                 label="Today's Date"
                                 type="date"
                                 name="date"
-                                required
+                                required={!test}
                                 // onChange={handleChange}
                                 fullWidth
                                 InputLabelProps={{
@@ -320,7 +384,7 @@ const Waiver = () => {
                                 name="name"
                                 onChange={handleNameChange}
                                 fullWidth
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -333,7 +397,7 @@ const Waiver = () => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -343,7 +407,7 @@ const Waiver = () => {
                                 name="age"
                                 // onChange={handleChange}
                                 fullWidth
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -353,7 +417,7 @@ const Waiver = () => {
                                 name="address"
                                 // onChange={handleChange}
                                 fullWidth
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={4}>
@@ -363,17 +427,26 @@ const Waiver = () => {
                                 name="city"
                                 // onChange={handleChange}
                                 fullWidth
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={4}>
-                            <TextField
-                                label="State"
-                                type="text"
-                                name="state"
-                                fullWidth
-                                required
-                            />
+                        <TextField
+                            select
+                            label="State"
+                            name="state"
+                            fullWidth
+                            required={!test}
+                            value={state}
+                            onChange={handleStateChange}
+                            variant="outlined"
+                            >
+                            {states.map((state) => (
+                                <MenuItem key={state} value={state}>
+                                {state}
+                                </MenuItem>
+                            ))}
+                            </TextField>
                         </Grid>
                         <Grid item xs={4}>
                             <TextField
@@ -381,19 +454,21 @@ const Waiver = () => {
                                 type="text"
                                 name="zip"
                                 fullWidth
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
                                 label="Tel (Home)"
+                                helperText={shouldShowTelError ? "Invalid phone number" : ""}
                                 value={telValue}
                                 onChange={(e) => handleTelValidation(e)}
-                                error={!telValid}
+
+                                error={shouldShowTelError}
                                 type="tel"
                                 name="homeTel"
                                 fullWidth
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={6}>
@@ -401,30 +476,37 @@ const Waiver = () => {
                                 label="Cell"
                                 type="tel"
                                 name="cellTel"
+                                helperText={shouldShowCellError ? "Invalid cell number" : ""}
                                 value={cellValue}
                                 onChange={(e) => handleCellValidation(e)}
-                                error={!cellValid}
+                                error={shouldShowCellError}
                                 fullWidth
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 label="Email address"
+                                // helperText={shouldShowTelError ? "Invalid phone number" : ""}
+                                // value={telValue}
+                                // onChange={(e) => handleTelValidation(e)}
+
+                                // error={shouldShowTelError}
                                 type="email"
                                 name="email"
+                                helperText={shouldShowEmailError?"Bad Input use @ and letters": ""}
                                 value={value}
-                                onChange={(e) => handleValidation(e)}
-                                error={!valid}
+                                onChange={(e) => handleEmailValidation(e)}
+                                error={shouldShowEmailError}
                                 fullWidth
-                                required
+                                required={!test}
                             />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 label="Profession"
                                 type="text"
-                                required
+                                required={!test}
                                 name="profession"
                                 fullWidth
                             />
@@ -432,22 +514,22 @@ const Waiver = () => {
                         <Grid item xs={12}>
                             <FormLabel id="demo-radio-buttons-group-label">Biological Gender (For Safety Reasons)</FormLabel>
                             <RadioGroup row name="male/female" >
-                                <FormControlLabel onChange={handleGenderChange} value="Male" control={<Radio required={true}/>} label="Male" />
-                                <FormControlLabel onChange={handleGenderChange} value="Female" control={<Radio required={true}/>} label="Female" />
+                                <FormControlLabel onChange={handleGenderChange} value="Male" control={<Radio required={!test}/>} label="Male" />
+                                <FormControlLabel onChange={handleGenderChange} value="Female" control={<Radio required={!test}/>} label="Female" />
                             </RadioGroup>
                         </Grid>
                         <Grid item xs={12}>
                             {gender === 'Female' && (
                                 <RadioGroup row name="pregnant" sx={{display: 'block'}} >
-                                    <FormControlLabel value="Y" control={<Radio required={true}/>} label="Pregnant" />
-                                    <FormControlLabel value="N" control={<Radio required={true}/>} label="Not Pregnant" />
+                                    <FormControlLabel value="Y" control={<Radio required={!test}/>} label="Pregnant" />
+                                    <FormControlLabel value="N" control={<Radio required={!test}/>} label="Not Pregnant" />
                                 </RadioGroup>
                             )}
                         </Grid>
                         <Grid item xs={12}>
                             <RadioGroup row name="married" >
-                                <FormControlLabel value="Y" control={<Radio required={true}/>} label="Married" />
-                                <FormControlLabel value="N" control={<Radio required={true}/>} label="Not Married" />
+                                <FormControlLabel value="Y" control={<Radio required={!test}/>} label="Married" />
+                                <FormControlLabel value="N" control={<Radio required={!test}/>} label="Not Married" />
                             </RadioGroup>
                         </Grid>
                         <Grid item xs={12}>
@@ -455,6 +537,11 @@ const Waiver = () => {
                                 label="Children: (ages)"
                                 type="text"
                                 name="childrenAges"
+                                // helperText="example: 1, 5, 6"
+                                helperText={shouldShowChildrenAgesError ? "Invalid input: only numbers, commas, and spaces are allowed" : "example: 1, 5, 6"}
+                                value={childrenValue}
+                                onChange={handleChildrenAgesValidation}
+                                error={shouldShowChildrenAgesError}
                                 fullWidth
                             />
                         </Grid>
@@ -464,7 +551,7 @@ const Waiver = () => {
                                 name="intention"
                                 fullWidth
                                 multiline
-                                required
+                                required={!test}
                                 rows={4}
                             />
                         </Grid>
@@ -474,7 +561,7 @@ const Waiver = () => {
                                 name="healthConcerns"
                                 fullWidth
                                 multiline
-                                required
+                                required={!test}
                                 rows={4}
                             />
                         </Grid>
@@ -483,7 +570,7 @@ const Waiver = () => {
                                 label="3) Are you willing to make changes to your diet and lifestyle?"
                                 name="willingToChange"
                                 fullWidth
-                                required
+                                required={!test}
                                 multiline
                                 rows={1}
                             />
@@ -493,7 +580,7 @@ const Waiver = () => {
                                 label="4) Are you open to including Ayurvedic herbs, medicated oils and medicated ghees in your diet?"
                                 name="openToAyurveda"
                                 fullWidth
-                                required
+                                required={!test}
                                 multiline
                                 rows={1}
                             />
@@ -518,7 +605,7 @@ const Waiver = () => {
                             </Typography>
                             <hr />
                             <Typography paragraph>
-                                I will read the following <span style={{ color: 'blue' }}>Health Care Consultation Agreement and Liability Waiver/Release</span> about the Ayurvedic services offered by Leena Marathay. I understand the nature of the services to be provided. I understand that Leena Marathay is <strong>NOT</strong> a licensed physician and that Ayurvedic services are not licensed by the state although they are legal.
+                                I will read the following <span style={{ color: 'blue' }}><a href="https://docs.google.com/document/d/1SKuiIyf_jmToqcswIpVtit_gY5HCRqAhV4g4a3I55lg/edit?usp=sharing">Health Care Consultation Agreement and Liability Waiver/Release</a></span> about the Ayurvedic services offered by Leena Marathay. I understand the nature of the services to be provided. I understand that Leena Marathay is <strong>NOT</strong> a licensed physician and that Ayurvedic services are not licensed by the state although they are legal.
                             </Typography>
                             <Typography paragraph>
                                 I understand it is my responsibility to maintain a relationship with my medical doctor and other health care providers. I have consented to use the services offered by Leena Marathay and am informed that Ayurvedic herbs and or herbal supplements may be suggested.
@@ -527,13 +614,25 @@ const Waiver = () => {
                                 <br></br>
                                 Client's  initials:
                                 <TextField 
-                                id="client-initials-0" 
-                                name="client-initials-0"
-                                // onChange={handleChangeClientInitials0}
-                                required
-                                label="" 
-                                variant="standard" 
-                                sx={{ marginBottom: '2px' }} 
+                                // id="client-initials-0" 
+                                // name="client-initials-0"
+                                // // value={initials.clientinitials0}
+                                // // onChange={handleInitialChange}
+                                // // onChange={handleChangeClientInitials0}
+                                // required={!test}
+                                // label="" 
+                                // variant="standard" 
+                                // sx={{ marginBottom: '2px' }} 
+                                name="clientInitials0"
+                                id="client-initials-0"
+                                value={initials.clientInitials0}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials0}
+                                helperText={errors.clientInitials0 ? "Initials do not match" : ""}
+                                label="Initial 0"
+                                variant="standard"
+                                sx={{ marginBottom: '2px' }}
+                                required={!test}
                                 />
                             </Typography>
                             
@@ -561,13 +660,16 @@ const Waiver = () => {
                             <br></br>
                             Client’s initial: 
                             <TextField 
-                                name="client-initials-1" 
+                                name="clientInitials1"
                                 id="client-initials-1"
-                                required
-                                // onChange={handleChangeClientInitials1}
-                                label="" 
-                                variant="standard" 
+                                value={initials.clientInitials1}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials1}
+                                helperText={errors.clientInitials1 ? "Initials do not match" : ""}
+                                label="Initial 1"
+                                variant="standard"
                                 sx={{ marginBottom: '2px' }}
+                                required={!test}
                             />
                         </Typography>
 
@@ -576,13 +678,16 @@ const Waiver = () => {
                             <br></br>
                             Client’s initial: 
                             <TextField 
-                                name="client-initials-2"
+                                name="clientInitials2"
                                 id="client-initials-2"
-                                required
-                                // onChange={handleChangeClientInitials2}
-                                label="" 
-                                variant="standard" 
+                                value={initials.clientInitials2}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials2}
+                                helperText={errors.clientInitials2 ? "Initials do not match" : ""}
+                                label="Initial 2"
+                                variant="standard"
                                 sx={{ marginBottom: '2px' }}
+                                required={!test}
                             />
                         </Typography>
 
@@ -591,13 +696,16 @@ const Waiver = () => {
                             <br></br>
                             Client’s initial: 
                             <TextField
-                                name="client-initials-3"
-                                id="client-initials-3" 
-                                required
-                                // onChange={handleChangeClientInitials3}
-                                label="" 
-                                variant="standard" 
+                                name="clientInitials3"
+                                id="client-initials-3"
+                                value={initials.clientInitials3}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials3}
+                                helperText={errors.clientInitials3 ? "Initials do not match" : ""}
+                                label="Initial 3"
+                                variant="standard"
                                 sx={{ marginBottom: '2px' }}
+                                required={!test}
                             />
                         </Typography>
 
@@ -606,13 +714,16 @@ const Waiver = () => {
                             <br></br>
                             Client’s initial: 
                             <TextField
-                                name="client-initials-4"
+                                name="clientInitials4"
                                 id="client-initials-4"
-                                required
-                                // onChange={handleChangeClientInitials4} 
-                                label="" 
-                                variant="standard" 
+                                value={initials.clientInitials4}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials4}
+                                helperText={errors.clientInitials4 ? "Initials do not match" : ""}
+                                label="Initial 4"
+                                variant="standard"
                                 sx={{ marginBottom: '2px' }}
+                                required={!test}
                             />
                         </Typography>
 
@@ -621,13 +732,16 @@ const Waiver = () => {
                             <br></br>
                             Client’s initial: 
                             <TextField
-                                name="client-initials-5"
+                                name="clientInitials5"
                                 id="client-initials-5"
-                                required 
-                                // onChange={handleChangeClientInitials5}
-                                label="" 
-                                variant="standard" 
+                                value={initials.clientInitials5}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials5}
+                                helperText={errors.clientInitials5 ? "Initials do not match" : ""}
+                                label="Initial 5"
+                                variant="standard"
                                 sx={{ marginBottom: '2px' }}
+                                required={!test}
                             />
                         </Typography>
 
@@ -636,13 +750,16 @@ const Waiver = () => {
                             <br></br>
                             Client’s initial: 
                             <TextField
-                                name="client-initials-6"
+                                name="clientInitials6"
                                 id="client-initials-6"
-                                required
-                                // onChange={handleChangeClientInitials6}
-                                label="" 
-                                variant="standard" 
-                                sx={{ marginBottom: '2px', display: 'inline-flex', alignItems: 'center' }}
+                                value={initials.clientInitials6}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials6}
+                                helperText={errors.clientInitials6 ? "Initials do not match" : ""}
+                                label="Initial 6"
+                                variant="standard"
+                                sx={{ marginBottom: '2px' }}
+                                required={!test}
                             />
                         </Typography>
 
@@ -651,13 +768,16 @@ const Waiver = () => {
                             <br></br>
                             Client’s initial: 
                             <TextField
-                                name="client-initials-7"
+                                name="clientInitials7"
                                 id="client-initials-7"
-                                required
-                                // onChange={handleChangeClientInitials7}
-                                label="" 
-                                variant="standard" 
+                                value={initials.clientInitials7}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials7}
+                                helperText={errors.clientInitials7 ? "Initials do not match" : ""}
+                                label="Initial 7"
+                                variant="standard"
                                 sx={{ marginBottom: '2px' }}
+                                required={!test}
                             />
                         </Typography>
 
@@ -666,13 +786,16 @@ const Waiver = () => {
                             <br></br>
                             Client’s initial: 
                             <TextField
-                                name="client-initials-8"
+                                name="clientInitials8"
                                 id="client-initials-8"
-                                required
-                                // onChange={handleChangeClientInitials8}
-                                label="" 
-                                variant="standard" 
+                                value={initials.clientInitials8}
+                                onChange={handleInitialChange}
+                                error={errors.clientInitials8}
+                                helperText={errors.clientInitials8 ? "Initials do not match" : ""}
+                                label="Initial 8"
+                                variant="standard"
                                 sx={{ marginBottom: '2px' }}
+                                required={!test}
                             />
                         </Typography>
                         </Grid>
@@ -683,7 +806,7 @@ const Waiver = () => {
                             <Grid item xs={12}>
                                 {/* <TextField 
                                     id="client-signature"
-                                    // required
+                                    // required={!test}
                                     label="" 
                                     variant="standard" 
                                     sx={{ marginBottom: '2px', width:"100%" }}
@@ -704,7 +827,7 @@ const Waiver = () => {
                                     <TextField 
                                         id="client-signature" 
                                         label="" 
-                                        required
+                                        required={!test}
                                         variant="standard" 
                                         sx={{ marginBottom: '2px', width:"100%"}}
                                     />
@@ -716,7 +839,7 @@ const Waiver = () => {
                                         <TextField
                                             type="date"
                                             name="date"
-                                            required
+                                            required={!test}
                                             // onChange={handleChange}
                                             variant="standard"
                                             fullWidth

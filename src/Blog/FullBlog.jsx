@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { Splide, SplideTrack, SplideSlide } from '@splidejs/react-splide';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import './MyCarousel.css';
+
 import {
   AppBar,
   Toolbar,
@@ -23,7 +28,7 @@ import { useParams } from "react-router";
 import ScrollToTop from "./ScrollToTop";
 import { Markup } from "interweave";
 import "../Home/Home.css";
-import Carousel from 'react-material-ui-carousel';
+// import Carousel from 'react-material-ui-carousel';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -423,7 +428,78 @@ function FullBlog(props) {
                       <p>{post.blogTitle}</p>
                     </div>
                     {console.log('split blog image array: ', post.blogImage.split(","))}
-                    {post.blogImage.split(",").slice(1).map((blogImage)=> (
+                      
+                    {/* <Splide
+                        options={{
+                          rewind: true,
+                          gap: '1rem',
+                          perPage: 1,
+                          height: '10rem',
+                        }}
+                        aria-label="My Favorite Images"
+                        onMoved={(splide, newIndex) => {
+                          console.log('moved', newIndex);
+                          console.log('length', splide.length);
+                        }}
+                      >
+                        {post.blogImage.split(",").map((blogImage, index) => {
+                          if (!!blogImage && blogImage.split("/")[4] === "blogs") {
+                            return (
+                              <SplideSlide key={index}>
+                                <img
+                                  src={blogImage}
+                                  className={classes.blogImg}
+                                  onError={(e) => (e.target.style.display = "none")}
+                                />
+                              </SplideSlide>
+                            );
+                          } else {
+                            return (
+                              <SplideSlide key={index}>
+                                <div
+                                  className={classes.blogImg}
+                                  onClick={() => setPlay(!play)}
+                                >
+                                  <ReactPlayer url={blogImage} playing={play} />
+                                </div>
+                              </SplideSlide>
+                            );
+                          }
+                        })}
+                      </Splide> */}
+                      
+                      <Carousel
+      showArrows={true}
+      autoPlay={true}
+      infiniteLoop={true}
+      showThumbs={false}
+      showStatus={false}
+      dynamicHeight={false} // Set to false for consistent height
+    >
+      {post.blogImage.split(",").filter(blogImage => {
+    return !!blogImage && (blogImage.includes('http') || blogImage.includes('https'));
+  }).map((blogImage, index) => {
+        // Determine if the URL points to an image or video
+        const isImage = blogImage.split("/")[4] === "blogs";
+
+        return (
+          <div key={index} className="carousel-slide">
+            {isImage ? (
+              <img
+                src={blogImage}
+                className="carousel-img"
+                alt={`slide-${index}`}
+              />
+            ) : (
+              <div className="carousel-img">
+                <ReactPlayer url={blogImage} playing={false} width="100%" height="100%" />
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </Carousel>
+                    {/* {post.blogImage.split(",").slice(1).map((blogImage)=> (
                       <div>
                         {!!blogImage &&
                         blogImage.split("/")[4] == "blogs" ? (
@@ -445,7 +521,7 @@ function FullBlog(props) {
                       </div>
                     )}
                       </div>
-                    ))}
+                    ))} */}
                     
                     <div className={classes.content}>
                       <p className={classes.title}>{post.blogTitle}</p>
