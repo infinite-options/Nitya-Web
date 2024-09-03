@@ -28,6 +28,7 @@ import Availability from "./Admin/Availability";
 import ManageService from "./Services/ManageService";
 import Waiver from "./Waiver/Waiver";
 import WaiverContext from "./Waiver/WaiverContext";
+import WaiverConfirmation from "./Waiver/WaiverConfirmation";
 // require('dotenv').config();
 
 export const MyContext = React.createContext();
@@ -177,10 +178,16 @@ function App() {
               </Route>
 
               <Route path="/waiver">
-                <WaiverContext.Provider value={{waiver, setWaiver}}>
+                <WaiverContext.Provider value={{waiver, setWaiver, email, setEmail}}>
                   <Waiver />
                 </WaiverContext.Provider>
               </Route>
+              <Route path="/waiverconfirm">
+                <WaiverContext.Provider value={{waiver, setWaiver, email, setEmail}}>
+                  <WaiverConfirmation />
+                </WaiverContext.Provider>
+              </Route>
+
 
               <Route path="/services">
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>

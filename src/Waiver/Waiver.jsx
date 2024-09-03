@@ -12,18 +12,25 @@ import { useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from "jspdf";
 import WaiverContext from './WaiverContext';
+import { Link, useHistory } from "react-router-dom";
+
 // import FormLabel from '@mui/material/FormLabel';
 
 // import Pdf from 'react-to-pdf';
 const Waiver = () => {
     // const { toPDF, targetRef } = {};
+    const history = useHistory();
     const [name, setName] = useState('');
     const [gender, setGender] = useState('');
+    const [children, setChildren] = useState('');
     const handleGenderChange = (event) => {
         setGender(event.target.value);
         // if (event.target.value !== 'Female') {
         //     setIsPregnant(null); // Reset the pregnancy status if gender is not Female
         // }
+    };
+    const handleChildrenChange = (event) => {
+        setChildren(event.target.value);
     };
     const [test, setTest] = useState(false);
     // setTest(false);
@@ -31,7 +38,33 @@ const Waiver = () => {
     const {lastName, setLastName} = useContext(WaiverContext);
     const {email, setEmail} = useContext(WaiverContext);
     const {phoneNum, setPhoneNum} = useContext(WaiverContext);
+    
+    const [dob, setDob] = useState('');
+    const [age, setAge] = useState('');
   
+    const calculateAge = (dateOfBirth) => {
+      const today = new Date();
+      const birthDate = new Date(dateOfBirth);
+      let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+      const monthDifference = today.getMonth() - birthDate.getMonth();
+  
+      // Adjust age if birthday has not occurred yet this year
+      if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+        calculatedAge--;
+      }
+  
+      return calculatedAge;
+    };
+  
+    const handleDateChange = (event) => {
+      const selectedDate = event.target.value;
+      setDob(selectedDate);
+      if (selectedDate) {
+        setAge(calculateAge(selectedDate));
+      } else {
+        setAge('');
+      }
+    };
     const {waiver, setWaiver} = useContext(WaiverContext);
     const [valid, setValid] = useState('');
     const [value, setValue] = useState('');
@@ -179,38 +212,6 @@ const Waiver = () => {
     const handleChange = (event) => {
         setChecked(event.target.checked);
     };
-    // TODO: TESTING JSPDF LIBRARY (WORKS)
-    
-    // const input = document.getElementById('pdf-content'); 
-    //     // Specify the id of the element you want to convert to PDF
-    //     html2canvas(input).then((canvas) => {
-    //         // const imgData = canvas.toDataURL('image/png', 0.1);
-    //         const pdf = new jsPDF('p', 'mm', 'a4', true);
-    //         const imgData = canvas.toDataURL('image/jpeg', 0.3);
-    //         // pdf.addImage(imgData, 'PNG', 0, 0);
-    //         pdf.addImage(imgData, "JPEG", 5, 0, 210, 297, undefined, 'FAST');
-    //         // this.imgFile = canvas.toDataURL("image/jpeg", 0.3);
-    //         // var doc = new jsPDF('p', 'mm', 'a4', true);
-    //         // doc.addImage(this.imgFile, "JPEG", 5, 0, 210, 297, undefined,'FAST');
-    //         pdf.save('waiver.pdf'); 
-    //         // Specify the name of the downloaded PDF file
-    //         console.log('pdf downloaded: ', pdf)
-    //         const pdfBlob = pdf.output('blob');
-    //         console.log('pdfBlob: ', pdfBlob)
-    //         const formData = new FormData();
-    //         // formData.append('file', pdfBlob, 'waiver.pdf');
-    //         formData.append('filename', pdfBlob, 'waiver.pdf');
-    //         formData.append('file-0', pdfBlob, 'waiver.txt');
-    //         axios
-    //         .post(
-    //             `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument`,
-    //             formData
-    //         )
-    //         .then((response) => {
-    //             console.log("RESPONSE: ", response.data);
-    //             window.location.reload();
-    //         });
-    //     });
     console.log('compoentRef: ', componentRef);
     
     const handleDownloadPDF = (formObj) => { // WORKS
@@ -336,6 +337,12 @@ const Waiver = () => {
         //     handlePrint();
         // }
         handleDownloadPDF(formObj);
+        setEmail(data.get('email'))
+        localStorage.setItem('userEmail', data.get('email'));
+
+        console.log('Context Email: ', localStorage.getItem('userEmail'));
+        history.push('/waiverconfirm');
+
     };
 
     const consentChange = (e) => {
@@ -388,28 +395,32 @@ const Waiver = () => {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                label="DOB"
-                                type="date"
-                                name="dob"
-                                // onChange={handleChange}
-                                fullWidth
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                required={!test}
+                        <TextField
+                            label="DOB"
+                            type="date"
+                            name="dob"
+                            value={dob}
+                            onChange={handleDateChange}
+                            fullWidth
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            required
                             />
                         </Grid>
                         <Grid item xs={6}>
                             <TextField
-                                label="Age"
+                                label="Your Age Is:"
                                 type="number"
                                 name="age"
-                                // onChange={handleChange}
+                                value={age}
+                                helperText="If your age is inaccurate, please reselect your Date of Birth"
                                 fullWidth
-                                required={!test}
-                            />
-                        </Grid>
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                                />
+                            </Grid>
                         <Grid item xs={12}>
                             <TextField
                                 label="Address"
@@ -512,7 +523,7 @@ const Waiver = () => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <FormLabel id="demo-radio-buttons-group-label">Biological Gender (For Safety Reasons)</FormLabel>
+                            <FormLabel id="demo-radio-buttons-group-label">Biological Gender</FormLabel>
                             <RadioGroup row name="male/female" >
                                 <FormControlLabel onChange={handleGenderChange} value="Male" control={<Radio required={!test}/>} label="Male" />
                                 <FormControlLabel onChange={handleGenderChange} value="Female" control={<Radio required={!test}/>} label="Female" />
@@ -533,17 +544,27 @@ const Waiver = () => {
                             </RadioGroup>
                         </Grid>
                         <Grid item xs={12}>
-                            <TextField
-                                label="Children: (ages)"
-                                type="text"
-                                name="childrenAges"
-                                // helperText="example: 1, 5, 6"
-                                helperText={shouldShowChildrenAgesError ? "Invalid input: only numbers, commas, and spaces are allowed" : "example: 1, 5, 6"}
-                                value={childrenValue}
-                                onChange={handleChildrenAgesValidation}
-                                error={shouldShowChildrenAgesError}
-                                fullWidth
-                            />
+                            <FormLabel id="demo-radio-buttons-group-label">Do you have children?</FormLabel>
+                            <RadioGroup row name="children" >
+                                <FormControlLabel onChange={handleChildrenChange} value="Yes" control={<Radio required={!test}/>} label="Yes" />
+                                <FormControlLabel onChange={handleChildrenChange} value="No" control={<Radio required={!test}/>} label="No" />
+                            </RadioGroup>
+                        </Grid>
+                        <Grid item xs={12}>
+                            {children === 'Yes' && (
+                                <TextField
+                                    label="Children: (ages)"
+                                    type="text"
+                                    required
+                                    name="childrenAges"
+                                    // helperText="example: 1, 5, 6"
+                                    helperText={shouldShowChildrenAgesError ? "Invalid input: only numbers, commas, and spaces are allowed" : "example: 1, 5, 6"}
+                                    value={childrenValue}
+                                    onChange={handleChildrenAgesValidation}
+                                    error={shouldShowChildrenAgesError}
+                                    fullWidth
+                                />
+                            )}
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
@@ -605,7 +626,7 @@ const Waiver = () => {
                             </Typography>
                             <hr />
                             <Typography paragraph>
-                                I will read the following <span style={{ color: 'blue' }}><a href="https://docs.google.com/document/d/1SKuiIyf_jmToqcswIpVtit_gY5HCRqAhV4g4a3I55lg/edit?usp=sharing">Health Care Consultation Agreement and Liability Waiver/Release</a></span> about the Ayurvedic services offered by Leena Marathay. I understand the nature of the services to be provided. I understand that Leena Marathay is <strong>NOT</strong> a licensed physician and that Ayurvedic services are not licensed by the state although they are legal.
+                                I will read the following <span style={{ color: 'blue' }}>Health Care Consultation Agreement and Liability Waiver/Release</span> about the Ayurvedic services offered by Leena Marathay. I understand the nature of the services to be provided. I understand that Leena Marathay is <strong>NOT</strong> a licensed physician and that Ayurvedic services are not licensed by the state although they are legal.
                             </Typography>
                             <Typography paragraph>
                                 I understand it is my responsibility to maintain a relationship with my medical doctor and other health care providers. I have consented to use the services offered by Leena Marathay and am informed that Ayurvedic herbs and or herbal supplements may be suggested.
