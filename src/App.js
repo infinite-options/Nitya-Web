@@ -54,6 +54,10 @@ function App() {
   const [email, setEmail] = useState('');
   const [phoneNum, setPhoneNum] = useState('');
 
+  const [isAnyTherapyBooked, setIsAnyTherapyBooked] = useState(false);
+
+  
+
   const login = () => {
     setIsLoggedIn(true);
   };
@@ -190,7 +194,7 @@ function App() {
 
 
               <Route path="/services">
-                <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
+                <MyContext.Provider value={{ serviceArr, servicesLoaded,isAnyTherapyBooked, setIsAnyTherapyBooked }}>
                   <Services />
                 </MyContext.Provider>
               </Route>

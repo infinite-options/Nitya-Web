@@ -466,6 +466,8 @@ export default function AppointmentPage(props) {
     }
   };
 
+
+  
   function renderAvailableApptsVertical() {
     console.log("TimeSlots", timeSlots);
     console.log("TimeSlotsAA", timeAASlots);
@@ -599,6 +601,73 @@ export default function AppointmentPage(props) {
       console.error("Error in getAccessToken: " + error);
     }
   };
+
+  // const getAccessToken = async () => {
+  //   const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+  //   const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+  //   const CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
+    
+  //   // Ensure BASE_URL and client details are defined
+  //   if (!BASE_URL || !CLIENT_ID || !CLIENT_SECRET) {
+  //     console.error("Environment variables are not properly defined.");
+  //     return;
+  //   }
+  
+  //   const customer_uid = "100-000093";
+  //   //const url = BASE_URL + "customerToken/";
+  //   const url = `https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`;
+
+    
+  //   try {
+  //     // Fetch user token from your server
+  //     const response = await axios.get(url + customer_uid);
+  //     const old_at = response.data.user_access_token;
+  //     const refreshToken = response.data.user_refresh_token;
+  
+  //     // Validate the old access token
+  //     try {
+  //       await axios.get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`);
+  //       setAccessToken(old_at);
+  //     } catch (tokenError) {
+  //       console.log("Old token expired, refreshing token...");
+  
+  //       // Prepare for refresh token request
+  //       const tokenData = {
+  //         refresh_token: refreshToken,
+  //         client_id: CLIENT_ID,
+  //         client_secret: CLIENT_SECRET,
+  //         grant_type: "refresh_token",
+  //       };
+  
+  //       const formBody = Object.keys(tokenData)
+  //         .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(tokenData[key]))
+  //         .join("&");
+  
+  //       // Refresh the token
+  //       const tokenResponse = await axios.post(
+  //         "https://accounts.google.com/o/oauth2/token", 
+  //         formBody, 
+  //         {
+  //           headers: {
+  //             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+  //           }
+  //         }
+  //       );
+  
+  //       const newAccessToken = tokenResponse.data.access_token;
+  //       setAccessToken(newAccessToken);
+  
+  //       // Update the access token on your server
+  //       const updateUrl = BASE_URL + "UpdateAccessToken/";
+  //       await axios.post(updateUrl + customer_uid, {
+  //         user_access_token: newAccessToken,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error in getAccessToken: ", error.message);
+  //   }
+  // };
+  
 
   const onChange = async () => {
     if (servicesLoaded) {

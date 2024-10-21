@@ -11,6 +11,8 @@ import { AuthContext } from "../auth/AuthContext";
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 let CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
+console.log("Google sign In Client ID: ", CLIENT_ID);
+
 const useStyles = makeStyles({
   loginbuttons: {
     display: "flex",

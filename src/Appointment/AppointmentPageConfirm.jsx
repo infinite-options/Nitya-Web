@@ -669,10 +669,10 @@ export default function AppointmentPage(props) {
                   }}
                 >
                   <Link
-                to={{ pathname: "/waiver"}}
-                className="nav-link"
-              >
-                {/* <button
+                    to={{ pathname: "/waiver" }}
+                    className="nav-link"
+                  >
+                    {/* <button
                   className={classes.bookButton}
                   variant="contained"
                   component="span"
@@ -681,7 +681,7 @@ export default function AppointmentPage(props) {
                 >
                   Waiver
                 </button> */}
-              </Link>
+                  </Link>
                 </div>
                 <div
                   aria-label={"click button to book your appointment"}
@@ -690,7 +690,7 @@ export default function AppointmentPage(props) {
                     justifyContent: "center",
                   }}
                 >
-                  <button 
+                  <button
                     className={classes.bookButton}
                     hidden={infoSubmitted} onClick={toggleKeys}>
                     Book Appointment
