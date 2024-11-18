@@ -385,6 +385,86 @@ export default function AppointmentPage(props) {
     }
   };
 
+  // const getTimeSlots = async () => {
+  //   try {
+  //     setTimeSlots([]);
+  //     const headers = {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //       Authorization: "Bearer " + accessToken,
+  //     };
+  //     let date =
+  //       apiDateString >
+  //         moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD")
+  //         ? apiDateString
+  //         : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
+  //     setApiDateString(date);
+  //     const morningTime =
+  //       attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
+  //     const eveningTime =
+  //       attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
+  //     const data = {
+  //       timeMin: date + morningTime,
+  //       timeMax: date + eveningTime,
+  //       items: [
+  //         {
+  //           id: "primary",
+  //         },
+  //       ],
+  //     };
+  //     const response = await axios
+  //       .post(`https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`,
+  //       data, {
+  //         headers: headers,
+  //       }
+  //     );
+  //     let busy = response.data.calendars.primary.busy;
+  //     let start_time = Date.parse(date + morningTime) / 1000;
+  //     let end_time = Date.parse(date + eveningTime) / 1000;
+  //     let free = [];
+  //     let appt_start_time = start_time;
+  //     let seconds = convert(duration.current);
+  //     // Loop through each appt slot in the search range.
+  //     while (appt_start_time < end_time) {
+  //       // Add appt duration to the appt start time so we know where the appt will end.
+  //       let appt_end_time = appt_start_time + seconds;
+  //       // For each appt slot, loop through the current appts to see if it falls
+  //       // in a slot that is already taken.
+  //       let slot_available = true;
+  //       busy.forEach((times) => {
+  //         let this_start = Date.parse(times["start"]) / 1000;
+  //         let this_end = Date.parse(times["end"]) / 1000;
+  //         console.log(
+  //           "freebusy busy times",
+  //           busy,
+  //           times["start"],
+  //           times["end"]
+  //         );
+  //         // If the appt start time or appt end time falls on a current appt, slot is taken.
+  //         if (
+  //           (appt_start_time >= this_start && appt_start_time < this_end) ||
+  //           (appt_end_time > this_start && appt_end_time <= this_end)
+  //         ) {
+  //           slot_available = false;
+  //           return; // No need to continue if it's taken.
+  //         }
+  //       });
+  //       console.log("freebusy", free);
+  //       // If we made it through all appts and the slot is still available, it's an open slot.
+  //       if (slot_available) {
+  //         free.push(
+  //           moment(new Date(appt_start_time * 1000)).format("HH:mm:ss")
+  //         );
+  //       }
+  //       // + duration minutes
+  //       appt_start_time += 60 * 30;
+  //     }
+  //     console.log("freebusy", free);
+  //     setTimeSlots(free);
+  //   } catch(error) {
+  //     console.error("Error in getTimeSlots: "+error);
+  //   }
+  // };
   const getTimeSlots = async () => {
     try {
       setTimeSlots([]);
@@ -393,78 +473,113 @@ export default function AppointmentPage(props) {
         Accept: "application/json",
         Authorization: "Bearer " + accessToken,
       };
+      
       let date =
         apiDateString >
           moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD")
           ? apiDateString
           : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
+  
       const morningTime =
         attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
       const eveningTime =
         attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
+  
       const data = {
         timeMin: date + morningTime,
         timeMax: date + eveningTime,
-        items: [
-          {
-            id: "primary",
-          },
-        ],
+        items: [{ id: "primary" }],
       };
-      const response = await axios
-        .post(`https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`,
-        data, {
-          headers: headers,
-        }
+  
+      const response = await axios.post(
+        `https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`,
+        data,
+        { headers: headers }
       );
+      
       let busy = response.data.calendars.primary.busy;
       let start_time = Date.parse(date + morningTime) / 1000;
       let end_time = Date.parse(date + eveningTime) / 1000;
       let free = [];
       let appt_start_time = start_time;
       let seconds = convert(duration.current);
-      // Loop through each appt slot in the search range.
+  
+      // List of single-booking-per-day therapy types
+      const therapyTypes = [
+        "Abhyanga",
+        "Abhyanga + Full-Body Steam",
+        "Shirodhara",
+        "Kati Basti",
+        "Hrud Basti",
+        "Janu Basti",
+        "Pindaswedan - Specific Area",
+        "Abhyanga + Shirodhara",
+        "Abhyanga + Kati Basti",
+        "Abhyanga + Hrud Basti",
+        "Abhyanga + Janu Basti (single knee)",
+        "Abhyanga + Full-Body Steam + Kati Basti",
+        "Abhyanga + Full-Body Steam + Hrud Basti",
+        "Abhyanga + Full-Body Steam + Janu Basti (single knee)"
+      ];
+  
+      // appointments v2
+      const appointmentsResponse = await axios.get(`https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/appointments`);
+      const allAppointments = appointmentsResponse.data.result || [];
+  
+      // checking if any therapy type from the list is already booked on this date
+      const existingTherapyBookings = allAppointments.filter(
+        (appointment) =>
+          appointment.appt_date === date &&
+          therapyTypes.includes(appointment.title) 
+      );
+      console.log("therapies booked",existingTherapyBookings)
+      // Main loop to check each available slot
       while (appt_start_time < end_time) {
-        // Add appt duration to the appt start time so we know where the appt will end.
         let appt_end_time = appt_start_time + seconds;
-        // For each appt slot, loop through the current appts to see if it falls
-        // in a slot that is already taken.
         let slot_available = true;
+  
+        // Checking if the slot overlaps with any existing busy times
         busy.forEach((times) => {
           let this_start = Date.parse(times["start"]) / 1000;
           let this_end = Date.parse(times["end"]) / 1000;
-          console.log(
-            "freebusy busy times",
-            busy,
-            times["start"],
-            times["end"]
-          );
-          // If the appt start time or appt end time falls on a current appt, slot is taken.
           if (
             (appt_start_time >= this_start && appt_start_time < this_end) ||
             (appt_end_time > this_start && appt_end_time <= this_end)
           ) {
             slot_available = false;
-            return; // No need to continue if it's taken.
+            return;
           }
         });
-        console.log("freebusy", free);
-        // If we made it through all appts and the slot is still available, it's an open slot.
+  
+        // the selected therapy type from the UI or booking context (clientside)
+        const selectedTherapyType = elementToBeRendered.title; 
+  
+        // checking an existing booking for the selected therapy type
+        const isTherapyAlreadyBooked = existingTherapyBookings.some(
+          (appointment) => appointment.category === "Therapy"
+        );
+  
+        //  no existing booking of the selected therapy type, add it
         if (slot_available) {
-          free.push(
-            moment(new Date(appt_start_time * 1000)).format("HH:mm:ss")
-          );
+          if (isTherapyAlreadyBooked && therapyTypes.includes(selectedTherapyType)) {
+            console.log("Therapy already booked for the day, skipping:", selectedTherapyType);
+          } else {
+            free.push(moment(new Date(appt_start_time * 1000)).format("HH:mm:ss"));
+          }
         }
-        // + duration minutes
+  
+        //  next slot in 30-minute
         appt_start_time += 60 * 30;
       }
-      console.log("freebusy", free);
+  
+      console.log("Available time slots:", free);
       setTimeSlots(free);
-    } catch(error) {
-      console.error("Error in getTimeSlots: "+error);
+    } catch (error) {
+      console.error("Error in getTimeSlots:", error);
     }
   };
+  
 
   function renderAvailableApptsVertical() {
     console.log("TimeSlots", timeSlots);
