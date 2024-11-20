@@ -108,6 +108,8 @@ export default function AppointmentPage(props) {
   const [selectedButton, setSelectedButton] = useState("");
   const isFirstLoad = useRef(true);
   const [isCalDisabled, setCalDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+
 
   let location = useLocation();
   let addons = [];
@@ -309,11 +311,15 @@ export default function AppointmentPage(props) {
 
   const dateChange = (date) => {
     setDate(date);
+    setLoading(true);
     dateStringChange(date);
     // setTimeSelected(true);
     if (timeSelected === true) {
       setTimeSelected(false);
     }
+    setTimeout(() => {
+      setLoading(false); // End loading after 1 second
+    }, 1000);
   };
 
   function formatTime(date, time) {
@@ -355,6 +361,7 @@ export default function AppointmentPage(props) {
   }
   const getTimeAASlots = async () => {
     try {
+      setLoading(true);
       setTimeAASlots([]);
       let hoursMode = "";
       hoursMode = attendMode === "Online" ? "Online" : "Office";
@@ -382,9 +389,11 @@ export default function AppointmentPage(props) {
       setTimeAASlots(timeSlotsAA);
     } catch(error) {
       console.error("Error in getTimeAASlots: "+error);
+    } finally {
+      setLoading(false);
     }
   };
-
+  //  original getTimeSLots function before change
   // const getTimeSlots = async () => {
   //   try {
   //     setTimeSlots([]);
@@ -467,6 +476,7 @@ export default function AppointmentPage(props) {
   // };
   const getTimeSlots = async () => {
     try {
+      setLoading(true);
       setTimeSlots([]);
       const headers = {
         "Content-Type": "application/json",
@@ -577,6 +587,8 @@ export default function AppointmentPage(props) {
       setTimeSlots(free);
     } catch (error) {
       console.error("Error in getTimeSlots:", error);
+    } finally {
+      setLoading(false);
     }
   };
   
@@ -853,9 +865,14 @@ export default function AppointmentPage(props) {
                 <div className="BodyFontAppt">Pacific Standard Time</div>
               </div>
 
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                {renderAvailableApptsVertical()}
-              </div>
+              <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: "2rem" }}>
+  {loading ? (
+    <div className="loader"></div> // The loading spinner
+  ) : (
+    renderAvailableApptsVertical() // Render available appointments if not loading
+  )}
+</div>
+
 
               <div style={{ padding: "3%" }} hidden={!buttonSelect}>
                 <button
