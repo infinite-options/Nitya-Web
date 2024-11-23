@@ -217,8 +217,8 @@ const Waiver = () => {
     const handleDownloadPDF = (formObj) => { // WORKS
         console.log('POSTING PDF');
         const input = document.getElementById('pdf-content'); 
-        var imgWidth = 210; 
-        var pageHeight = 295;  
+        var imgWidth = 215.9; 
+        var pageHeight = 279.4;  
 
         var position = 0; // give some top padding to first page
 
@@ -230,7 +230,7 @@ const Waiver = () => {
             var imgHeight = canvas.height * imgWidth / canvas.width;
             var heightLeft = imgHeight;
             // const imgData = canvas.toDataURL('image/png', 0.1);
-            const pdf = new jsPDF('p', 'mm', 'a4', true);
+            const pdf = new jsPDF('p', 'mm', [279.4, 215.9], true);
             const imgData = canvas.toDataURL('image/jpeg', 0.3);
             // pdf.addImage(imgData, 'PNG', 0, 0);
             pdf.addImage(imgData, "JPEG", 0, 0, imgWidth, imgHeight, undefined, 'FAST');
@@ -522,50 +522,88 @@ const Waiver = () => {
                                 fullWidth
                             />
                         </Grid>
+    
+    <Grid item xs={6}>
+        <FormLabel id="demo-radio-buttons-group-label">Biological Gender</FormLabel>
+        <RadioGroup row name="male/female">
+            <FormControlLabel
+                onChange={handleGenderChange}
+                value="Male"
+                control={<Radio required={!test} />}
+                label="Male"
+            />
+            <FormControlLabel
+                onChange={handleGenderChange}
+                value="Female"
+                control={<Radio required={!test} />}
+                label="Female"
+            />
+        </RadioGroup>
+    </Grid>
+    {gender === 'Female' && (
+        <Grid item xs={6}>
+            <FormLabel id="pregnancy-status-label">Pregnancy Status</FormLabel>
+            <RadioGroup row name="pregnant">
+                <FormControlLabel
+                    value="Y"
+                    control={<Radio required={!test} />}
+                    label="Pregnant"
+                />
+                <FormControlLabel
+                    value="N"
+                    control={<Radio required={!test} />}
+                    label="Not Pregnant"
+                />
+            </RadioGroup>
+        </Grid>
+    )}
+
                         <Grid item xs={12}>
-                            <FormLabel id="demo-radio-buttons-group-label">Biological Gender</FormLabel>
-                            <RadioGroup row name="male/female" >
-                                <FormControlLabel onChange={handleGenderChange} value="Male" control={<Radio required={!test}/>} label="Male" />
-                                <FormControlLabel onChange={handleGenderChange} value="Female" control={<Radio required={!test}/>} label="Female" />
-                            </RadioGroup>
-                        </Grid>
-                        <Grid item xs={12}>
-                            {gender === 'Female' && (
-                                <RadioGroup row name="pregnant" sx={{display: 'block'}} >
-                                    <FormControlLabel value="Y" control={<Radio required={!test}/>} label="Pregnant" />
-                                    <FormControlLabel value="N" control={<Radio required={!test}/>} label="Not Pregnant" />
-                                </RadioGroup>
-                            )}
-                        </Grid>
-                        <Grid item xs={12}>
+                            <FormLabel id="demo-radio-buttons-group-label">Marital Status</FormLabel>
                             <RadioGroup row name="married" >
                                 <FormControlLabel value="Y" control={<Radio required={!test}/>} label="Married" />
                                 <FormControlLabel value="N" control={<Radio required={!test}/>} label="Not Married" />
                             </RadioGroup>
                         </Grid>
-                        <Grid item xs={12}>
-                            <FormLabel id="demo-radio-buttons-group-label">Do you have children?</FormLabel>
-                            <RadioGroup row name="children" >
-                                <FormControlLabel onChange={handleChildrenChange} value="Yes" control={<Radio required={!test}/>} label="Yes" />
-                                <FormControlLabel onChange={handleChildrenChange} value="No" control={<Radio required={!test}/>} label="No" />
-                            </RadioGroup>
-                        </Grid>
-                        <Grid item xs={12}>
-                            {children === 'Yes' && (
-                                <TextField
-                                    label="Children: (ages)"
-                                    type="text"
-                                    required
-                                    name="childrenAges"
-                                    // helperText="example: 1, 5, 6"
-                                    helperText={shouldShowChildrenAgesError ? "Invalid input: only numbers, commas, and spaces are allowed" : "example: 1, 5, 6"}
-                                    value={childrenValue}
-                                    onChange={handleChildrenAgesValidation}
-                                    error={shouldShowChildrenAgesError}
-                                    fullWidth
-                                />
-                            )}
-                        </Grid>
+                        
+    <Grid item xs={6}>
+        <FormLabel id="demo-radio-buttons-group-label">Do you have children?</FormLabel>
+        <RadioGroup row name="children">
+            <FormControlLabel
+                onChange={handleChildrenChange}
+                value="Yes"
+                control={<Radio required={!test} />}
+                label="Yes"
+            />
+            <FormControlLabel
+                onChange={handleChildrenChange}
+                value="No"
+                control={<Radio required={!test} />}
+                label="No"
+            />
+        </RadioGroup>
+    </Grid>
+
+    {children === 'Yes' && (
+        <Grid item xs={6}  sx={{ paddingTop: '38px !important' }}>
+            <TextField
+                label="Children: (ages)"
+                type="text"
+                required
+                name="childrenAges"
+                helperText={
+                    shouldShowChildrenAgesError
+                        ? "Invalid input: only numbers, commas, and spaces are allowed"
+                        : "Example: 1, 5, 6"
+                }
+                value={childrenValue}
+                onChange={handleChildrenAgesValidation}
+                error={shouldShowChildrenAgesError}
+                fullWidth
+            />
+        </Grid>
+    )}
+
                         <Grid item xs={12}>
                             <TextField
                                 label="1) What is your intention for this Ayurvedic Lifestyle Consultation?"
@@ -607,6 +645,9 @@ const Waiver = () => {
                             />
                         </Grid>
                         <Grid item xs={12} style={{ textAlign: "center" }}>
+                                <Typography>&nbsp;</Typography>
+                                <Typography>&nbsp;</Typography>
+                                <Typography>&nbsp;</Typography>
                             <Typography variant="h6" color="primary">
                                 Summary of Waiver
                             </Typography>
@@ -659,6 +700,8 @@ const Waiver = () => {
                             
                         </Grid>
                         <Grid item xs={12}>
+                                <Typography>&nbsp;</Typography>
+                                <Typography>&nbsp;</Typography>
                             <Typography variant="h6" color="primary" style={{ textAlign: "center" }}>
                                 HEALTH CARE CONSULTATION AGREEMENT AND LIABILITY WAIVER/ RELEASE
                             </Typography>
