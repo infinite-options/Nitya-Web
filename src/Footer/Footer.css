@@ -1,0 +1,6 @@
+.FooterItemImages {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;    /* Align vertically */
+    gap: 1rem;              /* Add space between images (optional) */
+  }

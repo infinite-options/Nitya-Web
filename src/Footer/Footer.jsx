@@ -1,9 +1,13 @@
 import React from "react";
 import InstagramIcon from "@material-ui/icons/Instagram";
 import Namacb from "../Assets/Images/namacb.png";
+import ADC2024 from "../Assets/Images/ADC2024.jpg";
+import CAAM from "../Assets/Images/CAAM.png";
+import CMP from "../Assets/Images/CMP.jpg";
 import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import "../Home/Home.css";
+import './Footer.css'
 
 export default function Footer() {
   const history = useHistory();
@@ -38,9 +42,16 @@ export default function Footer() {
         </div>
       </div>
       <div className="FooterTextWrapper">
-        <div className="FooterItem">
-          <img src={Namacb} style={{ height: "7rem", justifySelf: "center", alignSelf: "center" }} alt="NAMA" />
+      <div className="FooterItem">
+        <div className="FooterItemImages">
+          <img src={Namacb} style={{ height: "7rem" }} alt="NAMA" />
+          <img src={ADC2024} alt="ADC 2024" style={{ height: "7rem" }} />
         </div>
+        <div className="FooterItemImages">
+          <img src={CAAM} alt="CAAM" style={{ height: "7rem" }} />
+          <img src={CMP} alt="CMP" style={{ height: "7rem" }} />
+        </div>
+      </div>
         <div className="FooterItem">
           <div style={{ marginTop: "3rem", marginBottom: "2rem", textAlign: "center" }}>
             <button
