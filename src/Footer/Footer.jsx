@@ -1,6 +1,5 @@
 import React from "react";
 import InstagramIcon from "@material-ui/icons/Instagram";
-import Namacb from "../Assets/Images/namacb.png";
 import ADC2024 from "../Assets/Images/ADC2024.jpg";
 import CAAM from "../Assets/Images/CAAM.png";
 import CMP from "../Assets/Images/CMP.jpg";
@@ -40,18 +39,15 @@ export default function Footer() {
           </div>
           <div>Email: Leena@nityaayurveda.com</div>
         </div>
-      </div>
-      <div className="FooterTextWrapper">
-      <div className="FooterItem">
-        <div className="FooterItemImages">
-          <img src={Namacb} style={{ height: "7rem" }} alt="NAMA" />
+        <div className="FooterItem" style={{alignItems: "center"}}>
           <img src={ADC2024} alt="ADC 2024" style={{ height: "7rem" }} />
         </div>
-        <div className="FooterItemImages">
+        <div className="FooterItem" style={{alignItems: "center"}}>
           <img src={CAAM} alt="CAAM" style={{ height: "7rem" }} />
+        </div>
+        <div className="FooterItem" style={{alignItems: "center"}}>
           <img src={CMP} alt="CMP" style={{ height: "7rem" }} />
         </div>
-      </div>
         <div className="FooterItem">
           <div style={{ marginTop: "3rem", marginBottom: "2rem", textAlign: "center" }}>
             <button

@@ -1,6 +1,9 @@
-.FooterItemImages {
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center;    /* Align vertically */
-    gap: 1rem;              /* Add space between images (optional) */
+.FooterText {
+    height: 50%; 
+    border-right: 1px solid #ddd;
+  }
+  @media screen and (min-width: 200px) and (max-width: 500px) {
+    .FooterText {
+      border-right: none;
+    }
   }
