@@ -74,7 +74,7 @@ const useStyles = makeStyles({
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 export default function AppointmentPage(props) {
   console.log("(AppointmentPage) props: ", props);
-  const [accessToken, setAccessToken] = useState("")
+  const [accessToken, setAccessToken] = useState("");
   console.log("(AppointmentPage) accessToken: ", accessToken);
   const classes = useStyles();
   const history = useHistory();
@@ -93,14 +93,115 @@ export default function AppointmentPage(props) {
   const { serviceArr, servicesLoaded } = useContext(MyContext);
   const [elementToBeRendered, setElementToBeRendered] = useState([]);
   const treatment_uid = treatmentID;
-
+  useEffect(() => {
+    if (servicesLoaded && serviceArr.length > 0) {
+      const selectedService = serviceArr.find(s => s.treatment_uid === treatmentID);
+      if (selectedService) {
+        setElementToBeRendered(selectedService);
+        duration.current = selectedService.duration;
+      }
+    }
+  }, [servicesLoaded, serviceArr, treatmentID]);
+  useEffect(() => {
+    if (servicesLoaded && elementToBeRendered) {
+      getAccessToken().then(at => {
+        setAccessToken(at);
+      });
+    }
+  }, [servicesLoaded, elementToBeRendered]);
+  console.log("(AppointmentPage) accessToken2: ", accessToken);
   var currentDate = new Date(+new Date() + 86400000);
   const [date, setDate] = useState(currentDate);
   const [minDate, setMinDate] = useState(currentDate);
   const [dateString, setDateString] = useState(null);
   const [dateHasBeenChanged, setDateHasBeenChanged] = useState(false);
   const [dateString1, setDateString1] = useState(null);
-  const [apiDateString, setApiDateString] = useState(null);
+  const doubleDigitMonth = (date) => {
+    let str = "00" + (date.getMonth() + 1);
+    return str.substring(str.length - 2);
+  };
+
+  const doubleDigitDay = (date) => {
+    let str = "00" + date.getDate();
+    return str.substring(str.length - 2);
+  };
+
+  // This one is for
+  const dateFormat1 = (date) => {
+    return (
+      doubleDigitMonth(date) +
+      "/" +
+      doubleDigitDay(date) +
+      "/" +
+      date.getFullYear()
+    );
+  };
+
+  // This one is for the timeslotAPI call
+  const dateFormat2 = (date) => {
+    var months = {
+      "01": "Jan",
+      "02": "Feb",
+      "03": "Mar",
+      "04": "Apr",
+      "05": "May",
+      "06": "Jun",
+      "07": "Jul",
+      "08": "Aug",
+      "09": "Sep",
+      10: "Oct",
+      11: "Nov",
+      12: "Dec",
+      "": "",
+    };
+    console.log("dateformat2", date);
+    console.log(
+      "dateformat2",
+      months[doubleDigitMonth(date)] +
+      " " +
+      doubleDigitDay(date) +
+      ", " +
+      date.getFullYear() +
+      " "
+    );
+    return (
+      months[doubleDigitMonth(date)] +
+      " " +
+      doubleDigitDay(date) +
+      ", " +
+      date.getFullYear() +
+      " "
+    );
+  };
+
+ 
+
+  const dateStringChange = (date) => {
+    setDateString(dateFormat1(date));
+    setApiDateString(dateFormat3(date));
+    setDateString1(dateFormat2(date));
+    setDateHasBeenChanged(!dateHasBeenChanged);
+  };
+   // This one is for doing the sendToDatabase Post Call
+   const dateFormat3 = (date) => {
+    console.log("dateformat3", date);
+    console.log(
+      "dateformat3",
+      date.getFullYear() +
+      "-" +
+      doubleDigitMonth(date) +
+      "-" +
+      doubleDigitDay(date)
+    );
+    return (
+      date.getFullYear() +
+      "-" +
+      doubleDigitMonth(date) +
+      "-" +
+      doubleDigitDay(date)
+    );
+  };
+  const [apiDateString, setApiDateString] = useState(dateFormat3(currentDate));
   const [timeSlots, setTimeSlots] = useState([]);
   const [timeAASlots, setTimeAASlots] = useState([]);
   const duration = useRef(null);
@@ -109,7 +210,6 @@ export default function AppointmentPage(props) {
   const isFirstLoad = useRef(true);
   const [isCalDisabled, setCalDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
-
 
   let location = useLocation();
   let addons = [];
@@ -131,6 +231,7 @@ export default function AppointmentPage(props) {
     }
     return addon_list;
   }
+  
   const getTotalCost = () => {
     let total = 0;
     serviceArr.forEach(service => {
@@ -224,104 +325,24 @@ export default function AppointmentPage(props) {
   // for appt
   //String formatting functions for the date variable
 
-  const doubleDigitMonth = (date) => {
-    let str = "00" + (date.getMonth() + 1);
-    return str.substring(str.length - 2);
-  };
-
-  const doubleDigitDay = (date) => {
-    let str = "00" + date.getDate();
-    return str.substring(str.length - 2);
-  };
-
-  // This one is for
-  const dateFormat1 = (date) => {
-    return (
-      doubleDigitMonth(date) +
-      "/" +
-      doubleDigitDay(date) +
-      "/" +
-      date.getFullYear()
-    );
-  };
-
-  // This one is for the timeslotAPI call
-  const dateFormat2 = (date) => {
-    var months = {
-      "01": "Jan",
-      "02": "Feb",
-      "03": "Mar",
-      "04": "Apr",
-      "05": "May",
-      "06": "Jun",
-      "07": "Jul",
-      "08": "Aug",
-      "09": "Sep",
-      10: "Oct",
-      11: "Nov",
-      12: "Dec",
-      "": "",
-    };
-    console.log("dateformat2", date);
-    console.log(
-      "dateformat2",
-      months[doubleDigitMonth(date)] +
-      " " +
-      doubleDigitDay(date) +
-      ", " +
-      date.getFullYear() +
-      " "
-    );
-    return (
-      months[doubleDigitMonth(date)] +
-      " " +
-      doubleDigitDay(date) +
-      ", " +
-      date.getFullYear() +
-      " "
-    );
-  };
-
-  // This one is for doing the sendToDatabase Post Call
-  const dateFormat3 = (date) => {
-    console.log("dateformat3", date);
-    console.log(
-      "dateformat3",
-      date.getFullYear() +
-      "-" +
-      doubleDigitMonth(date) +
-      "-" +
-      doubleDigitDay(date)
-    );
-    return (
-      date.getFullYear() +
-      "-" +
-      doubleDigitMonth(date) +
-      "-" +
-      doubleDigitDay(date)
-    );
-  };
-
-  const dateStringChange = (date) => {
-    setDateString(dateFormat1(date));
-    setApiDateString(dateFormat3(date));
-    setDateString1(dateFormat2(date));
-    setDateHasBeenChanged(!dateHasBeenChanged);
-  };
+  
 
   const dateChange = (date) => {
     setDate(date);
     setLoading(true);
+    setTimeSelected(false); // Reset time selection
+    setButtonSelect(false); // Hide the Continue button
+    setSelectedButton(null); // Clear selected button
+    setSelectedTime(null); // Clear selected time
     dateStringChange(date);
     // setTimeSelected(true);
-    if (timeSelected === true) {
-      setTimeSelected(false);
-    }
+    // if (timeSelected === true) {
+    //   setTimeSelected(false);
+    // }
     setTimeout(() => {
       setLoading(false); // End loading after 1 second
     }, 1000);
   };
-
   function formatTime(date, time) {
     if (time == null) {
       return "?";
@@ -564,7 +585,7 @@ export default function AppointmentPage(props) {
   
         // the selected therapy type from the UI or booking context (clientside)
         const selectedTherapyType = elementToBeRendered.title; 
-  
+        console.log("selectedTherapy:",selectedTherapyType);
         // checking an existing booking for the selected therapy type
         const isTherapyAlreadyBooked = existingTherapyBookings.some(
           (appointment) => appointment.category === "Therapy"
@@ -596,10 +617,15 @@ export default function AppointmentPage(props) {
   function renderAvailableApptsVertical() {
     console.log("TimeSlots", timeSlots);
     console.log("TimeSlotsAA", timeAASlots);
-
+    
     let result = timeSlots.filter((o1) => timeAASlots.some((o2) => o1 === o2));
 
     console.log("Merged", result, selectedButton);
+    // if (!isTimeslotsLoaded) {
+    //   return <div>Loading timeslots...</div>;
+    // }
+    // else
+    // {
     return (
       <Grid container xs={11}>
         {result.length > 0 ? (
@@ -646,6 +672,7 @@ export default function AppointmentPage(props) {
         )}
       </Grid>
     );
+    
   }
   const handleMode = (event) => {
     setTimeSlots([]);
@@ -673,10 +700,15 @@ export default function AppointmentPage(props) {
   };
   function selectApptTime(element, i) {
     console.log("selected time", element);
-    setSelectedButton(i);
-    setSelectedTime(element);
-    setTimeSelected(true);
-    setButtonSelect(true);
+    if (element) {
+      setSelectedButton(i);
+      setSelectedTime(element);
+      setTimeSelected(true);
+      setButtonSelect(true);
+    } else {
+      setButtonSelect(false); // Ensure no button is selected if element is null
+      setSelectedTime(null);
+    }
   }
 
   const getAccessToken = async () => {
@@ -727,9 +759,32 @@ export default function AppointmentPage(props) {
     }
   };
 
+  // const onChange = async () => {
+  //   if (servicesLoaded) {
+  //     setCalDisabled(true);
+  //     setIsTimeslotsLoaded(false);
+  //     if(isFirstLoad.current) {
+  //       serviceArr.forEach(service => {
+  //         if (service.treatment_uid === treatment_uid) {
+  //           setElementToBeRendered(service);
+  //           duration.current = service.duration;
+  //         }
+  //       });
+  //       isFirstLoad.current = false;
+  //       await getAccessToken();
+  //     }
+  //     await getTimeSlots();
+  //     await getTimeAASlots();
+  //     setIsTimeslotsLoaded(true);
+  //     setCalDisabled(false);
+  //   }
+  // };
   const onChange = async () => {
-    if (servicesLoaded) {
-      setCalDisabled(true);
+    if (servicesLoaded){
+      console.log("here 803");
+      console.log(servicesLoaded, apiDateString, duration.current);
+      setCalDisabled(true); // Disable calendar interactions while loading
+    try {
       if(isFirstLoad.current) {
         serviceArr.forEach(service => {
           if (service.treatment_uid === treatment_uid) {
@@ -738,18 +793,27 @@ export default function AppointmentPage(props) {
           }
         });
         isFirstLoad.current = false;
-        await getAccessToken();
+        await getAccessToken(); // Fetch access token
       }
-      await getTimeSlots();
-      await getTimeAASlots();
-      setCalDisabled(false);
+  
+      await getTimeSlots(); // Fetch main time slots
+      await getTimeAASlots(); // Fetch additional availability slots
+    } catch (error) {
+      console.error("Error in onChange:", error);
+    } finally {
+      setCalDisabled(false); // Re-enable calendar interactions
     }
+  }
   };
-
+  // useEffect(() => {
+  //     console.log("onchange");
+  //     onChange();
+  // }, [servicesLoaded, dateHasBeenChanged, attendMode]);
   useEffect(() => {
-    onChange();
-  }, [servicesLoaded, dateHasBeenChanged, attendMode]);
-
+    if (servicesLoaded && elementToBeRendered && accessToken && duration.current && apiDateString) {
+      onChange();
+    }
+  }, [servicesLoaded, elementToBeRendered, accessToken, duration, apiDateString, attendMode]);
   return (
     <div className="HomeContainer">
       <ScrollToTop />
@@ -874,7 +938,7 @@ export default function AppointmentPage(props) {
 </div>
 
 
-              <div style={{ padding: "3%" }} hidden={!buttonSelect}>
+              <div style={{ padding: "3%" }} hidden={!buttonSelect || !selectedTime}>
                 <button
                   onClick={() =>
                     history.push({

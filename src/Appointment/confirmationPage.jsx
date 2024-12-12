@@ -80,7 +80,7 @@ export default function ConfirmationPage(props) {
     };
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => { }, []);
 
   return (
     <div className="HomeContainer">
@@ -92,7 +92,6 @@ export default function ConfirmationPage(props) {
           </div>
           <div className="CardText">{location.state.apptInfo.email}</div>
         </div>
-
         <div className="CardGrid">
           <div>
             <div className="ApptPageTitle">{location.state.apptInfo.treatment}</div>
@@ -100,6 +99,12 @@ export default function ConfirmationPage(props) {
             <div className="ApptPageHeader">
               {location.state.apptInfo.duration} | {location.state.apptInfo.purchase_price}
             </div>
+            <div className="ApptPageText">
+            <strong>Date:</strong> {location.state.apptInfo.appointmentDate}
+          </div>
+          <div className="ApptPageText">
+            <strong>Time:</strong> {location.state.apptInfo.appointmentTime}
+          </div>
 
             <div style={{ margin: "1rem" }}>
               <img
@@ -168,7 +173,7 @@ export default function ConfirmationPage(props) {
                 List of your current medication, diet, food preferences, and this filled out waiver
               </div>
               <Link
-                to={{ pathname: "/waiver"}}
+                to={{ pathname: "/waiver" }}
                 className="nav-link"
               >
                 <Button
@@ -177,7 +182,7 @@ export default function ConfirmationPage(props) {
                   variant="contained"
                   component="span"
                   type="button"
-                  // onClick={onImageUpload}
+                // onClick={onImageUpload}
                 >
                   Waiver
                 </Button>

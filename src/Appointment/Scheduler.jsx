@@ -205,6 +205,8 @@ export default function Scheduler(props) {
       mode: props.mode,
       age: props.age,
       gender: props.gender,
+      appointmentDate: moment(props.date).format("YYYY-MM-DD"),
+      appointmentTime: convertTime12to24(props.selectedTime),
     });
     // history.push("/apptconfirm", {apptInfo});
     console.log("create appt", apptInfo);
