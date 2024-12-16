@@ -36,6 +36,7 @@ const useStyles = makeStyles({
   },
 });
 
+
 export default function ConfirmationPage(props) {
   // const google = window.google;
 
@@ -44,7 +45,32 @@ export default function ConfirmationPage(props) {
 
   const classes = useStyles();
   const location = useLocation();
+  const calculateEndTime = (startTime, duration) => {
+    const [startHours, startMinutes] = startTime.split(":").map(Number);
+    const [durationHours, durationMinutes, durationSeconds] = duration
+      .split(":")
+      .map(Number);
+  
+    //duration into total minutes
+    const totalDurationMinutes =
+      durationHours * 60 + durationMinutes + Math.floor(durationSeconds / 60);
+  
+    //total duration to the start time
+    const totalStartMinutes = startHours * 60 + startMinutes;
+    const totalEndMinutes = totalStartMinutes + totalDurationMinutes;
+  
+    //end time in hours and minutes
+    const endHours = Math.floor(totalEndMinutes / 60) % 24; 
+    const endMinutes = totalEndMinutes % 60;
+  
+    return `${endHours.toString().padStart(2, "0")}:${endMinutes
+      .toString()
+      .padStart(2, "0")}`;
+  };
 
+  const startTime = location.state.apptInfo.appointmentTime;
+  const duration = location.state.apptInfo.duration;
+  const endTime = calculateEndTime(startTime, duration);
   const scaleWidthFn = () => {
     return 280 - (810 - dimensions.width) * 0.4;
   };
@@ -97,13 +123,13 @@ export default function ConfirmationPage(props) {
             <div className="ApptPageTitle">{location.state.apptInfo.treatment}</div>
 
             <div className="ApptPageHeader">
-              {location.state.apptInfo.duration} | {location.state.apptInfo.purchase_price}
+              {location.state.apptInfo.purchase_price}
             </div>
             <div className="ApptPageText">
             <strong>Date:</strong> {location.state.apptInfo.appointmentDate}
           </div>
           <div className="ApptPageText">
-            <strong>Time:</strong> {location.state.apptInfo.appointmentTime}
+            <strong>Time:</strong>  {startTime} - {endTime}
           </div>
 
             <div style={{ margin: "1rem" }}>
