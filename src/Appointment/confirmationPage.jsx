@@ -105,6 +105,27 @@ export default function ConfirmationPage(props) {
       window.removeEventListener("resize", handleResize);
     };
   });
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+    
+    const dayOfMonth = date.getDate();
+    const monthName = date.toLocaleString("default", { month: "long" });
+    const yearValue = date.getFullYear();
+  
+    // Add ordinal suffix to the day
+    const ordinalSuffix = (day) => {
+      if (day > 3 && day < 21) return "th";
+      switch (day % 10) {
+        case 1: return "st";
+        case 2: return "nd";
+        case 3: return "rd";
+        default: return "th";
+      }
+    };
+  
+    return `${dayOfMonth}${ordinalSuffix(dayOfMonth)} ${monthName}, ${yearValue}`;
+  };
 
   useEffect(() => { }, []);
 
@@ -126,7 +147,7 @@ export default function ConfirmationPage(props) {
               {location.state.apptInfo.purchase_price}
             </div>
             <div className="ApptPageText">
-            <strong>Date:</strong> {location.state.apptInfo.appointmentDate}
+            <strong>Date:</strong> {formatDate(location.state.apptInfo.appointmentDate)}
           </div>
           <div className="ApptPageText">
             <strong>Time:</strong>  {startTime} - {endTime}
