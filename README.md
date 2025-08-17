@@ -1,4 +1,4 @@
-# Nitya-Web-v2 Readme File
+# Nitya-Web Readme File
 
 # Getting Started with Create React App
 

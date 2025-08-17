@@ -265,7 +265,7 @@ function Availability() {
             officeHours.push(times[i]);
           }
         }
-        // console.log(onlineHours, officeHours);
+        console.log(onlineHours, officeHours);
         for (let i = 0; i < onlineHours.length; i++) {
           if (onlineHours[i].day === "Sunday") {
             let fields = {
@@ -416,7 +416,7 @@ function Availability() {
       .get(BASE_URL + `unavailability`)
       .then((response) => {
         let times = response.data.result;
-        // console.log(times);
+        console.log(times);
         let unavailable = [];
 
         for (let i = 0; i < times.length; i++) {
@@ -424,10 +424,8 @@ function Availability() {
             unavailable.push(times[i]);
           }
         }
-        // console.log(unavailable);
-        unavailable.sort((a, b) =>
-          a.date > b.date ? 1 : b.date > a.date ? -1 : 0
-        );
+        console.log(unavailable);
+        unavailable.sort((a, b) => (a.date > b.date ? 1 : b.date > a.date ? -1 : 0));
         setUnavailabilty(unavailable);
         setIsLoading(false);
       })
@@ -478,15 +476,7 @@ function Availability() {
   };
   const updateOnlineHours = () => {
     let info = {
-      days: [
-        sundayFieldsOnline,
-        mondayFieldsOnline,
-        tuesdayFieldsOnline,
-        wednesdayFieldsOnline,
-        thursdayFieldsOnline,
-        fridayFieldsOnline,
-        saturdayFieldsOnline,
-      ],
+      days: [sundayFieldsOnline, mondayFieldsOnline, tuesdayFieldsOnline, wednesdayFieldsOnline, thursdayFieldsOnline, fridayFieldsOnline, saturdayFieldsOnline],
     };
     console.log(info);
     axios.post(BASE_URL + "updateAvailability", info).then((response) => {
@@ -496,15 +486,7 @@ function Availability() {
   };
   const updateOfficeHours = () => {
     let info = {
-      days: [
-        sundayFieldsOffice,
-        mondayFieldsOffice,
-        tuesdayFieldsOffice,
-        wednesdayFieldsOffice,
-        thursdayFieldsOffice,
-        fridayFieldsOffice,
-        saturdayFieldsOffice,
-      ],
+      days: [sundayFieldsOffice, mondayFieldsOffice, tuesdayFieldsOffice, wednesdayFieldsOffice, thursdayFieldsOffice, fridayFieldsOffice, saturdayFieldsOffice],
     };
     console.log(info);
     axios.post(BASE_URL + "updateAvailability", info).then((response) => {
@@ -514,25 +496,19 @@ function Availability() {
   };
 
   function handleDelete(id) {
-    axios
-      .post(
-        `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/deleteUnavailability/${id}`
-      )
-      .then((response) => {
-        console.log("delete", response.data);
-        setOpenDelete(!openDelete);
-        getUnavailabilty();
-      });
+    axios.post(`https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/deleteUnavailability/${id}`).then((response) => {
+      console.log("delete", response.data);
+      setOpenDelete(!openDelete);
+      getUnavailabilty();
+    });
   }
   function handleUpdate(time) {
     console.log(time, startTime, endTime);
     let info = {
       id: time.prac_avail_uid,
       date: time.date,
-      start_time_notavailable:
-        startTime === "" ? time.start_time_notavailable : startTime,
-      end_time_notavailable:
-        endTime === "" ? time.end_time_notavailable : endTime,
+      start_time_notavailable: startTime === "" ? time.start_time_notavailable : startTime,
+      end_time_notavailable: endTime === "" ? time.end_time_notavailable : endTime,
     };
     console.log(info);
     axios.put(BASE_URL + "updateUnavailability", info).then((response) => {
@@ -684,39 +660,21 @@ function Availability() {
     let result = [];
     let result1 = [];
 
-    day.morning_start_time.slice(0, -6) === "" ||
-    day.morning_end_time.slice(0, -6) === ""
+    day.morning_start_time.slice(0, -6) === "" || day.morning_end_time.slice(0, -6) === ""
       ? (color = "")
-      : Number(day.morning_start_time.slice(0, -6)) <=
-          Number(convertTime12to24(i).slice(0, -3)) &&
-        Number(convertTime12to24(i).slice(0, -3)) <=
-          Number(day.morning_end_time.slice(0, -6))
+      : Number(day.morning_start_time.slice(0, -6)) <= Number(convertTime12to24(i).slice(0, -3)) && Number(convertTime12to24(i).slice(0, -3)) <= Number(day.morning_end_time.slice(0, -6))
       ? //(color = `${selectedView.color}`),
-        (result = range(
-          Number(day.morning_start_time.slice(0, -6)),
-          Number(day.morning_end_time.slice(0, -6))
-        ))
+        (result = range(Number(day.morning_start_time.slice(0, -6)), Number(day.morning_end_time.slice(0, -6))))
       : (color = "");
 
-    day.afternoon_start_time.slice(0, -6) === "" ||
-    day.afternoon_end_time.slice(0, -6) === ""
+    day.afternoon_start_time.slice(0, -6) === "" || day.afternoon_end_time.slice(0, -6) === ""
       ? (color = "")
-      : Number(day.afternoon_start_time.slice(0, -6)) <=
-          Number(convertTime12to24(i).slice(0, -3)) &&
-        Number(convertTime12to24(i).slice(0, -3)) <=
-          Number(day.afternoon_end_time.slice(0, -6))
+      : Number(day.afternoon_start_time.slice(0, -6)) <= Number(convertTime12to24(i).slice(0, -3)) && Number(convertTime12to24(i).slice(0, -3)) <= Number(day.afternoon_end_time.slice(0, -6))
       ? //(color = `${selectedView.color}`),
-        (result1 = range(
-          Number(day.afternoon_start_time.slice(0, -6)),
-          Number(day.afternoon_end_time.slice(0, -6))
-        ))
+        (result1 = range(Number(day.afternoon_start_time.slice(0, -6)), Number(day.afternoon_end_time.slice(0, -6))))
       : (color = "");
-    for (var j = 0; j < result.length - 1; j++)
-      if (result[j] === Number(convertTime12to24(i).slice(0, -3)))
-        color = "#d3a625";
-    for (var j = 0; j < result1.length - 1; j++)
-      if (result1[j] === Number(convertTime12to24(i).slice(0, -3)))
-        color = "#d3a625";
+    for (var j = 0; j < result.length - 1; j++) if (result[j] === Number(convertTime12to24(i).slice(0, -3))) color = "#d3a625";
+    for (var j = 0; j < result1.length - 1; j++) if (result1[j] === Number(convertTime12to24(i).slice(0, -3))) color = "#d3a625";
     return color;
   }
   //   console.log(isLoading);
@@ -726,15 +684,7 @@ function Availability() {
     let arr = [];
 
     for (let i = 6; i < 24; ++i) {
-      arr.push(
-        i === 0
-          ? "12AM"
-          : i === 12
-          ? i + "PM"
-          : i > 11
-          ? i - 12 + "PM"
-          : i + "AM"
-      );
+      arr.push(i === 0 ? "12AM" : i === 12 ? i + "PM" : i > 11 ? i - 12 + "PM" : i + "AM");
     }
     // console.log(arr);
     // console.log(Object.values(availabilityOnlineHours));
@@ -949,15 +899,7 @@ function Availability() {
     let arr = [];
 
     for (let i = 6; i < 24; ++i) {
-      arr.push(
-        i === 0
-          ? "12AM"
-          : i === 12
-          ? i + "PM"
-          : i > 11
-          ? i - 12 + "PM"
-          : i + "AM"
-      );
+      arr.push(i === 0 ? "12AM" : i === 12 ? i + "PM" : i > 11 ? i - 12 + "PM" : i + "AM");
     }
     // console.log(arr);
     // console.log(Object.values(availabilityOfficeHours));
@@ -1229,7 +1171,7 @@ function Availability() {
             >
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="sunday">Sunday</label>
+                  <label htmlFor='sunday'>Sunday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOnlineHours.map((day, idx) =>
@@ -1238,20 +1180,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="sunday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='sunday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleSundayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="sunday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='sunday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleSundayUpdateOnline(e, idx)}
                           />
@@ -1259,20 +1201,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="sunday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='sunday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleSundayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="sunday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='sunday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleSundayUpdateOnline(e, idx)}
                           />
@@ -1286,7 +1228,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="monday">Monday</label>
+                  <label htmlFor='monday'>Monday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOnlineHours.map((day, idx) =>
@@ -1295,20 +1237,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="monday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='monday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleMondayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="monday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='monday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleMondayUpdateOnline(e, idx)}
                           />
@@ -1316,20 +1258,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="monday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='monday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleMondayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="monday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='monday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleMondayUpdateOnline(e, idx)}
                           />
@@ -1343,7 +1285,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="tuesday">Tuesday</label>
+                  <label htmlFor='tuesday'>Tuesday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOnlineHours.map((day, idx) =>
@@ -1352,20 +1294,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="tuesday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='tuesday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleTuesdayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="tuesday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='tuesday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleTuesdayUpdateOnline(e, idx)}
                           />
@@ -1373,20 +1315,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="tuesday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='tuesday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleTuesdayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="tuesday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='tuesday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleTuesdayUpdateOnline(e, idx)}
                           />
@@ -1400,7 +1342,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="wednesday">Wednesday</label>
+                  <label htmlFor='wednesday'>Wednesday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOnlineHours.map((day, idx) =>
@@ -1409,51 +1351,43 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="wednesday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='wednesday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
-                            onChange={(e) =>
-                              handleWednesdayUpdateOnline(e, idx)
-                            }
+                            onChange={(e) => handleWednesdayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="wednesday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='wednesday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
-                            onChange={(e) =>
-                              handleWednesdayUpdateOnline(e, idx)
-                            }
+                            onChange={(e) => handleWednesdayUpdateOnline(e, idx)}
                           />
                         </Col>{" "}
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="wednesday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='wednesday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
-                            onChange={(e) =>
-                              handleWednesdayUpdateOnline(e, idx)
-                            }
+                            onChange={(e) => handleWednesdayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="wednesday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='wednesday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
-                            onChange={(e) =>
-                              handleWednesdayUpdateOnline(e, idx)
-                            }
+                            onChange={(e) => handleWednesdayUpdateOnline(e, idx)}
                           />
                         </Col>
                       </Row>
@@ -1465,7 +1399,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="thursday">Thursday</label>
+                  <label htmlFor='thursday'>Thursday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOnlineHours.map((day, idx) =>
@@ -1474,20 +1408,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="thursday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='thursday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleThursdayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="thursday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='thursday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleThursdayUpdateOnline(e, idx)}
                           />
@@ -1495,20 +1429,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="thursday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='thursday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleThursdayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="thursday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='thursday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleThursdayUpdateOnline(e, idx)}
                           />
@@ -1522,7 +1456,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="friday">Friday</label>
+                  <label htmlFor='friday'>Friday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOnlineHours.map((day, idx) =>
@@ -1531,20 +1465,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="friday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='friday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleFridayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="friday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='friday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleFridayUpdateOnline(e, idx)}
                           />
@@ -1552,20 +1486,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="friday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='friday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleFridayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="friday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='friday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleFridayUpdateOnline(e, idx)}
                           />
@@ -1579,7 +1513,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="saturday">Saturday</label>
+                  <label htmlFor='saturday'>Saturday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOnlineHours.map((day, idx) =>
@@ -1588,20 +1522,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="saturday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='saturday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleSaturdayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="saturday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='saturday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleSaturdayUpdateOnline(e, idx)}
                           />
@@ -1609,20 +1543,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="saturday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='saturday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleSaturdayUpdateOnline(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="saturday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='saturday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleSaturdayUpdateOnline(e, idx)}
                           />
@@ -1729,7 +1663,7 @@ function Availability() {
             >
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="sunday">Sunday</label>
+                  <label htmlFor='sunday'>Sunday</label>
                 </Col>
 
                 <Col className={classes.colData}>
@@ -1739,20 +1673,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="sunday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='sunday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleSundayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="sunday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='sunday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleSundayUpdateOffice(e, idx)}
                           />
@@ -1760,20 +1694,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="sunday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='sunday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleSundayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="sunday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='sunday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleSundayUpdateOffice(e, idx)}
                           />
@@ -1787,7 +1721,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="monday">Monday</label>
+                  <label htmlFor='monday'>Monday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOfficeHours.map((day, idx) =>
@@ -1796,20 +1730,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="monday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='monday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleMondayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="monday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='monday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleMondayUpdateOffice(e, idx)}
                           />
@@ -1817,20 +1751,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="monday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='monday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleMondayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="monday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='monday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleMondayUpdateOffice(e, idx)}
                           />
@@ -1844,7 +1778,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="tuesday">Tuesday</label>
+                  <label htmlFor='tuesday'>Tuesday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOfficeHours.map((day, idx) =>
@@ -1853,20 +1787,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="tuesday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='tuesday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleTuesdayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="tuesday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='tuesday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleTuesdayUpdateOffice(e, idx)}
                           />
@@ -1874,20 +1808,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="tuesday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='tuesday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleTuesdayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="tuesday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='tuesday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleTuesdayUpdateOffice(e, idx)}
                           />
@@ -1901,7 +1835,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="wednesday">Wednesday</label>
+                  <label htmlFor='wednesday'>Wednesday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOfficeHours.map((day, idx) =>
@@ -1910,51 +1844,43 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="wednesday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='wednesday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
-                            onChange={(e) =>
-                              handleWednesdayUpdateOffice(e, idx)
-                            }
+                            onChange={(e) => handleWednesdayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="wednesday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='wednesday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
-                            onChange={(e) =>
-                              handleWednesdayUpdateOffice(e, idx)
-                            }
+                            onChange={(e) => handleWednesdayUpdateOffice(e, idx)}
                           />
                         </Col>{" "}
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="wednesday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='wednesday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
-                            onChange={(e) =>
-                              handleWednesdayUpdateOffice(e, idx)
-                            }
+                            onChange={(e) => handleWednesdayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="wednesday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='wednesday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
-                            onChange={(e) =>
-                              handleWednesdayUpdateOffice(e, idx)
-                            }
+                            onChange={(e) => handleWednesdayUpdateOffice(e, idx)}
                           />
                         </Col>
                       </Row>
@@ -1966,7 +1892,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="thursday">Thursday</label>
+                  <label htmlFor='thursday'>Thursday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOfficeHours.map((day, idx) =>
@@ -1975,20 +1901,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="thursday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='thursday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleThursdayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="thursday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='thursday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleThursdayUpdateOffice(e, idx)}
                           />
@@ -1996,20 +1922,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="thursday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='thursday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleThursdayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="thursday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='thursday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleThursdayUpdateOffice(e, idx)}
                           />
@@ -2023,7 +1949,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="friday">Friday</label>
+                  <label htmlFor='friday'>Friday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOfficeHours.map((day, idx) =>
@@ -2032,20 +1958,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="friday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='friday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleFridayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="friday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='friday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleFridayUpdateOffice(e, idx)}
                           />
@@ -2053,20 +1979,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="friday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='friday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleFridayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="friday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='friday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleFridayUpdateOffice(e, idx)}
                           />
@@ -2080,7 +2006,7 @@ function Availability() {
               </Row>
               <Row className={classes.colTitle}>
                 <Col className={classes.colData} style={{ width: "10%" }}>
-                  <label htmlFor="saturday">Saturday</label>
+                  <label htmlFor='saturday'>Saturday</label>
                 </Col>
                 <Col className={classes.colData}>
                   {availabilityOfficeHours.map((day, idx) =>
@@ -2089,20 +2015,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="saturday"
-                            name="morning_start_time"
+                            type='time'
+                            step='2'
+                            id='saturday'
+                            name='morning_start_time'
                             defaultValue={day.morning_start_time}
                             onChange={(e) => handleSaturdayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="saturday"
-                            name="morning_end_time"
+                            type='time'
+                            step='2'
+                            id='saturday'
+                            name='morning_end_time'
                             defaultValue={day.morning_end_time}
                             onChange={(e) => handleSaturdayUpdateOffice(e, idx)}
                           />
@@ -2110,20 +2036,20 @@ function Availability() {
                         <Col className={classes.colData}>
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="saturday"
-                            name="afternoon_start_time"
+                            type='time'
+                            step='2'
+                            id='saturday'
+                            name='afternoon_start_time'
                             defaultValue={day.afternoon_start_time}
                             onChange={(e) => handleSaturdayUpdateOffice(e, idx)}
                           />
                           &nbsp; - &nbsp;
                           <input
                             className={classes.colDataTime}
-                            type="time"
-                            step="2"
-                            id="saturday"
-                            name="afternoon_end_time"
+                            type='time'
+                            step='2'
+                            id='saturday'
+                            name='afternoon_end_time'
                             defaultValue={day.afternoon_end_time}
                             onChange={(e) => handleSaturdayUpdateOffice(e, idx)}
                           />
@@ -2188,10 +2114,7 @@ function Availability() {
             </Row>
             <table style={{ width: "90%", border: "1px solid black" }}>
               <thead style={{ border: "1px solid black" }}>
-                <tr
-                  className={classes.colTitle}
-                  style={{ border: "1px solid black" }}
-                >
+                <tr className={classes.colTitle} style={{ border: "1px solid black" }}>
                   <th className={classes.tableCells}>Date</th>
                   <th className={classes.tableCells}>Start Time</th>
                   <th className={classes.tableCells}>End Time</th>
@@ -2200,18 +2123,15 @@ function Availability() {
               </thead>
               <tbody>
                 {unavailability.map((time) => (
-                  <tr
-                    className={classes.colTitle}
-                    style={{ border: "1px solid black" }}
-                  >
+                  <tr className={classes.colTitle} style={{ border: "1px solid black" }}>
                     <td className={classes.tableCells}>{time.date}</td>
                     <td className={classes.tableCells}>
                       {edit ? (
                         <input
-                          type="time"
-                          step="2"
-                          id="start_time_notavailable"
-                          name="start_time_notavailable"
+                          type='time'
+                          step='2'
+                          id='start_time_notavailable'
+                          name='start_time_notavailable'
                           defaultValue={time.start_time_notavailable}
                           onChange={(e) => setStartTime(e.target.value)}
                         />
@@ -2221,14 +2141,7 @@ function Availability() {
                     </td>
                     <td className={classes.tableCells}>
                       {edit ? (
-                        <input
-                          type="time"
-                          step="2"
-                          id="end_time_notavailable"
-                          name="end_time_notavailable"
-                          defaultValue={time.end_time_notavailable}
-                          onChange={(e) => setEndTime(e.target.value)}
-                        />
+                        <input type='time' step='2' id='end_time_notavailable' name='end_time_notavailable' defaultValue={time.end_time_notavailable} onChange={(e) => setEndTime(e.target.value)} />
                       ) : (
                         time.end_time_notavailable
                       )}
@@ -2242,7 +2155,7 @@ function Availability() {
                         }}
                       />
                       <EditSharpIcon
-                        size="lg"
+                        size='lg'
                         style={{ cursor: "pointer" }}
                         onClick={() => {
                           edit ? handleUpdate(time) : setEdit(!edit);
@@ -2266,14 +2179,9 @@ function Availability() {
         </Row>
       </div>
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={open} onClose={handleClose} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
             Add Time Off
           </Typography>
           <div
@@ -2283,64 +2191,30 @@ function Availability() {
               padding: "10px",
             }}
           >
-            <label for="date" className={classes.formLabels}>
+            <label for='date' className={classes.formLabels}>
               Date:
             </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={dateUnavailable}
-              onChange={(e) => setDateUnavailable(e.target.value)}
-              style={{ width: "50%", margin: "1rem" }}
-            />
+            <input type='date' id='date' name='date' value={dateUnavailable} onChange={(e) => setDateUnavailable(e.target.value)} style={{ width: "50%", margin: "1rem" }} />
 
-            <label for="stime" className={classes.formLabels}>
+            <label for='stime' className={classes.formLabels}>
               Start Time:
             </label>
-            <input
-              type="time"
-              id="stime"
-              name="stime"
-              step="2"
-              value={startTime}
-              onChange={(e) => setStartTime(e.target.value)}
-              style={{ width: "50%", margin: "1rem" }}
-            />
-            <label for="etime" className={classes.formLabels}>
+            <input type='time' id='stime' name='stime' step='2' value={startTime} onChange={(e) => setStartTime(e.target.value)} style={{ width: "50%", margin: "1rem" }} />
+            <label for='etime' className={classes.formLabels}>
               End Time:
             </label>
-            <input
-              type="time"
-              id="etime"
-              name="etime"
-              step="2"
-              value={endTime}
-              onChange={(e) => setEndTime(e.target.value)}
-              style={{ width: "50%", margin: "1rem" }}
-            />
+            <input type='time' id='etime' name='etime' step='2' value={endTime} onChange={(e) => setEndTime(e.target.value)} style={{ width: "50%", margin: "1rem" }} />
 
-            <button
-              className={classes.formButton}
-              onClick={() => addUnavailability()}
-            >
+            <button className={classes.formButton} onClick={() => addUnavailability()}>
               Submit
             </button>
           </div>
         </Box>
       </Modal>
-      <Modal
-        open={openDelete}
-        onClose={handleCloseDelete}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={openDelete} onClose={handleCloseDelete} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Are you sure you want to delete time off for{" "}
-            {selectedUnavailable.date} from{" "}
-            {selectedUnavailable.start_time_notavailable} to{" "}
-            {selectedUnavailable.end_time_notavailable}?
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
+            Are you sure you want to delete time off for {selectedUnavailable.date} from {selectedUnavailable.start_time_notavailable} to {selectedUnavailable.end_time_notavailable}?
           </Typography>
           <div
             style={{
@@ -2349,23 +2223,15 @@ function Availability() {
               padding: "10px",
             }}
           >
-            <button
-              className={classes.formButton}
-              onClick={() => handleDelete(selectedUnavailable.prac_avail_uid)}
-            >
+            <button className={classes.formButton} onClick={() => handleDelete(selectedUnavailable.prac_avail_uid)}>
               Submit
             </button>
           </div>
         </Box>
       </Modal>
-      <Modal
-        open={openUpdate}
-        onClose={handleCloseUpdate}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
+      <Modal open={openUpdate} onClose={handleCloseUpdate} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id='modal-modal-title' variant='h6' component='h2'>
             Practioner Availability Hours Updated
           </Typography>
           <div
@@ -2375,10 +2241,7 @@ function Availability() {
               padding: "10px",
             }}
           >
-            <button
-              className={classes.formButton}
-              onClick={() => handleCloseUpdate()}
-            >
+            <button className={classes.formButton} onClick={() => handleCloseUpdate()}>
               Close
             </button>
           </div>

@@ -22,7 +22,7 @@ const YellowRadio = withStyles({
     },
   },
   checked: {},
-})((props) => <Radio color="default" {...props} />);
+})((props) => <Radio color='default' {...props} />);
 
 const useStyles = makeStyles({
   calendarBox: {
@@ -95,7 +95,7 @@ export default function AppointmentPage(props) {
   const treatment_uid = treatmentID;
   useEffect(() => {
     if (servicesLoaded && serviceArr.length > 0) {
-      const selectedService = serviceArr.find(s => s.treatment_uid === treatmentID);
+      const selectedService = serviceArr.find((s) => s.treatment_uid === treatmentID);
       if (selectedService) {
         setElementToBeRendered(selectedService);
         duration.current = selectedService.duration;
@@ -104,7 +104,7 @@ export default function AppointmentPage(props) {
   }, [servicesLoaded, serviceArr, treatmentID]);
   useEffect(() => {
     if (servicesLoaded && elementToBeRendered) {
-      getAccessToken().then(at => {
+      getAccessToken().then((at) => {
         setAccessToken(at);
       });
     }
@@ -128,13 +128,7 @@ export default function AppointmentPage(props) {
 
   // This one is for
   const dateFormat1 = (date) => {
-    return (
-      doubleDigitMonth(date) +
-      "/" +
-      doubleDigitDay(date) +
-      "/" +
-      date.getFullYear()
-    );
+    return doubleDigitMonth(date) + "/" + doubleDigitDay(date) + "/" + date.getFullYear();
   };
 
   // This one is for the timeslotAPI call
@@ -155,26 +149,9 @@ export default function AppointmentPage(props) {
       "": "",
     };
     console.log("dateformat2", date);
-    console.log(
-      "dateformat2",
-      months[doubleDigitMonth(date)] +
-      " " +
-      doubleDigitDay(date) +
-      ", " +
-      date.getFullYear() +
-      " "
-    );
-    return (
-      months[doubleDigitMonth(date)] +
-      " " +
-      doubleDigitDay(date) +
-      ", " +
-      date.getFullYear() +
-      " "
-    );
+    console.log("dateformat2", months[doubleDigitMonth(date)] + " " + doubleDigitDay(date) + ", " + date.getFullYear() + " ");
+    return months[doubleDigitMonth(date)] + " " + doubleDigitDay(date) + ", " + date.getFullYear() + " ";
   };
-
- 
 
   const dateStringChange = (date) => {
     setDateString(dateFormat1(date));
@@ -182,24 +159,11 @@ export default function AppointmentPage(props) {
     setDateString1(dateFormat2(date));
     setDateHasBeenChanged(!dateHasBeenChanged);
   };
-   // This one is for doing the sendToDatabase Post Call
-   const dateFormat3 = (date) => {
+  // This one is for doing the sendToDatabase Post Call
+  const dateFormat3 = (date) => {
     console.log("dateformat3", date);
-    console.log(
-      "dateformat3",
-      date.getFullYear() +
-      "-" +
-      doubleDigitMonth(date) +
-      "-" +
-      doubleDigitDay(date)
-    );
-    return (
-      date.getFullYear() +
-      "-" +
-      doubleDigitMonth(date) +
-      "-" +
-      doubleDigitDay(date)
-    );
+    console.log("dateformat3", date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date));
+    return date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date);
   };
   const [apiDateString, setApiDateString] = useState(dateFormat3(currentDate));
   const [timeSlots, setTimeSlots] = useState([]);
@@ -213,63 +177,63 @@ export default function AppointmentPage(props) {
 
   let location = useLocation();
   let addons = [];
-  if(location.state !== undefined) {
+  if (location.state !== undefined) {
     addons = location.state;
   }
   const addons_list = () => {
     const addon_list = [];
     for (let i = 0; i < addons.length; i++) {
-      if(addons[i].selected) {
+      if (addons[i].selected) {
         const addon_uid = addons[i].therapy;
         for (let j = 0; j < serviceArr.length; j++) {
           const service = serviceArr[j];
-          if(addon_uid === service.treatment_uid) {
+          if (addon_uid === service.treatment_uid) {
             addon_list.push(service);
           }
         }
-      }      
+      }
     }
     return addon_list;
-  }
-  
+  };
+
   const getTotalCost = () => {
     let total = 0;
-    serviceArr.forEach(service => {
+    serviceArr.forEach((service) => {
       if (service.treatment_uid === treatment_uid) {
         total += costToInt(service.cost);
       }
     });
-    addons_list().forEach(addon => {
+    addons_list().forEach((addon) => {
       total += costToInt(addon.addon_cost);
     });
     return total;
-  }
+  };
   const getTotalDuration = () => {
     let total = 0;
-    serviceArr.forEach(service => {
+    serviceArr.forEach((service) => {
       if (service.treatment_uid === treatment_uid) {
         total += hoursToSeconds(service.duration);
       }
     });
-    addons_list().forEach(addon => {
+    addons_list().forEach((addon) => {
       total += hoursToSeconds(addon.duration);
     });
     return secondsToHours(total);
-  }
+  };
   console.log(addons_list());
-  
+
   const totalCost = getTotalCost();
   const totalDuration = getTotalDuration();
 
   function hoursToSeconds(value) {
     const splitedValue = value.split(":");
-    return parseInt(splitedValue[0])*(60*60)+parseInt(splitedValue[1])*60+parseInt(splitedValue[2])+1;
+    return parseInt(splitedValue[0]) * (60 * 60) + parseInt(splitedValue[1]) * 60 + parseInt(splitedValue[2]) + 1;
   }
   function secondsToHours(value) {
-    const hour = Math.floor(value/(60*60));    
-    const min = Math.floor((value%(60*60))/60);
-    const sec = (value%(60*60))%60;
-    return hour+':'+min+':'+sec;
+    const hour = Math.floor(value / (60 * 60));
+    const min = Math.floor((value % (60 * 60)) / 60);
+    const sec = (value % (60 * 60)) % 60;
+    return hour + ":" + min + ":" + sec;
   }
   function costToInt(cost_str) {
     return parseInt(cost_str.slice(1));
@@ -280,9 +244,9 @@ export default function AppointmentPage(props) {
     const min = parseInt(splitedValue[1]);
     const sec = parseInt(splitedValue[2]);
     let output = "";
-    output += hour !== 0 ? hour+"hr " : ""; 
-    output += min !== 0 ? min+"min " : ""; 
-    output += sec !== 0 ? sec+"sec " : ""; 
+    output += hour !== 0 ? hour + "hr " : "";
+    output += min !== 0 ? min + "min " : "";
+    output += sec !== 0 ? sec + "sec " : "";
     return output;
   }
 
@@ -324,8 +288,6 @@ export default function AppointmentPage(props) {
 
   // for appt
   //String formatting functions for the date variable
-
-  
 
   const dateChange = (date) => {
     setDate(date);
@@ -386,21 +348,9 @@ export default function AppointmentPage(props) {
       setTimeAASlots([]);
       let hoursMode = "";
       hoursMode = attendMode === "Online" ? "Online" : "Office";
-      let date =
-        apiDateString >
-          moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD")
-          ? apiDateString
-          : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
+      let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
-      const res = await axios
-        .get(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" +
-          date +
-          "/" +
-          duration.current +
-          "/" +
-          hoursMode
-      );
+      const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + hoursMode);
       let timeSlotsAA = [];
       if (JSON.stringify(res.data.result.length) > 0) {
         res.data.result.map((r) => {
@@ -408,8 +358,8 @@ export default function AppointmentPage(props) {
         });
       }
       setTimeAASlots(timeSlotsAA);
-    } catch(error) {
-      console.error("Error in getTimeAASlots: "+error);
+    } catch (error) {
+      console.error("Error in getTimeAASlots: " + error);
     } finally {
       setLoading(false);
     }
@@ -504,38 +454,32 @@ export default function AppointmentPage(props) {
         Accept: "application/json",
         Authorization: "Bearer " + accessToken,
       };
-      
-      let date =
-        apiDateString >
-          moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD")
-          ? apiDateString
-          : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
+
+      let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
-  
-      const morningTime =
-        attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
-      const eveningTime =
-        attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
-  
+
+      const morningTime = attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
+      const eveningTime = attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
+
       const data = {
         timeMin: date + morningTime,
         timeMax: date + eveningTime,
         items: [{ id: "primary" }],
       };
-  
-      const response = await axios.post(
-        `https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`,
-        data,
-        { headers: headers }
-      );
-      
+
+      const response = await axios.post(`https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`, data, { headers: headers });
+
       let busy = response.data.calendars.primary.busy;
       let start_time = Date.parse(date + morningTime) / 1000;
       let end_time = Date.parse(date + eveningTime) / 1000;
       let free = [];
       let appt_start_time = start_time;
       let seconds = convert(duration.current);
-  
+
+      console.log("Google Calendar busy times:", busy);
+      console.log("Start time:", start_time, "End time:", end_time);
+      console.log("Duration in seconds:", seconds);
+
       // List of single-booking-per-day therapy types
       const therapyTypes = [
         "Abhyanga",
@@ -551,46 +495,39 @@ export default function AppointmentPage(props) {
         "Abhyanga + Janu Basti (single knee)",
         "Abhyanga + Full-Body Steam + Kati Basti",
         "Abhyanga + Full-Body Steam + Hrud Basti",
-        "Abhyanga + Full-Body Steam + Janu Basti (single knee)"
+        "Abhyanga + Full-Body Steam + Janu Basti (single knee)",
       ];
-  
+
       // appointments v2
       const appointmentsResponse = await axios.get(`https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/appointments`);
       const allAppointments = appointmentsResponse.data.result || [];
-  
+
       // checking if any therapy type from the list is already booked on this date
-      const existingTherapyBookings = allAppointments.filter(
-        (appointment) =>
-          appointment.appt_date === date &&
-          therapyTypes.includes(appointment.title) 
-      );
-      console.log("therapies booked",existingTherapyBookings)
+      const existingTherapyBookings = allAppointments.filter((appointment) => appointment.appt_date === date && therapyTypes.includes(appointment.title));
+      console.log("therapies booked", existingTherapyBookings);
       // Main loop to check each available slot
       while (appt_start_time < end_time) {
         let appt_end_time = appt_start_time + seconds;
         let slot_available = true;
-  
+
         // Checking if the slot overlaps with any existing busy times
         busy.forEach((times) => {
           let this_start = Date.parse(times["start"]) / 1000;
           let this_end = Date.parse(times["end"]) / 1000;
-          if (
-            (appt_start_time >= this_start && appt_start_time < this_end) ||
-            (appt_end_time > this_start && appt_end_time <= this_end)
-          ) {
+          if ((appt_start_time >= this_start && appt_start_time < this_end) || (appt_end_time > this_start && appt_end_time <= this_end)) {
             slot_available = false;
             return;
           }
         });
-  
+
         // the selected therapy type from the UI or booking context (clientside)
-        const selectedTherapyType = elementToBeRendered.title; 
-        console.log("selectedTherapy:",selectedTherapyType);
+        const selectedTherapyType = elementToBeRendered.title;
+        console.log("selectedTherapy:", selectedTherapyType);
         // checking an existing booking for the selected therapy type
-        const isTherapyAlreadyBooked = existingTherapyBookings.some(
-          (appointment) => appointment.category === "Therapy"
-        );
-  
+        const isTherapyAlreadyBooked = existingTherapyBookings.some((appointment) => appointment.category === "Therapy");
+        console.log("isTherapyAlreadyBooked:", isTherapyAlreadyBooked);
+        console.log("existingTherapyBookings:", existingTherapyBookings);
+
         //  no existing booking of the selected therapy type, add it
         if (slot_available) {
           if (isTherapyAlreadyBooked && therapyTypes.includes(selectedTherapyType)) {
@@ -599,11 +536,11 @@ export default function AppointmentPage(props) {
             free.push(moment(new Date(appt_start_time * 1000)).format("HH:mm:ss"));
           }
         }
-  
+
         //  next slot in 30-minute
         appt_start_time += 60 * 30;
       }
-  
+
       console.log("Available time slots:", free);
       setTimeSlots(free);
     } catch (error) {
@@ -612,15 +549,23 @@ export default function AppointmentPage(props) {
       setLoading(false);
     }
   };
-  
 
   function renderAvailableApptsVertical() {
     console.log("TimeSlots", timeSlots);
     console.log("TimeSlotsAA", timeAASlots);
-    
+    console.log("TimeSlots length:", timeSlots.length);
+    console.log("TimeSlotsAA length:", timeAASlots.length);
+
     let result = timeSlots.filter((o1) => timeAASlots.some((o2) => o1 === o2));
 
     console.log("Merged", result, selectedButton);
+
+    // If no merged results but we have AA slots, use those instead
+    if (result.length === 0 && timeAASlots.length > 0) {
+      console.log("No merged results, using AA slots directly");
+      result = timeAASlots;
+    }
+
     // if (!isTimeslotsLoaded) {
     //   return <div>Loading timeslots...</div>;
     // }
@@ -656,23 +601,16 @@ export default function AppointmentPage(props) {
             );
           })
         ) : (
-          <div className="ApptPageHeader">
+          <div className='ApptPageHeader'>
             {attendMode === "Online" ? (
-              <div>
-                No online appointments are available. Please choose another
-                date.
-              </div>
+              <div>No online appointments are available. Please choose another date.</div>
             ) : (
-              <div>
-                No in-person appointments are available. Please choose another
-                date or check for online appointments.
-              </div>
+              <div>No in-person appointments are available. Please choose another date or check for online appointments.</div>
             )}
           </div>
         )}
       </Grid>
     );
-    
   }
   const handleMode = (event) => {
     setTimeSlots([]);
@@ -722,8 +660,7 @@ export default function AppointmentPage(props) {
       const old_at = response["data"]["user_access_token"];
       const refreshToken = response["data"]["user_refresh_token"];
       try {
-        await axios
-          .get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`);
+        await axios.get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`);
         setAccessToken(old_at);
       } catch (error) {
         var properties = {
@@ -739,14 +676,11 @@ export default function AppointmentPage(props) {
           formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
-        const tokenResponse = await 
-          axios.post("https://accounts.google.com/o/oauth2/token",
-          formBody, {
-            headers: {
-              "Content-Type":
-                "application/x-www-form-urlencoded;charset=UTF-8",
-            }
-          });
+        const tokenResponse = await axios.post("https://accounts.google.com/o/oauth2/token", formBody, {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+          },
+        });
         const at = tokenResponse["data"]["access_token"];
         setAccessToken(at);
         const url = BASE_URL + "UpdateAccessToken/";
@@ -754,7 +688,7 @@ export default function AppointmentPage(props) {
           user_access_token: at,
         });
       }
-    } catch(error) {
+    } catch (error) {
       console.error("Error in getAccessToken: " + error);
     }
   };
@@ -780,30 +714,30 @@ export default function AppointmentPage(props) {
   //   }
   // };
   const onChange = async () => {
-    if (servicesLoaded){
+    if (servicesLoaded) {
       console.log("here 803");
       console.log(servicesLoaded, apiDateString, duration.current);
       setCalDisabled(true); // Disable calendar interactions while loading
-    try {
-      if(isFirstLoad.current) {
-        serviceArr.forEach(service => {
-          if (service.treatment_uid === treatment_uid) {
-            setElementToBeRendered(service);
-            duration.current = service.duration;
-          }
-        });
-        isFirstLoad.current = false;
-        await getAccessToken(); // Fetch access token
+      try {
+        if (isFirstLoad.current) {
+          serviceArr.forEach((service) => {
+            if (service.treatment_uid === treatment_uid) {
+              setElementToBeRendered(service);
+              duration.current = service.duration;
+            }
+          });
+          isFirstLoad.current = false;
+          await getAccessToken(); // Fetch access token
+        }
+
+        await getTimeSlots(); // Fetch main time slots
+        await getTimeAASlots(); // Fetch additional availability slots
+      } catch (error) {
+        console.error("Error in onChange:", error);
+      } finally {
+        setCalDisabled(false); // Re-enable calendar interactions
       }
-  
-      await getTimeSlots(); // Fetch main time slots
-      await getTimeAASlots(); // Fetch additional availability slots
-    } catch (error) {
-      console.error("Error in onChange:", error);
-    } finally {
-      setCalDisabled(false); // Re-enable calendar interactions
     }
-  }
   };
   // useEffect(() => {
   //     console.log("onchange");
@@ -815,40 +749,36 @@ export default function AppointmentPage(props) {
     }
   }, [servicesLoaded, elementToBeRendered, accessToken, duration, apiDateString, attendMode]);
   return (
-    <div className="HomeContainer">
+    <div className='HomeContainer'>
       <ScrollToTop />
       <Helmet>
         <title>Book an Appointment</title>
-        <meta
-          name="description"
-          content="Book an Appointment that's convenient to you"
-        />
-        <link rel="canonical" href="/appointmentpage" />
-
+        <meta name='description' content="Book an Appointment that's convenient to you" />
+        <link rel='canonical' href='/appointmentpage' />
       </Helmet>
       <br />
       {bookNowClicked ? (
         <div>
-          <div className="Card">
-            <div className="CardGrid">
+          <div className='Card'>
+            <div className='CardGrid'>
               <div>
-                <div className="ApptPageTitle">{elementToBeRendered.title}</div>
-                <div className="ApptPageText">
+                <div className='ApptPageTitle'>{elementToBeRendered.title}</div>
+                <div className='ApptPageText'>
                   {elementToBeRendered.description} <br />
                 </div>
-                <div className="ApptPageHeader">
-                  {parseDuration(elementToBeRendered.duration)} |{" "}
-                  {elementToBeRendered.cost}
+                <div className='ApptPageHeader'>
+                  {parseDuration(elementToBeRendered.duration)} | {elementToBeRendered.cost}
                 </div>
-                <div className="ApptPageText">
-                  {addons_list().map(addon=> (
-                    <div>{"+ "} {addon.title} | {durationToString(secondsToHours(hoursToSeconds(addon.duration)))} | {addon.addon_cost}</div>
+                <div className='ApptPageText'>
+                  {addons_list().map((addon) => (
+                    <div>
+                      {"+ "} {addon.title} | {durationToString(secondsToHours(hoursToSeconds(addon.duration)))} | {addon.addon_cost}
+                    </div>
                   ))}
-                </div>              
-                <div className="ApptPageHeader">
-                    Total: ${totalCost} | {durationToString(totalDuration)}
                 </div>
-                
+                <div className='ApptPageHeader'>
+                  Total: ${totalCost} | {durationToString(totalDuration)}
+                </div>
 
                 <div style={{ margin: "2rem" }}>
                   <img
@@ -857,7 +787,7 @@ export default function AppointmentPage(props) {
                       height: "100%",
                       objectFit: "cover",
                     }}
-                    variant="top"
+                    variant='top'
                     src={elementToBeRendered.image_url}
                     alt={"An image of" + elementToBeRendered.title}
                   />
@@ -866,7 +796,7 @@ export default function AppointmentPage(props) {
 
               {/* Right hand side of the Container */}
               <div className={classes.calendarBox}>
-                <div className="TitleFontAppt">Pick an Appointment Type</div>
+                <div className='TitleFontAppt'>Pick an Appointment Type</div>
                 <div
                   style={{
                     display: "flex",
@@ -877,40 +807,20 @@ export default function AppointmentPage(props) {
                     marginBottom: "2rem",
                   }}
                 >
-                  <FormControlLabel
-                    control={
-                      <YellowRadio
-                        checked={mode.inPerson}
-                        onChange={(e) => handleMode(e)}
-                        name="inPerson"
-                      />
-                    }
-                    label="In-person"
-                  />
-                  <FormControlLabel
-                    control={
-                      <YellowRadio
-                        checked={mode.online}
-                        onChange={(e) => handleMode(e)}
-                        name="online"
-                      />
-                    }
-                    label="Online"
-                  />
+                  <FormControlLabel control={<YellowRadio checked={mode.inPerson} onChange={(e) => handleMode(e)} name='inPerson' />} label='In-person' />
+                  <FormControlLabel control={<YellowRadio checked={mode.online} onChange={(e) => handleMode(e)} name='online' />} label='Online' />
                 </div>
-                <div className="TitleFontAppt">Pick an Appointment Date</div>
+                <div className='TitleFontAppt'>Pick an Appointment Date</div>
                 {console.log("(Calendar) date: ", minDate)}
                 <Calendar
-                  calendarType="US"
+                  calendarType='US'
                   onClickDay={dateChange}
                   value={date}
                   minDate={minDate}
                   next2Label={null}
                   prev2Label={null}
-                  tileDisabled={()=>isCalDisabled}
-                  className={
-                    isCalDisabled?classes.calDisabled:""
-                  }
+                  tileDisabled={() => isCalDisabled}
+                  className={isCalDisabled ? classes.calDisabled : ""}
                 />
               </div>
             </div>
@@ -925,18 +835,17 @@ export default function AppointmentPage(props) {
                   marginBottom: "2rem",
                 }}
               >
-                <div className="TitleFontAppt">Pick an Appointment Time</div>
-                <div className="BodyFontAppt">Pacific Standard Time</div>
+                <div className='TitleFontAppt'>Pick an Appointment Time</div>
+                <div className='BodyFontAppt'>Pacific Standard Time</div>
               </div>
 
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: "2rem" }}>
-  {loading ? (
-    <div className="loader"></div> // The loading spinner
-  ) : (
-    renderAvailableApptsVertical() // Render available appointments if not loading
-  )}
-</div>
-
+                {loading ? (
+                  <div className='loader'></div> // The loading spinner
+                ) : (
+                  renderAvailableApptsVertical() // Render available appointments if not loading
+                )}
+              </div>
 
               <div style={{ padding: "3%" }} hidden={!buttonSelect || !selectedTime}>
                 <button
