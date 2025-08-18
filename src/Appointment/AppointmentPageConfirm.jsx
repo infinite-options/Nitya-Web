@@ -8,11 +8,10 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import axios from "axios";
 import StripeElement from "./StripeElement";
 import moment from "moment";
+import "moment-timezone";
 import { MyContext } from "../App";
 import { Link, useHistory } from "react-router-dom";
-import {
-  Button,
-} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 import SimpleForm from "./simpleForm";
 import SimpleFormText from "./simpleFormText";
@@ -20,6 +19,28 @@ import ScrollToTop from "../Blog/ScrollToTop";
 import Popup from "../Popup/Popup";
 import "./calendar.css";
 import "../Appointment/AppointmentPage.css";
+
+// Timezone utility functions
+const getUserTimezone = () => {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+};
+
+const convertFromPST = (pstTime, date) => {
+  // Create a moment object in PST
+  const pstDateTime = moment.tz(date + "T" + pstTime, "America/Los_Angeles");
+  // Convert to user's local timezone
+  const localDateTime = pstDateTime.tz(getUserTimezone());
+  return localDateTime.format("HH:mm:ss");
+};
+
+const getTimezoneAbbreviation = () => {
+  const tz = getUserTimezone();
+  if (tz.includes("America/New_York")) return "EST";
+  if (tz.includes("America/Chicago")) return "CST";
+  if (tz.includes("America/Denver")) return "MST";
+  if (tz.includes("America/Los_Angeles")) return "PST";
+  return tz.replace("America/", "").replace("_", "");
+};
 
 // import moment from "moment";
 const YellowRadio = withStyles({
@@ -30,7 +51,7 @@ const YellowRadio = withStyles({
     },
   },
   checked: {},
-})((props) => <Radio color="default" {...props} />);
+})((props) => <Radio color='default' {...props} />);
 
 const useStyles = makeStyles({
   container: {
@@ -201,7 +222,7 @@ export default function AppointmentPage(props) {
   });
   const required =
     errorMessage === "Please fill out all fields" ? (
-      <span className="ms-1" style={{ color: "red", fontSize: "12px" }}>
+      <span className='ms-1' style={{ color: "red", fontSize: "12px" }}>
         *
       </span>
     ) : (
@@ -289,9 +310,7 @@ export default function AppointmentPage(props) {
     }
 
     if (email !== 0) {
-      if (
-        !email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-      ) {
+      if (!email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
         setErrorMessage("Please enter a valid email.");
         return;
       }
@@ -398,22 +417,36 @@ export default function AppointmentPage(props) {
     }
   }
 
+  // Enhanced formatTime function that shows only the user's time in their timezone
+  function formatTimeWithTimezone(date, time) {
+    if (time == null) {
+      return "?";
+    } else {
+      // Convert PST time to user's local timezone
+      const localTime = convertFromPST(time, date);
+      const localFormatted = formatTime(date, localTime);
+
+      // Show only the user's time in their timezone
+      return `${localFormatted} ${getTimezoneAbbreviation()}`;
+    }
+  }
+
   const handleDialogClose = () => {
     setShowDialog(false);
   };
 
   return (
-    <div className="HomeContainer">
+    <div className='HomeContainer'>
       <ScrollToTop />
       <Popup showDialog={showDialog} onClose={handleDialogClose} title={dialogTitle} text={dialogText} />
       <br />
       {bookNowClicked || location.state.signedin ? (
-        <div className="Card" style={{ alignItems: "center" }}>
+        <div className='Card' style={{ alignItems: "center" }}>
           <div className={classes.container}>
             <div>
               <div>
                 <div className={classes.selectTime2}>
-                  <div className="TitleFontAppt">Appointment scheduled for:</div>
+                  <div className='TitleFontAppt'>Appointment scheduled for:</div>
                 </div>
                 <br></br>
 
@@ -425,13 +458,26 @@ export default function AppointmentPage(props) {
                   }}
                 >
                   <span>
-                    {moment(location.state.date).format("ll")} at {formatTime(location.state.date, location.state.time)} - {location.state.mode}
+                    {moment(location.state.date).format("ll")} at {formatTimeWithTimezone(location.state.date, location.state.time)} - {location.state.mode}
                   </span>
                 </h1>
+                <div
+                  style={{
+                    fontSize: "16px",
+                    margin: "10px auto",
+                    textAlign: "center",
+                    color: "#666",
+                    fontStyle: "italic",
+                  }}
+                >
+                  <span>
+                    Your time: {formatTime(location.state.date, convertFromPST(location.state.time, location.state.date))} {getTimezoneAbbreviation()}
+                  </span>
+                </div>
               </div>
             </div>
             <br />
-            <div className="ApptConfirmContainer">
+            <div className='ApptConfirmContainer'>
               <div>
                 <p className={classes.content2} style={{ textAlign: "left" }}>
                   <span
@@ -444,7 +490,7 @@ export default function AppointmentPage(props) {
                   <br />
                   {durationText} | {totalCost}
                 </p>
-                <img src={elementToBeRendered.image_url} className={classes.img} style={{ objectFit: "cover", textAlign: "left" }} alt="" />
+                <img src={elementToBeRendered.image_url} className={classes.img} style={{ objectFit: "cover", textAlign: "left" }} alt='' />
                 <br />
                 <br />
                 <p className={classes.content2} style={{ textAlign: "left" }}>
@@ -456,7 +502,7 @@ export default function AppointmentPage(props) {
                   Office: (408) 471-7004
                 </p>
               </div>
-              <div className="ApptConfirmTextBox">
+              <div className='ApptConfirmTextBox'>
                 <div
                   style={{
                     marginBottom: "10px",
@@ -465,8 +511,8 @@ export default function AppointmentPage(props) {
                 >
                   {firstName === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Enter First Name"
+                    name='variable'
+                    placeholder='Enter First Name'
                     value={firstName}
                     onChange={handleFirstNameChange}
                     style={{
@@ -484,8 +530,8 @@ export default function AppointmentPage(props) {
                   {required ? "" : <span>&nbsp;</span>}
                   {lastName === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Enter Last Name"
+                    name='variable'
+                    placeholder='Enter Last Name'
                     value={lastName}
                     onChange={handleLastNameChange}
                     style={{
@@ -510,13 +556,13 @@ export default function AppointmentPage(props) {
                     marginBottom: "10px",
                   }}
                 >
-                  <FormControlLabel control={<YellowRadio checked={gender.female} onChange={(e) => handleGender(e)} name="female" />} label="Female" />
-                  <FormControlLabel control={<YellowRadio checked={gender.male} onChange={(e) => handleGender(e)} name="male" />} label="Male" />
+                  <FormControlLabel control={<YellowRadio checked={gender.female} onChange={(e) => handleGender(e)} name='female' />} label='Female' />
+                  <FormControlLabel control={<YellowRadio checked={gender.male} onChange={(e) => handleGender(e)} name='male' />} label='Male' />
                   {/* <SimpleForm field="Age" onHandleChange={handleAgeChange} /> */}
                   {age === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Age"
+                    name='variable'
+                    placeholder='Age'
                     value={age}
                     onChange={(e) => handleAgeChange(e)}
                     style={{
@@ -549,8 +595,8 @@ export default function AppointmentPage(props) {
                   /> */}
                   {email === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Email Address"
+                    name='variable'
+                    placeholder='Email Address'
                     value={email}
                     // pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                     onChange={(e) => handleEmailChange(e)}
@@ -580,10 +626,10 @@ export default function AppointmentPage(props) {
                   /> */}
                   {phoneNum === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Phone Number - 10 digits only"
+                    name='variable'
+                    placeholder='Phone Number - 10 digits only'
                     value={phoneNum}
-                    maxLength="10"
+                    maxLength='10'
                     onChange={(e) => handlePhoneNumChange(e)}
                     style={{
                       padding: "10px",
@@ -609,10 +655,10 @@ export default function AppointmentPage(props) {
                     onHandleChange={handleNotesChange}
                   /> */}
                   <input
-                    name="variable"
-                    placeholder="Type your message here"
+                    name='variable'
+                    placeholder='Type your message here'
                     value={notes}
-                    maxLength="100"
+                    maxLength='100'
                     onChange={(e) => handleNotesChange(e)}
                     style={{
                       padding: "10px",
@@ -646,7 +692,7 @@ export default function AppointmentPage(props) {
                     email={email}
                     phoneNum={phoneNum}
                     date={moment(location.state.date).format("ll")}
-                    selectedTime={formatTime(location.state.date, location.state.time)}
+                    selectedTime={formatTimeWithTimezone(location.state.date, location.state.time)}
                     mode={location.state.mode}
                     age={age}
                     gender={selectGender}
@@ -658,7 +704,7 @@ export default function AppointmentPage(props) {
                     image_url={elementToBeRendered.image_url}
                   />
                 </div>
-                <div className="text-center" style={errorMessage === "" ? { visibility: "hidden" } : {}}>
+                <div className='text-center' style={errorMessage === "" ? { visibility: "hidden" } : {}}>
                   <p style={{ color: "red", fontSize: "12px" }}>{errorMessage || "error"}</p>
                 </div>
                 <div
@@ -668,11 +714,8 @@ export default function AppointmentPage(props) {
                     justifyContent: "center",
                   }}
                 >
-                  <Link
-                to={{ pathname: "/waiver"}}
-                className="nav-link"
-              >
-                {/* <button
+                  <Link to={{ pathname: "/waiver" }} className='nav-link'>
+                    {/* <button
                   className={classes.bookButton}
                   variant="contained"
                   component="span"
@@ -681,7 +724,7 @@ export default function AppointmentPage(props) {
                 >
                   Waiver
                 </button> */}
-              </Link>
+                  </Link>
                 </div>
                 <div
                   aria-label={"click button to book your appointment"}
@@ -690,9 +733,7 @@ export default function AppointmentPage(props) {
                     justifyContent: "center",
                   }}
                 >
-                  <button 
-                    className={classes.bookButton}
-                    hidden={infoSubmitted} onClick={toggleKeys}>
+                  <button className={classes.bookButton} hidden={infoSubmitted} onClick={toggleKeys}>
                     Book Appointment
                   </button>
                 </div>

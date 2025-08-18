@@ -7,12 +7,43 @@ import { useParams } from "react-router";
 import { Radio } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import moment from "moment";
+import "moment-timezone";
 import Grid from "@material-ui/core/Grid";
 import Calendar from "react-calendar";
 import { MyContext } from "../App";
 import ScrollToTop from "../Blog/ScrollToTop";
 import "./calendar.css";
 import "../Appointment/AppointmentPage.css";
+
+// Timezone utility functions
+const getUserTimezone = () => {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+};
+
+const convertToPST = (localTime, localDate) => {
+  // Create a moment object in the user's local timezone
+  const localDateTime = moment.tz(localDate + "T" + localTime, getUserTimezone());
+  // Convert to PST
+  const pstDateTime = localDateTime.tz("America/Los_Angeles");
+  return pstDateTime.format("HH:mm:ss");
+};
+
+const convertFromPST = (pstTime, date) => {
+  // Create a moment object in PST
+  const pstDateTime = moment.tz(date + "T" + pstTime, "America/Los_Angeles");
+  // Convert to user's local timezone
+  const localDateTime = pstDateTime.tz(getUserTimezone());
+  return localDateTime.format("HH:mm:ss");
+};
+
+const getTimezoneAbbreviation = () => {
+  const tz = getUserTimezone();
+  if (tz.includes("America/New_York")) return "EST";
+  if (tz.includes("America/Chicago")) return "CST";
+  if (tz.includes("America/Denver")) return "MST";
+  if (tz.includes("America/Los_Angeles")) return "PST";
+  return tz.replace("America/", "").replace("_", "");
+};
 
 const YellowRadio = withStyles({
   root: {
@@ -309,27 +340,6 @@ export default function AppointmentPage(props) {
     if (time == null) {
       return "?";
     } else {
-      // time = time.split(":");
-      // // fetch
-      // var hours = Number(time[0]);
-      // var minutes = Number(time[1]);
-      // var seconds = Number(time[2]);
-
-      // // calculate
-      // var strTime;
-
-      // if (hours > 0 && hours <= 12) {
-      //   strTime = "" + hours;
-      // } else if (hours > 12) {
-      //   strTime = "" + (hours - 12);
-      // } else if (hours == 0) {
-      //   strTime = "12";
-      // }
-
-      // strTime += minutes < 10 ? ":0" + minutes : ":" + minutes; // get minutes
-      // strTime += seconds < 10 ? ":0" + seconds : ":" + seconds; // get seconds
-      // strTime += hours >= 12 ? " P.M." : " A.M."; // get AM/PM
-
       var newDate = new Date((date + "T" + time).replace(/\s/, "T"));
       var hours = newDate.getHours();
       var minutes = newDate.getMinutes();
@@ -342,6 +352,21 @@ export default function AppointmentPage(props) {
       return strTime;
     }
   }
+
+  // Enhanced formatTime function that shows only the user's time in their timezone
+  function formatTimeWithTimezone(date, time) {
+    if (time == null) {
+      return "?";
+    } else {
+      // Convert PST time to user's local timezone
+      const localTime = convertFromPST(time, date);
+      const localFormatted = formatTime(date, localTime);
+
+      // Show only the user's time in their timezone
+      return `${localFormatted} ${getTimezoneAbbreviation()}`;
+    }
+  }
+
   const getTimeAASlots = async () => {
     try {
       setLoading(true);
@@ -364,87 +389,7 @@ export default function AppointmentPage(props) {
       setLoading(false);
     }
   };
-  //  original getTimeSLots function before change
-  // const getTimeSlots = async () => {
-  //   try {
-  //     setTimeSlots([]);
-  //     const headers = {
-  //       "Content-Type": "application/json",
-  //       Accept: "application/json",
-  //       Authorization: "Bearer " + accessToken,
-  //     };
-  //     let date =
-  //       apiDateString >
-  //         moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD")
-  //         ? apiDateString
-  //         : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
-  //     setApiDateString(date);
-  //     const morningTime =
-  //       attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
-  //     const eveningTime =
-  //       attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
-  //     const data = {
-  //       timeMin: date + morningTime,
-  //       timeMax: date + eveningTime,
-  //       items: [
-  //         {
-  //           id: "primary",
-  //         },
-  //       ],
-  //     };
-  //     const response = await axios
-  //       .post(`https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`,
-  //       data, {
-  //         headers: headers,
-  //       }
-  //     );
-  //     let busy = response.data.calendars.primary.busy;
-  //     let start_time = Date.parse(date + morningTime) / 1000;
-  //     let end_time = Date.parse(date + eveningTime) / 1000;
-  //     let free = [];
-  //     let appt_start_time = start_time;
-  //     let seconds = convert(duration.current);
-  //     // Loop through each appt slot in the search range.
-  //     while (appt_start_time < end_time) {
-  //       // Add appt duration to the appt start time so we know where the appt will end.
-  //       let appt_end_time = appt_start_time + seconds;
-  //       // For each appt slot, loop through the current appts to see if it falls
-  //       // in a slot that is already taken.
-  //       let slot_available = true;
-  //       busy.forEach((times) => {
-  //         let this_start = Date.parse(times["start"]) / 1000;
-  //         let this_end = Date.parse(times["end"]) / 1000;
-  //         console.log(
-  //           "freebusy busy times",
-  //           busy,
-  //           times["start"],
-  //           times["end"]
-  //         );
-  //         // If the appt start time or appt end time falls on a current appt, slot is taken.
-  //         if (
-  //           (appt_start_time >= this_start && appt_start_time < this_end) ||
-  //           (appt_end_time > this_start && appt_end_time <= this_end)
-  //         ) {
-  //           slot_available = false;
-  //           return; // No need to continue if it's taken.
-  //         }
-  //       });
-  //       console.log("freebusy", free);
-  //       // If we made it through all appts and the slot is still available, it's an open slot.
-  //       if (slot_available) {
-  //         free.push(
-  //           moment(new Date(appt_start_time * 1000)).format("HH:mm:ss")
-  //         );
-  //       }
-  //       // + duration minutes
-  //       appt_start_time += 60 * 30;
-  //     }
-  //     console.log("freebusy", free);
-  //     setTimeSlots(free);
-  //   } catch(error) {
-  //     console.error("Error in getTimeSlots: "+error);
-  //   }
-  // };
+
   const getTimeSlots = async () => {
     try {
       setLoading(true);
@@ -596,7 +541,7 @@ export default function AppointmentPage(props) {
                 }}
                 onClick={() => selectApptTime(element, i)}
               >
-                {formatTime(apiDateString, element)}
+                {formatTimeWithTimezone(apiDateString, element)}
               </button>
             );
           })
@@ -693,26 +638,6 @@ export default function AppointmentPage(props) {
     }
   };
 
-  // const onChange = async () => {
-  //   if (servicesLoaded) {
-  //     setCalDisabled(true);
-  //     setIsTimeslotsLoaded(false);
-  //     if(isFirstLoad.current) {
-  //       serviceArr.forEach(service => {
-  //         if (service.treatment_uid === treatment_uid) {
-  //           setElementToBeRendered(service);
-  //           duration.current = service.duration;
-  //         }
-  //       });
-  //       isFirstLoad.current = false;
-  //       await getAccessToken();
-  //     }
-  //     await getTimeSlots();
-  //     await getTimeAASlots();
-  //     setIsTimeslotsLoaded(true);
-  //     setCalDisabled(false);
-  //   }
-  // };
   const onChange = async () => {
     if (servicesLoaded) {
       console.log("here 803");
@@ -739,15 +664,13 @@ export default function AppointmentPage(props) {
       }
     }
   };
-  // useEffect(() => {
-  //     console.log("onchange");
-  //     onChange();
-  // }, [servicesLoaded, dateHasBeenChanged, attendMode]);
+
   useEffect(() => {
     if (servicesLoaded && elementToBeRendered && accessToken && duration.current && apiDateString) {
       onChange();
     }
   }, [servicesLoaded, elementToBeRendered, accessToken, duration, apiDateString, attendMode]);
+
   return (
     <div className='HomeContainer'>
       <ScrollToTop />
@@ -836,7 +759,7 @@ export default function AppointmentPage(props) {
                 }}
               >
                 <div className='TitleFontAppt'>Pick an Appointment Time</div>
-                <div className='BodyFontAppt'>Pacific Standard Time</div>
+                <div className='BodyFontAppt'>Times shown in your timezone ({getTimezoneAbbreviation()})</div>
               </div>
 
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: "2rem" }}>
@@ -854,7 +777,7 @@ export default function AppointmentPage(props) {
                       pathname: `/${treatmentID}/confirm`,
                       state: {
                         date: apiDateString,
-                        time: selectedTime,
+                        time: selectedTime, // This is already in PST from the backend
                         mode: attendMode,
                         accessToken: accessToken,
                         totalCost: totalCost,

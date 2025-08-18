@@ -4,6 +4,48 @@ import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
+import "moment-timezone";
+
+// Loading spinner component
+const LoadingSpinner = () => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "20px",
+    }}
+  >
+    <div
+      className='loader'
+      style={{
+        border: "4px solid #f3f3f3",
+        borderTop: "4px solid #D3A625",
+        borderRadius: "50%",
+        width: "40px",
+        height: "40px",
+        animation: "spin 1s linear infinite",
+        marginBottom: "15px",
+      }}
+    ></div>
+    <div
+      style={{
+        color: "#D3A625",
+        fontSize: "16px",
+        fontWeight: "500",
+      }}
+    >
+      Processing Payment...
+    </div>
+    <style>{`
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `}</style>
+  </div>
+);
 const useStyles = makeStyles({
   container: {
     margin: "50px auto",
@@ -104,6 +146,8 @@ export default function Scheduler(props) {
   // for hide and show
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  // for loading state
+  const [isProcessing, setIsProcessing] = useState(false);
 
   //String formatting functions for the date variable
   const doubleDigitMonth = (date) => {
@@ -151,6 +195,30 @@ export default function Scheduler(props) {
     return `${time}`;
   };
 
+  // Enhanced timezone-aware time conversion
+  const convertTimeWithTimezone = (time12h, date) => {
+    // The time coming from the backend is already in PST
+    // We need to ensure the Google Calendar event is created in PST
+    let time = time12h.slice(0, -3);
+    let modifier = time12h.slice(-2);
+
+    if (time === "12") {
+      time = "00";
+    }
+
+    if (modifier === "PM" || modifier === "pm") {
+      time = parseInt(time, 10) + 12;
+    }
+
+    // Format as HH:MM:SS
+    const formattedTime = `${time.toString().padStart(2, "0")}:00:00`;
+
+    // Create a moment object in PST
+    const pstDateTime = moment.tz(date + "T" + formattedTime, "America/Los_Angeles");
+
+    return pstDateTime.format("HH:mm:ss");
+  };
+
   function sendToDatabase() {
     console.log("create appt", {
       first_name: props.firstName,
@@ -163,7 +231,7 @@ export default function Scheduler(props) {
       age: props.age,
       gender: props.gender,
       appt_date: moment(props.date).format("YYYY-MM-DD"),
-      appt_time: convertTime12to24(props.selectedTime),
+      appt_time: convertTimeWithTimezone(props.selectedTime, props.date),
       purchase_price: props.cost, //TREATMENT INFO #2
       purchase_date: dateFormat3(props.purchaseDate),
     });
@@ -180,7 +248,7 @@ export default function Scheduler(props) {
         age: props.age,
         gender: props.gender,
         appt_date: moment(props.date).format("YYYY-MM-DD"),
-        appt_time: convertTime12to24(props.selectedTime),
+        appt_time: convertTimeWithTimezone(props.selectedTime, props.date),
         purchase_price: props.cost, //TREATMENT INFO #2
         purchase_date: dateFormat3(props.purchaseDate),
       })
@@ -206,7 +274,7 @@ export default function Scheduler(props) {
       age: props.age,
       gender: props.gender,
       appointmentDate: moment(props.date).format("YYYY-MM-DD"),
-      appointmentTime: convertTime12to24(props.selectedTime),
+      appointmentTime: convertTimeWithTimezone(props.selectedTime, props.date),
     });
     // history.push("/apptconfirm", {apptInfo});
     console.log("create appt", apptInfo);
@@ -224,13 +292,15 @@ export default function Scheduler(props) {
 
   function creatEvent() {
     console.log(props.date, props.selectedTime);
-    let st = props.treatmentDate + "T" + props.treatmentTime;
-    let start_time = moment(new Date(st)).format();
-    console.log(start_time);
+    // Use the timezone-aware conversion function
+    const pstTime = convertTimeWithTimezone(props.selectedTime, props.date);
+    let st = props.treatmentDate + "T" + pstTime;
+    let start_time = moment.tz(st, "America/Los_Angeles").format();
+    console.log("Start time in PST:", start_time);
     let duration = convert(props.duration);
     let et = Date.parse(start_time) / 1000 + duration;
     let end_time = moment(new Date(et * 1000)).format();
-    console.log(end_time);
+    console.log("End time:", end_time);
     var event = {
       summary: props.treatmentName,
       location: "1610 Blossom Hill Road, #1, San Jose, CA, 95124",
@@ -245,9 +315,11 @@ export default function Scheduler(props) {
       },
       start: {
         dateTime: start_time,
+        timeZone: "America/Los_Angeles",
       },
       end: {
         dateTime: end_time,
+        timeZone: "America/Los_Angeles",
       },
       attendees: [
         {
@@ -314,6 +386,7 @@ export default function Scheduler(props) {
     const price = props.cost.split(" ", 1);
 
     setCustomerUidState(!customerUidState);
+    setIsProcessing(true); // Start loading
     const temp = {
       tax: 0,
       total: price[0].replace(/[$]/g, ""),
@@ -372,7 +445,6 @@ export default function Scheduler(props) {
                       error: JSON.stringify(result.error),
                       endpoint_call: "confirmCardPayment",
                       jsonObject_sent: JSON.stringify(paymentJSON),
-                      
                     };
                     // sendToDatabase();
                     axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
@@ -381,9 +453,11 @@ export default function Scheduler(props) {
 
                     setSubmitted(false);
                     setLoadingState(false);
+                    setIsProcessing(false); // Stop loading on error
                   } else {
                     sendToDatabase();
                     creatEvent();
+                    setIsProcessing(false); // Stop loading on success
                   }
                 });
             } catch (e) {
@@ -406,6 +480,7 @@ export default function Scheduler(props) {
 
               setSubmitted(false);
               setLoadingState(false);
+              setIsProcessing(false); // Stop loading on error
             }
           });
       })
@@ -429,6 +504,7 @@ export default function Scheduler(props) {
           console.log("error: " + JSON.stringify(err.response));
           setSubmitted(false);
           setLoadingState(false);
+          setIsProcessing(false); // Stop loading on error
         }
       });
     setSubmitted(true);
@@ -475,7 +551,7 @@ export default function Scheduler(props) {
             outline: "none",
           }}
         />
-        <div className="text-center" style={errorMessage === "" ? { visibility: "hidden" } : {}}>
+        <div className='text-center' style={errorMessage === "" ? { visibility: "hidden" } : {}}>
           <p style={{ color: "red", fontSize: "12px" }}>{errorMessage || "error"}</p>
         </div>
         <div
@@ -487,9 +563,13 @@ export default function Scheduler(props) {
             justifyContent: "center",
           }}
         >
-          <button disabled={submitted} onClick={bookAppt} className={classes.payButton}>
-            Pay Now
-          </button>
+          {isProcessing ? (
+            <LoadingSpinner />
+          ) : (
+            <button disabled={submitted} onClick={bookAppt} className={classes.payButton}>
+              Pay Now
+            </button>
+          )}
         </div>
       </div>
     </div>
