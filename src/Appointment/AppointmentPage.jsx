@@ -103,10 +103,12 @@ const useStyles = makeStyles({
   },
 });
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+// console.log("API_KEY last four: ", API_KEY.substring(API_KEY.length - 4));
+
 export default function AppointmentPage(props) {
-  console.log("(AppointmentPage) props: ", props);
+  console.log("In AppointmentPage.jsx", props);
   const [accessToken, setAccessToken] = useState("");
-  console.log("(AppointmentPage) accessToken: ", accessToken);
+  // console.log("(AppointmentPage) accessToken: ", accessToken);
   const classes = useStyles();
   const history = useHistory();
   const { treatmentID } = useParams();
@@ -124,23 +126,39 @@ export default function AppointmentPage(props) {
   const { serviceArr, servicesLoaded } = useContext(MyContext);
   const [elementToBeRendered, setElementToBeRendered] = useState([]);
   const treatment_uid = treatmentID;
+
+  // useEffect to set the duration for the selected service
   useEffect(() => {
+    console.log("Effect ran with:", { servicesLoaded, serviceArr, treatmentID });
     if (servicesLoaded && serviceArr.length > 0) {
       const selectedService = serviceArr.find((s) => s.treatment_uid === treatmentID);
       if (selectedService) {
         setElementToBeRendered(selectedService);
         duration.current = selectedService.duration;
+        console.log("Selected service:", selectedService);
+        console.log("Duration set to:", duration.current);
+      } else {
+        console.log("No service found for treatmentID:", treatmentID);
       }
     }
   }, [servicesLoaded, serviceArr, treatmentID]);
+
   useEffect(() => {
     if (servicesLoaded && elementToBeRendered) {
-      getAccessToken().then((at) => {
-        setAccessToken(at);
-      });
+      console.log("Effect triggered. Fetching access token...");
+
+      getAccessToken()
+        .then((at) => {
+          console.log("Access token received:", at);
+          setAccessToken(at);
+        })
+        .catch((err) => {
+          console.error("Failed to get access token:", err);
+        });
     }
   }, [servicesLoaded, elementToBeRendered]);
-  console.log("(AppointmentPage) accessToken2: ", accessToken);
+
+  // console.log("(AppointmentPage) accessToken2: ", accessToken);
   var currentDate = new Date(+new Date() + 86400000);
   const [date, setDate] = useState(currentDate);
   const [minDate, setMinDate] = useState(currentDate);
@@ -192,8 +210,8 @@ export default function AppointmentPage(props) {
   };
   // This one is for doing the sendToDatabase Post Call
   const dateFormat3 = (date) => {
-    console.log("dateformat3", date);
-    console.log("dateformat3", date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date));
+    // console.log("dateformat3", date);
+    // console.log("dateformat3", date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date));
     return date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date);
   };
   const [apiDateString, setApiDateString] = useState(dateFormat3(currentDate));
@@ -251,7 +269,7 @@ export default function AppointmentPage(props) {
     });
     return secondsToHours(total);
   };
-  console.log(addons_list());
+  console.log("Addons list: ", addons_list());
 
   const totalCost = getTotalCost();
   const totalDuration = getTotalDuration();
@@ -367,24 +385,46 @@ export default function AppointmentPage(props) {
     }
   }
 
+  // get the non-booked time slots from the backend
   const getTimeAASlots = async () => {
     try {
+      console.log("🏢🏢🏢 GETTING BACKEND AVAILABLE APPOINTMENTS 🏢🏢🏢");
       setLoading(true);
       setTimeAASlots([]);
-      let hoursMode = "";
-      hoursMode = attendMode === "Online" ? "Online" : "Office";
+
+      let hoursMode = attendMode === "Online" ? "Online" : "Office";
       let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
-      const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + hoursMode);
+
+      const apiUrl = `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/${date}/${duration.current}/${hoursMode}`;
+      console.log("🏢 Backend API URL:", apiUrl);
+      console.log("🏢 Date being checked:", date);
+      console.log("🏢 Duration:", duration.current);
+      console.log("🏢 Hours mode:", hoursMode);
+
+      const res = await axios.get(apiUrl);
+      console.log("🏢 Backend API response:", res.data);
+
       let timeSlotsAA = [];
-      if (JSON.stringify(res.data.result.length) > 0) {
-        res.data.result.map((r) => {
+      if (res.data.result && res.data.result.length > 0) {
+        console.log("🏢 Non-Booked Time Slots", res.data.result.length, "available slots from backend");
+        res.data.result.forEach((r, index) => {
+          console.log(`  🏢 Slot ${index + 1}:`, r);
           timeSlotsAA.push(r["begin_time"]);
         });
+      } else {
+        console.log("🏢 No available slots returned from backend API");
       }
+
+      console.log("🏢 Final backend time slots:", timeSlotsAA);
       setTimeAASlots(timeSlotsAA);
     } catch (error) {
-      console.error("Error in getTimeAASlots: " + error);
+      console.error("🚨🚨🚨 ERROR IN GET TIME AA SLOTS 🚨🚨🚨");
+      console.error("Error details:", error);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        console.error("Error status:", error.response.status);
+      }
     } finally {
       setLoading(false);
     }
@@ -392,6 +432,12 @@ export default function AppointmentPage(props) {
 
   const getTimeSlots = async () => {
     try {
+      console.log("=== GET TIME SLOTS FUNCTION STARTED ===");
+      console.log("Access token available:", !!accessToken);
+      console.log("Access token length:", accessToken ? accessToken.length : "N/A");
+      console.log("API key available:", !!API_KEY);
+      console.log("API key length:", API_KEY ? API_KEY.length : "N/A");
+
       setLoading(true);
       setTimeSlots([]);
       const headers = {
@@ -403,8 +449,31 @@ export default function AppointmentPage(props) {
       let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
 
-      const morningTime = attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
-      const eveningTime = attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
+      // const morningTime = attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
+      // const eveningTime = attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
+
+      // Compute LA UTC offset automatically
+      const laOffset = new Date()
+        .toLocaleTimeString("en-US", {
+          timeZone: "America/Los_Angeles",
+          timeZoneName: "short",
+        })
+        .split(" ")[2]
+        .replace("GMT", "")
+        .replace(":", "");
+
+      console.log("laOffset:", laOffset);
+
+      let morningTime;
+      let eveningTime;
+
+      if (laOffset === "PST") {
+        morningTime = attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
+        eveningTime = attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
+      } else {
+        morningTime = attendMode === "Online" ? "T08:00:00-0700" : "T09:00:00-0700";
+        eveningTime = attendMode === "Online" ? "T20:00:00-0700" : "T20:00:00-0700";
+      }
 
       const data = {
         timeMin: date + morningTime,
@@ -412,7 +481,35 @@ export default function AppointmentPage(props) {
         items: [{ id: "primary" }],
       };
 
+      console.log("🚀🚀🚀 GOOGLE CALENDAR API REQUEST 🚀🚀🚀");
+      // console.log("🌐 Request URL:", `https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`);
+      // console.log("🔑 Request headers:", headers);
+      // console.log("🔑 Access token being used:", accessToken ? accessToken.substring(0, 20) + "..." : "UNDEFINED");
+      // console.log("🔑 Access token length:", accessToken ? accessToken.length : "N/A");
+      // console.log("📅 Request data:", data);
+      // console.log("📆 Date being checked:", date);
+      // console.log("🌅 Morning time:", morningTime);
+      // console.log("🌆 Evening time:", eveningTime);
+      // console.log("⏰ Full timeMin:", data.timeMin);
+      // console.log("⏰ Full timeMax:", data.timeMax);
+
+      if (!accessToken) {
+        console.error("🚨🚨🚨 NO ACCESS TOKEN AVAILABLE - CANNOT CALL GOOGLE CALENDAR API 🚨🚨🚨");
+        throw new Error("Access token is required but not available");
+      }
+
+      // console.log("🔑 Making Google Calendar API call with access token...");
       const response = await axios.post(`https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`, data, { headers: headers });
+
+      console.log("📡📡📡 GOOGLE CALENDAR API RESPONSE 📡📡📡");
+      // console.log("📊 Full GOOGLE CALENDAR API response:", response);
+      // console.log("✅ GOOGLE CALENDAR API Response status:", response.status);
+      // console.log("📋 GOOGLE CALENDAR API Response data:", response.data);
+      // console.log("📋 GOOGLE CALENDAR API Response data:", response.data.calendars);
+      // console.log("📋 GOOGLE CALENDAR API Response data:", response.data.calendars.primary);
+      console.log(`📋 GOOGLE CALENDAR API Response data for ${date}:`, response.data.calendars.primary);
+
+      // console.log("📋 Response headers:", response.headers);
 
       let busy = response.data.calendars.primary.busy;
       let start_time = Date.parse(date + morningTime) / 1000;
@@ -421,9 +518,15 @@ export default function AppointmentPage(props) {
       let appt_start_time = start_time;
       let seconds = convert(duration.current);
 
-      console.log("Google Calendar busy times:", busy);
-      console.log("Start time:", start_time, "End time:", end_time);
-      console.log("Duration in seconds:", seconds);
+      console.log("🔍🔍🔍 GOOGLE CALENDAR DATA PROCESSING 🔍🔍🔍");
+      console.log("📊 Raw busy data:", busy);
+      console.log("🔤 Busy data type:", typeof busy);
+      console.log("📏 Busy data length:", busy ? busy.length : "undefined");
+      console.log("⏰ Start time (Unix timestamp):", start_time);
+      console.log("⏰ End time (Unix timestamp):", end_time);
+      console.log("⏱️ Duration in seconds:", seconds);
+      console.log("📅 Date parsing check - date + morningTime:", date + morningTime);
+      console.log("📅 Date parsing check - date + eveningTime:", date + eveningTime);
 
       // List of single-booking-per-day therapy types
       const therapyTypes = [
@@ -451,19 +554,40 @@ export default function AppointmentPage(props) {
       const existingTherapyBookings = allAppointments.filter((appointment) => appointment.appt_date === date && therapyTypes.includes(appointment.title));
       console.log("therapies booked", existingTherapyBookings);
       // Main loop to check each available slot
+      console.log("⏰⏰⏰ SLOT AVAILABILITY CHECKING ⏰⏰⏰");
+      console.log("🚀 Starting slot availability check...");
+      console.log("⏰ Initial appt_start_time:", appt_start_time);
+      console.log("⏰ End time limit:", end_time);
+      console.log("⏱️ Slot increment (30 minutes):", 60 * 30, "seconds");
+
       while (appt_start_time < end_time) {
         let appt_end_time = appt_start_time + seconds;
         let slot_available = true;
 
+        console.log(`\n🕐🕐🕐 CHECKING SLOT ${moment(new Date(appt_start_time * 1000)).format("HH:mm:ss")} to ${moment(new Date(appt_end_time * 1000)).format("HH:mm:ss")} 🕐🕐🕐`);
+        console.log("⏰ Slot start (Unix):", appt_start_time);
+        console.log("⏰ Slot end (Unix):", appt_end_time);
+
         // Checking if the slot overlaps with any existing busy times
-        busy.forEach((times) => {
-          let this_start = Date.parse(times["start"]) / 1000;
-          let this_end = Date.parse(times["end"]) / 1000;
-          if ((appt_start_time >= this_start && appt_start_time < this_end) || (appt_end_time > this_start && appt_end_time <= this_end)) {
-            slot_available = false;
-            return;
-          }
-        });
+        if (busy && busy.length > 0) {
+          console.log(`🔴 Checking against ${busy.length} busy time slots from Google Calendar:`);
+          busy.forEach((times, index) => {
+            let this_start = Date.parse(times["start"]) / 1000;
+            let this_end = Date.parse(times["end"]) / 1000;
+            console.log(`  🔴 Busy slot ${index + 1}: ${moment(new Date(this_start * 1000)).format("HH:mm:ss")} to ${moment(new Date(this_end * 1000)).format("HH:mm:ss")}`);
+            console.log(`  🔴 Busy start (Unix): ${this_start}, Busy end (Unix): ${this_end}`);
+
+            if ((appt_start_time >= this_start && appt_start_time < this_end) || (appt_end_time > this_start && appt_end_time <= this_end)) {
+              console.log("  ❌ SLOT CONFLICT DETECTED - marking as unavailable");
+              slot_available = false;
+              return;
+            } else {
+              console.log("  ✅ No conflict with this busy slot");
+            }
+          });
+        } else {
+          console.log("🟢🟢🟢 NO BUSY TIMES FOUND IN GOOGLE CALENDAR - ALL SLOTS SHOULD BE AVAILABLE 🟢🟢🟢");
+        }
 
         // the selected therapy type from the UI or booking context (clientside)
         const selectedTherapyType = elementToBeRendered.title;
@@ -473,42 +597,72 @@ export default function AppointmentPage(props) {
         console.log("isTherapyAlreadyBooked:", isTherapyAlreadyBooked);
         console.log("existingTherapyBookings:", existingTherapyBookings);
 
+        // Final slot availability decision
+        console.log(`Slot availability decision: ${slot_available ? "AVAILABLE" : "UNAVAILABLE"}`);
+
         //  no existing booking of the selected therapy type, add it
         if (slot_available) {
           if (isTherapyAlreadyBooked && therapyTypes.includes(selectedTherapyType)) {
-            console.log("Therapy already booked for the day, skipping:", selectedTherapyType);
+            console.log("❌ Therapy already booked for the day, skipping:", selectedTherapyType);
           } else {
-            free.push(moment(new Date(appt_start_time * 1000)).format("HH:mm:ss"));
+            const timeSlot = moment(new Date(appt_start_time * 1000)).format("HH:mm:ss");
+            console.log(`✅ Adding available time slot: ${timeSlot}`);
+            free.push(timeSlot);
           }
+        } else {
+          console.log("❌ Slot not available due to Google Calendar conflicts");
         }
 
         //  next slot in 30-minute
         appt_start_time += 60 * 30;
       }
 
-      console.log("Available time slots:", free);
+      console.log("🎯🎯🎯 FINAL RESULTS - AVAILABLE TIME SLOTS 🎯🎯🎯");
+      console.log("📊 Total available time slots found:", free.length);
+      console.log("⏰ Available time slots:", free);
+      console.log("💾 Setting timeSlots state with:", free);
       setTimeSlots(free);
     } catch (error) {
-      console.error("Error in getTimeSlots:", error);
+      console.log("❌❌❌ ERROR IN GET TIME SLOTS ❌❌❌");
+      console.error("🚨 Error details:", error);
+      if (error.response) {
+        console.error("🚨 Error response:", error.response);
+        console.error("🚨 Error status:", error.response.status);
+        console.error("🚨 Error data:", error.response.data);
+      }
+      if (error.request) {
+        console.error("🚨 Error request:", error.request);
+      }
+      console.error("🚨 Error message:", error.message);
     } finally {
       setLoading(false);
     }
   };
 
   function renderAvailableApptsVertical() {
-    console.log("TimeSlots", timeSlots);
-    console.log("TimeSlotsAA", timeAASlots);
-    console.log("TimeSlots length:", timeSlots.length);
-    console.log("TimeSlotsAA length:", timeAASlots.length);
+    console.log("🔄🔄🔄 TIME SLOT MERGING LOGIC 🔄🔄🔄");
+    console.log("📊 Google Calendar available slots (timeSlots):", timeSlots);
+    console.log("📊 Backend API available slots (timeAASlots):", timeAASlots);
+    console.log("📏 Google Calendar slots count:", timeSlots.length);
+    console.log("📏 Backend API slots count:", timeAASlots.length);
 
-    let result = timeSlots.filter((o1) => timeAASlots.some((o2) => o1 === o2));
+    // Find common available times (must be available in BOTH Google Calendar AND backend)
+    let result = timeSlots.filter((googleSlot) => timeAASlots.some((backendSlot) => googleSlot === backendSlot));
 
-    console.log("Merged", result, selectedButton);
+    console.log("🔗 Merged result (common available slots):", result);
+    console.log("📊 Merged result count:", result.length);
 
-    // If no merged results but we have AA slots, use those instead
-    if (result.length === 0 && timeAASlots.length > 0) {
-      console.log("No merged results, using AA slots directly");
-      result = timeAASlots;
+    // IMPORTANT: Don't fall back to just AA slots if no common times exist
+    // This would show times that are blocked on Google Calendar
+    if (result.length === 0) {
+      console.log("❌❌❌ NO COMMON AVAILABLE TIME SLOTS FOUND ❌❌❌");
+      console.log("❌ This means either:");
+      console.log("   - All times are blocked on Google Calendar");
+      console.log("   - All times are already booked as appointments");
+      console.log("   - No times are available for the selected date/duration");
+    } else {
+      console.log("✅✅✅ COMMON AVAILABLE TIME SLOTS FOUND ✅✅✅");
+      console.log("✅ Available times:", result);
     }
 
     // if (!isTimeslotsLoaded) {
@@ -516,44 +670,66 @@ export default function AppointmentPage(props) {
     // }
     // else
     // {
+    console.log("🎯🎯🎯 FINAL RENDERING DECISION 🎯🎯🎯");
+    console.log("🎯 Result array:", result);
+    console.log("🎯 Result length:", result.length);
+    console.log("🎯 Will render buttons:", result.length > 0);
+
     return (
-      <Grid container xs={11}>
-        {result.length > 0 ? (
-          result.map(function (element, i) {
-            return (
-              <button
-                key={i}
-                className={classes.timeslotButton}
-                style={{
-                  width: "10rem",
-                  height: "3rem",
-                  maxWidth: "80%",
-                  backgroundColor: i === selectedButton ? "#D3A625" : "white",
-                  border: "2px solid #D3A625",
-                  color: i === selectedButton ? "white" : "#D3A625",
-                  // padding: "15px 90px",
-                  textAlign: "center",
-                  textDecoration: "none",
-                  fontSize: "20px",
-                  borderRadius: "50px",
-                  display: "block",
-                  margin: "6px auto",
-                }}
-                onClick={() => selectApptTime(element, i)}
-              >
-                {formatTimeWithTimezone(apiDateString, element)}
-              </button>
-            );
-          })
-        ) : (
-          <div className='ApptPageHeader'>
-            {attendMode === "Online" ? (
-              <div>No online appointments are available. Please choose another date.</div>
-            ) : (
-              <div>No in-person appointments are available. Please choose another date or check for online appointments.</div>
-            )}
-          </div>
-        )}
+      <Grid container>
+        <Grid item xs={11}>
+          {result.length > 0 ? (
+            <>
+              <div style={{ textAlign: "center", marginBottom: "1rem" }}>
+                <div style={{ color: "#D3A625", fontSize: "18px", fontWeight: "bold" }}>
+                  ✅ {result.length} Available Time Slot{result.length === 1 ? "" : "s"} Found
+                </div>
+                <div style={{ fontSize: "14px", color: "#666" }}>These times are available in both Google Calendar and your appointment system</div>
+              </div>
+              {result.map(function (element, i) {
+                return (
+                  <button
+                    key={i}
+                    className={classes.timeslotButton}
+                    style={{
+                      width: "10rem",
+                      height: "3rem",
+                      maxWidth: "80%",
+                      backgroundColor: i === selectedButton ? "#D3A625" : "white",
+                      border: "2px solid #D3A625",
+                      color: i === selectedButton ? "white" : "#D3A625",
+                      // padding: "15px 90px",
+                      textAlign: "center",
+                      textDecoration: "none",
+                      fontSize: "20px",
+                      borderRadius: "50px",
+                      display: "block",
+                      margin: "6px auto",
+                    }}
+                    onClick={() => selectApptTime(element, i)}
+                  >
+                    {formatTimeWithTimezone(apiDateString, element)}
+                  </button>
+                );
+              })}
+            </>
+          ) : (
+            <div className='ApptPageHeader'>
+              <div style={{ textAlign: "center", padding: "2rem" }}>
+                <div style={{ color: "#D3A625", fontSize: "20px", fontWeight: "bold", marginBottom: "1rem" }}>❌ No Available Appointments</div>
+                <div style={{ fontSize: "16px", color: "#666", marginBottom: "1rem" }}>No time slots are available for the selected date and appointment type.</div>
+                <div style={{ fontSize: "14px", color: "#888" }}>This could be because:</div>
+                <ul style={{ textAlign: "left", display: "inline-block", fontSize: "14px", color: "#888" }}>
+                  <li>All times are blocked on Google Calendar</li>
+                  <li>All times are already booked as appointments</li>
+                  <li>The selected date is outside business hours</li>
+                  <li>The treatment duration doesn't fit in available slots</li>
+                </ul>
+                <div style={{ fontSize: "14px", color: "#666", marginTop: "1rem" }}>Please try selecting a different date or contact us for assistance.</div>
+              </div>
+            </div>
+          )}
+        </Grid>
       </Grid>
     );
   }
@@ -595,25 +771,69 @@ export default function AppointmentPage(props) {
   }
 
   const getAccessToken = async () => {
+    console.log("🔑🔑🔑 GET ACCESS TOKEN FUNCTION STARTED 🔑🔑🔑");
+
     const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
     const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
     const CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
     const url = BASE_URL + "customerToken/";
     const customer_uid = "100-000093";
+
+    console.log("🔑 Environment variables:");
+    console.log("  BASE_URL:", BASE_URL);
+    console.log("  CLIENT_ID available:", !!CLIENT_ID);
+    console.log("  CLIENT_ID Last 4:", CLIENT_ID.substring(CLIENT_ID.length - 32));
+    console.log("  CLIENT_SECRET available:", !!CLIENT_SECRET);
+    console.log("  CLIENT_SECRET Last 4:", CLIENT_SECRET.substring(CLIENT_SECRET.length - 4));
+    console.log("  Customer UID:", customer_uid);
+    console.log("  Full URL:", url + customer_uid);
+
     try {
+      console.log("🔑 Fetching customer token from server...");
       const response = await axios.get(url + customer_uid);
+      console.log("🔑 Server response:", response.data);
+
       const old_at = response["data"]["user_access_token"];
       const refreshToken = response["data"]["user_refresh_token"];
+
+      console.log("🔑 Retrieved tokens:");
+      console.log("  Old access token available:", !!old_at);
+      console.log("  Old access token length:", old_at ? old_at.length : "N/A");
+      console.log("  Refresh token available:", !!refreshToken);
+      console.log("  Refresh token length:", refreshToken ? refreshToken.length : "N/A");
+
       try {
+        console.log("🔑 Validating old access token with Google...");
+        console.log("🔑 Token validation URL:", `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at ? old_at.substring(0, 20) + "..." : "undefined"}`);
+
         await axios.get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`);
+        console.log("✅ Old access token is still valid!");
         setAccessToken(old_at);
+        console.log("🔑 Access token set successfully");
       } catch (error) {
+        console.log("❌ Old access token is invalid or expired");
+        console.log("🔑 Error details:", error.response ? error.response.data : error.message);
+
+        if (!refreshToken) {
+          console.error("🚨 No refresh token available - cannot get new access token");
+          return;
+        }
+
+        if (!CLIENT_ID || !CLIENT_SECRET) {
+          console.error("🚨 Missing CLIENT_ID or CLIENT_SECRET environment variables");
+          return;
+        }
+
+        console.log("🔑 Attempting to refresh access token...");
         var properties = {
           refresh_token: refreshToken,
           client_id: CLIENT_ID,
           client_secret: CLIENT_SECRET,
           grant_type: "refresh_token",
         };
+
+        console.log("🔑 Refresh token request properties:", properties);
+
         var formBody = [];
         for (let property in properties) {
           var encodedKey = encodeURIComponent(property);
@@ -621,20 +841,44 @@ export default function AppointmentPage(props) {
           formBody.push(encodedKey + "=" + encodedValue);
         }
         formBody = formBody.join("&");
+
+        console.log("🔑 Form body for refresh request:", formBody);
+
         const tokenResponse = await axios.post("https://accounts.google.com/o/oauth2/token", formBody, {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
           },
         });
+
+        console.log("🔑 Google refresh token response:", tokenResponse.data);
         const at = tokenResponse["data"]["access_token"];
-        setAccessToken(at);
-        const url = BASE_URL + "UpdateAccessToken/";
-        await axios.post(url + customer_uid, {
-          user_access_token: at,
-        });
+
+        if (at) {
+          console.log("✅ New access token obtained successfully!");
+          console.log("🔑 New token length:", at.length);
+          setAccessToken(at);
+
+          console.log("🔑 Updating access token in database...");
+          const updateUrl = BASE_URL + "UpdateAccessToken/";
+          await axios.post(updateUrl + customer_uid, {
+            user_access_token: at,
+          });
+          console.log("✅ Access token updated in database");
+        } else {
+          console.error("🚨 No access token in refresh response");
+        }
       }
     } catch (error) {
-      console.error("Error in getAccessToken: " + error);
+      console.error("🚨🚨🚨 CRITICAL ERROR IN GET ACCESS TOKEN 🚨🚨🚨");
+      console.error("Error details:", error);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        console.error("Error status:", error.response.status);
+      }
+      if (error.request) {
+        console.error("Error request:", error.request);
+      }
+      console.error("Error message:", error.message);
     }
   };
 
@@ -734,7 +978,7 @@ export default function AppointmentPage(props) {
                   <FormControlLabel control={<YellowRadio checked={mode.online} onChange={(e) => handleMode(e)} name='online' />} label='Online' />
                 </div>
                 <div className='TitleFontAppt'>Pick an Appointment Date</div>
-                {console.log("(Calendar) date: ", minDate)}
+                {/* {console.log("Current date: ", minDate)} */}
                 <Calendar
                   calendarType='US'
                   onClickDay={dateChange}

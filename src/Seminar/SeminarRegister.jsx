@@ -25,7 +25,7 @@ const YellowRadio = withStyles({
     },
   },
   checked: {},
-})((props) => <Radio color="default" {...props} />);
+})((props) => <Radio color='default' {...props} />);
 
 export default function SeminarRegister() {
   const history = useHistory();
@@ -106,7 +106,7 @@ export default function SeminarRegister() {
     };
     axios
       .post(BASE_URL + `RegistrationConfirmation/${email}`, name)
-      .then((response) => { })
+      .then((response) => {})
       .catch((error) => {
         console.log("error", error);
       });
@@ -117,14 +117,9 @@ export default function SeminarRegister() {
       // Fetch public key
       console.log("fetching public key");
       axios
-        .get(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST"
-        )
+        .get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST")
         .then((result) => {
-          console.log(
-            "(1 PaymentDetails) Stripe-key then result (1): " +
-            JSON.stringify(result)
-          );
+          console.log("(1 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
 
           let tempStripePromise = loadStripe(result.data.publicKey);
 
@@ -138,23 +133,16 @@ export default function SeminarRegister() {
         .catch((err) => {
           console.log(err);
           if (err.response) {
-            console.log(
-              "(1 PaymentDetails) error: " + JSON.stringify(err.response)
-            );
+            console.log("(1 PaymentDetails) error: " + JSON.stringify(err.response));
           }
         });
     } else {
       // Fetch public key live
       console.log("fetching public key live");
       axios
-        .get(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYA"
-        )
+        .get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYA")
         .then((result) => {
-          console.log(
-            "(2 PaymentDetails) Stripe-key then result (1): " +
-            JSON.stringify(result)
-          );
+          console.log("(2 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
 
           let tempStripePromise = loadStripe(result.data.publicKey);
 
@@ -168,9 +156,7 @@ export default function SeminarRegister() {
         .catch((err) => {
           console.log(err);
           if (err.response) {
-            console.log(
-              "(2 PaymentDetails) error: " + JSON.stringify(err.response)
-            );
+            console.log("(2 PaymentDetails) error: " + JSON.stringify(err.response));
           }
         });
     }
@@ -195,27 +181,20 @@ export default function SeminarRegister() {
   };
 
   return (
-    <div className="HomeContainer">
+    <div className='HomeContainer'>
       <Helmet>
         <title>Seminar Registration</title>
-        <meta
-          name="description"
-          content="We offer Ayurvedic health consultations, Panchakarma (cleansing & purification treatments) and classical Ayurvedic wellness therapies"
-        />
-        <link rel="canonical" href="/seminaregister" />
+        <meta name='description' content='We offer Ayurvedic health consultations, Panchakarma (cleansing & purification treatments) and classical Ayurvedic wellness therapies' />
+        <link rel='canonical' href='/seminaregister' />
       </Helmet>
 
-      <div className="Card">
-        <img
-          src={SeminarImg}
-          style={{ width: "100%", height: "100%" }}
-          className="CardImage"
-        />
+      <div className='Card'>
+        <img src={SeminarImg} style={{ width: "100%", height: "100%" }} className='CardImage' />
         <div style={{ height: "auto" }}></div>
       </div>
       <div></div>
       {registered ? (
-        <div className="Card">
+        <div className='Card'>
           {payNow ? null : (
             <div
               style={{
@@ -224,18 +203,18 @@ export default function SeminarRegister() {
                 alignItems: "center",
               }}
             >
-              <div className="CardTitle">Registration Confirmed</div>
-              <div className="textConfirm" style={{ marginTop: "3rem" }}>
+              <div className='CardTitle'>Registration Confirmed</div>
+              <div className='textConfirm' style={{ marginTop: "3rem" }}>
                 Congrats! You are now registered for the workshop.
                 <br />
                 We have sent a confirmation email to
-                <div className="textTitle">{email}</div>
+                <div className='textTitle'>{email}</div>
               </div>
-              <div className="textTitle" style={{ marginTop: "3rem" }}>
+              <div className='textTitle' style={{ marginTop: "3rem" }}>
                 Please check your email for workshop details.
               </div>
               <button
-                className="registerBtn"
+                className='registerBtn'
                 hidden={registeredConfirm}
                 onClick={() => {
                   //setRegistered(false);
@@ -249,7 +228,7 @@ export default function SeminarRegister() {
               </button>
               <button
                 hidden={registeredConfirm}
-                className="registerBtn"
+                className='registerBtn'
                 onClick={() => {
                   history.push("/");
                 }}
@@ -282,7 +261,7 @@ export default function SeminarRegister() {
           ) : null}
         </div>
       ) : (
-        <div className="Card">
+        <div className='Card'>
           {payNow ? null : (
             <div
               style={{
@@ -291,62 +270,22 @@ export default function SeminarRegister() {
                 alignItems: "center",
               }}
             >
-              <div className="CardTitle">Register</div>
+              <div className='CardTitle'>Register</div>
               <div style={{ marginTop: "3rem" }}></div>
-              <input
-                className="inputField"
-                id="First Name"
-                type="text"
-                placeholder="First Name"
-                onChange={(e) => setFirstName(e.target.value)}
-                value={firstName}
-                required
-              />
+              <input className='inputField' id='First Name' type='text' placeholder='First Name' onChange={(e) => setFirstName(e.target.value)} value={firstName} required />
               <br />
 
-              <input
-                className="inputField"
-                id="Last Name"
-                type="text"
-                placeholder="Last Name"
-                onChange={(e) => setLastName(e.target.value)}
-                value={lastName}
-                required
-              />
+              <input className='inputField' id='Last Name' type='text' placeholder='Last Name' onChange={(e) => setLastName(e.target.value)} value={lastName} required />
 
               <br />
-              <input
-                className="inputField"
-                id="Email"
-                type="text"
-                placeholder="Email Address"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                required
-              />
+              <input className='inputField' id='Email' type='text' placeholder='Email Address' onChange={(e) => setEmail(e.target.value)} value={email} required />
 
               <br />
-              <input
-                className="inputField"
-                id="City"
-                type="text"
-                placeholder="City"
-                onChange={(e) => setCity(e.target.value)}
-                value={city}
-              />
+              <input className='inputField' id='City' type='text' placeholder='City' onChange={(e) => setCity(e.target.value)} value={city} />
               <br />
-              <input
-                className="inputField"
-                id="sweep_referrer"
-                type="text"
-                placeholder="State"
-                onChange={(e) => setState(e.target.value)}
-                value={state}
-              />
+              <input className='inputField' id='sweep_referrer' type='text' placeholder='State' onChange={(e) => setState(e.target.value)} value={state} />
               <br />
-              <Typography className="textTitle">
-                How do you plan on attending the workshop?
-              </Typography>
+              <Typography className='textTitle'>How do you plan on attending the workshop?</Typography>
               <div
                 style={{
                   display: "flex",
@@ -356,52 +295,16 @@ export default function SeminarRegister() {
                 }}
               >
                 <FormGroup>
-                  <FormControlLabel
-                    control={
-                      <YellowRadio
-                        checked={mode.inPerson}
-                        onChange={(e) => handleMode(e)}
-                        name="modeInPerson"
-                      />
-                    }
-                    label="In-person"
-                  />
-                  <FormControlLabel
-                    control={
-                      <YellowRadio
-                        checked={mode.online}
-                        onChange={(e) => handleMode(e)}
-                        name="modeOnline"
-                      />
-                    }
-                    label="Online"
-                  />
+                  <FormControlLabel control={<YellowRadio checked={mode.inPerson} onChange={(e) => handleMode(e)} name='modeInPerson' />} label='In-person' />
+                  <FormControlLabel control={<YellowRadio checked={mode.online} onChange={(e) => handleMode(e)} name='modeOnline' />} label='Online' />
                 </FormGroup>
               </div>
-              <Typography className="textTitle">
-                Number of people attending the workshop?
-              </Typography>
-              <input
-                className="inputField"
-                id="notes"
-                type="text"
-                placeholder="Number of attendees"
-                onChange={(e) => setNumAttendees(e.target.value)}
-                value={numAttendees}
-              />
+              <Typography className='textTitle'>Number of people attending the workshop?</Typography>
+              <input className='inputField' id='notes' type='text' placeholder='Number of attendees' onChange={(e) => setNumAttendees(e.target.value)} value={numAttendees} />
               <br />
-              <input
-                className="inputField"
-                id="notes"
-                type="text"
-                placeholder="Any questions?"
-                onChange={(e) => setNotes(e.target.value)}
-                value={notes}
-              />
+              <input className='inputField' id='notes' type='text' placeholder='Any questions?' onChange={(e) => setNotes(e.target.value)} value={notes} />
               <br />
-              <Typography className="textTitle">
-                $10 Donation suggested but not required.
-              </Typography>
+              <Typography className='textTitle'>$10 Donation suggested but not required.</Typography>
               {showFNError()}
               {showLNError()}
               {showEmailError()}
@@ -413,7 +316,7 @@ export default function SeminarRegister() {
                 }}
               >
                 <button
-                  className="registerBtn"
+                  className='registerBtn'
                   hidden={showDonation}
                   onClick={() => {
                     if (firstName.length === 0) {
@@ -431,7 +334,7 @@ export default function SeminarRegister() {
                   Register Only
                 </button>
                 <button
-                  className="showRegBtn"
+                  className='showRegBtn'
                   hidden={showDonation}
                   onClick={() => {
                     if (firstName.length === 0) {

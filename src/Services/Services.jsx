@@ -12,7 +12,7 @@ import ServiceDropdown from "./ServiceDropdown.jsx";
 
 export default function Services() {
   const restoreServiceState = () => {
-    if(sessionStorage.getItem("service-state") === null) {
+    if (sessionStorage.getItem("service-state") === null) {
       return 0;
     }
     let serviceState = parseInt(sessionStorage.getItem("service-state"));
@@ -26,88 +26,90 @@ export default function Services() {
   const [state, setState] = useState(restoreServiceState());
   const { serviceArr } = useContext(MyContext);
   const Auth = useContext(AuthContext);
-  console.log(serviceArr);
+  console.log("Services Array:", serviceArr);
 
   return (
-    <div className="HomeContainer">
+    <div className='HomeContainer'>
       <Helmet>
         <title>Services</title>
-        <meta
-          name="description"
-          content="We offer Ayurvedic health consultations, Panchakarma (cleansing & purification treatments) and classical Ayurvedic wellness therapies."
-        />
-        <link rel="canonical" href="/services" />
+        <meta name='description' content='We offer Ayurvedic health consultations, Panchakarma (cleansing & purification treatments) and classical Ayurvedic wellness therapies.' />
+        <link rel='canonical' href='/services' />
       </Helmet>
-      <div className="Card">
-          <div className="Service_Title">Services</div>
-          <div className="ButtonGrid">
-            <div className="service-dropdown">
-              <div className="service-dropbtn">
-                <Button
-                    onClick={() => {setState(0);
-                      modifyServiceState(0)}}
-                    style={{    
-                    textTransform: "none",
-                    backgroundColor: state === 0 ? "#D3A625" : "#DADADA",
-                    color: "black",
-                    fontSize: "20px",
-                    }}
-                >
-                  Consulting
-                </Button>
-              </div>
-              <ServiceDropdown data={{serviceArr, serviceType: "Consultation"}} />
+      <div className='Card'>
+        <div className='Service_Title'>Services</div>
+        <div className='ButtonGrid'>
+          <div className='service-dropdown'>
+            <div className='service-dropbtn'>
+              <Button
+                onClick={() => {
+                  setState(0);
+                  modifyServiceState(0);
+                }}
+                style={{
+                  textTransform: "none",
+                  backgroundColor: state === 0 ? "#D3A625" : "#DADADA",
+                  color: "black",
+                  fontSize: "20px",
+                }}
+              >
+                Consulting
+              </Button>
             </div>
-            
-            <div className="service-dropdown">
-              <div className="service-dropbtn">
-                <Button
-                    onClick={() => {setState(1);
-                      modifyServiceState(1)}}
-                    style={{
-                    textTransform: "none",
-                    backgroundColor: state === 1 ? "#D3A625" : "#DADADA",
-                    color: "black",
-                    fontSize: "20px",
-                    }}
-                >
-                  Therapies
-                </Button>
-              </div>
-              <ServiceDropdown data={{serviceArr, serviceType: "Therapy"}} />
+            <ServiceDropdown data={{ serviceArr, serviceType: "Consultation" }} />
+          </div>
+
+          <div className='service-dropdown'>
+            <div className='service-dropbtn'>
+              <Button
+                onClick={() => {
+                  setState(1);
+                  modifyServiceState(1);
+                }}
+                style={{
+                  textTransform: "none",
+                  backgroundColor: state === 1 ? "#D3A625" : "#DADADA",
+                  color: "black",
+                  fontSize: "20px",
+                }}
+              >
+                Therapies
+              </Button>
             </div>
-            <div className="service-dropdown">
-              <div className="service-dropbtn">
-                <Button
-                  onClick={() => {setState(2);
-                  modifyServiceState(2);}}
-                  style={{
+            <ServiceDropdown data={{ serviceArr, serviceType: "Therapy" }} />
+          </div>
+          <div className='service-dropdown'>
+            <div className='service-dropbtn'>
+              <Button
+                onClick={() => {
+                  setState(2);
+                  modifyServiceState(2);
+                }}
+                style={{
                   textTransform: "none",
                   backgroundColor: state === 2 ? "#D3A625" : "#DADADA",
                   color: "black",
                   fontSize: "20px",
-                  }}
-                >
-                  Packages
-                </Button>
-              </div>
-              <ServiceDropdown data={{serviceArr, serviceType: "Package"}} />
+                }}
+              >
+                Packages
+              </Button>
             </div>
+            <ServiceDropdown data={{ serviceArr, serviceType: "Package" }} />
           </div>
-          
-          
-          <Box hidden={state !== 0}>
-            <ServiceList data={{serviceArr, serviceType:"Consultation"}} />              
-          </Box>
-
-          <Box hidden={state !== 1}>
-            <ServiceList data={{serviceArr, serviceType:"Therapy"}} />    
-          </Box>
-
-          <Box hidden={state !== 2}>
-            <ServiceList data={{serviceArr, serviceType:"Package"}} />    
-          </Box>
         </div>
+
+        <Box hidden={state !== 0}>
+          <ServiceList data={{ serviceArr, serviceType: "Consultation" }} />
+        </Box>
+
+        <Box hidden={state !== 1}>
+          <ServiceList data={{ serviceArr, serviceType: "Therapy" }} />
+        </Box>
+
+        <Box hidden={state !== 2}>
+          <ServiceList data={{ serviceArr, serviceType: "Package" }} />
+        </Box>
+      </div>
     </div>
   );
 }

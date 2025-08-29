@@ -216,11 +216,17 @@ export default function Scheduler(props) {
     // Create a moment object in PST
     const pstDateTime = moment.tz(date + "T" + formattedTime, "America/Los_Angeles");
 
-    return pstDateTime.format("HH:mm:ss");
+    // Return full datetime string for database storage
+    return pstDateTime.format("YYYY-MM-DD HH:mm:ss");
   };
 
   function sendToDatabase() {
-    console.log("create appt", {
+    const formattedTime = convertTimeWithTimezone(props.selectedTime, props.date);
+    console.log("=== APPOINTMENT CREATION DEBUG ===");
+    console.log("Raw selectedTime:", props.selectedTime);
+    console.log("Raw date:", props.date);
+    console.log("Formatted time for database:", formattedTime);
+    console.log("Full appointment data:", {
       first_name: props.firstName,
       last_name: props.lastName,
       email: props.email,
@@ -231,7 +237,7 @@ export default function Scheduler(props) {
       age: props.age,
       gender: props.gender,
       appt_date: moment(props.date).format("YYYY-MM-DD"),
-      appt_time: convertTimeWithTimezone(props.selectedTime, props.date),
+      appt_time: formattedTime,
       purchase_price: props.cost, //TREATMENT INFO #2
       purchase_date: dateFormat3(props.purchaseDate),
     });
@@ -248,12 +254,46 @@ export default function Scheduler(props) {
         age: props.age,
         gender: props.gender,
         appt_date: moment(props.date).format("YYYY-MM-DD"),
-        appt_time: convertTimeWithTimezone(props.selectedTime, props.date),
+        appt_time: formattedTime,
         purchase_price: props.cost, //TREATMENT INFO #2
         purchase_date: dateFormat3(props.purchaseDate),
       })
       .then((res) => {
         console.log("create appt", res);
+
+        // Send confirmation email after successful appointment creation
+        const emailBody = {
+          name: props.firstName + " " + props.lastName,
+          email: props.email,
+          phone: props.phoneNum,
+          message: `Appointment confirmed for ${props.treatmentName} on ${moment(props.date).format("MMMM Do, YYYY")} at ${props.selectedTime}`,
+          appointment_details: {
+            treatment: props.treatmentName,
+            date: moment(props.date).format("MMMM Do, YYYY"),
+            time: props.selectedTime,
+            cost: props.cost,
+            duration: props.duration,
+          },
+          endpoint_call: "appointmentConfirmation",
+          jsonObject_sent: JSON.stringify({
+            first_name: props.firstName,
+            last_name: props.lastName,
+            email: props.email,
+            treatment: props.treatmentName,
+            date: moment(props.date).format("YYYY-MM-DD"),
+            time: props.selectedTime,
+          }),
+        };
+
+        // Send confirmation email
+        axios
+          .post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", emailBody)
+          .then((emailResponse) => {
+            console.log("Confirmation email sent:", emailResponse.data.result);
+          })
+          .catch((emailError) => {
+            console.log("Failed to send confirmation email:", emailError);
+          });
       })
       .catch((err) => {
         console.log(err);
@@ -274,7 +314,7 @@ export default function Scheduler(props) {
       age: props.age,
       gender: props.gender,
       appointmentDate: moment(props.date).format("YYYY-MM-DD"),
-      appointmentTime: convertTimeWithTimezone(props.selectedTime, props.date),
+      appointmentTime: formattedTime,
     });
     // history.push("/apptconfirm", {apptInfo});
     console.log("create appt", apptInfo);
@@ -291,10 +331,16 @@ export default function Scheduler(props) {
   }
 
   function creatEvent() {
-    console.log(props.date, props.selectedTime);
-    // Use the timezone-aware conversion function
-    const pstTime = convertTimeWithTimezone(props.selectedTime, props.date);
-    let st = props.treatmentDate + "T" + pstTime;
+    console.log("=== GOOGLE CALENDAR EVENT CREATION DEBUG ===");
+    console.log("props.date:", props.date);
+    console.log("props.selectedTime:", props.selectedTime);
+
+    // Extract just the time portion for Google Calendar (HH:mm:ss format)
+    const timeOnly = convertTimeWithTimezone(props.selectedTime, props.date).split(" ")[1];
+    console.log("Time only for Google Calendar:", timeOnly);
+
+    // Use props.date instead of props.treatmentDate
+    let st = moment(props.date).format("YYYY-MM-DD") + "T" + timeOnly;
     let start_time = moment.tz(st, "America/Los_Angeles").format();
     console.log("Start time in PST:", start_time);
     let duration = convert(props.duration);

@@ -34,25 +34,22 @@ import WaiverConfirmation from "./Waiver/WaiverConfirmation";
 export const MyContext = React.createContext();
 
 function App() {
-  console.log('dotenv', process.env)
+  console.log("In App.js");
+  // console.log('dotenv', process.env)
 
   const cookies = new Cookies();
-  let uid =
-    cookies.get("customer_uid") == null ? "" : cookies.get("customer_uid");
+  let uid = cookies.get("customer_uid") == null ? "" : cookies.get("customer_uid");
   let role = cookies.get("role") == null ? "" : cookies.get("role");
-  let guesProfile =
-    localStorage.getItem("guestProfile") == null
-      ? ""
-      : localStorage.getItem("guestProfile");
+  let guesProfile = localStorage.getItem("guestProfile") == null ? "" : localStorage.getItem("guestProfile");
   const [isGuest, setIsGuest] = useState(guesProfile === "" ? false : true); // checks if user is logged in
   const [isAuth, setIsAuth] = useState(uid === "" ? false : true); // checks if user is logged in
   const [authLevel, setAuthLevel] = useState();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [waiver, setWaiver] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNum, setPhoneNum] = useState('');
+  const [waiver, setWaiver] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNum, setPhoneNum] = useState("");
 
   const login = () => {
     setIsLoggedIn(true);
@@ -62,8 +59,7 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  const url =
-    "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
+  const url = "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
   const [servicesLoaded, setServicesLoaded] = useState(false);
   const [serviceArr, setServiceArr] = useState([]);
 
@@ -73,13 +69,13 @@ function App() {
       axios.get(url).then((res) => {
         setServiceArr(res.data.result);
         setServicesLoaded(true);
-       // console.log(res.data);
+        // console.log(res.data);
       });
     }
   }, []);
 
   return (
-    <div className="App">
+    <div className='App'>
       <Router>
         <AuthContext.Provider
           value={{
@@ -99,104 +95,103 @@ function App() {
             <Navigation />
 
             <Switch>
-              <Route exact path="/:treatmentID/appt/">
+              <Route exact path='/:treatmentID/appt/'>
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
-                  <WaiverContext.Provider value={{waiver, firstName, lastName, email, phoneNum, setFirstName, setLastName, setEmail, setPhoneNum}}>
+                  <WaiverContext.Provider value={{ waiver, firstName, lastName, email, phoneNum, setFirstName, setLastName, setEmail, setPhoneNum }}>
                     <Appointment />
                   </WaiverContext.Provider>
                 </MyContext.Provider>
               </Route>
-              <Route path="/:treatmentID/confirm">
+              <Route path='/:treatmentID/confirm'>
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
-                  <WaiverContext.Provider value={{waiver, firstName, lastName, email, phoneNum, setFirstName, setLastName, setEmail, setPhoneNum}}>
+                  <WaiverContext.Provider value={{ waiver, firstName, lastName, email, phoneNum, setFirstName, setLastName, setEmail, setPhoneNum }}>
                     <AppointmentConfirm />
                   </WaiverContext.Provider>
                 </MyContext.Provider>
               </Route>
-              <Route path="/healthy tips">
+              <Route path='/healthy tips'>
                 <HealthyTips />
               </Route>
 
-              <Route path="/login">
+              <Route path='/login'>
                 <Login />
               </Route>
 
-              <Route path="/apptconfirm">
+              <Route path='/apptconfirm'>
                 <ConfirmationPage />
               </Route>
 
-              <Route path="/donation">
+              <Route path='/donation'>
                 <DonationElement />
               </Route>
-              <Route path="/addpost">
+              <Route path='/addpost'>
                 <AddPost />
               </Route>
 
-              <Route path="/:blog_uid/addpost">
+              <Route path='/:blog_uid/addpost'>
                 <AddPost />
               </Route>
-              <Route path="/availability">
+              <Route path='/availability'>
                 <Availability />
               </Route>
-              <Route path="/signup">
+              <Route path='/signup'>
                 <SignUp />
               </Route>
 
-              <Route path="/recipes">
+              <Route path='/recipes'>
                 <Recipes />
               </Route>
 
-              <Route path="/living well">
+              <Route path='/living well'>
                 <LivingWell />
               </Route>
 
-              <Route path="/learnMore">
+              <Route path='/learnMore'>
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
                   <LearnMore />
                 </MyContext.Provider>
               </Route>
 
-              <Route path="/manageService">
+              <Route path='/manageService'>
                 <MyContext.Provider value={{ serviceArr, servicesLoaded, setServiceArr }}>
                   <ManageService />
                 </MyContext.Provider>
               </Route>
 
-              <Route path="/about">
+              <Route path='/about'>
                 <About />
               </Route>
-              <Route path="/:blog_uid/fullblog">
+              <Route path='/:blog_uid/fullblog'>
                 <FullBlog />
               </Route>
 
-              <Route path="/blog">
+              <Route path='/blog'>
                 <Blog />
               </Route>
 
-              <Route path="/contact">
+              <Route path='/contact'>
                 <Contact />
               </Route>
 
-              <Route path="/waiver">
-                <WaiverContext.Provider value={{waiver, setWaiver, email, setEmail}}>
+              <Route path='/waiver'>
+                <WaiverContext.Provider value={{ waiver, setWaiver, email, setEmail }}>
                   <Waiver />
                 </WaiverContext.Provider>
               </Route>
-              <Route path="/waiverconfirm">
-                <WaiverContext.Provider value={{waiver, setWaiver, email, setEmail}}>
+              <Route path='/waiverconfirm'>
+                <WaiverContext.Provider value={{ waiver, setWaiver, email, setEmail }}>
                   <WaiverConfirmation />
                 </WaiverContext.Provider>
               </Route>
 
-
-              <Route path="/services">
+              <Route path='/services'>
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
                   <Services />
                 </MyContext.Provider>
               </Route>
 
-              <Route exact path="/seminar" component={SeminarRegister} />
-              <Route path="/">
+              <Route exact path='/seminar' component={SeminarRegister} />
+              <Route path='/'>
                 <MyContext.Provider value={{ serviceArr, servicesLoaded }}>
                   <Home />
                 </MyContext.Provider>
@@ -211,10 +206,10 @@ function App() {
       <Helmet>
         <title>Nitya Ayurveda South Bay Healing Center</title>
         <meta
-          name="description"
-          content="Nitya Ayurveda is a holistic healing center that offers classical Ayurvedic solutions for your health issues with herbal plans, diet and lifestyle guidance, and follow ups."
+          name='description'
+          content='Nitya Ayurveda is a holistic healing center that offers classical Ayurvedic solutions for your health issues with herbal plans, diet and lifestyle guidance, and follow ups.'
         />
-        <link rel="canonical" href="/Home" />
+        <link rel='canonical' href='/Home' />
       </Helmet>
     </div>
   );

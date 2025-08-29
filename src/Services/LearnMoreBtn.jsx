@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 
 function LearnMoreBtn(props) {
-  const apptID = props.apptID;
-  console.log("learnmore props", props);
+  const treatmentID = props.treatmentID;
+  // console.log("learnmore props", props);
   return (
     <div>
       <br />
@@ -19,7 +19,7 @@ function LearnMoreBtn(props) {
           to={{
             pathname: "/learnMore",
             state: {
-              apptID: apptID,
+              treatmentID: treatmentID,
             },
           }}
           style={{ color: "#0288D1", fontSize: "16px" }}

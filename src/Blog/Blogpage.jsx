@@ -2,18 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useHistory } from "react-router-dom";
-import {
-  AppBar,
-  Toolbar,
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  Modal,
-  Box,
-  Typography,
-  Button,
-} from "@material-ui/core";
+import { AppBar, Toolbar, List, ListItem, ListItemText, Menu, Modal, Box, Typography, Button } from "@material-ui/core";
 import ReactPlayer from "react-player";
 import Container from "@material-ui/core/Container";
 import SearchIcon from "@material-ui/icons/Search";
@@ -223,9 +212,9 @@ function Blogpage(props) {
 
   const history = useHistory();
   const Auth = useContext(AuthContext);
-  console.log('authisauth: ', Auth.isAuth);
+  console.log("authisauth: ", Auth.isAuth);
 
-  console.log('auth: ', Auth);
+  console.log("auth: ", Auth);
   const handleOpenAvailabilityModal = () => history.push("/availability");
   const logout = () => {
     Auth.setIsAuth(false);
@@ -234,9 +223,7 @@ function Blogpage(props) {
   };
 
   const fetchData = async () => {
-    const res = await fetch(
-      "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/truncatedBlog"
-    );
+    const res = await fetch("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/truncatedBlog");
     const json = await res.json();
     return json.result;
   };
@@ -318,29 +305,22 @@ function Blogpage(props) {
   ];
 
   function handleDelete(blog_id) {
-    axios
-      .post(
-        `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/deleteBlog/${blog_id}`
-      )
-      .then((response) => {
-        console.log("delete", response.data);
-        window.location.reload();
-      });
+    axios.post(`https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/deleteBlog/${blog_id}`).then((response) => {
+      console.log("delete", response.data);
+      window.location.reload();
+    });
   }
 
   return (
-    <div className="HomeContainer">
+    <div className='HomeContainer'>
       <Helmet>
         <title>Blog</title>
-        <meta
-          name="description"
-          content="Ayurvedic Musings about health, recipies and living well"
-        />
-        <link rel="canonical" href="/blog" />
+        <meta name='description' content='Ayurvedic Musings about health, recipies and living well' />
+        <link rel='canonical' href='/blog' />
       </Helmet>
       <ScrollToTop />
-      <div className={classes.blogpage} id="blogpage">
-        <div className="CardTitle" style={{ margin: "2rem" }}>
+      <div className={classes.blogpage} id='blogpage'>
+        <div className='CardTitle' style={{ margin: "2rem" }}>
           Blog
         </div>
         <div className={classes.container}>
@@ -356,7 +336,7 @@ function Blogpage(props) {
           >
             <div hidden={Auth.isAuth === false}>
               <AddIcon
-                size="lg"
+                size='lg'
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   history.push("/addPost");
@@ -365,21 +345,12 @@ function Blogpage(props) {
             </div>
           </div>
 
-          <AppBar className={classes.appbar} position="static">
+          <AppBar className={classes.appbar} position='static'>
             <Toolbar>
-              <Container maxWidth="md" className={classes.navbarDisplayFlex}>
-                <List
-                  component="nav"
-                  aria-labelledby="main navigation"
-                  className={classes.navDisplayFlex}
-                >
+              <Container maxWidth='md' className={classes.navbarDisplayFlex}>
+                <List component='nav' aria-labelledby='main navigation' className={classes.navDisplayFlex}>
                   {navLinks.map(({ title, path }) => (
-                    <Link
-                      to={path}
-                      key={title}
-                      className={classes.linkText}
-                      style={{ textDecoration: "none" }}
-                    >
+                    <Link to={path} key={title} className={classes.linkText} style={{ textDecoration: "none" }}>
                       <ListItem button>
                         <ListItemText primary={title} />
                       </ListItem>
@@ -390,52 +361,42 @@ function Blogpage(props) {
               <div className={classes.searchContainer}>
                 <div className={classes.search}>
                   <form onSubmit={submitSearch}>
-                    <input
-                      type="text"
-                      className={classes.inputInput}
-                      placeholder="Search..."
-                    />
+                    <input type='text' className={classes.inputInput} placeholder='Search...' />
                   </form>
                 </div>
                 <div className={classes.searchIconDiv}>
-                  <SearchIcon fontSize="small" />
+                  <SearchIcon fontSize='small' />
                 </div>
               </div>
             </Toolbar>
           </AppBar>
 
           {data.map((post) => (
-            <div className="blogPostContainer">
+            <div className='blogPostContainer'>
               <div>
                 <div className={classes.cardRow}>
                   <div className={classes.card}>
                     <div>
                       {/* TODO: edit this to have only one */}
                       {console.log(post.blogImage.split("/")[4])}
-                      {post.blogImage.split(",").filter(blogImage => !!blogImage)[0] ? (
-                        post.blogImage.split(",").filter(blogImage => !!blogImage)[0].split("/")[4] === "blogs" ? (
-                            <img
-                                src={
-                                    post.blogImage.split(",").filter(blogImage => !!blogImage)[0] !== "NULL" ?
-                                    post.blogImage.split(",").filter(blogImage => !!blogImage)[0] :
-                                    defaultImg
-                                }
-                                className={classes.blogImg}
-                                onError={(e) => (e.target.style.display = "none")}
-                            />
+                      {post.blogImage.split(",").filter((blogImage) => !!blogImage)[0] ? (
+                        post.blogImage
+                          .split(",")
+                          .filter((blogImage) => !!blogImage)[0]
+                          .split("/")[4] === "blogs" ? (
+                          <img
+                            src={post.blogImage.split(",").filter((blogImage) => !!blogImage)[0] !== "NULL" ? post.blogImage.split(",").filter((blogImage) => !!blogImage)[0] : defaultImg}
+                            className={classes.blogImg}
+                            onError={(e) => (e.target.style.display = "none")}
+                          />
                         ) : (
-                            <div onClick={() => setPlay(!play)}>
-                                <ReactPlayer
-                                    width="25rem"
-                                    height="25rem"
-                                    url={post.blogImage.split(",").filter(blogImage => !!blogImage)[0]}
-                                    playing={play}
-                                />
-                            </div>
+                          <div onClick={() => setPlay(!play)}>
+                            <ReactPlayer width='25rem' height='25rem' url={post.blogImage.split(",").filter((blogImage) => !!blogImage)[0]} playing={play} />
+                          </div>
                         )
-                    ) : (
+                      ) : (
                         <div>No media available</div>
-                    )}
+                      )}
                       {/* {post.blogImage.split("/")[4] == "blogs" ? (
                         <img
                           src={
@@ -482,7 +443,7 @@ function Blogpage(props) {
                           vertical: "top",
                           horizontal: "center",
                         }}
-                        id="simple-menu"
+                        id='simple-menu'
                         anchorEl={anchorEl}
                         keepMounted
                         open={Boolean(anchorEl)}
@@ -490,7 +451,7 @@ function Blogpage(props) {
                       ></Menu>
                       <div
                         hidden={Auth.isAuth === false}
-                      // style={{ }}
+                        // style={{ }}
                       >
                         {/* http://localhost:4000/api/v2/deleteBlog/150-000048 */}
                         <DeleteForeverSharpIcon
@@ -500,7 +461,7 @@ function Blogpage(props) {
                           }}
                         />
                         <EditSharpIcon
-                          size="lg"
+                          size='lg'
                           style={{ cursor: "pointer" }}
                           onClick={() => {
                             history.push(`/${post.blog_uid}/addpost`);
@@ -508,15 +469,10 @@ function Blogpage(props) {
                         />
                       </div>
                     </div>
-                    <Link
-                      to={`/${post.blog_uid}/fullblog`}
-                      style={{ textDecoration: "none" }}
-                    >
+                    <Link to={`/${post.blog_uid}/fullblog`} style={{ textDecoration: "none" }}>
                       <div>
                         <div className={classes.title}>
-                          <div style={{ textAlign: "left" }}>
-                            {post.blogTitle}
-                          </div>
+                          <div style={{ textAlign: "left" }}>{post.blogTitle}</div>
                         </div>
                         <div className={classes.content} style={{}}>
                           <Markup content={post.blogSummary} />
@@ -531,10 +487,10 @@ function Blogpage(props) {
         </div>
         {console.log(Auth)}
       </div>
-      
+
       <Box hidden={Auth.isAuth === false}>
         {/* shows if it is not true */}
-        <Button 
+        <Button
           style={{
             backgroundColor: "#d3a625",
             color: "white",
@@ -544,17 +500,17 @@ function Blogpage(props) {
         >
           <Link
             to={{
-              pathname: '/manageService',
+              pathname: "/manageService",
             }}
-            style={{ 
+            style={{
               textDecoration: "none",
               color: "white",
-           }}
+            }}
           >
             <p>Edit Service</p>
           </Link>
         </Button>
-      </Box>  
+      </Box>
 
       <div hidden={Auth.isAuth === false}>
         <Button

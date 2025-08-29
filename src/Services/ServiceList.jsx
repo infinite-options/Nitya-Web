@@ -5,18 +5,15 @@ import "../Home/Home.css";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 
 export default function ServiceList(props) {
-  const {serviceArr, serviceType} = props.data;
+  const { serviceArr, serviceType } = props.data;
   const editable = props.mode;
   const data = serviceArr;
   return (
-    <div className="ServiceCard">
-      <div
-        className="CardGrid"
-        style={{ gridTemplateColumns: "repeat(1, auto)", height: "auto" }}
-      >
+    <div className='ServiceCard'>
+      <div className='CardGrid' style={{ gridTemplateColumns: "repeat(1, auto)", height: "auto" }}>
         {data.length > 0 ? (
           data
-            .filter((service) => (service.category === serviceType && service.availability === "Available"))
+            .filter((service) => service.category === serviceType && service.availability === "Available")
             .map((filteredService) => (
               <div
                 style={{
@@ -24,7 +21,8 @@ export default function ServiceList(props) {
                   backgroundColor: "#DADADA",
                   marginTop: "2rem",
                   height: "auto",
-                }} key={filteredService.treatment_uid}
+                }}
+                key={filteredService.treatment_uid}
               >
                 <div
                   style={{
@@ -33,7 +31,6 @@ export default function ServiceList(props) {
                     flex: "1",
                     backgroundColor: "#DADADA",
                     justifyContent: "center",
-                    
                   }}
                 >
                   <img
@@ -42,7 +39,7 @@ export default function ServiceList(props) {
                       maxHeight: "300px",
                       objectFit: "scale-down",
                     }}
-                    className="ServiceImg"
+                    className='ServiceImg'
                     src={filteredService.image_url}
                     alt={"An image of" + filteredService.title}
                   />
@@ -58,30 +55,24 @@ export default function ServiceList(props) {
                       marginBottom: "2rem",
                     }}
                   >
-                    <div className="Services_Title_Font">
-                      {filteredService.title}
-                    </div>
-                    <div className="Services_Body_Font">
+                    <div className='Services_Title_Font'>{filteredService.title}</div>
+                    <div className='Services_Body_Font'>
                       {filteredService.description} <br />
                     </div>
-                    <LearnMoreBTN
-                      apptID={filteredService.treatment_uid}
-                    />
-                    <BookNowBTN
-                      apptID={filteredService.treatment_uid} addons={[]}
-                    />
+                    <LearnMoreBTN treatmentID={filteredService.treatment_uid} />
+                    <BookNowBTN apptID={filteredService.treatment_uid} addons={[]} />
                     <div hidden={!editable}>
-                    <Link
-                      to={{
-                        pathname: "/manageLearnMore",
-                        state: {
-                          apptID: filteredService.treatment_uid,
-                        },
-                      }}
-                      style={{ color: "red", fontSize: "16px" }}
-                    >
-                      Edit service
-                    </Link>
+                      <Link
+                        to={{
+                          pathname: "/manageLearnMore",
+                          state: {
+                            apptID: filteredService.treatment_uid,
+                          },
+                        }}
+                        style={{ color: "red", fontSize: "16px" }}
+                      >
+                        Edit service
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -89,7 +80,7 @@ export default function ServiceList(props) {
             ))
         ) : (
           <div>
-            <img src={loadinggif} alt="LOADING" className="loading-img"></img>
+            <img src={loadinggif} alt='LOADING' className='loading-img'></img>
           </div>
         )}
       </div>

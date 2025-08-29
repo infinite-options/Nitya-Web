@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import {
-  Elements,
-  useElements,
-  useStripe,
-  CardElement,
-} from "@stripe/react-stripe-js";
+import { Elements, useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import ScrollToTop from "../Blog/ScrollToTop";
 import "../Home/Home.css";
 import { Typography } from "@material-ui/core";
@@ -32,24 +27,19 @@ export default function Donation(props) {
       email: props.email,
     };
     // sendToDatabase();
-    axios
-      .post(
-        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/findSeminarUID",
-        body
-      )
-      .then((response) => {
-        console.log("response", response);
-        for (var i = 0; i < response.data.result.length; i++) {
-          tempFind.push(response.data.result[i]);
+    axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/findSeminarUID", body).then((response) => {
+      console.log("response", response);
+      for (var i = 0; i < response.data.result.length; i++) {
+        tempFind.push(response.data.result[i]);
+      }
+      console.log("response", tempFind);
+      for (var i = 0; i < tempFind.length; i++) {
+        if (props.email === tempFind[i].email) {
+          console.log("response", tempFind[i].seminar_uid);
+          setcustomerUid(tempFind[i].seminar_uid);
         }
-        console.log("response", tempFind);
-        for (var i = 0; i < tempFind.length; i++) {
-          if (props.email === tempFind[i].email) {
-            console.log("response", tempFind[i].seminar_uid);
-            setcustomerUid(tempFind[i].seminar_uid);
-          }
-        }
-      });
+      }
+    });
   }, [customerUidState]);
 
   function register() {
@@ -98,8 +88,7 @@ export default function Donation(props) {
     var clientSecret;
     const cardElement = await elements.getElement(CardElement);
 
-    const postURL =
-      "https://huo8rhh76i.execute-api.us-west-1.amazonaws.com/dev/api/v2/createPaymentIntent";
+    const postURL = "https://huo8rhh76i.execute-api.us-west-1.amazonaws.com/dev/api/v2/createPaymentIntent";
     axios
       .post(postURL, {
         customer_uid: "100-000001",
@@ -111,11 +100,7 @@ export default function Donation(props) {
         console.log("clientSecret from createPaymentIntent: " + result.data);
         clientSecret = result.data;
 
-        console.log(
-          "calling createPayment gMethod...",
-          clientSecret,
-          result.data.billingDetails
-        );
+        console.log("calling createPayment gMethod...", clientSecret, result.data.billingDetails);
         //window.scrollTo({ behavior: "smooth", top: 620 });
         const paymentMethod = stripe
           .createPaymentMethod({
@@ -135,9 +120,7 @@ export default function Donation(props) {
                   setup_future_usage: "off_session",
                 })
                 .then(function (result) {
-                  console.log(
-                    "confirmedCardPayment result: " + JSON.stringify(result)
-                  );
+                  console.log("confirmedCardPayment result: " + JSON.stringify(result));
                   if (props.registered === true) {
                     console.log("in if");
                     let data = {
@@ -197,14 +180,14 @@ export default function Donation(props) {
               alignItems: "center",
             }}
           >
-            <div className="CardTitle">Registration Confirmed</div>
-            <div className="textConfirm" style={{ marginTop: "2rem" }}>
+            <div className='CardTitle'>Registration Confirmed</div>
+            <div className='textConfirm' style={{ marginTop: "2rem" }}>
               Congrats! You are now registered for the workshop.
               <br />
               We have sent a confirmation email to
-              <div className="textTitle">{props.email}</div>
+              <div className='textTitle'>{props.email}</div>
             </div>
-            <div className="textTitle" style={{ marginTop: "2rem" }}>
+            <div className='textTitle' style={{ marginTop: "2rem" }}>
               Please check your email for workshop details.
             </div>
           </div>
@@ -220,14 +203,14 @@ export default function Donation(props) {
               alignItems: "center",
             }}
           >
-            <div className="CardTitle">Donation</div>
+            <div className='CardTitle'>Donation</div>
 
-            <div className="textTitle" style={{ marginTop: "1rem" }}>
+            <div className='textTitle' style={{ marginTop: "1rem" }}>
               Thank you. We really appreciate your contribution.
             </div>
 
             <button
-              className="registerBtn"
+              className='registerBtn'
               onClick={() => {
                 history.push("/");
               }}
@@ -239,9 +222,9 @@ export default function Donation(props) {
       ) : (
         <div>
           <div>
-            <div className="CardTitle">Donation</div>
+            <div className='CardTitle'>Donation</div>
 
-            <div className="textTitle" style={{ marginTop: "3rem" }}>
+            <div className='textTitle' style={{ marginTop: "3rem" }}>
               Please enter any amount you see fit.
             </div>
             <div
@@ -251,24 +234,13 @@ export default function Donation(props) {
                 alignItems: "center",
               }}
             >
-              <input
-                className="donationField"
-                id="Donation"
-                type="text"
-                placeholder="Donation"
-                onChange={(e) => setDonation(e.target.value)}
-                value={donation}
-                required
-              />
+              <input className='donationField' id='Donation' type='text' placeholder='Donation' onChange={(e) => setDonation(e.target.value)} value={donation} required />
 
               {showError()}
 
-              <CardElement
-                elementRef={(c) => (this._element = c)}
-                className="donationField"
-              />
+              <CardElement elementRef={(c) => (this._element = c)} className='donationField' />
               <button
-                className="registerBtn"
+                className='registerBtn'
                 onClick={() => {
                   bookAppt();
                   console.log(donation.length);

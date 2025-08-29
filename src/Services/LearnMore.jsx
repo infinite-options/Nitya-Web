@@ -81,7 +81,7 @@ export default function LearnMore(props) {
         data
           .filter((service) => location.state.apptID === service.treatment_uid)
           .map((filteredService) => (
-            <div style={{ padding: "3% 20% 3% 20%" }}>
+            <div key={filteredService.treatment_uid} style={{ padding: "3% 20% 3% 20%" }}>
               <div style={{ textAlign: "center" }}>
                 <div className='LearnMoreTitle'>{filteredService.title}</div>
                 <div className='LearnMoreText'>
