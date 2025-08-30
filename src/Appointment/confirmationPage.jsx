@@ -43,6 +43,50 @@ export default function ConfirmationPage(props) {
 
   const classes = useStyles();
   const location = useLocation();
+
+  // Function to format time in 12-hour format
+  const formatTime12Hour = (timeString) => {
+    if (!timeString) return "";
+    const [hours, minutes] = timeString.split(":").map(Number);
+    const period = hours >= 12 ? "PM" : "AM";
+    const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+    return `${displayHours}:${minutes.toString().padStart(2, "0")} ${period}`;
+  };
+
+  // Function to get timezone abbreviation
+  const getTimezoneAbbreviation = () => {
+    const now = new Date();
+    const timezoneAbbr = now
+      .toLocaleTimeString("en-US", {
+        timeZoneName: "short",
+        hour12: false,
+      })
+      .split(" ")
+      .pop();
+    return timezoneAbbr || "Local";
+  };
+
+  // Function to convert Pacific Time to user's local time
+  const convertPacificToLocal = (pacificTime, dateString) => {
+    try {
+      // Create a date object in Pacific timezone
+      const pacificDate = new Date(`${dateString}T${pacificTime}:00`);
+
+      // Format in user's local timezone
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "America/Los_Angeles", // Pacific timezone
+      });
+
+      return formatter.format(pacificDate);
+    } catch (error) {
+      console.error("Error converting time:", error);
+      return pacificTime;
+    }
+  };
+
   const calculateEndTime = (startTime, duration) => {
     const [startHours, startMinutes] = startTime.split(":").map(Number);
     const [durationHours, durationMinutes, durationSeconds] = duration.split(":").map(Number);
@@ -66,6 +110,16 @@ export default function ConfirmationPage(props) {
   const startTime = appointmentTime.includes(" ") ? appointmentTime.split(" ")[1].substring(0, 5) : appointmentTime;
   const duration = location.state.apptInfo.duration;
   const endTime = calculateEndTime(startTime, duration);
+
+  // Format times for display
+  const startTimeFormatted = formatTime12Hour(startTime);
+  const endTimeFormatted = formatTime12Hour(endTime);
+  const pacificTimeDisplay = `${startTimeFormatted} - ${endTimeFormatted} PST`;
+
+  // Convert to user's local timezone
+  const localStartTime = convertPacificToLocal(startTime, location.state.apptInfo.appointmentDate);
+  const localEndTime = convertPacificToLocal(endTime, location.state.apptInfo.appointmentDate);
+  const localTimeDisplay = `${localStartTime} - ${localEndTime} ${getTimezoneAbbreviation()}`;
   const scaleWidthFn = () => {
     return 280 - (810 - dimensions.width) * 0.4;
   };
@@ -147,7 +201,10 @@ export default function ConfirmationPage(props) {
               <strong>Date:</strong> {formatDate(location.state.apptInfo.appointmentDate)}
             </div>
             <div className='ApptPageText'>
-              <strong>Time:</strong> {startTime} - {endTime}
+              <strong>Time:</strong> {localTimeDisplay}
+            </div>
+            <div className='ApptPageText' style={{ fontSize: "14px", color: "#666", fontStyle: "italic" }}>
+              (Pacific Time: {pacificTimeDisplay})
             </div>
 
             <div style={{ margin: "1rem" }}>

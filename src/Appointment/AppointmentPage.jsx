@@ -427,6 +427,13 @@ export default function AppointmentPage(props) {
 
   const continueToNextPage = () => {
     if (selectedTime) {
+      // Convert duration from seconds back to HH:MM:SS format for the Scheduler component
+      const totalDurationSeconds = getTotalDuration();
+      const hours = Math.floor(totalDurationSeconds / 3600);
+      const minutes = Math.floor((totalDurationSeconds % 3600) / 60);
+      const seconds = totalDurationSeconds % 60;
+      const durationString = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
       history.push({
         pathname: `/${treatmentID}/confirm`,
         state: {
@@ -435,7 +442,7 @@ export default function AppointmentPage(props) {
           mode: attendMode,
           accessToken: accessToken,
           totalCost: getTotalCost(),
-          totalDuration: getTotalDuration(),
+          totalDuration: durationString, // Pass as HH:MM:SS string, not seconds
           durationText: durationToString(getTotalDuration()),
         },
       });
@@ -703,15 +710,31 @@ export default function AppointmentPage(props) {
               ))}
             </div>
 
-            <div style={{ padding: "3%" }} hidden={!buttonSelect || !selectedTime}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "2rem 0",
+                marginTop: "2rem",
+              }}
+              hidden={!buttonSelect || !selectedTime}
+            >
               <button
                 onClick={continueToNextPage}
                 className={classes.timeslotButton}
                 style={{
                   backgroundColor: "#D3A625",
                   color: "white",
-                  width: "auto",
-                  padding: "0 2rem",
+                  width: "200px",
+                  height: "50px",
+                  fontSize: "18px",
+                  fontWeight: "600",
+                  borderRadius: "30px",
+                  border: "2px solid #D3A625",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  boxShadow: "0 4px 8px rgba(211, 166, 37, 0.3)",
                 }}
               >
                 Continue

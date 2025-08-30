@@ -221,11 +221,14 @@ export default function Scheduler(props) {
   };
 
   function sendToDatabase() {
-    const formattedTime = convertTimeWithTimezone(props.selectedTime, props.date);
+    // Use the original Pacific Time (treatmentTime) instead of timezone-converted selectedTime
+    // Format time as HH:MM (remove seconds)
+    const formattedTime = props.treatmentTime.substring(0, 5); // Extract HH:MM from HH:MM:SS
     console.log("=== APPOINTMENT CREATION DEBUG ===");
-    console.log("Raw selectedTime:", props.selectedTime);
+    console.log("Raw selectedTime (timezone-converted):", props.selectedTime);
+    console.log("Raw treatmentTime (Pacific Time):", props.treatmentTime);
+    console.log("Formatted time for database (HH:MM format):", formattedTime);
     console.log("Raw date:", props.date);
-    console.log("Formatted time for database:", formattedTime);
     console.log("Full appointment data:", {
       first_name: props.firstName,
       last_name: props.lastName,
@@ -314,7 +317,7 @@ export default function Scheduler(props) {
       age: props.age,
       gender: props.gender,
       appointmentDate: moment(props.date).format("YYYY-MM-DD"),
-      appointmentTime: formattedTime,
+      appointmentTime: props.treatmentTime, // Use Pacific Time, not timezone-converted time
     });
     // history.push("/apptconfirm", {apptInfo});
     console.log("create appt", apptInfo);
