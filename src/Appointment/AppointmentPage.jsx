@@ -3,7 +3,6 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Radio, FormControlLabel } from "@material-ui/core";
 import { useHistory, useParams, useLocation } from "react-router-dom";
 import Calendar from "react-calendar";
-import moment from "moment-timezone";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import ScrollToTop from "../Blog/ScrollToTop";
@@ -91,22 +90,17 @@ export default function AppointmentPage(props) {
 
   // Core state
   const [accessToken, setAccessToken] = useState("");
-  const [loading, setLoading] = useState(false);
   const [isCalDisabled, setCalDisabled] = useState(false);
 
   // Appointment data
   const [date, setDate] = useState(new Date(+new Date() + 86400000));
-  const [minDate, setMinDate] = useState(new Date(+new Date() + 86400000));
-  const [apiDateString, setApiDateString] = useState("");
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedButton, setSelectedButton] = useState("");
-  const [timeSelected, setTimeSelected] = useState(false);
   const [buttonSelect, setButtonSelect] = useState(false);
 
   // Mode and settings
   const [mode, setMode] = useState({ inPerson: true, online: false });
   const [attendMode, setAttendMode] = useState("In-Person");
-  const [bookNowClicked, setBookNowClicked] = useState(true);
 
   // Time slots - separate arrays for each mode
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
@@ -115,7 +109,6 @@ export default function AppointmentPage(props) {
 
   // Refs
   const duration = useRef(null);
-  const isFirstLoad = useRef(true);
 
   // Context and routing
   const classes = useStyles();
@@ -155,21 +148,9 @@ export default function AppointmentPage(props) {
   };
 
   const convertDurationToSeconds = (durationStr) => {
+    if (!durationStr) return 0;
     const [hours, minutes, seconds] = durationStr.split(":").map(Number);
     return hours * 3600 + minutes * 60 + seconds;
-  };
-
-  const generateTimeSlots = (startHour, endHour, durationSeconds) => {
-    const slots = [];
-    const slotDuration = 30 * 60; // 30 minutes in seconds
-
-    for (let time = startHour * 3600; time <= endHour * 3600 - durationSeconds; time += slotDuration) {
-      const hours = Math.floor(time / 3600);
-      const minutes = Math.floor((time % 3600) / 60);
-      slots.push(`${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:00`);
-    }
-
-    return slots;
   };
 
   // Core API functions
@@ -267,29 +248,33 @@ export default function AppointmentPage(props) {
     console.log("⏱️ Duration:", duration);
     console.log("🏢 Mode:", mode);
 
-    const hoursMode = mode === "Online" ? "Online" : "Office";
-    const apiUrl = `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/${date}/${duration}/${hoursMode}`;
+    const apiUrl = `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/${date}/${duration}`;
 
     console.log("🌐 Backend API URL:", apiUrl);
 
     const response = await axios.get(apiUrl);
     console.log("🏢 Backend API response:", response.data);
 
-    const availableSlots = response.data.result || [];
-    console.log("✅ Backend available slots:", availableSlots.length);
+    // Extract the appropriate mode's available slots
+    const modeKey = mode === "Online" ? "Online" : "Office";
+    const availableSlots = response.data[modeKey] || [];
 
-    return availableSlots.map((slot) => slot.begin_time);
+    console.log(`✅ Backend ${modeKey} available slots:`, availableSlots.length);
+    console.log("📋 Available slots data:", availableSlots);
+
+    return availableSlots;
   };
 
-  const filterAvailableSlots = (allSlots, busyTimes, durationSeconds) => {
+  const filterAvailableSlots = (backendSlots, busyTimes, durationSeconds) => {
     console.log("🔍🔍🔍 FILTERING AVAILABLE TIME SLOTS 🔍🔍🔍");
-    console.log("📊 Total slots to check:", allSlots.length);
+    console.log("📊 Total backend slots to check:", backendSlots.length);
     console.log("🔴 Busy times from Google:", busyTimes);
     console.log("⏱️ Treatment duration:", durationSeconds, "seconds");
 
     const availableSlots = [];
 
-    allSlots.forEach((slotTime, slotIndex) => {
+    backendSlots.forEach((slot, slotIndex) => {
+      const slotTime = slot.begin_time;
       const [hours, minutes] = slotTime.split(":").map(Number);
       const slotStart = hours * 3600 + minutes * 60;
       const slotEnd = slotStart + durationSeconds;
@@ -337,9 +322,9 @@ export default function AppointmentPage(props) {
     });
 
     console.log("\n🎯🎯🎯 FILTERING SUMMARY 🎯🎯🎯");
-    console.log("📊 Original slots:", allSlots.length);
+    console.log("📊 Original backend slots:", backendSlots.length);
     console.log("🔴 Busy times found:", busyTimes ? busyTimes.length : 0);
-    console.log("✅ Available slots:", availableSlots.length);
+    console.log("✅ Available slots after Google Calendar filtering:", availableSlots.length);
     console.log("📋 Available times:", availableSlots);
 
     return availableSlots;
@@ -351,7 +336,6 @@ export default function AppointmentPage(props) {
       return;
     }
 
-    setLoading(true);
     setCalDisabled(true);
 
     try {
@@ -364,27 +348,23 @@ export default function AppointmentPage(props) {
       const busyTimes = await getGoogleCalendarBusyTimes(dateString, accessToken);
       console.log("🔴 Raw busy times data:", busyTimes);
 
-      // Calculate time slots for BOTH modes at once
-      console.log("🏢🏢🏢 CALCULATING TIME SLOTS FOR BOTH MODES 🏢🏢🏢");
+      // Get available slots from backend for both modes
+      console.log("🏢🏢🏢 FETCHING BACKEND SLOTS FOR BOTH MODES 🏢🏢🏢");
 
-      // IN-PERSON MODE time slots
-      const inPersonStartHour = 9;
-      const inPersonEndHour = 17; // 5:00 PM
-      const inPersonSlots = generateTimeSlots(inPersonStartHour, inPersonEndHour, convertDurationToSeconds(duration.current));
-      console.log("👥 In-Person slots:", inPersonSlots);
+      // Get Office (In-Person) slots
+      const officeSlots = await getBackendAvailableSlots(dateString, duration.current, "In-Person");
+      console.log("👥 Office slots from backend:", officeSlots);
 
-      // ONLINE MODE time slots
-      const onlineStartHour = 8;
-      const onlineEndHour = 18; // 6:00 PM
-      const onlineSlots = generateTimeSlots(onlineStartHour, onlineEndHour, convertDurationToSeconds(duration.current));
-      console.log("💻 Online slots:", onlineSlots);
+      // Get Online slots
+      const onlineSlots = await getBackendAvailableSlots(dateString, duration.current, "Online");
+      console.log("💻 Online slots from backend:", onlineSlots);
 
       // Filter both sets of slots against Google Calendar busy times
-      const inPersonAvailable = filterAvailableSlots(inPersonSlots, busyTimes, convertDurationToSeconds(duration.current));
+      const inPersonAvailable = filterAvailableSlots(officeSlots, busyTimes, convertDurationToSeconds(duration.current));
       const onlineAvailable = filterAvailableSlots(onlineSlots, busyTimes, convertDurationToSeconds(duration.current));
 
-      console.log("✅ In-Person available slots:", inPersonAvailable);
-      console.log("✅ Online available slots:", onlineAvailable);
+      console.log("✅ In-Person available slots after Google filtering:", inPersonAvailable);
+      console.log("✅ Online available slots after Google filtering:", onlineAvailable);
 
       // Store both sets of slots
       setInPersonTimeSlots(inPersonAvailable);
@@ -392,14 +372,12 @@ export default function AppointmentPage(props) {
 
       // Set the current mode's slots as active
       setAvailableTimeSlots(attendMode === "Online" ? onlineAvailable : inPersonAvailable);
-      setApiDateString(dateString);
     } catch (error) {
       console.error("🚨 Error fetching time slots:", error);
       setAvailableTimeSlots([]);
       setInPersonTimeSlots([]);
       setOnlineTimeSlots([]);
     } finally {
-      setLoading(false);
       setCalDisabled(false);
     }
   };
@@ -431,7 +409,6 @@ export default function AppointmentPage(props) {
     // Clear existing selections when mode changes
     setSelectedTime(null);
     setSelectedButton("");
-    setTimeSelected(false);
     setButtonSelect(false);
   };
 
@@ -445,16 +422,15 @@ export default function AppointmentPage(props) {
     console.log("⏰ Time slot selected:", timeSlot);
     setSelectedTime(timeSlot);
     setSelectedButton(index);
-    setTimeSelected(true);
     setButtonSelect(true);
   };
 
   const continueToNextPage = () => {
-    if (selectedTime && apiDateString) {
+    if (selectedTime) {
       history.push({
         pathname: `/${treatmentID}/confirm`,
         state: {
-          date: apiDateString,
+          date: formatDateForAPI(date),
           time: selectedTime,
           mode: attendMode,
           accessToken: accessToken,
@@ -513,15 +489,6 @@ export default function AppointmentPage(props) {
       .pop();
 
     return timezoneAbbr || "Local";
-  };
-
-  // Helper function to get current mode's available slots count
-  const getCurrentModeSlotCount = () => {
-    if (attendMode === "Online") {
-      return onlineTimeSlots.length;
-    } else {
-      return inPersonTimeSlots.length;
-    }
   };
 
   // Helper function to format time from 24-hour format to 12-hour format with timezone
@@ -596,78 +563,9 @@ export default function AppointmentPage(props) {
     }
   }, [accessToken, duration.current]);
 
-  // Render functions
-  const renderTimeSlots = () => {
-    if (loading) {
-      return <div className='loader'></div>;
-    }
-
-    if (availableTimeSlots.length === 0) {
-      return (
-        <div className='ApptPageHeader'>
-          <div style={{ textAlign: "center", padding: "2rem" }}>
-            <div style={{ color: "#D3A625", fontSize: "20px", fontWeight: "bold", marginBottom: "1rem" }}>❌ No Available Appointments</div>
-            <div style={{ fontSize: "16px", color: "#666", marginBottom: "1rem" }}>No time slots are available for the selected date and appointment type.</div>
-            <div style={{ fontSize: "14px", color: "#888" }}>This could be because:</div>
-            <ul style={{ textAlign: "left", display: "inline-block", fontSize: "14px", color: "#888" }}>
-              <li>All times are blocked on Google Calendar</li>
-              <li>All times are already booked as appointments</li>
-              <li>The selected date is outside business hours</li>
-              <li>The treatment duration doesn't fit in available slots</li>
-            </ul>
-            <div style={{ fontSize: "14px", color: "#666", marginTop: "1rem" }}>Please try selecting a different date or contact us for assistance.</div>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <>
-        {/* Available Time Slots Found section - positioned below the main title */}
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <div style={{ color: "#D3A625", fontSize: "18px", fontWeight: "bold", marginBottom: "0.5rem" }}>
-            ✅ {availableTimeSlots.length} Available Time Slot{availableTimeSlots.length === 1 ? "" : "s"} Found
-          </div>
-          <div style={{ fontSize: "14px", color: "#666" }}>Pick an Appointment Time</div>
-        </div>
-
-        {/* Grid layout for time slots - 5 per row */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(5, 1fr)",
-            gap: "1rem",
-            maxWidth: "800px",
-            margin: "0 auto",
-            padding: "0 1rem",
-          }}
-        >
-          {availableTimeSlots.map((timeSlot, index) => (
-            <button
-              key={index}
-              className={classes.timeslotButton}
-              style={{
-                backgroundColor: index === selectedButton ? "#D3A625" : "white",
-                color: index === selectedButton ? "white" : "#D3A625",
-                width: "100%",
-                minHeight: "3rem",
-                margin: "0",
-                fontSize: "16px",
-                fontWeight: "500",
-              }}
-              onClick={() => selectApptTime(timeSlot, index)}
-            >
-              {formatTimeDisplay(timeSlot)}
-            </button>
-          ))}
-        </div>
-      </>
-    );
-  };
-
   // Main render
-  if (!bookNowClicked) {
-    return null;
+  if (!elementToBeRendered || !duration.current) {
+    return null; // Wait for service and duration to be loaded
   }
 
   return (
@@ -741,7 +639,7 @@ export default function AppointmentPage(props) {
                 calendarType='US'
                 onClickDay={dateChange}
                 value={date}
-                minDate={minDate}
+                minDate={new Date()} // Set minDate to today
                 next2Label={null}
                 prev2Label={null}
                 tileDisabled={() => isCalDisabled}
