@@ -108,8 +108,10 @@ export default function AppointmentPage(props) {
   const [attendMode, setAttendMode] = useState("In-Person");
   const [bookNowClicked, setBookNowClicked] = useState(true);
 
-  // Time slots
+  // Time slots - separate arrays for each mode
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
+  const [inPersonTimeSlots, setInPersonTimeSlots] = useState([]);
+  const [onlineTimeSlots, setOnlineTimeSlots] = useState([]);
 
   // Refs
   const duration = useRef(null);
@@ -143,9 +145,12 @@ export default function AppointmentPage(props) {
     const timezone = getTimezoneOffset();
     const offset = timezone === "PST" ? "-0800" : "-0700";
 
+    // Business hours for appointment booking
+    // Online: 8:00 AM - 2:00 PM (14:00)
+    // In-Person: 9:00 AM - 1:00 PM (13:00)
     return {
       morning: attendMode === "Online" ? `T08:00:00${offset}` : `T09:00:00${offset}`,
-      evening: `T20:00:00${offset}`,
+      evening: attendMode === "Online" ? `T18:00:00${offset}` : `T17:00:00${offset}`,
     };
   };
 
@@ -354,32 +359,45 @@ export default function AppointmentPage(props) {
       console.log("🔄🔄🔄 FETCHING TIME SLOTS FOR DATE 🔄🔄🔄");
       console.log("📅 Date string:", dateString);
       console.log("⏱️ Duration:", duration.current);
-      console.log("🏢 Mode:", attendMode);
 
-      // Get Google Calendar busy times
+      // Get Google Calendar busy times (same for both modes)
       const busyTimes = await getGoogleCalendarBusyTimes(dateString, accessToken);
       console.log("🔴 Raw busy times data:", busyTimes);
 
-      // Get backend available slots
-      const backendSlots = await getBackendAvailableSlots(dateString, duration.current, attendMode);
+      // Calculate time slots for BOTH modes at once
+      console.log("🏢🏢🏢 CALCULATING TIME SLOTS FOR BOTH MODES 🏢🏢🏢");
 
-      // Generate all possible time slots for the day
-      const startHour = attendMode === "Online" ? 8 : 9;
-      const endHour = 20;
-      const allSlots = generateTimeSlots(startHour, endHour, convertDurationToSeconds(duration.current));
+      // IN-PERSON MODE time slots
+      const inPersonStartHour = 9;
+      const inPersonEndHour = 17; // 5:00 PM
+      const inPersonSlots = generateTimeSlots(inPersonStartHour, inPersonEndHour, convertDurationToSeconds(duration.current));
+      console.log("👥 In-Person slots:", inPersonSlots);
 
-      console.log("📊 All possible time slots:", allSlots);
-      console.log("📊 Time slot format check - first slot:", allSlots[0]);
-      console.log("📊 Time slot format check - last slot:", allSlots[allSlots.length - 1]);
+      // ONLINE MODE time slots
+      const onlineStartHour = 8;
+      const onlineEndHour = 18; // 6:00 PM
+      const onlineSlots = generateTimeSlots(onlineStartHour, onlineEndHour, convertDurationToSeconds(duration.current));
+      console.log("💻 Online slots:", onlineSlots);
 
-      // Filter to find truly available slots
-      const availableSlots = filterAvailableSlots(allSlots, busyTimes, convertDurationToSeconds(duration.current));
+      // Filter both sets of slots against Google Calendar busy times
+      const inPersonAvailable = filterAvailableSlots(inPersonSlots, busyTimes, convertDurationToSeconds(duration.current));
+      const onlineAvailable = filterAvailableSlots(onlineSlots, busyTimes, convertDurationToSeconds(duration.current));
 
-      setAvailableTimeSlots(availableSlots);
+      console.log("✅ In-Person available slots:", inPersonAvailable);
+      console.log("✅ Online available slots:", onlineAvailable);
+
+      // Store both sets of slots
+      setInPersonTimeSlots(inPersonAvailable);
+      setOnlineTimeSlots(onlineAvailable);
+
+      // Set the current mode's slots as active
+      setAvailableTimeSlots(attendMode === "Online" ? onlineAvailable : inPersonAvailable);
       setApiDateString(dateString);
     } catch (error) {
       console.error("🚨 Error fetching time slots:", error);
       setAvailableTimeSlots([]);
+      setInPersonTimeSlots([]);
+      setOnlineTimeSlots([]);
     } finally {
       setLoading(false);
       setCalDisabled(false);
@@ -397,8 +415,20 @@ export default function AppointmentPage(props) {
     });
     setAttendMode(newMode);
 
+    // Switch to the appropriate pre-calculated time slots
+    if (newMode === "Online") {
+      console.log("💻 Switching to Online mode - using pre-calculated online slots");
+      console.log("📊 Online slots available:", onlineTimeSlots);
+      console.log("📊 Online slots count:", onlineTimeSlots.length);
+      setAvailableTimeSlots(onlineTimeSlots);
+    } else {
+      console.log("👥 Switching to In-Person mode - using pre-calculated in-person slots");
+      console.log("📊 In-Person slots available:", inPersonTimeSlots);
+      console.log("📊 In-Person slots count:", inPersonTimeSlots.length);
+      setAvailableTimeSlots(inPersonTimeSlots);
+    }
+
     // Clear existing selections when mode changes
-    setAvailableTimeSlots([]);
     setSelectedTime(null);
     setSelectedButton("");
     setTimeSelected(false);
@@ -472,7 +502,65 @@ export default function AppointmentPage(props) {
   };
 
   const getTimezoneAbbreviation = () => {
-    return getTimezoneOffset();
+    // Get the user's actual local timezone abbreviation
+    const now = new Date();
+    const timezoneAbbr = now
+      .toLocaleTimeString("en-US", {
+        timeZoneName: "short",
+        hour12: false,
+      })
+      .split(" ")
+      .pop();
+
+    return timezoneAbbr || "Local";
+  };
+
+  // Helper function to get current mode's available slots count
+  const getCurrentModeSlotCount = () => {
+    if (attendMode === "Online") {
+      return onlineTimeSlots.length;
+    } else {
+      return inPersonTimeSlots.length;
+    }
+  };
+
+  // Helper function to format time from 24-hour format to 12-hour format with timezone
+  const formatTimeDisplay = (timeString) => {
+    if (!timeString) return "";
+
+    try {
+      // Get the selected date (or today if no date selected)
+      const selectedDate = date || new Date();
+
+      // Parse the time string (e.g., "18:00:00")
+      const [hours, minutes, seconds] = timeString.split(":").map(Number);
+
+      // Create a date object representing the business time in PST/PDT
+      // We'll create it in the business's timezone and then convert to user's local time
+      const businessDate = new Date(selectedDate);
+      businessDate.setHours(hours, minutes, seconds, 0);
+
+      // Use Intl.DateTimeFormat to format the time in the user's local timezone
+      // This automatically handles the conversion from business time to user time
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+        timeZone: "America/Los_Angeles", // Business timezone (PST/PDT)
+      });
+
+      // Format the business time, which will be displayed in user's local timezone
+      const formattedTime = formatter.format(businessDate);
+
+      // Get user's local timezone abbreviation
+      const timezone = getTimezoneAbbreviation();
+
+      return `${formattedTime} ${timezone}`;
+    } catch (error) {
+      console.error("Error formatting time display:", error);
+      // Fallback to original format if conversion fails
+      return timeString;
+    }
   };
 
   // Effects
@@ -540,7 +628,7 @@ export default function AppointmentPage(props) {
           <div style={{ color: "#D3A625", fontSize: "18px", fontWeight: "bold", marginBottom: "0.5rem" }}>
             ✅ {availableTimeSlots.length} Available Time Slot{availableTimeSlots.length === 1 ? "" : "s"} Found
           </div>
-          <div style={{ fontSize: "14px", color: "#666" }}>These times are available in both Google Calendar and your appointment system</div>
+          <div style={{ fontSize: "14px", color: "#666" }}>Pick an Appointment Time</div>
         </div>
 
         {/* Grid layout for time slots - 5 per row */}
@@ -569,7 +657,7 @@ export default function AppointmentPage(props) {
               }}
               onClick={() => selectApptTime(timeSlot, index)}
             >
-              {timeSlot}
+              {formatTimeDisplay(timeSlot)}
             </button>
           ))}
         </div>
@@ -682,7 +770,7 @@ export default function AppointmentPage(props) {
               <div style={{ color: "#D3A625", fontSize: "18px", fontWeight: "bold", marginBottom: "0.5rem" }}>
                 ✅ {availableTimeSlots.length} Available Time Slot{availableTimeSlots.length === 1 ? "" : "s"} Found
               </div>
-              <div style={{ fontSize: "14px", color: "#666" }}>These times are available in both Google Calendar and your appointment system</div>
+              <div style={{ fontSize: "14px", color: "#666" }}>Pick an Appointment Time that's convenient for you</div>
             </div>
 
             {/* Grid layout for time slots - 5 per row */}
@@ -712,7 +800,7 @@ export default function AppointmentPage(props) {
                   }}
                   onClick={() => selectApptTime(timeSlot, index)}
                 >
-                  {timeSlot}
+                  {formatTimeDisplay(timeSlot)}
                 </button>
               ))}
             </div>
