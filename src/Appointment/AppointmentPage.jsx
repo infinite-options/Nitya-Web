@@ -248,11 +248,10 @@ export default function AppointmentPage(props) {
       },
     });
 
-    console.log("📡📡📡 GOOGLE CALENDAR API RESPONSE 📡📡📡");
-    console.log("📊 Response data:", response.data);
+    console.log("📡📡📡 GOOGLE CALENDAR API RESPONSE 📡📡📡:", response.data);
 
     const busyTimes = response.data.calendars.primary.busy || [];
-    console.log("🔴 Busy times found:", busyTimes.length);
+    console.log("🔴 Busy times found:", busyTimes);
 
     return busyTimes;
   };
@@ -280,37 +279,63 @@ export default function AppointmentPage(props) {
   const filterAvailableSlots = (allSlots, busyTimes, durationSeconds) => {
     console.log("🔍🔍🔍 FILTERING AVAILABLE TIME SLOTS 🔍🔍🔍");
     console.log("📊 Total slots to check:", allSlots.length);
-    console.log("🔴 Busy times from Google:", busyTimes.length);
+    console.log("🔴 Busy times from Google:", busyTimes);
     console.log("⏱️ Treatment duration:", durationSeconds, "seconds");
 
     const availableSlots = [];
 
-    allSlots.forEach((slotTime) => {
+    allSlots.forEach((slotTime, slotIndex) => {
       const [hours, minutes] = slotTime.split(":").map(Number);
       const slotStart = hours * 3600 + minutes * 60;
       const slotEnd = slotStart + durationSeconds;
 
+      console.log(`\n🕐 Checking slot ${slotIndex + 1}: ${slotTime} (${slotStart}s to ${slotEnd}s)`);
+
       let isAvailable = true;
+      let conflictReason = "";
 
       // Check against Google Calendar busy times
-      busyTimes.forEach((busyTime) => {
-        const busyStart = new Date(busyTime.start).getTime() / 1000;
-        const busyEnd = new Date(busyTime.end).getTime() / 1000;
+      if (busyTimes && busyTimes.length > 0) {
+        busyTimes.forEach((busyTime, busyIndex) => {
+          const busyStart = new Date(busyTime.start).getTime() / 1000;
+          const busyEnd = new Date(busyTime.end).getTime() / 1000;
 
-        // Check for overlap
-        if (slotStart < busyEnd && slotEnd > busyStart) {
-          isAvailable = false;
-        }
-      });
+          // Extract just the time portion from the busy times (remove date part)
+          const busyStartDate = new Date(busyStart * 1000);
+          const busyEndDate = new Date(busyEnd * 1000);
+          const busyStartTimeOnly = busyStartDate.getHours() * 3600 + busyStartDate.getMinutes() * 60;
+          const busyEndTimeOnly = busyEndDate.getHours() * 3600 + busyEndDate.getMinutes() * 60;
+
+          console.log(`  🔴 Busy time ${busyIndex + 1}: ${busyStartDate.toLocaleTimeString()} to ${busyEndDate.toLocaleTimeString()}`);
+          console.log(`    Busy time only: ${busyStartTimeOnly}s to ${busyEndTimeOnly}s`);
+
+          // Check for overlap - slot overlaps with busy time if:
+          // slotStart < busyEndTimeOnly AND slotEnd > busyStartTimeOnly
+          if (slotStart < busyEndTimeOnly && slotEnd > busyStartTimeOnly) {
+            isAvailable = false;
+            conflictReason = `Conflicts with busy time ${busyIndex + 1}`;
+            console.log(`    ❌ CONFLICT DETECTED: Slot overlaps with busy time`);
+          } else {
+            console.log(`    ✅ No conflict with this busy time`);
+          }
+        });
+      } else {
+        console.log("  🟢 No busy times found - all slots should be available");
+      }
 
       if (isAvailable) {
         availableSlots.push(slotTime);
+        console.log(`  ✅ Slot ${slotTime} is AVAILABLE`);
+      } else {
+        console.log(`  ❌ Slot ${slotTime} is UNAVAILABLE: ${conflictReason}`);
       }
     });
 
-    console.log("✅✅✅ FINAL AVAILABLE TIME SLOTS ✅✅✅");
-    console.log("📊 Available slots:", availableSlots);
-    console.log("📏 Total available:", availableSlots.length);
+    console.log("\n🎯🎯🎯 FILTERING SUMMARY 🎯🎯🎯");
+    console.log("📊 Original slots:", allSlots.length);
+    console.log("🔴 Busy times found:", busyTimes ? busyTimes.length : 0);
+    console.log("✅ Available slots:", availableSlots.length);
+    console.log("📋 Available times:", availableSlots);
 
     return availableSlots;
   };
@@ -333,6 +358,7 @@ export default function AppointmentPage(props) {
 
       // Get Google Calendar busy times
       const busyTimes = await getGoogleCalendarBusyTimes(dateString, accessToken);
+      console.log("🔴 Raw busy times data:", busyTimes);
 
       // Get backend available slots
       const backendSlots = await getBackendAvailableSlots(dateString, duration.current, attendMode);
@@ -343,6 +369,8 @@ export default function AppointmentPage(props) {
       const allSlots = generateTimeSlots(startHour, endHour, convertDurationToSeconds(duration.current));
 
       console.log("📊 All possible time slots:", allSlots);
+      console.log("📊 Time slot format check - first slot:", allSlots[0]);
+      console.log("📊 Time slot format check - last slot:", allSlots[allSlots.length - 1]);
 
       // Filter to find truly available slots
       const availableSlots = filterAvailableSlots(allSlots, busyTimes, convertDurationToSeconds(duration.current));
