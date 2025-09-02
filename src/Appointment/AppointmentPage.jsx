@@ -134,19 +134,6 @@ export default function AppointmentPage(props) {
     return offset === -8 ? "PST" : "PDT";
   };
 
-  const getBusinessHours = () => {
-    const timezone = getTimezoneOffset();
-    const offset = timezone === "PST" ? "-0800" : "-0700";
-
-    // Business hours for appointment booking
-    // Online: 8:00 AM - 2:00 PM (14:00)
-    // In-Person: 9:00 AM - 1:00 PM (13:00)
-    return {
-      morning: attendMode === "Online" ? `T08:00:00${offset}` : `T09:00:00${offset}`,
-      evening: attendMode === "Online" ? `T18:00:00${offset}` : `T17:00:00${offset}`,
-    };
-  };
-
   const convertDurationToSeconds = (durationStr) => {
     if (!durationStr) return 0;
     const [hours, minutes, seconds] = durationStr.split(":").map(Number);
@@ -215,12 +202,17 @@ export default function AppointmentPage(props) {
       throw new Error("Access token required for Google Calendar API");
     }
 
-    const businessHours = getBusinessHours();
+    // const businessHours = getBusinessHours();
     const timezone = getTimezoneOffset();
+    console.log("🔴 Timezone:", timezone);
+    const offset = timezone === "PST" ? "-0800" : "-0700";
+    console.log("🔴 Offset:", offset);
+    const morning = `T01:00:00${offset}`;
+    const evening = `T23:00:00${offset}`;
 
     const requestData = {
-      timeMin: date + businessHours.morning,
-      timeMax: date + businessHours.evening,
+      timeMin: date + morning,
+      timeMax: date + evening,
       items: [{ id: "primary" }],
     };
 
