@@ -106,6 +106,7 @@ export default function AppointmentPage(props) {
   const [availableTimeSlots, setAvailableTimeSlots] = useState([]);
   const [inPersonTimeSlots, setInPersonTimeSlots] = useState([]);
   const [onlineTimeSlots, setOnlineTimeSlots] = useState([]);
+  const [allAvailableSlots, setAllAvailableSlots] = useState([]);
 
   // Refs
   const duration = useRef(null);
@@ -138,6 +139,57 @@ export default function AppointmentPage(props) {
     if (!durationStr) return 0;
     const [hours, minutes, seconds] = durationStr.split(":").map(Number);
     return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  // Convert Pacific Time to user's timezone
+  const convertToUserTimezone = (pacificTime) => {
+    // Create a date object for today with the Pacific time
+    const today = new Date();
+    const [time, period] = pacificTime.split(' ');
+    const [hours, minutes] = time.split(':');
+    
+    let hour24 = parseInt(hours);
+    if (period === 'PM' && hour24 !== 12) {
+      hour24 += 12;
+    } else if (period === 'AM' && hour24 === 12) {
+      hour24 = 0;
+    }
+    
+    // Create date in Pacific timezone
+    const pacificDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hour24, parseInt(minutes));
+    
+    // Convert to user's timezone
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const userTime = new Date(pacificDate.toLocaleString("en-US", {timeZone: userTimezone}));
+    
+    // Format back to 12-hour format
+    let hours12 = userTime.getHours();
+    const ampm = hours12 >= 12 ? 'PM' : 'AM';
+    hours12 = hours12 % 12;
+    hours12 = hours12 ? hours12 : 12; // 0 should be 12
+    const mins = userTime.getMinutes().toString().padStart(2, '0');
+    
+    return `${hours12}:${mins} ${ampm}`;
+  };
+
+  // Filter slots by appointment mode and availability status
+  const filterSlotsByMode = (slots) => {
+    const targetMode = attendMode === "Online" ? "Online" : "Office";
+    const filteredSlots = slots.filter(slot => 
+      slot.hoursMode === targetMode && 
+      slot.availability_status === "OK"
+    );
+    
+    // Convert times to user timezone and extract just the time
+    const timeSlotsAA = filteredSlots.map(slot => {
+      const convertedTime = convertToUserTimezone(slot.available_time);
+      return {
+        ...slot,
+        convertedTime: convertedTime
+      };
+    });
+    
+    return timeSlotsAA;
   };
 
   // Core API functions
@@ -234,11 +286,10 @@ export default function AppointmentPage(props) {
     return busyTimes;
   };
 
-  const getBackendAvailableSlots = async (date, duration, mode) => {
+  const getBackendAvailableSlots = async (date, duration) => {
     console.log("🏢🏢🏢 FETCHING BACKEND AVAILABLE SLOTS 🏢🏢🏢");
     console.log("📅 Date:", date);
     console.log("⏱️ Duration:", duration);
-    console.log("🏢 Mode:", mode);
 
     const apiUrl = `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/${date}/${duration}`;
 
@@ -247,14 +298,12 @@ export default function AppointmentPage(props) {
     const response = await axios.get(apiUrl);
     console.log("🏢 Backend API response:", response.data);
 
-    // Extract the appropriate mode's available slots
-    const modeKey = mode === "Online" ? "Online" : "Office";
-    const availableSlots = response.data[modeKey] || [];
+    // Return all slots from the new format
+    const allSlots = response.data.result || [];
+    console.log(`✅ Backend available slots:`, allSlots.length);
+    console.log("📋 Available slots data:", allSlots);
 
-    console.log(`✅ Backend ${modeKey} available slots:`, availableSlots.length);
-    console.log("📋 Available slots data:", availableSlots);
-
-    return availableSlots;
+    return allSlots;
   };
 
   const filterAvailableSlots = (backendSlots, busyTimes, durationSeconds) => {
@@ -340,30 +389,27 @@ export default function AppointmentPage(props) {
       const busyTimes = await getGoogleCalendarBusyTimes(dateString, accessToken);
       console.log("🔴 Raw busy times data:", busyTimes);
 
-      // Get available slots from backend for both modes
-      console.log("🏢🏢🏢 FETCHING BACKEND SLOTS FOR BOTH MODES 🏢🏢🏢");
+      // Get all available slots from backend (new format)
+      console.log("🏢🏢🏢 FETCHING BACKEND SLOTS 🏢🏢🏢");
+      const allSlots = await getBackendAvailableSlots(dateString, duration.current);
+      console.log("📋 All slots from backend:", allSlots);
 
-      // Get Office (In-Person) slots
-      const officeSlots = await getBackendAvailableSlots(dateString, duration.current, "In-Person");
-      console.log("👥 Office slots from backend:", officeSlots);
+      // Store all slots for mode switching
+      setAllAvailableSlots(allSlots);
 
-      // Get Online slots
-      const onlineSlots = await getBackendAvailableSlots(dateString, duration.current, "Online");
-      console.log("💻 Online slots from backend:", onlineSlots);
+      // Filter slots by mode and availability status
+      const inPersonSlots = filterSlotsByMode(allSlots.filter(slot => slot.hoursMode === "Office"));
+      const onlineSlots = filterSlotsByMode(allSlots.filter(slot => slot.hoursMode === "Online"));
 
-      // Filter both sets of slots against Google Calendar busy times
-      const inPersonAvailable = filterAvailableSlots(officeSlots, busyTimes, convertDurationToSeconds(duration.current));
-      const onlineAvailable = filterAvailableSlots(onlineSlots, busyTimes, convertDurationToSeconds(duration.current));
-
-      console.log("✅ In-Person available slots after Google filtering:", inPersonAvailable);
-      console.log("✅ Online available slots after Google filtering:", onlineAvailable);
+      console.log("✅ In-Person available slots:", inPersonSlots);
+      console.log("✅ Online available slots:", onlineSlots);
 
       // Store both sets of slots
-      setInPersonTimeSlots(inPersonAvailable);
-      setOnlineTimeSlots(onlineAvailable);
+      setInPersonTimeSlots(inPersonSlots);
+      setOnlineTimeSlots(onlineSlots);
 
       // Set the current mode's slots as active
-      setAvailableTimeSlots(attendMode === "Online" ? onlineAvailable : inPersonAvailable);
+      setAvailableTimeSlots(attendMode === "Online" ? onlineSlots : inPersonSlots);
     } catch (error) {
       console.error("🚨 Error fetching time slots:", error);
       setAvailableTimeSlots([]);
@@ -385,17 +431,24 @@ export default function AppointmentPage(props) {
     });
     setAttendMode(newMode);
 
-    // Switch to the appropriate pre-calculated time slots
-    if (newMode === "Online") {
-      console.log("💻 Switching to Online mode - using pre-calculated online slots");
-      console.log("📊 Online slots available:", onlineTimeSlots);
-      console.log("📊 Online slots count:", onlineTimeSlots.length);
-      setAvailableTimeSlots(onlineTimeSlots);
+    // Filter existing slots by new mode instead of making new API call
+    if (allAvailableSlots.length > 0) {
+      const filteredSlots = filterSlotsByMode(allAvailableSlots);
+      setAvailableTimeSlots(filteredSlots);
+      console.log("📊 Filtered slots for", newMode, ":", filteredSlots.length);
     } else {
-      console.log("👥 Switching to In-Person mode - using pre-calculated in-person slots");
-      console.log("📊 In-Person slots available:", inPersonTimeSlots);
-      console.log("📊 In-Person slots count:", inPersonTimeSlots.length);
-      setAvailableTimeSlots(inPersonTimeSlots);
+      // Switch to the appropriate pre-calculated time slots
+      if (newMode === "Online") {
+        console.log("💻 Switching to Online mode - using pre-calculated online slots");
+        console.log("📊 Online slots available:", onlineTimeSlots);
+        console.log("📊 Online slots count:", onlineTimeSlots.length);
+        setAvailableTimeSlots(onlineTimeSlots);
+      } else {
+        console.log("👥 Switching to In-Person mode - using pre-calculated in-person slots");
+        console.log("📊 In-Person slots available:", inPersonTimeSlots);
+        console.log("📊 In-Person slots count:", inPersonTimeSlots.length);
+        setAvailableTimeSlots(inPersonTimeSlots);
+      }
     }
 
     // Clear existing selections when mode changes
@@ -412,7 +465,8 @@ export default function AppointmentPage(props) {
 
   const selectApptTime = (timeSlot, index) => {
     console.log("⏰ Time slot selected:", timeSlot);
-    setSelectedTime(timeSlot);
+    // Store original Pacific time for API calls
+    setSelectedTime(timeSlot.available_time || timeSlot);
     setSelectedButton(index);
     setButtonSelect(true);
   };
@@ -697,7 +751,7 @@ export default function AppointmentPage(props) {
                   }}
                   onClick={() => selectApptTime(timeSlot, index)}
                 >
-                  {formatTimeDisplay(timeSlot)}
+                  {timeSlot.convertedTime || formatTimeDisplay(timeSlot)}
                 </button>
               ))}
             </div>
