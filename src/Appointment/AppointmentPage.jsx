@@ -103,6 +103,7 @@ export default function AppointmentPage(props) {
   const [apiDateString, setApiDateString] = useState(null);
   const [timeSlots, setTimeSlots] = useState([]);
   const [timeAASlots, setTimeAASlots] = useState([]);
+  const [allAvailableSlots, setAllAvailableSlots] = useState([]);
   const duration = useRef(null);
   const [buttonSelect, setButtonSelect] = useState(false);
   const [selectedButton, setSelectedButton] = useState("");
@@ -353,11 +354,61 @@ export default function AppointmentPage(props) {
       return strTime;
     }
   }
+
+  // Convert Pacific Time to user's timezone
+  const convertToUserTimezone = (pacificTime) => {
+    // Create a date object for today with the Pacific time
+    const today = new Date();
+    const [time, period] = pacificTime.split(' ');
+    const [hours, minutes] = time.split(':');
+    
+    let hour24 = parseInt(hours);
+    if (period === 'PM' && hour24 !== 12) {
+      hour24 += 12;
+    } else if (period === 'AM' && hour24 === 12) {
+      hour24 = 0;
+    }
+    
+    // Create date in Pacific timezone
+    const pacificDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), hour24, parseInt(minutes));
+    
+    // Convert to user's timezone
+    const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const userTime = new Date(pacificDate.toLocaleString("en-US", {timeZone: userTimezone}));
+    
+    // Format back to 12-hour format
+    let hours12 = userTime.getHours();
+    const ampm = hours12 >= 12 ? 'PM' : 'AM';
+    hours12 = hours12 % 12;
+    hours12 = hours12 ? hours12 : 12; // 0 should be 12
+    const mins = userTime.getMinutes().toString().padStart(2, '0');
+    
+    return `${hours12}:${mins} ${ampm}`;
+  };
+
+  // Filter slots by appointment mode and availability status
+  const filterSlotsByMode = (slots) => {
+    const targetMode = attendMode === "Online" ? "Online" : "Office";
+    const filteredSlots = slots.filter(slot => 
+      slot.hoursMode === targetMode && 
+      slot.availability_status === "OK"
+    );
+    
+    // Convert times to user timezone and extract just the time
+    const timeSlotsAA = filteredSlots.map(slot => {
+      const convertedTime = convertToUserTimezone(slot.available_time);
+      return {
+        ...slot,
+        convertedTime: convertedTime
+      };
+    });
+    
+    setTimeAASlots(timeSlotsAA);
+  };
+
   const getTimeAASlots = async () => {
     try {
       setTimeAASlots([]);
-      let hoursMode = "";
-      hoursMode = attendMode === "Online" ? "Online" : "Office";
       let date =
         apiDateString >
           moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD")
@@ -369,17 +420,15 @@ export default function AppointmentPage(props) {
           "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" +
           date +
           "/" +
-          duration.current +
-          "/" +
-          hoursMode
+          duration.current
       );
-      let timeSlotsAA = [];
-      if (JSON.stringify(res.data.result.length) > 0) {
-        res.data.result.map((r) => {
-          timeSlotsAA.push(r["begin_time"]);
-        });
-      }
-      setTimeAASlots(timeSlotsAA);
+      
+      // Store all available slots
+      const allSlots = res.data.result || [];
+      setAllAvailableSlots(allSlots);
+      
+      // Filter by current mode and availability status
+      filterSlotsByMode(allSlots);
     } catch(error) {
       console.error("Error in getTimeAASlots: "+error);
     }
@@ -467,16 +516,12 @@ export default function AppointmentPage(props) {
   };
 
   function renderAvailableApptsVertical() {
-    console.log("TimeSlots", timeSlots);
     console.log("TimeSlotsAA", timeAASlots);
 
-    let result = timeSlots.filter((o1) => timeAASlots.some((o2) => o1 === o2));
-
-    console.log("Merged", result, selectedButton);
     return (
       <Grid container xs={11}>
-        {result.length > 0 ? (
-          result.map(function (element, i) {
+        {timeAASlots.length > 0 ? (
+          timeAASlots.map(function (element, i) {
             return (
               <button
                 key={i}
@@ -498,7 +543,7 @@ export default function AppointmentPage(props) {
                 }}
                 onClick={() => selectApptTime(element, i)}
               >
-                {formatTime(apiDateString, element)}
+                {element.convertedTime}
               </button>
             );
           })
@@ -543,11 +588,16 @@ export default function AppointmentPage(props) {
     console.log(newModeObj);
     setMode(newModeObj);
     setAttendMode(newMode);
+    
+    // Filter existing slots by new mode instead of making new API call
+    if (allAvailableSlots.length > 0) {
+      filterSlotsByMode(allAvailableSlots);
+    }
   };
   function selectApptTime(element, i) {
     console.log("selected time", element);
     setSelectedButton(i);
-    setSelectedTime(element);
+    setSelectedTime(element.available_time); // Store original Pacific time for API calls
     setTimeSelected(true);
     setButtonSelect(true);
   }
@@ -619,9 +669,31 @@ export default function AppointmentPage(props) {
     }
   };
 
+  // Only call API when date changes, not when appointment mode changes
+  const onDateChange = async () => {
+    if (servicesLoaded) {
+      setCalDisabled(true);
+      await getTimeSlots();
+      await getTimeAASlots();
+      setCalDisabled(false);
+    }
+  };
+
   useEffect(() => {
     onChange();
-  }, [servicesLoaded, dateHasBeenChanged, attendMode]);
+  }, [servicesLoaded]);
+
+  useEffect(() => {
+    if (servicesLoaded) {
+      onDateChange();
+    }
+  }, [dateHasBeenChanged]);
+
+  useEffect(() => {
+    if (allAvailableSlots.length > 0) {
+      filterSlotsByMode(allAvailableSlots);
+    }
+  }, [attendMode]);
 
   return (
     <div className="HomeContainer">
