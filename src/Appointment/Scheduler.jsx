@@ -431,6 +431,11 @@ export default function Scheduler(props) {
   // }, [customerUidState]);
 
   async function bookAppt() {
+    // Prevent multiple submissions
+    if (isProcessing) {
+      return;
+    }
+
     console.log(props);
     const price = props.cost.split(" ", 1);
 
@@ -442,7 +447,15 @@ export default function Scheduler(props) {
     };
 
     var clientSecret;
-    const cardElement = await elements.getElement(CardElement);
+    const cardElement = elements.getElement(CardElement);
+    
+    // Validate card element exists
+    if (!cardElement) {
+      setErrorMessage("Card information is required");
+      setIsProcessing(false);
+      return;
+    }
+
     const paymentJSON = {
       customer_uid: props.customerUid,
       business_code: props.notes === "NITYATEST" ? "NITYATEST" : "NITYA",
@@ -467,11 +480,37 @@ export default function Scheduler(props) {
           .createPaymentMethod({
             type: "card",
             card: cardElement,
-            billing_details: result.data.billingDetails,
+            billing_details: {
+              name: props.firstName + " " + props.lastName,
+              email: props.email,
+              phone: props.phoneNum
+            }
           })
           .then(function (res) {
             console.log("createPaymentMethod res: " + JSON.stringify(res));
-            console.log(result.data.billingDetails);
+            
+            // Check for createPaymentMethod errors
+            if (res.error) {
+              console.log("createPaymentMethod error:", res.error);
+              setErrorMessage(res.error.message);
+              const body = {
+                name: props.firstName + " " + props.lastName,
+                phone: props.phoneNum,
+                email: props.email,
+                message: props.notes,
+                error: JSON.stringify(res.error),
+                endpoint_call: "createPaymentMethod",
+                jsonObject_sent: JSON.stringify(paymentJSON),
+              };
+              axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
+                console.log("response", response.data.result);
+              });
+              setSubmitted(false);
+              setLoadingState(false);
+              setIsProcessing(false);
+              return;
+            }
+
             console.log("calling confirmedCardPayment...");
 
             try {
@@ -510,15 +549,15 @@ export default function Scheduler(props) {
                   }
                 });
             } catch (e) {
-              console.log(res.error.message);
-              setErrorMessage(res.error.message);
+              console.log("Error in confirmCardPayment:", e);
+              setErrorMessage("Payment confirmation failed");
               const body = {
                 name: props.firstName + " " + props.lastName,
                 phone: props.phoneNum,
                 email: props.email,
                 message: props.notes,
-                error: JSON.stringify(res.error),
-                endpoint_call: "createPaymentMethod",
+                error: JSON.stringify(e),
+                endpoint_call: "confirmCardPayment",
                 jsonObject_sent: JSON.stringify(paymentJSON),
               };
               // sendToDatabase();
@@ -531,6 +570,25 @@ export default function Scheduler(props) {
               setLoadingState(false);
               setIsProcessing(false); // Stop loading on error
             }
+          })
+          .catch(function (error) {
+            console.log("createPaymentMethod catch error:", error);
+            setErrorMessage("Payment method creation failed");
+            const body = {
+              name: props.firstName + " " + props.lastName,
+              phone: props.phoneNum,
+              email: props.email,
+              message: props.notes,
+              error: JSON.stringify(error),
+              endpoint_call: "createPaymentMethod",
+              jsonObject_sent: JSON.stringify(paymentJSON),
+            };
+            axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
+              console.log("response");
+            });
+            setSubmitted(false);
+            setLoadingState(false);
+            setIsProcessing(false);
           });
       })
       .catch((err) => {

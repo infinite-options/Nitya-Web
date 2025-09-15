@@ -286,12 +286,13 @@ export default function AppointmentPage(props) {
     return busyTimes;
   };
 
-  const getBackendAvailableSlots = async (date, duration) => {
+  const getBackendAvailableSlots = async (date, duration, type) => {
     console.log("🏢🏢🏢 FETCHING BACKEND AVAILABLE SLOTS 🏢🏢🏢");
     console.log("📅 Date:", date);
     console.log("⏱️ Duration:", duration);
+    console.log("🏷️ Type:", type);
 
-    const apiUrl = `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/${date}/${duration}`;
+    const apiUrl = `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/${date}/${duration}/${type}`;
 
     console.log("🌐 Backend API URL:", apiUrl);
 
@@ -372,7 +373,7 @@ export default function AppointmentPage(props) {
   };
 
   const fetchAvailableTimeSlots = async (selectedDate) => {
-    if (!accessToken || !duration.current) {
+    if (!accessToken || !duration.current || !elementToBeRendered.category) {
       console.log("❌ Missing required data for fetching time slots");
       return;
     }
@@ -384,6 +385,7 @@ export default function AppointmentPage(props) {
       console.log("🔄🔄🔄 FETCHING TIME SLOTS FOR DATE 🔄🔄🔄");
       console.log("📅 Date string:", dateString);
       console.log("⏱️ Duration:", duration.current);
+      console.log("🏷️ Treatment type:", elementToBeRendered.category);
 
       // Get Google Calendar busy times (same for both modes)
       const busyTimes = await getGoogleCalendarBusyTimes(dateString, accessToken);
@@ -391,7 +393,7 @@ export default function AppointmentPage(props) {
 
       // Get all available slots from backend (new format)
       console.log("🏢🏢🏢 FETCHING BACKEND SLOTS 🏢🏢🏢");
-      const allSlots = await getBackendAvailableSlots(dateString, duration.current);
+      const allSlots = await getBackendAvailableSlots(dateString, duration.current, elementToBeRendered.category);
       console.log("📋 All slots from backend:", allSlots);
 
       // Store all slots for mode switching
@@ -611,10 +613,10 @@ export default function AppointmentPage(props) {
   }, [servicesLoaded, elementToBeRendered, accessToken]);
 
   useEffect(() => {
-    if (accessToken && duration.current && date) {
+    if (accessToken && duration.current && elementToBeRendered.category && date) {
       fetchAvailableTimeSlots(date);
     }
-  }, [accessToken, duration.current]);
+  }, [accessToken, duration.current, elementToBeRendered.category]);
 
   // Main render
   if (!elementToBeRendered || !duration.current) {
