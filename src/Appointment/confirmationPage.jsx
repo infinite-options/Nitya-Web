@@ -6,6 +6,7 @@ import "../Home/Home.css";
 import "../Appointment/AppointmentPage.css";
 import { Link, useHistory } from "react-router-dom";
 import { Button } from "@material-ui/core";
+import moment from "moment-timezone";
 
 const google = window.google;
 
@@ -68,9 +69,58 @@ export default function ConfirmationPage(props) {
       .padStart(2, "0")}`;
   };
 
+  // Function to convert time to user's timezone
+  const convertToUserTimezone = (appointmentDate, appointmentTime) => {
+    try {
+      // Get user's timezone
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      // Create a moment object in Pacific time (assuming appointments are scheduled in PST/PDT)
+      const pacificTime = moment.tz(`${appointmentDate} ${appointmentTime}`, "America/Los_Angeles");
+      
+      // Convert to user's timezone
+      const userTime = pacificTime.tz(userTimezone);
+      
+      // Format time in 12-hour format
+      const formattedTime = userTime.format("h:mm A");
+      
+      // Get timezone abbreviation
+      const timezoneAbbr = userTime.format("z");
+      
+      return {
+        time: formattedTime,
+        timezone: timezoneAbbr
+      };
+    } catch (error) {
+      console.error("Error converting timezone:", error);
+      // Fallback to original time if conversion fails
+      return {
+        time: appointmentTime,
+        timezone: "PST"
+      };
+    }
+  };
+
+  // Function to get timezone abbreviation
+  const getTimezoneAbbreviation = () => {
+    try {
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const now = moment.tz(userTimezone);
+      return now.format("z");
+    } catch (error) {
+      console.error("Error getting timezone abbreviation:", error);
+      return "PST";
+    }
+  };
+
   const startTime = location.state.apptInfo.appointmentTime;
   const duration = location.state.apptInfo.duration;
   const endTime = calculateEndTime(startTime, duration);
+  
+  // Convert times to user's timezone
+  const appointmentDate = location.state.apptInfo.appointmentDate;
+  const startTimeConverted = convertToUserTimezone(appointmentDate, startTime);
+  const endTimeConverted = convertToUserTimezone(appointmentDate, endTime);
   const scaleWidthFn = () => {
     return 280 - (810 - dimensions.width) * 0.4;
   };
@@ -150,7 +200,7 @@ export default function ConfirmationPage(props) {
             <strong>Date:</strong> {formatDate(location.state.apptInfo.appointmentDate)}
           </div>
           <div className="ApptPageText">
-            <strong>Time:</strong>  {startTime} - {endTime}
+            <strong>Time:</strong>  {startTimeConverted.time} - {endTimeConverted.time} {startTimeConverted.timezone}
           </div>
 
             <div style={{ margin: "1rem" }}>
@@ -191,6 +241,14 @@ export default function ConfirmationPage(props) {
               // }}
               >
                 {location.state.apptInfo.phone_no}
+              </div>
+              <div
+              // style={{
+              //   fontSize: '22px',
+              //   fontWeight: '300',
+              // }}
+              >
+                {location.state.apptInfo.email}
               </div>
             </div>
 

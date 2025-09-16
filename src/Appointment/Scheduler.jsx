@@ -126,11 +126,19 @@ export default function Scheduler(props) {
     // setApptConfirmed(true);
     // console.log("apptInfo length: ", apptInfo.length);
     if (JSON.stringify(apptInfo) !== "{}") {
+      console.log("🔍 Navigating to confirmation page - both payment and appointment successful");
       history.push({
         pathname: "/apptconfirm",
         state: {
           apptInfo,
-          // test_value: "test_string"
+          // Pass the data in the structure expected by AppointmentPageConfirm
+          date: apptInfo.date,
+          time: apptInfo.time,
+          mode: apptInfo.mode,
+          totalCost: apptInfo.totalCost,
+          totalDuration: apptInfo.totalDuration,
+          durationText: apptInfo.durationText,
+          accessToken: props.accessToken,
         },
       });
     }
@@ -161,7 +169,23 @@ export default function Scheduler(props) {
     return formattedTime;
   };
 
+  // Helper functions for duration formatting
+  const convertDurationToSeconds = (duration) => {
+    const parts = duration.split(":");
+    return parseInt(parts[0]) * 3600 + parseInt(parts[1]) * 60 + parseInt(parts[2]);
+  };
+
+  const durationToString = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    let result = "";
+    if (hours > 0) result += hours + "hr ";
+    if (minutes > 0) result += minutes + "min ";
+    return result.trim();
+  };
+
   function sendToDatabase() {
+    console.log("🔍 Creating appointment in database...");
     console.log("create appt", {
       first_name: props.firstName,
       last_name: props.lastName,
@@ -177,8 +201,10 @@ export default function Scheduler(props) {
       purchase_price: props.cost, //TREATMENT INFO #2
       purchase_date: dateFormat3(props.purchaseDate),
     });
+    
     const postURL = "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
-    axios
+    
+    return axios
       .post(postURL, {
         first_name: props.firstName,
         last_name: props.lastName,
@@ -195,32 +221,20 @@ export default function Scheduler(props) {
         purchase_date: dateFormat3(props.purchaseDate),
       })
       .then((res) => {
-        console.log("create appt", res);
+        console.log("✅ Appointment created successfully:", res);
+        console.log("✅ Status code:", res.status);
+        
+        // Don't set apptInfo here - let the payment flow handle it
+        return res; // Return the response for chaining
       })
       .catch((err) => {
-        console.log(err);
+        console.error("❌ Failed to create appointment:", err);
         if (err.response) {
-          console.log("create appt: ");
+          console.error("❌ Error response:", err.response.data);
+          console.error("❌ Error status:", err.response.status);
         }
+        throw err; // Re-throw the error for handling upstream
       });
-
-    setApptInfo({
-      first_name: props.firstName + " " + props.lastName,
-      email: props.email,
-      phone_no: props.phoneNum,
-      treatment: props.treatmentName,
-      purchase_price: props.cost,
-      duration: props.duration,
-      image_url: props.image_url,
-      mode: props.mode,
-      age: props.age,
-      gender: props.gender,
-      appointmentDate: moment(props.date).format("YYYY-MM-DD"),
-      appointmentTime: convertTime12to24(props.selectedTime),
-    });
-    // history.push("/apptconfirm", {apptInfo});
-    console.log("create appt", apptInfo);
-    // setApptConfirmed(true);
   }
 
   function convert(value) {
@@ -233,54 +247,73 @@ export default function Scheduler(props) {
   }
 
   function creatEvent() {
-    console.log(props.date, props.selectedTime);
-    let st = props.treatmentDate + "T" + props.treatmentTime;
-    let start_time = moment(new Date(st)).format();
-    console.log(start_time);
-    let duration = convert(props.duration);
-    let et = Date.parse(start_time) / 1000 + duration;
-    let end_time = moment(new Date(et * 1000)).format();
-    console.log(end_time);
-    var event = {
-      summary: props.treatmentName,
-      location: "1610 Blossom Hill Road, #1, San Jose, CA, 95124",
-      description: "Name: " + props.firstName + " " + props.lastName + "\n" + "Phone No: " + props.phoneNum.replace(/[^a-z\d\s]+/gi, ""),
-      creator: {
-        email: "support@nityaayurveda.com",
-        self: true,
-      },
-      organizer: {
-        email: "support@nityaayurveda.com",
-        self: true,
-      },
-      start: {
-        dateTime: start_time,
-      },
-      end: {
-        dateTime: end_time,
-      },
-      attendees: [
-        {
-          email: props.email,
+    console.log("🔍 Creating Google Calendar event...");
+    console.log("Event details - Date:", props.date, "Time:", props.selectedTime);
+    
+    try {
+      let st = props.treatmentDate + "T" + props.treatmentTime;
+      let start_time = moment(new Date(st)).format();
+      console.log("Start time:", start_time);
+      
+      let duration = convert(props.duration);
+      let et = Date.parse(start_time) / 1000 + duration;
+      let end_time = moment(new Date(et * 1000)).format();
+      console.log("End time:", end_time);
+      
+      var event = {
+        summary: props.treatmentName,
+        location: "1610 Blossom Hill Road, #1, San Jose, CA, 95124",
+        description: "Name: " + props.firstName + " " + props.lastName + "\n" + "Phone No: " + props.phoneNum.replace(/[^a-z\d\s]+/gi, ""),
+        creator: {
+          email: "support@nityaayurveda.com",
+          self: true,
         },
-        { email: "Lmarathay@gmail.com" },
-      ],
-    };
-    console.log(event);
-    //publishTheCalenderEvent(event)
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + props.accessToken,
-    };
-    axios
-      .post(`https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${API_KEY}`, event, {
-        headers: headers,
-      })
-      .then((response) => {})
-      .catch((error) => {
-        console.log("error", error);
-      });
+        organizer: {
+          email: "support@nityaayurveda.com",
+          self: true,
+        },
+        start: {
+          dateTime: start_time,
+        },
+        end: {
+          dateTime: end_time,
+        },
+        attendees: [
+          {
+            email: props.email,
+          },
+          { email: "Lmarathay@gmail.com" },
+        ],
+      };
+      
+      console.log("Calendar event object:", event);
+      
+      const headers = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer " + props.accessToken,
+      };
+      
+      axios
+        .post(`https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${API_KEY}`, event, {
+          headers: headers,
+        })
+        .then((response) => {
+          console.log("✅ Google Calendar event created successfully:", response);
+          console.log("✅ Event ID:", response.data.id);
+        })
+        .catch((error) => {
+          console.error("❌ Failed to create Google Calendar event:", error);
+          if (error.response) {
+            console.error("❌ Error response:", error.response.data);
+            console.error("❌ Error status:", error.response.status);
+          }
+          // Note: We don't throw the error here since the appointment was already created successfully
+          // The calendar event failure shouldn't prevent the user from proceeding
+        });
+    } catch (error) {
+      console.error("❌ Error preparing Google Calendar event:", error);
+    }
   }
 
   const [changeLoadingState, setLoadingState] = useState(false);
@@ -392,8 +425,42 @@ export default function Scheduler(props) {
                     setSubmitted(false);
                     setLoadingState(false);
                   } else {
-                    sendToDatabase();
-                    creatEvent();
+                    console.log("🔍 Payment successful, creating appointment...");
+                    sendToDatabase()
+                      .then((appointmentResponse) => {
+                        console.log("✅ Appointment created successfully, now creating Google Calendar event...");
+                        
+                        // Set appointment info for navigation - ONLY after both payment AND appointment success
+                        setApptInfo({
+                          first_name: props.firstName + " " + props.lastName,
+                          email: props.email,
+                          phone_no: props.phoneNum,
+                          treatment: props.treatmentName,
+                          purchase_price: props.cost,
+                          duration: props.duration,
+                          image_url: props.image_url,
+                          mode: props.mode,
+                          age: props.age,
+                          gender: props.gender,
+                          appointmentDate: moment(props.date).format("YYYY-MM-DD"),
+                          appointmentTime: convertTime12to24(props.selectedTime),
+                          // Add the data structure expected by AppointmentPageConfirm
+                          date: props.date,
+                          time: props.selectedTime,
+                          totalCost: props.cost.replace('$', ''),
+                          totalDuration: props.duration,
+                          durationText: durationToString(convertDurationToSeconds(props.duration)),
+                        });
+                        
+                        console.log("✅ Both payment and appointment successful - proceeding to confirmation page");
+                        creatEvent();
+                      })
+                      .catch((appointmentError) => {
+                        console.error("❌ Failed to create appointment, skipping Google Calendar event:", appointmentError);
+                        setErrorMessage("Appointment creation failed. Please contact support.");
+                        setSubmitted(false);
+                        setLoadingState(false);
+                      });
                   }
                 });
             } catch (e) {

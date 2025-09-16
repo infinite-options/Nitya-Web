@@ -100,7 +100,7 @@ export default function AppointmentPage(props) {
         return;
       }
 
-      console.log("🔍 Initializing appointment page...");
+      console.log("🔍 Initializing appointment page for treatmentID:", treatmentID);
       setIsInitializing(true);
 
       try {
@@ -109,16 +109,50 @@ export default function AppointmentPage(props) {
         if (selectedService) {
           setElementToBeRendered(selectedService);
           duration.current = selectedService.duration;
-          console.log("🔍 Service data set:", selectedService.title);
+          console.log("element to be rendered:", selectedService);
+          console.log("element category:", selectedService.category);
         }
 
         // Step 2: Get access token
-        const accessToken = await getAccessToken();
-        setAccessToken(accessToken);
-        console.log("🔍 Access token obtained");
+        if (!accessToken) {
+          const accessToken = await getAccessToken();
+          setAccessToken(accessToken);
+          console.log("🔍 Access token obtained");
+        }
 
         // Step 3: Fetch time slots
-        await getTimeSlots();
+        // await getTimeSlots();
+        try {
+          setLoading(true);
+          setTimeSlots([]);
+          
+          // Determine appointment type based on service category
+          let appointmentType = "Consultation"; // Default fallback
+          if (selectedService.category) {
+            appointmentType = selectedService.category;
+          }
+          
+          let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
+          setApiDateString(date);
+          
+          console.log(`🔍 API CALL: Fetching available appointments for ${date}, duration: ${duration.current}, type: ${appointmentType}`);
+          
+          // Get available slots from backend with appointment type
+          const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
+          
+          // Store all slots for filtering by mode
+          setAllAvailableSlots(res.data.result || []);
+          
+          // Filter slots based on current mode and availability status
+          const filteredSlots = filterSlotsByModeAndAvailability(res.data.result || []);
+          
+          console.log("Available time slots from backend:", filteredSlots);
+          setTimeSlots(filteredSlots);
+        } catch (error) {
+          console.error("Error in getTimeSlots:", error);
+        } finally {
+          setLoading(false);
+        }
         console.log("🔍 Time slots fetched");
 
       } catch (error) {
@@ -587,7 +621,7 @@ export default function AppointmentPage(props) {
     console.log(newModeObj);
     setMode(newModeObj);
     setAttendMode(newMode);
-    
+
     // Filter existing slots by new mode without making API call
     if (allAvailableSlots.length > 0) {
       const filteredSlots = filterSlotsByModeAndAvailability(allAvailableSlots);
@@ -607,7 +641,7 @@ export default function AppointmentPage(props) {
       setSelectedButton(i);
       setSelectedTime(element);
       setTimeSelected(true);
-      setButtonSelect(true);
+    setButtonSelect(true);
     } else {
       setButtonSelect(false); // Ensure no button is selected if element is null
       setSelectedTime(null);
@@ -698,6 +732,7 @@ export default function AppointmentPage(props) {
             if (service.treatment_uid === treatment_uid) {
               setElementToBeRendered(service);
               duration.current = service.duration;
+              console.log("element to be rendered:", service);
             }
           });
           isFirstLoad.current = false;
@@ -729,86 +764,86 @@ export default function AppointmentPage(props) {
       </Helmet>
       <br />
       {bookNowClicked ? (
-        <div>
-          <div className='Card'>
-            <div className='CardGrid'>
-              <div>
-                <div className='ApptPageTitle'>{elementToBeRendered.title}</div>
-                <div className='ApptPageText'>
-                  {elementToBeRendered.description} <br />
-                </div>
-                <div className='ApptPageHeader'>
-                  {parseDuration(elementToBeRendered.duration)} | {elementToBeRendered.cost}
-                </div>
-                <div className='ApptPageText'>
+      <div>
+        <div className='Card'>
+          <div className='CardGrid'>
+            <div>
+              <div className='ApptPageTitle'>{elementToBeRendered.title}</div>
+              <div className='ApptPageText'>
+                {elementToBeRendered.description} <br />
+              </div>
+              <div className='ApptPageHeader'>
+                {parseDuration(elementToBeRendered.duration)} | {elementToBeRendered.cost}
+              </div>
+              <div className='ApptPageText'>
                   {addons_list().map((addon) => (
                     <div>
                       {"+ "} {addon.title} | {durationToString(secondsToHours(hoursToSeconds(addon.duration)))} | {addon.addon_cost}
-                    </div>
-                  ))}
-                </div>
-                <div className='ApptPageHeader'>
+                  </div>
+                ))}
+              </div>
+              <div className='ApptPageHeader'>
                   Total: ${totalCost} | {durationToString(totalDuration)}
-                </div>
-
-                <div style={{ margin: "2rem" }}>
-                  <img
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                    variant='top'
-                    src={elementToBeRendered.image_url}
-                    alt={"An image of" + elementToBeRendered.title}
-                  />
-                </div>
               </div>
 
-              {/* Right hand side of the Container */}
-              <div className={classes.calendarBox}>
-                <div className='TitleFontAppt'>Pick an Appointment Type</div>
-                <div
+              <div style={{ margin: "2rem" }}>
+                <img
                   style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    marginTop: "1rem",
-                    marginBottom: "2rem",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                   }}
-                >
-                  <FormControlLabel control={<YellowRadio checked={mode.inPerson} onChange={(e) => handleMode(e)} name='inPerson' />} label='In-person' />
-                  <FormControlLabel control={<YellowRadio checked={mode.online} onChange={(e) => handleMode(e)} name='online' />} label='Online' />
-                </div>
-                <div className='TitleFontAppt'>Pick an Appointment Date</div>
-                {console.log("(Calendar) date: ", minDate)}
-                <Calendar
-                  calendarType='US'
-                  onClickDay={dateChange}
-                  value={date}
-                  minDate={minDate}
-                  next2Label={null}
-                  prev2Label={null}
-                  tileDisabled={() => isCalDisabled}
-                  className={isCalDisabled ? classes.calDisabled : ""}
+                  variant='top'
+                  src={elementToBeRendered.image_url}
+                  alt={"An image of" + elementToBeRendered.title}
                 />
               </div>
             </div>
 
-            <div style={{ width: "100%", height: "100%" }}>
+              {/* Right hand side of the Container */}
+            <div className={classes.calendarBox}>
+                <div className='TitleFontAppt'>Pick an Appointment Type</div>
               <div
                 style={{
                   display: "flex",
-                  flexDirection: "column",
+                  flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "space-between",
+                  marginTop: "1rem",
                   marginBottom: "2rem",
                 }}
               >
+                  <FormControlLabel control={<YellowRadio checked={mode.inPerson} onChange={(e) => handleMode(e)} name='inPerson' />} label='In-person' />
+                  <FormControlLabel control={<YellowRadio checked={mode.online} onChange={(e) => handleMode(e)} name='online' />} label='Online' />
+              </div>
+              <div className='TitleFontAppt'>Pick an Appointment Date</div>
+                {console.log("(Calendar) date: ", minDate)}
+              <Calendar
+                calendarType='US'
+                onClickDay={dateChange}
+                value={date}
+                  minDate={minDate}
+                next2Label={null}
+                prev2Label={null}
+                tileDisabled={() => isCalDisabled}
+                className={isCalDisabled ? classes.calDisabled : ""}
+              />
+            </div>
+          </div>
+
+          <div style={{ width: "100%", height: "100%" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                  justifyContent: "space-between",
+                marginBottom: "2rem",
+              }}
+            >
                 <div className='TitleFontAppt'>Pick an Appointment Time</div>
                 <div className='BodyFontAppt'>Pacific Standard Time</div>
-              </div>
+            </div>
 
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: "2rem" }}>
                 {loading ? (
@@ -816,7 +851,7 @@ export default function AppointmentPage(props) {
                 ) : (
                   renderAvailableApptsVertical() // Render available appointments if not loading
                 )}
-              </div>
+            </div>
 
               <div style={{ padding: "3%" }} hidden={!buttonSelect || !selectedTime}>
                 <button
@@ -838,7 +873,7 @@ export default function AppointmentPage(props) {
                 >
                   Continue
                 </button>
-              </div>
+            </div>
             </div>
           </div>
         </div>
