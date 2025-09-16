@@ -166,19 +166,42 @@ export default function Scheduler(props) {
   };
 
   useEffect(() => {
-    console.log("RERENDER -- apptInfo: ", apptInfo);
-    // setApptConfirmed(true);
-    // console.log("apptInfo length: ", apptInfo.length);
+    console.log("🔍🔍🔍 NAVIGATION USEEFFECT TRIGGERED 🔍🔍🔍");
+    console.log("🔍 apptInfo:", apptInfo);
+    console.log("🔍 apptInfo type:", typeof apptInfo);
+    console.log("🔍 apptInfo keys:", Object.keys(apptInfo));
+    console.log("🔍 JSON.stringify(apptInfo):", JSON.stringify(apptInfo));
+    console.log("🔍 JSON.stringify(apptInfo) !== '{}':", JSON.stringify(apptInfo) !== "{}");
+    
     if (JSON.stringify(apptInfo) !== "{}") {
+      console.log("🔍 apptInfo is not empty, proceeding with navigation");
+      // Send data in the same format as AppointmentPage navigation
+      const stateData = {
+        date: apptInfo.appointmentDate,
+        time: apptInfo.appointmentTime,
+        mode: apptInfo.mode,
+        totalCost: apptInfo.purchase_price,
+        totalDuration: apptInfo.duration,
+        durationText: durationToString(convertDurationToSeconds(apptInfo.duration)),
+      };
+      
+      console.log("🔍 Scheduler navigation stateData:", stateData);
+      console.log("🔍 Scheduler navigation time:", stateData.time);
+      console.log("🔍 Scheduler navigation date:", stateData.date);
+      console.log("🔍 Scheduler navigation mode:", stateData.mode);
+      console.log("🔍 Navigation pathname:", `/${props.treatmentID}/confirm`);
+      
       history.push({
-        pathname: "/apptconfirm",
-        state: {
-          apptInfo,
-          // test_value: "test_string"
-        },
+        pathname: `/${props.treatmentID}/confirm`,
+        state: stateData,
       });
+      
+      console.log("🔍 Navigation completed");
+    } else {
+      console.log("🔍 apptInfo is empty, not navigating");
     }
-  }, [apptInfo]);
+    console.log("🔍🔍🔍 END NAVIGATION USEEFFECT 🔍🔍🔍");
+  }, [apptInfo, props.treatmentID, history]);
   const convertTime12to24 = (time12h) => {
     let time = time12h.slice(0, -3);
     let modifier = time12h.slice(-2);
@@ -221,13 +244,37 @@ export default function Scheduler(props) {
   };
 
   function sendToDatabase() {
-    // Use the original Pacific Time (treatmentTime) instead of timezone-converted selectedTime
-    // Format time as HH:MM (remove seconds)
-    const formattedTime = props.treatmentTime.substring(0, 5); // Extract HH:MM from HH:MM:SS
+    // Convert treatmentTime from 12-hour format to 24-hour format for database
+    let formattedTime = props.treatmentTime;
+    
+    // Check if it's in 12-hour format (contains AM/PM)
+    if (props.treatmentTime && (props.treatmentTime.includes("AM") || props.treatmentTime.includes("PM"))) {
+      console.log("Converting 12-hour format to 24-hour format");
+      const [timePart, period] = props.treatmentTime.split(" ");
+      const [hoursStr, minutesStr] = timePart.split(":");
+      let hours = parseInt(hoursStr, 10);
+      const minutes = parseInt(minutesStr, 10);
+      
+      // Convert to 24-hour format
+      if (period === "AM" && hours === 12) {
+        hours = 0;
+      } else if (period === "PM" && hours !== 12) {
+        hours += 12;
+      }
+      
+      formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+    } else if (props.treatmentTime && props.treatmentTime.includes(":")) {
+      // Already in 24-hour format, just ensure proper formatting
+      const [hoursStr, minutesStr] = props.treatmentTime.split(":");
+      const hours = parseInt(hoursStr, 10);
+      const minutes = parseInt(minutesStr, 10);
+      formattedTime = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+    }
+    
     console.log("=== APPOINTMENT CREATION DEBUG ===");
     console.log("Raw selectedTime (timezone-converted):", props.selectedTime);
     console.log("Raw treatmentTime (Pacific Time):", props.treatmentTime);
-    console.log("Formatted time for database (HH:MM format):", formattedTime);
+    console.log("Formatted time for database (24-hour format):", formattedTime);
     console.log("Raw date:", props.date);
     console.log("Full appointment data:", {
       first_name: props.firstName,
@@ -263,40 +310,7 @@ export default function Scheduler(props) {
       })
       .then((res) => {
         console.log("create appt", res);
-
-        // Send confirmation email after successful appointment creation
-        const emailBody = {
-          name: props.firstName + " " + props.lastName,
-          email: props.email,
-          phone: props.phoneNum,
-          message: `Appointment confirmed for ${props.treatmentName} on ${moment(props.date).format("MMMM Do, YYYY")} at ${props.selectedTime}`,
-          appointment_details: {
-            treatment: props.treatmentName,
-            date: moment(props.date).format("MMMM Do, YYYY"),
-            time: props.selectedTime,
-            cost: props.cost,
-            duration: props.duration,
-          },
-          endpoint_call: "appointmentConfirmation",
-          jsonObject_sent: JSON.stringify({
-            first_name: props.firstName,
-            last_name: props.lastName,
-            email: props.email,
-            treatment: props.treatmentName,
-            date: moment(props.date).format("YYYY-MM-DD"),
-            time: props.selectedTime,
-          }),
-        };
-
-        // Send confirmation email
-        axios
-          .post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", emailBody)
-          .then((emailResponse) => {
-            console.log("Confirmation email sent:", emailResponse.data.result);
-          })
-          .catch((emailError) => {
-            console.log("Failed to send confirmation email:", emailError);
-          });
+        // Backend automatically sends confirmation emails, no need for frontend email call
       })
       .catch((err) => {
         console.log(err);
@@ -305,7 +319,14 @@ export default function Scheduler(props) {
         }
       });
 
-    setApptInfo({
+    console.log("🔍🔍🔍 SETTING APPT INFO 🔍🔍🔍");
+    console.log("🔍 props.treatmentTime:", props.treatmentTime);
+    console.log("🔍 props.date:", props.date);
+    console.log("🔍 props.mode:", props.mode);
+    console.log("🔍 props.cost:", props.cost);
+    console.log("🔍 props.duration:", props.duration);
+    
+    const newApptInfo = {
       first_name: props.firstName + " " + props.lastName,
       email: props.email,
       phone_no: props.phoneNum,
@@ -318,10 +339,44 @@ export default function Scheduler(props) {
       gender: props.gender,
       appointmentDate: moment(props.date).format("YYYY-MM-DD"),
       appointmentTime: props.treatmentTime, // Use Pacific Time, not timezone-converted time
-    });
-    // history.push("/apptconfirm", {apptInfo});
-    console.log("create appt", apptInfo);
-    // setApptConfirmed(true);
+    };
+    
+    console.log("🔍 newApptInfo:", newApptInfo);
+    setApptInfo(newApptInfo);
+    console.log("🔍 setApptInfo called with:", newApptInfo);
+    console.log("🔍 Current apptInfo state (before update):", apptInfo);
+    console.log("🔍🔍🔍 END SETTING APPT INFO 🔍🔍🔍");
+    
+    // Navigate directly instead of relying on useEffect
+    console.log("🔍🔍🔍 DIRECT NAVIGATION 🔍🔍🔍");
+    console.log("🔍 props.treatmentID:", props.treatmentID);
+    console.log("🔍 history object:", history);
+    console.log("🔍 history.push function:", typeof history.push);
+    
+    const stateData = {
+      date: newApptInfo.appointmentDate,
+      time: newApptInfo.appointmentTime,
+      mode: newApptInfo.mode,
+      totalCost: newApptInfo.purchase_price,
+      totalDuration: newApptInfo.duration,
+      durationText: durationToString(convertDurationToSeconds(newApptInfo.duration)),
+    };
+    
+    console.log("🔍 Direct navigation stateData:", stateData);
+    console.log("🔍 Direct navigation pathname:", `/${props.treatmentID}/confirm`);
+    
+    try {
+      history.push({
+        pathname: `/${props.treatmentID}/confirm`,
+        state: stateData,
+      });
+      console.log("🔍 Direct navigation completed successfully");
+    } catch (error) {
+      console.error("❌ Navigation error:", error);
+      console.error("❌ Error stack:", error.stack);
+    }
+    
+    console.log("🔍🔍🔍 END DIRECT NAVIGATION 🔍🔍🔍");
   }
 
   function convert(value) {
@@ -333,65 +388,104 @@ export default function Scheduler(props) {
     return seconds + 1;
   }
 
+  const convertDurationToSeconds = (durationStr) => {
+    if (!durationStr) return 0;
+    const [hours, minutes, seconds] = durationStr.split(":").map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  const durationToString = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    return `${hours}h ${minutes}m`;
+  };
+
   function creatEvent() {
     console.log("=== GOOGLE CALENDAR EVENT CREATION DEBUG ===");
     console.log("props.date:", props.date);
     console.log("props.selectedTime:", props.selectedTime);
+    console.log("props.treatmentTime:", props.treatmentTime);
 
-    // Extract just the time portion for Google Calendar (HH:mm:ss format)
-    const timeOnly = convertTimeWithTimezone(props.selectedTime, props.date).split(" ")[1];
-    console.log("Time only for Google Calendar:", timeOnly);
+    try {
+      // Use the raw treatmentTime (Pacific Time) for Google Calendar
+      let timeString = props.treatmentTime;
+      
+      // Convert from 12-hour to 24-hour format if needed
+      if (timeString && (timeString.includes("AM") || timeString.includes("PM"))) {
+        const [timePart, period] = timeString.split(" ");
+        const [hoursStr, minutesStr] = timePart.split(":");
+        let hours = parseInt(hoursStr, 10);
+        const minutes = parseInt(minutesStr, 10);
+        
+        if (period === "AM" && hours === 12) {
+          hours = 0;
+        } else if (period === "PM" && hours !== 12) {
+          hours += 12;
+        }
+        
+        timeString = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+      }
+      
+      console.log("Converted time string:", timeString);
 
-    // Use props.date instead of props.treatmentDate
-    let st = moment(props.date).format("YYYY-MM-DD") + "T" + timeOnly;
-    let start_time = moment.tz(st, "America/Los_Angeles").format();
-    console.log("Start time in PST:", start_time);
-    let duration = convert(props.duration);
-    let et = Date.parse(start_time) / 1000 + duration;
-    let end_time = moment(new Date(et * 1000)).format();
-    console.log("End time:", end_time);
-    var event = {
-      summary: props.treatmentName,
-      location: "1610 Blossom Hill Road, #1, San Jose, CA, 95124",
-      description: "Name: " + props.firstName + " " + props.lastName + "\n" + "Phone No: " + props.phoneNum.replace(/[^a-z\d\s]+/gi, ""),
-      creator: {
-        email: "support@nityaayurveda.com",
-        self: true,
-      },
-      organizer: {
-        email: "support@nityaayurveda.com",
-        self: true,
-      },
-      start: {
-        dateTime: start_time,
-        timeZone: "America/Los_Angeles",
-      },
-      end: {
-        dateTime: end_time,
-        timeZone: "America/Los_Angeles",
-      },
-      attendees: [
-        {
-          email: props.email,
+      // Create proper datetime string
+      const dateString = moment(props.date).format("YYYY-MM-DD");
+      const startDateTime = `${dateString}T${timeString}:00`;
+      console.log("Start datetime string:", startDateTime);
+      
+      // Create moment objects in PST
+      const startMoment = moment.tz(startDateTime, "America/Los_Angeles");
+      const durationSeconds = convertDurationToSeconds(props.duration);
+      const endMoment = startMoment.clone().add(durationSeconds, 'seconds');
+      
+      console.log("Start moment:", startMoment.format());
+      console.log("End moment:", endMoment.format());
+      const event = {
+        summary: props.treatmentName,
+        location: "1610 Blossom Hill Road, #1, San Jose, CA, 95124",
+        description: `Name: ${props.firstName} ${props.lastName}\nPhone: ${props.phoneNum.replace(/[^a-z\d\s]+/gi, "")}`,
+        start: {
+          dateTime: startMoment.format(),
+          timeZone: "America/Los_Angeles",
         },
-        { email: "Lmarathay@gmail.com" },
-      ],
-    };
-    console.log(event);
-    //publishTheCalenderEvent(event)
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      Authorization: "Bearer " + props.accessToken,
-    };
-    axios
-      .post(`https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${API_KEY}`, event, {
-        headers: headers,
-      })
-      .then((response) => {})
-      .catch((error) => {
-        console.log("error", error);
-      });
+        end: {
+          dateTime: endMoment.format(),
+          timeZone: "America/Los_Angeles",
+        },
+        attendees: [
+          {
+            email: props.email,
+          },
+          { 
+            email: "Lmarathay@gmail.com" 
+          },
+        ],
+      };
+      
+      console.log("Google Calendar event object:", JSON.stringify(event, null, 2));
+      
+      const headers = {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${props.accessToken}`,
+      };
+      
+      axios
+        .post(`https://www.googleapis.com/calendar/v3/calendars/primary/events?key=${API_KEY}`, event, {
+          headers: headers,
+        })
+        .then((response) => {
+          console.log("✅ Google Calendar event created successfully:", response.data);
+        })
+        .catch((error) => {
+          console.error("❌ Google Calendar API error:", error);
+          console.error("❌ Error response:", error.response?.data);
+          console.error("❌ Error status:", error.response?.status);
+          console.error("❌ Error headers:", error.response?.headers);
+          console.error("❌ Full error object:", error);
+        });
+    } catch (error) {
+      console.error("❌ Error in creatEvent function:", error);
+    }
   }
 
   const [changeLoadingState, setLoadingState] = useState(false);
@@ -487,10 +581,14 @@ export default function Scheduler(props) {
             }
           })
           .then(function (res) {
-            console.log("createPaymentMethod res: " + JSON.stringify(res));
+            console.log("🔍🔍🔍 CREATE PAYMENT METHOD RESULT 🔍🔍🔍");
+            console.log("🔍 createPaymentMethod res:", JSON.stringify(res));
+            console.log("🔍 res.error:", res.error);
+            console.log("🔍 res.error exists:", !!res.error);
             
             // Check for createPaymentMethod errors
             if (res.error) {
+              console.log("❌ createPaymentMethod error detected:", res.error);
               console.log("createPaymentMethod error:", res.error);
               setErrorMessage(res.error.message);
               const body = {
@@ -511,7 +609,7 @@ export default function Scheduler(props) {
               return;
             }
 
-            console.log("calling confirmedCardPayment...");
+            console.log("✅ createPaymentMethod successful! Calling confirmCardPayment...");
 
             try {
               const confirmedCardPayment = stripe
@@ -520,10 +618,14 @@ export default function Scheduler(props) {
                   setup_future_usage: "off_session",
                 })
                 .then(function (result) {
-                  console.log("confirmedCardPayment result: " + JSON.stringify(result));
-                  console.log(result.data);
+                  console.log("🔍🔍🔍 CONFIRM CARD PAYMENT RESULT 🔍🔍🔍");
+                  console.log("🔍 confirmedCardPayment result:", JSON.stringify(result));
+                  console.log("🔍 result.data:", result.data);
+                  console.log("🔍 result.error:", result.error);
+                  console.log("🔍 result.error exists:", !!result.error);
+                  
                   if (result.error) {
-                    console.log(result.error);
+                    console.log("❌ Payment error detected:", result.error);
                     setErrorMessage(result.error.message);
                     const body = {
                       name: props.firstName + " " + props.lastName,
@@ -543,6 +645,7 @@ export default function Scheduler(props) {
                     setLoadingState(false);
                     setIsProcessing(false); // Stop loading on error
                   } else {
+                    console.log("✅ Payment successful! Calling sendToDatabase() and creatEvent()");
                     sendToDatabase();
                     creatEvent();
                     setIsProcessing(false); // Stop loading on success

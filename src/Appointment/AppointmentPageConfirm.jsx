@@ -26,20 +26,139 @@ const getUserTimezone = () => {
 };
 
 const convertFromPST = (pstTime, date) => {
-  // Create a moment object in PST
-  const pstDateTime = moment.tz(date + "T" + pstTime, "America/Los_Angeles");
-  // Convert to user's local timezone
-  const localDateTime = pstDateTime.tz(getUserTimezone());
-  return localDateTime.format("HH:mm:ss");
+  console.log("🔍🔍🔍 CONVERT FROM PST DEBUG 🔍🔍🔍");
+  console.log("🔍 convertFromPST - pstTime:", pstTime);
+  console.log("🔍 convertFromPST - date:", date);
+  console.log("🔍 convertFromPST - pstTime type:", typeof pstTime);
+  console.log("🔍 convertFromPST - pstTime is null:", pstTime === null);
+  console.log("🔍 convertFromPST - pstTime is undefined:", pstTime === undefined);
+  
+  try {
+    if (pstTime == null) {
+      console.log("❌ pstTime is null/undefined, cannot convert");
+      return pstTime;
+    }
+    
+    let timeString = pstTime.toString().trim();
+    console.log("🔍 convertFromPST - original timeString:", timeString);
+    
+    // Detect and handle different time formats
+    if (timeString.includes("AM") || timeString.includes("PM")) {
+      // Handle 12-hour format (e.g., "09:00 AM", "11:30 PM")
+      console.log("convertFromPST - detected 12-hour format");
+      const [timePart, period] = timeString.split(" ");
+      const [hoursStr, minutesStr] = timePart.split(":");
+      let hours = parseInt(hoursStr, 10);
+      const minutes = parseInt(minutesStr, 10);
+      
+      // Validate parsed values
+      if (isNaN(hours) || isNaN(minutes)) {
+        console.error("Invalid time format in convertFromPST:", pstTime);
+        return pstTime;
+      }
+      
+      // Convert to 24-hour format
+      if (period === "AM" && hours === 12) {
+        hours = 0;
+      } else if (period === "PM" && hours !== 12) {
+        hours += 12;
+      }
+      
+      timeString = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+      console.log("convertFromPST - converted 12-hour to 24-hour:", timeString);
+    } else if (timeString.includes(":")) {
+      // Handle 24-hour format (e.g., "09:00", "23:00", "09:00:00")
+      console.log("convertFromPST - detected 24-hour format");
+      const timeParts = timeString.split(":");
+      if (timeParts.length >= 2) {
+        const hours = parseInt(timeParts[0], 10);
+        const minutes = parseInt(timeParts[1], 10);
+        
+        // Validate parsed values
+        if (isNaN(hours) || isNaN(minutes)) {
+          console.error("Invalid time format in convertFromPST:", pstTime);
+          return pstTime;
+        }
+        
+        // Ensure proper formatting (HH:MM)
+        timeString = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
+        console.log("convertFromPST - formatted 24-hour:", timeString);
+      }
+    } else {
+      console.error("Unrecognized time format:", pstTime);
+      return pstTime;
+    }
+    
+    // Ensure date is in YYYY-MM-DD format
+    let dateString = date;
+    if (typeof date === 'string') {
+      dateString = date;
+    } else if (date instanceof Date) {
+      dateString = moment(date).format('YYYY-MM-DD');
+    } else {
+      dateString = moment(date).format('YYYY-MM-DD');
+    }
+    
+    console.log("convertFromPST - final timeString:", timeString, "dateString:", dateString);
+    
+    // Create a moment object in PST/PDT (America/Los_Angeles handles both)
+    const pstDateTime = moment.tz(dateString + "T" + timeString, "America/Los_Angeles");
+    console.log("convertFromPST - pstDateTime:", pstDateTime.format());
+    
+    // Get user's timezone
+    const userTimezone = getUserTimezone();
+    console.log("convertFromPST - userTimezone:", userTimezone);
+    
+    // Convert to user's local timezone
+    const localDateTime = pstDateTime.tz(userTimezone);
+    console.log("convertFromPST - localDateTime:", localDateTime.format());
+    
+    const result = localDateTime.format("HH:mm:ss");
+    console.log("🔍 convertFromPST - result:", result);
+    console.log("🔍🔍🔍 END CONVERT FROM PST DEBUG 🔍🔍🔍");
+    return result;
+  } catch (error) {
+    console.error("❌ Error in convertFromPST:", error);
+    console.error("❌ Error stack:", error.stack);
+    console.log("🔍🔍🔍 END CONVERT FROM PST DEBUG (ERROR) 🔍🔍🔍");
+    return pstTime; // Return original time if conversion fails
+  }
 };
 
 const getTimezoneAbbreviation = () => {
   const tz = getUserTimezone();
+  console.log("getTimezoneAbbreviation - detected timezone:", tz);
+  
+  // Handle US timezones
   if (tz.includes("America/New_York")) return "EST";
   if (tz.includes("America/Chicago")) return "CST";
   if (tz.includes("America/Denver")) return "MST";
   if (tz.includes("America/Los_Angeles")) return "PST";
-  return tz.replace("America/", "").replace("_", "");
+  
+  // Handle other common timezones
+  if (tz.includes("America/Toronto")) return "EST";
+  if (tz.includes("America/Vancouver")) return "PST";
+  if (tz.includes("Europe/London")) return "GMT";
+  if (tz.includes("Europe/Paris")) return "CET";
+  if (tz.includes("Asia/Tokyo")) return "JST";
+  if (tz.includes("Asia/Shanghai")) return "CST";
+  if (tz.includes("Australia/Sydney")) return "AEST";
+  
+  // Fallback: try to get abbreviation from Intl.DateTimeFormat
+  try {
+    const now = new Date();
+    const timeZoneName = now.toLocaleString("en-US", {
+      timeZone: tz,
+      timeZoneName: "short"
+    });
+    const parts = timeZoneName.split(" ");
+    const abbreviation = parts[parts.length - 1];
+    console.log("getTimezoneAbbreviation - fallback abbreviation:", abbreviation);
+    return abbreviation || tz.replace("America/", "").replace("_", "");
+  } catch (error) {
+    console.error("Error getting timezone abbreviation:", error);
+    return tz.replace("America/", "").replace("_", "");
+  }
 };
 
 // import moment from "moment";
@@ -163,14 +282,27 @@ export default function AppointmentPage(props) {
   const classes = useStyles();
   const location = useLocation();
   // moment().format();
-  console.log("(AppointmentPageConfirm) props: ", props);
+  console.log("🔍🔍🔍 CONFIRMATION PAGE DEBUG 🔍🔍🔍");
+  console.log("🔍 (AppointmentPageConfirm) props: ", props);
+  console.log("🔍 location object:", location);
+  console.log("🔍 location.state:", location.state);
+  console.log("🔍 location.state.time:", location.state?.time);
+  console.log("🔍 location.state.date:", location.state?.date);
+  console.log("🔍 location.state.mode:", location.state?.mode);
+  console.log("🔍 location.state.time type:", typeof location.state?.time);
+  console.log("🔍 location.state.time is null:", location.state?.time === null);
+  console.log("🔍 location.state.time is undefined:", location.state?.time === undefined);
+  
   //strip use states
-  const access_token = location.state.accessToken;
-  console.log("(AppointmentPageConfirm) accessToken: ", access_token);
-  const totalCost = "$" + location.state.totalCost;
-  const totalDuration = location.state.totalDuration;
-  const durationText = location.state.durationText;
-  console.log(totalDuration);
+  const access_token = location.state?.accessToken;
+  console.log("🔍 (AppointmentPageConfirm) accessToken: ", access_token);
+  const totalCost = "$" + (location.state?.totalCost || "undefined");
+  const totalDuration = location.state?.totalDuration;
+  const durationText = location.state?.durationText;
+  console.log("🔍 totalCost:", totalCost);
+  console.log("🔍 totalDuration:", totalDuration);
+  console.log("🔍 durationText:", durationText);
+  console.log("🔍🔍🔍 END CONFIRMATION PAGE DEBUG 🔍🔍🔍");
 
   const { treatmentID } = useParams();
   const [stripePromise, setStripePromise] = useState(null);
@@ -398,36 +530,80 @@ export default function AppointmentPage(props) {
     if (time == null) {
       return "?";
     } else {
-      console.log(date, time);
-      var newDate = new Date((date + "T" + time).replace(/\s/, "T"));
-      var hours = newDate.getHours();
-      var minutes = newDate.getMinutes();
-      console.log(hours, minutes);
-      var ampm = hours >= 12 ? "pm" : "am";
-      console.log(ampm);
-      hours = hours % 12;
-      console.log(hours);
-      hours = hours ? hours : 12; // the hour '0' should be '12'
-      console.log(hours);
-      minutes = minutes < 10 ? "0" + minutes : minutes;
-      console.log(minutes);
-      var strTime = hours + ":" + minutes + " " + ampm;
-      console.log(strTime);
-      return strTime;
+      console.log("formatTime - date:", date, "time:", time);
+      
+      // Handle different time formats
+      let timeString = time.toString().trim();
+      console.log("formatTime - original timeString:", timeString);
+      
+      // Check if it's already in 12-hour format (contains AM/PM)
+      if (timeString.includes("AM") || timeString.includes("PM")) {
+        console.log("formatTime - already in 12-hour format:", timeString);
+        return timeString;
+      }
+      
+      // Handle 24-hour format (HH:mm or HH:mm:ss)
+      if (timeString.includes(":")) {
+        console.log("formatTime - detected 24-hour format");
+        const timeParts = timeString.split(":");
+        if (timeParts.length >= 2) {
+          const hours = parseInt(timeParts[0], 10);
+          const minutes = parseInt(timeParts[1], 10);
+          
+          console.log("formatTime - parsed 24-hour format - hours:", hours, "minutes:", minutes);
+          
+          // Validate the parsed values
+          if (isNaN(hours) || isNaN(minutes)) {
+            console.error("Invalid time format:", time);
+            return "Invalid Time";
+          }
+          
+          // Convert to 12-hour format
+          const ampm = hours >= 12 ? "PM" : "AM";
+          let displayHours = hours % 12;
+          displayHours = displayHours ? displayHours : 12; // the hour '0' should be '12'
+          const displayMinutes = minutes < 10 ? "0" + minutes : minutes;
+          
+          const strTime = `${displayHours}:${displayMinutes} ${ampm}`;
+          console.log("formatTime - converted 24-hour to 12-hour:", strTime);
+          return strTime;
+        }
+      }
+      
+      console.error("Unrecognized time format:", time);
+      return "Invalid Time";
     }
   }
 
   // Enhanced formatTime function that shows only the user's time in their timezone
   function formatTimeWithTimezone(date, time) {
+    console.log("🔍🔍🔍 FORMAT TIME WITH TIMEZONE DEBUG 🔍🔍🔍");
+    console.log("🔍 formatTimeWithTimezone - date:", date);
+    console.log("🔍 formatTimeWithTimezone - time:", time);
+    console.log("🔍 formatTimeWithTimezone - time type:", typeof time);
+    console.log("🔍 formatTimeWithTimezone - time is null:", time === null);
+    console.log("🔍 formatTimeWithTimezone - time is undefined:", time === undefined);
+    
     if (time == null) {
+      console.log("❌ time is null/undefined, returning '?'");
       return "?";
     } else {
+      console.log("🔍 time exists, proceeding with conversion");
       // Convert PST time to user's local timezone
       const localTime = convertFromPST(time, date);
+      console.log("🔍 formatTimeWithTimezone - localTime:", localTime);
+      
       const localFormatted = formatTime(date, localTime);
+      console.log("🔍 formatTimeWithTimezone - localFormatted:", localFormatted);
+      
+      const timezoneAbbr = getTimezoneAbbreviation();
+      console.log("🔍 formatTimeWithTimezone - timezoneAbbr:", timezoneAbbr);
 
       // Show only the user's time in their timezone
-      return `${localFormatted} ${getTimezoneAbbreviation()}`;
+      const result = `${localFormatted} ${timezoneAbbr}`;
+      console.log("🔍 formatTimeWithTimezone - final result:", result);
+      console.log("🔍🔍🔍 END FORMAT TIME WITH TIMEZONE DEBUG 🔍🔍🔍");
+      return result;
     }
   }
 
