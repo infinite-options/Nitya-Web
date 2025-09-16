@@ -7,7 +7,7 @@ import { Radio } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import axios from "axios";
 import StripeElement from "./StripeElement";
-import moment from "moment";
+import moment from "moment-timezone";
 import { MyContext } from "../App";
 import { Link, useHistory } from "react-router-dom";
 import {
@@ -375,6 +375,35 @@ export default function AppointmentPage(props) {
     setInfoSubmitted(true);
   }
 
+  // Convert Pacific Time to user's local timezone with timezone info
+  const convertToUserTimezoneWithInfo = (date, time) => {
+    try {
+      // Create a date object in Pacific Time
+      const pacificTime = moment.tz(`${date} ${time}`, "America/Los_Angeles");
+      
+      // Convert to user's local timezone
+      const userTime = pacificTime.tz(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      
+      // Format as 12-hour time
+      const formattedTime = userTime.format("h:mm A");
+      
+      // Get timezone abbreviation
+      const timezoneAbbr = userTime.format("z");
+      
+      return {
+        time: formattedTime,
+        timezone: timezoneAbbr
+      };
+    } catch (error) {
+      console.error("Error converting timezone:", error);
+      // Fallback to original format if conversion fails
+      return {
+        time: formatTime(date, time),
+        timezone: "PST"
+      };
+    }
+  };
+
   function formatTime(date, time) {
     if (time == null) {
       return "?";
@@ -425,7 +454,10 @@ export default function AppointmentPage(props) {
                   }}
                 >
                   <span>
-                    {moment(location.state.date).format("ll")} at {formatTime(location.state.date, location.state.time)} - {location.state.mode}
+                    {(() => {
+                      const timeInfo = convertToUserTimezoneWithInfo(location.state.date, location.state.time);
+                      return `${moment(location.state.date).format("ll")} at ${timeInfo.time} ${timeInfo.timezone} - ${location.state.mode}`;
+                    })()}
                   </span>
                 </h1>
               </div>

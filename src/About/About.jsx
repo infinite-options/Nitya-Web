@@ -21,7 +21,7 @@ export default function About() {
         <div className="CardGrid">
           <div>
             <div className="CardTitle">Leena Marathay</div>
-            <p className="CardText CardParagraphs">
+            <div className="CardText CardParagraphs">
               <p>
                 Welcome to Nitya Ayurveda, where Ayurvedic medicine meets personalized 
                 health and wellness plans. Our team is led by Leena, a NAMA-certified 
@@ -45,7 +45,7 @@ export default function About() {
                 Join us on the journey towards a happier, healthier you. Contact us today 
                 to schedule a consultation with Leena and start your personalized health and wellness plan.
               </p>
-            </p>
+            </div>
           </div>
           <div>
             <img

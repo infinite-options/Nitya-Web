@@ -6,7 +6,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useParams } from "react-router";
 import { Radio } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import moment from "moment";
+import moment from "moment-timezone";
 import Grid from "@material-ui/core/Grid";
 import Calendar from "react-calendar";
 import { MyContext } from "../App";
@@ -75,7 +75,7 @@ const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
 export default function AppointmentPage(props) {
   console.log("(AppointmentPage) props: ", props);
   const [accessToken, setAccessToken] = useState("");
-  console.log("(AppointmentPage) accessToken: ", accessToken);
+  // console.log("(AppointmentPage) accessToken: ", accessToken);
   const classes = useStyles();
   const history = useHistory();
   const { treatmentID } = useParams();
@@ -109,8 +109,8 @@ export default function AppointmentPage(props) {
         if (selectedService) {
           setElementToBeRendered(selectedService);
           duration.current = selectedService.duration;
-          console.log("element to be rendered:", selectedService);
-          console.log("element category:", selectedService.category);
+          console.log("Treatment to be rendered:", selectedService);
+          console.log("Treatment category:", selectedService.category);
         }
 
         // Step 2: Get access token
@@ -153,7 +153,7 @@ export default function AppointmentPage(props) {
         } finally {
           setLoading(false);
         }
-        console.log("🔍 Time slots fetched");
+        console.log("🔍 Time slots fetched 1");
 
       } catch (error) {
         console.error("Error initializing appointment page:", error);
@@ -164,7 +164,7 @@ export default function AppointmentPage(props) {
 
     initializeAppointmentPage();
   }, [servicesLoaded, serviceArr, treatmentID]);
-  console.log("(AppointmentPage) accessToken2: ", accessToken);
+  // console.log("(AppointmentPage) accessToken2: ", accessToken);
   var currentDate = new Date(+new Date() + 86400000);
   const [date, setDate] = useState(currentDate);
   const [minDate, setMinDate] = useState(currentDate);
@@ -216,8 +216,8 @@ export default function AppointmentPage(props) {
   };
   // This one is for doing the sendToDatabase Post Call
   const dateFormat3 = (date) => {
-    console.log("dateformat3", date);
-    console.log("dateformat3", date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date));
+    // console.log("dateformat3", date);
+    // console.log("dateformat3", date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date));
     return date.getFullYear() + "-" + doubleDigitMonth(date) + "-" + doubleDigitDay(date);
   };
   const [apiDateString, setApiDateString] = useState(dateFormat3(currentDate));
@@ -321,11 +321,11 @@ export default function AppointmentPage(props) {
     if (rawDuration === undefined) {
       return "";
     }
-    console.log("rawDuration: ", rawDuration);
+    // console.log("rawDuration: ", rawDuration);
     let parsedDuration = "";
 
     let durationTokens = rawDuration.split(":");
-    console.log("durationTokens: ", durationTokens);
+    // console.log("durationTokens: ", durationTokens);
 
     if (Number(durationTokens[0]) > 0) {
       parsedDuration = parsedDuration + durationTokens[0] + " hr ";
@@ -362,31 +362,40 @@ export default function AppointmentPage(props) {
       setLoading(false); // End loading after 1 second
     }, 1000);
   };
-  function formatTime(date, time) {
+  // Convert Pacific Time to user's local timezone
+  const convertPacificToUserTimezone = (date, time) => {
+    try {
+      // Create a date object in Pacific Time
+      const pacificTime = moment.tz(`${date} ${time}`, "America/Los_Angeles");
+      
+      // Convert to user's local timezone
+      const userTime = pacificTime.tz(Intl.DateTimeFormat().resolvedOptions().timeZone);
+      
+      // Format as 12-hour time
+      const formattedTime = userTime.format("h:mm A");
+      
+      // Get timezone abbreviation
+      const timezoneAbbr = userTime.format("z");
+      
+      return {
+        time: formattedTime,
+        timezone: timezoneAbbr
+      };
+    } catch (error) {
+      console.error("Error converting timezone:", error);
+      // Fallback to original format if conversion fails
+      return {
+        time: formatTimeOriginal(date, time),
+        timezone: "PST"
+      };
+    }
+  };
+
+  // Original formatTime function as fallback
+  const formatTimeOriginal = (date, time) => {
     if (time == null) {
       return "?";
     } else {
-      // time = time.split(":");
-      // // fetch
-      // var hours = Number(time[0]);
-      // var minutes = Number(time[1]);
-      // var seconds = Number(time[2]);
-
-      // // calculate
-      // var strTime;
-
-      // if (hours > 0 && hours <= 12) {
-      //   strTime = "" + hours;
-      // } else if (hours > 12) {
-      //   strTime = "" + (hours - 12);
-      // } else if (hours == 0) {
-      //   strTime = "12";
-      // }
-
-      // strTime += minutes < 10 ? ":0" + minutes : ":" + minutes; // get minutes
-      // strTime += seconds < 10 ? ":0" + seconds : ":" + seconds; // get seconds
-      // strTime += hours >= 12 ? " P.M." : " A.M."; // get AM/PM
-
       var newDate = new Date((date + "T" + time).replace(/\s/, "T"));
       var hours = newDate.getHours();
       var minutes = newDate.getMinutes();
@@ -398,6 +407,16 @@ export default function AppointmentPage(props) {
       var strTime = hours + ":" + minutes + " " + ampm;
       return strTime;
     }
+  };
+
+  // Updated formatTime function that converts to user's timezone
+  function formatTime(date, time) {
+    if (time == null) {
+      return "?";
+    }
+    
+    const converted = convertPacificToUserTimezone(date, time);
+    return converted.time;
   }
   const getTimeAASlots = async () => {
     try {
@@ -560,7 +579,7 @@ export default function AppointmentPage(props) {
     console.log("TimeSlots length:", timeSlots.length);
 
     return (
-      <Grid container xs={11}>
+      <Grid container>
         {timeSlots.length > 0 ? (
           timeSlots.map(function (element, i) {
             return (
@@ -732,7 +751,8 @@ export default function AppointmentPage(props) {
             if (service.treatment_uid === treatment_uid) {
               setElementToBeRendered(service);
               duration.current = service.duration;
-              console.log("element to be rendered:", service);
+              console.log("Treatment 2 to be rendered:", service);
+              console.log("Treatment 2 category:", service.category);
             }
           });
           isFirstLoad.current = false;
@@ -740,6 +760,7 @@ export default function AppointmentPage(props) {
         }
 
         await getTimeSlots(); // Fetch available time slots from backend
+        
       } catch (error) {
         console.error("Error in onChange:", error);
       } finally {
@@ -842,7 +863,7 @@ export default function AppointmentPage(props) {
               }}
             >
                 <div className='TitleFontAppt'>Pick an Appointment Time</div>
-                <div className='BodyFontAppt'>Pacific Standard Time</div>
+                <div className='BodyFontAppt'>Times shown in your local timezone ({Intl.DateTimeFormat().resolvedOptions().timeZone})</div>
             </div>
 
               <div style={{ display: "flex", justifyContent: "center", alignItems: "center", margin: "2rem" }}>

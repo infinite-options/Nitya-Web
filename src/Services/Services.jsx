@@ -26,7 +26,7 @@ export default function Services() {
   const [state, setState] = useState(restoreServiceState());
   const { serviceArr } = useContext(MyContext);
   const Auth = useContext(AuthContext);
-  console.log(serviceArr);
+  console.log("Services Array: ", serviceArr);
 
   return (
     <div className="HomeContainer">

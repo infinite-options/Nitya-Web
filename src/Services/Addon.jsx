@@ -18,8 +18,9 @@ export default function Addon(props) {
         {addons.map((addon, i) => {
           const therapy_contents = getContents(addon.therapy, data);
           if(title !== therapy_contents.title) {
-              return <AddonChoice data={[addon, therapy_contents]} state={[addons, setAddons, i]} refresh={updateAddons}/>;
+              return <AddonChoice key={`${addon.therapy}-${i}`} data={[addon, therapy_contents]} state={[addons, setAddons, i]} refresh={updateAddons}/>;
           }
+          return null; // Explicit return for the else case
         })}  
       </div>
     );

@@ -34,7 +34,7 @@ import WaiverConfirmation from "./Waiver/WaiverConfirmation";
 export const MyContext = React.createContext();
 
 function App() {
-  console.log('dotenv', process.env)
+  // console.log('dotenv', process.env)
 
   const cookies = new Cookies();
   let uid =
