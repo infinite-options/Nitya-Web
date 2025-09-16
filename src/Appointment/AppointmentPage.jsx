@@ -168,6 +168,7 @@ export default function AppointmentPage(props) {
   const [apiDateString, setApiDateString] = useState(dateFormat3(currentDate));
   const [timeSlots, setTimeSlots] = useState([]);
   const [timeAASlots, setTimeAASlots] = useState([]);
+  const [allAvailableSlots, setAllAvailableSlots] = useState([]);
   const duration = useRef(null);
   const [buttonSelect, setButtonSelect] = useState(false);
   const [selectedButton, setSelectedButton] = useState("");
@@ -449,6 +450,21 @@ export default function AppointmentPage(props) {
   //     console.error("Error in getTimeSlots: "+error);
   //   }
   // };
+
+  // Filter slots by mode and availability status
+  const filterSlotsByModeAndAvailability = (slots) => {
+    const targetMode = attendMode === "Online" ? "Online" : "Office";
+    const filteredSlots = slots
+      .filter(slot => 
+        slot.hoursMode === targetMode && 
+        slot.availability_status === "OK"
+      )
+      .map(slot => slot.available_time);
+    
+    console.log(`Filtered slots for ${attendMode} mode:`, filteredSlots);
+    return filteredSlots;
+  };
+
   const getTimeSlots = async () => {
     try {
       setLoading(true);
@@ -466,15 +482,14 @@ export default function AppointmentPage(props) {
       // Get available slots from backend with appointment type
       const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
       
-      let timeSlots = [];
-      if (JSON.stringify(res.data.result.length) > 0) {
-        res.data.result.map((r) => {
-          timeSlots.push(r["available_time"]);
-        });
-      }
+      // Store all slots for filtering by mode
+      setAllAvailableSlots(res.data.result || []);
       
-      console.log("Available time slots from backend:", timeSlots);
-      setTimeSlots(timeSlots);
+      // Filter slots based on current mode and availability status
+      const filteredSlots = filterSlotsByModeAndAvailability(res.data.result || []);
+      
+      console.log("Available time slots from backend:", filteredSlots);
+      setTimeSlots(filteredSlots);
     } catch (error) {
       console.error("Error in getTimeSlots:", error);
     } finally {
@@ -528,7 +543,6 @@ export default function AppointmentPage(props) {
     );
   }
   const handleMode = (event) => {
-    setTimeSlots([]);
     var optionPick = event.target.name;
     console.log(optionPick);
     var newModeObj = {};
@@ -549,6 +563,19 @@ export default function AppointmentPage(props) {
     console.log(newModeObj);
     setMode(newModeObj);
     setAttendMode(newMode);
+    
+    // Filter existing slots by new mode without making API call
+    if (allAvailableSlots.length > 0) {
+      const filteredSlots = filterSlotsByModeAndAvailability(allAvailableSlots);
+      setTimeSlots(filteredSlots);
+      console.log(`Switched to ${newMode} mode, filtered slots:`, filteredSlots);
+    }
+    
+    // Clear selections when mode changes
+    setSelectedTime(null);
+    setSelectedButton("");
+    setTimeSelected(false);
+    setButtonSelect(false);
   };
   function selectApptTime(element, i) {
     console.log("selected time", element);

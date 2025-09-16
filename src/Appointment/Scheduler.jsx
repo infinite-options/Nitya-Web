@@ -139,16 +139,26 @@ export default function Scheduler(props) {
     let time = time12h.slice(0, -3);
     let modifier = time12h.slice(-2);
     console.log(time, modifier);
+    
+    // Split time into hours and minutes
+    const [hoursStr, minutesStr] = time.split(":");
+    let hours = parseInt(hoursStr, 10);
+    const minutes = minutesStr || "00";
+    
     if (time === "12") {
-      time = "00";
+      hours = 0;
     }
 
     if (modifier === "PM" || modifier === "pm") {
-      time = parseInt(time, 10) + 12 + ":00";
-      console.log("here", time);
+      if (hours !== 12) {
+        hours += 12;
+      }
     }
-    console.log(time);
-    return `${time}`;
+    
+    // Ensure proper zero-padding for hours
+    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes}`;
+    console.log("Converted time:", formattedTime);
+    return formattedTime;
   };
 
   function sendToDatabase() {
