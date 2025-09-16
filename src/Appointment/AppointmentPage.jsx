@@ -18,8 +18,8 @@ const YellowRadio = withStyles({
   root: {
     color: "#D3A625",
     "&$checked": {
-      color: "#D3A625",
-    },
+    color: "#D3A625",
+  },
   },
   checked: {},
 })((props) => <Radio color='default' {...props} />);
@@ -891,13 +891,13 @@ export default function AppointmentPage(props) {
                     })
                   }
                   className={classes.timeslotButton}
-                >
-                  Continue
-                </button>
-            </div>
+              >
+                Continue
+              </button>
             </div>
           </div>
         </div>
+      </div>
       ) : (
         ""
       )}

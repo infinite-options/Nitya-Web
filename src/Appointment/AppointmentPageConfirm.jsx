@@ -479,14 +479,41 @@ export default function AppointmentPage(props) {
                 <img src={elementToBeRendered.image_url} className={classes.img} style={{ objectFit: "cover", textAlign: "left" }} alt="" />
                 <br />
                 <br />
-                <p className={classes.content2} style={{ textAlign: "left" }}>
-                  1610 Blossom Hill Rd, Ste #1
-                  <br />
-                  San Jose, CA, 95124
-                  <br />
-                  <br />
-                  Office: (408) 471-7004
-                </p>
+                
+                {/* Conditional content based on appointment mode */}
+                {location.state.mode === "In-Person" ? (
+                  <div>
+                    <p className={classes.content2} style={{ textAlign: "left" }}>
+                      1610 Blossom Hill Rd, Ste #1
+                      <br />
+                      San Jose, CA, 95124
+                      <br />
+                      <br />
+                      Office: (408) 471-7004
+                    </p>
+                    <div style={{ marginTop: "20px", textAlign: "center" }}>
+                      <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.4933191234104!2d-121.90686878683185!3d37.23600137200993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e36ab01586fa9%3A0xe80e7882881a56a0!2s1610%20Blossom%20Hill%20Rd%20%231%2C%20San%20Jose%2C%20CA%2095124!5e0!3m2!1sen!2sus!4v1714712803119!5m2!1sen!2sus"
+                        width="100%"
+                        height="300"
+                        style={{ border: "0", borderRadius: "10px" }}
+                        allowFullScreen=""
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Nitya Ayurveda Location"
+                      ></iframe>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ textAlign: "center", padding: "20px" }}>
+                    <p className={classes.content2} style={{ fontSize: "24px", fontWeight: "600", color: "#D3A625", marginBottom: "15px" }}>
+                      We'll see you Online
+                    </p>
+                    <p className={classes.content2} style={{ fontSize: "18px", lineHeight: "1.6" }}>
+                      We'll send a link out 5 min before the meeting.
+                    </p>
+                  </div>
+                )}
               </div>
               <div className="ApptConfirmTextBox">
                 <div

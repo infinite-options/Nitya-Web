@@ -295,27 +295,31 @@ export default function ConfirmationPage(props) {
             </div>
           </div>
         </div>
-        <div className="TitleFontAppt">We'll see you at:</div>
-        <div style={{ display: "flex", justifyContent: "center", margin: "1rem" }}>
-          {/* <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.4933191234104!2d-121.90686878683185!3d37.23600137200993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e36ab01586fa9%3A0xe80e7882881a56a0!2s1610%20Blossom%20Hill%20Rd%20%231%2C%20San%20Jose%2C%20CA%2095124!5e0!3m2!1sen!2sus!4v1714712803119!5m2!1sen!2sus"
-            width="600"
-            height="450"
-            style="border:0;"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe> */}
-          <iframe
-            // src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.732452474541!2d-121.8872221846979!3d37.230325779862234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e314406ce969d%3A0x82fb75802c5ef489!2s6055%20Meridian%20Ave%20%2340%2C%20San%20Jose%2C%20CA%2095120!5e0!3m2!1sen!2sus!4v1618695078070!5m2!1sen!2sus"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.4933191234104!2d-121.90686878683185!3d37.23600137200993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e36ab01586fa9%3A0xe80e7882881a56a0!2s1610%20Blossom%20Hill%20Rd%20%231%2C%20San%20Jose%2C%20CA%2095124!5e0!3m2!1sen!2sus!4v1714712803119!5m2!1sen!2sus"
-            width="100%"
-            className="Contact_Map"
-            allowfullscreen=""
-            loading="lazy"
-            style={{ marginRight: "0rem" }}
-          ></iframe>
-        </div>
+        {/* Conditional content based on appointment mode */}
+        {location.state.apptInfo.mode === "In-Person" ? (
+          <div>
+            <div className="TitleFontAppt">We'll see you at:</div>
+            <div style={{ display: "flex", justifyContent: "center", margin: "1rem" }}>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.4933191234104!2d-121.90686878683185!3d37.23600137200993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e36ab01586fa9%3A0xe80e7882881a56a0!2s1610%20Blossom%20Hill%20Rd%20%231%2C%20San%20Jose%2C%20CA%2095124!5e0!3m2!1sen!2sus!4v1714712803119!5m2!1sen!2sus"
+                width="100%"
+                className="Contact_Map"
+                allowfullscreen=""
+                loading="lazy"
+                style={{ marginRight: "0rem" }}
+              ></iframe>
+            </div>
+          </div>
+        ) : (
+          <div style={{ textAlign: "center", padding: "20px" }}>
+            <div className="TitleFontAppt" style={{ marginBottom: "15px" }}>
+              We'll see you Online
+            </div>
+            <div className="CardText" style={{ fontSize: "18px", lineHeight: "1.6" }}>
+              We'll send a link out 5 min before the meeting.
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
