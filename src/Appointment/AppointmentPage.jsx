@@ -346,15 +346,19 @@ export default function AppointmentPage(props) {
     try {
       setLoading(true);
       setTimeAASlots([]);
-      let hoursMode = "";
-      hoursMode = attendMode === "Online" ? "Online" : "Office";
+      // Determine appointment type based on service category
+      let appointmentType = "Consultation"; // Default fallback
+      if (elementToBeRendered && elementToBeRendered.category) {
+        appointmentType = elementToBeRendered.category;
+      }
+      
       let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
-      const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + hoursMode);
+      const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
       let timeSlotsAA = [];
       if (JSON.stringify(res.data.result.length) > 0) {
         res.data.result.map((r) => {
-          timeSlotsAA.push(r["begin_time"]);
+          timeSlotsAA.push(r["available_time"]);
         });
       }
       setTimeAASlots(timeSlotsAA);
@@ -449,100 +453,28 @@ export default function AppointmentPage(props) {
     try {
       setLoading(true);
       setTimeSlots([]);
-      const headers = {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        Authorization: "Bearer " + accessToken,
-      };
-
+      
+      // Determine appointment type based on service category
+      let appointmentType = "Consultation"; // Default fallback
+      if (elementToBeRendered && elementToBeRendered.category) {
+        appointmentType = elementToBeRendered.category;
+      }
+      
       let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
-
-      const morningTime = attendMode === "Online" ? "T08:00:00-0800" : "T09:00:00-0800";
-      const eveningTime = attendMode === "Online" ? "T20:00:00-0800" : "T20:00:00-0800";
-
-      const data = {
-        timeMin: date + morningTime,
-        timeMax: date + eveningTime,
-        items: [{ id: "primary" }],
-      };
-
-      const response = await axios.post(`https://www.googleapis.com/calendar/v3/freeBusy?key=${API_KEY}`, data, { headers: headers });
-
-      let busy = response.data.calendars.primary.busy;
-      let start_time = Date.parse(date + morningTime) / 1000;
-      let end_time = Date.parse(date + eveningTime) / 1000;
-      let free = [];
-      let appt_start_time = start_time;
-      let seconds = convert(duration.current);
-
-      console.log("Google Calendar busy times:", busy);
-      console.log("Start time:", start_time, "End time:", end_time);
-      console.log("Duration in seconds:", seconds);
-
-      // List of single-booking-per-day therapy types
-      const therapyTypes = [
-        "Abhyanga",
-        "Abhyanga + Full-Body Steam",
-        "Shirodhara",
-        "Kati Basti",
-        "Hrud Basti",
-        "Janu Basti",
-        "Pindaswedan - Specific Area",
-        "Abhyanga + Shirodhara",
-        "Abhyanga + Kati Basti",
-        "Abhyanga + Hrud Basti",
-        "Abhyanga + Janu Basti (single knee)",
-        "Abhyanga + Full-Body Steam + Kati Basti",
-        "Abhyanga + Full-Body Steam + Hrud Basti",
-        "Abhyanga + Full-Body Steam + Janu Basti (single knee)",
-      ];
-
-      // appointments v2
-      const appointmentsResponse = await axios.get(`https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/appointments`);
-      const allAppointments = appointmentsResponse.data.result || [];
-
-      // checking if any therapy type from the list is already booked on this date
-      const existingTherapyBookings = allAppointments.filter((appointment) => appointment.appt_date === date && therapyTypes.includes(appointment.title));
-      console.log("therapies booked", existingTherapyBookings);
-      // Main loop to check each available slot
-      while (appt_start_time < end_time) {
-        let appt_end_time = appt_start_time + seconds;
-        let slot_available = true;
-
-        // Checking if the slot overlaps with any existing busy times
-        busy.forEach((times) => {
-          let this_start = Date.parse(times["start"]) / 1000;
-          let this_end = Date.parse(times["end"]) / 1000;
-          if ((appt_start_time >= this_start && appt_start_time < this_end) || (appt_end_time > this_start && appt_end_time <= this_end)) {
-            slot_available = false;
-            return;
-          }
+      
+      // Get available slots from backend with appointment type
+      const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
+      
+      let timeSlots = [];
+      if (JSON.stringify(res.data.result.length) > 0) {
+        res.data.result.map((r) => {
+          timeSlots.push(r["available_time"]);
         });
-
-        // the selected therapy type from the UI or booking context (clientside)
-        const selectedTherapyType = elementToBeRendered.title;
-        console.log("selectedTherapy:", selectedTherapyType);
-        // checking an existing booking for the selected therapy type
-        const isTherapyAlreadyBooked = existingTherapyBookings.some((appointment) => appointment.category === "Therapy");
-        console.log("isTherapyAlreadyBooked:", isTherapyAlreadyBooked);
-        console.log("existingTherapyBookings:", existingTherapyBookings);
-
-        //  no existing booking of the selected therapy type, add it
-        if (slot_available) {
-          if (isTherapyAlreadyBooked && therapyTypes.includes(selectedTherapyType)) {
-            console.log("Therapy already booked for the day, skipping:", selectedTherapyType);
-          } else {
-            free.push(moment(new Date(appt_start_time * 1000)).format("HH:mm:ss"));
-          }
-        }
-
-        //  next slot in 30-minute
-        appt_start_time += 60 * 30;
       }
-
-      console.log("Available time slots:", free);
-      setTimeSlots(free);
+      
+      console.log("Available time slots from backend:", timeSlots);
+      setTimeSlots(timeSlots);
     } catch (error) {
       console.error("Error in getTimeSlots:", error);
     } finally {
@@ -552,29 +484,12 @@ export default function AppointmentPage(props) {
 
   function renderAvailableApptsVertical() {
     console.log("TimeSlots", timeSlots);
-    console.log("TimeSlotsAA", timeAASlots);
     console.log("TimeSlots length:", timeSlots.length);
-    console.log("TimeSlotsAA length:", timeAASlots.length);
 
-    let result = timeSlots.filter((o1) => timeAASlots.some((o2) => o1 === o2));
-
-    console.log("Merged", result, selectedButton);
-
-    // If no merged results but we have AA slots, use those instead
-    if (result.length === 0 && timeAASlots.length > 0) {
-      console.log("No merged results, using AA slots directly");
-      result = timeAASlots;
-    }
-
-    // if (!isTimeslotsLoaded) {
-    //   return <div>Loading timeslots...</div>;
-    // }
-    // else
-    // {
     return (
       <Grid container xs={11}>
-        {result.length > 0 ? (
-          result.map(function (element, i) {
+        {timeSlots.length > 0 ? (
+          timeSlots.map(function (element, i) {
             return (
               <button
                 key={i}
@@ -614,7 +529,6 @@ export default function AppointmentPage(props) {
   }
   const handleMode = (event) => {
     setTimeSlots([]);
-    setTimeAASlots([]);
     var optionPick = event.target.name;
     console.log(optionPick);
     var newModeObj = {};
@@ -730,8 +644,7 @@ export default function AppointmentPage(props) {
           await getAccessToken(); // Fetch access token
         }
 
-        await getTimeSlots(); // Fetch main time slots
-        await getTimeAASlots(); // Fetch additional availability slots
+        await getTimeSlots(); // Fetch available time slots from backend
       } catch (error) {
         console.error("Error in onChange:", error);
       } finally {
