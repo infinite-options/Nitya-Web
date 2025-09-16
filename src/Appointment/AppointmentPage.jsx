@@ -93,22 +93,43 @@ export default function AppointmentPage(props) {
   const { serviceArr, servicesLoaded } = useContext(MyContext);
   const [elementToBeRendered, setElementToBeRendered] = useState([]);
   const treatment_uid = treatmentID;
+  // Consolidated initialization useEffect
   useEffect(() => {
-    if (servicesLoaded && serviceArr.length > 0) {
-      const selectedService = serviceArr.find((s) => s.treatment_uid === treatmentID);
-      if (selectedService) {
-        setElementToBeRendered(selectedService);
-        duration.current = selectedService.duration;
+    const initializeAppointmentPage = async () => {
+      if (isInitializing || !servicesLoaded || serviceArr.length === 0) {
+        return;
       }
-    }
+
+      console.log("🔍 Initializing appointment page...");
+      setIsInitializing(true);
+
+      try {
+        // Step 1: Set up service data
+        const selectedService = serviceArr.find((s) => s.treatment_uid === treatmentID);
+        if (selectedService) {
+          setElementToBeRendered(selectedService);
+          duration.current = selectedService.duration;
+          console.log("🔍 Service data set:", selectedService.title);
+        }
+
+        // Step 2: Get access token
+        const accessToken = await getAccessToken();
+        setAccessToken(accessToken);
+        console.log("🔍 Access token obtained");
+
+        // Step 3: Fetch time slots
+        await getTimeSlots();
+        console.log("🔍 Time slots fetched");
+
+      } catch (error) {
+        console.error("Error initializing appointment page:", error);
+      } finally {
+        setIsInitializing(false);
+      }
+    };
+
+    initializeAppointmentPage();
   }, [servicesLoaded, serviceArr, treatmentID]);
-  useEffect(() => {
-    if (servicesLoaded && elementToBeRendered) {
-      getAccessToken().then((at) => {
-        setAccessToken(at);
-      });
-    }
-  }, [servicesLoaded, elementToBeRendered]);
   console.log("(AppointmentPage) accessToken2: ", accessToken);
   var currentDate = new Date(+new Date() + 86400000);
   const [date, setDate] = useState(currentDate);
@@ -175,6 +196,7 @@ export default function AppointmentPage(props) {
   const isFirstLoad = useRef(true);
   const [isCalDisabled, setCalDisabled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
 
   let location = useLocation();
   let addons = [];
@@ -479,6 +501,8 @@ export default function AppointmentPage(props) {
       let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
       
+      console.log(`🔍 API CALL: Fetching available appointments for ${date}, duration: ${duration.current}, type: ${appointmentType}`);
+      
       // Get available slots from backend with appointment type
       const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
       
@@ -596,13 +620,20 @@ export default function AppointmentPage(props) {
     const CLIENT_SECRET = process.env.REACT_APP_GOOGLE_CLIENT_SECRET;
     const url = BASE_URL + "customerToken/";
     const customer_uid = "100-000093";
+    
+    console.log("🔍 API CALL: Fetching customer token");
+    
     try {
       const response = await axios.get(url + customer_uid);
       const old_at = response["data"]["user_access_token"];
       const refreshToken = response["data"]["user_refresh_token"];
+      
+      console.log("🔍 API CALL: Validating access token with Google");
+      
       try {
         await axios.get(`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${old_at}`);
-        setAccessToken(old_at);
+        console.log("🔍 Access token is valid");
+        return old_at;
       } catch (error) {
         var properties = {
           refresh_token: refreshToken,
@@ -623,14 +654,16 @@ export default function AppointmentPage(props) {
           },
         });
         const at = tokenResponse["data"]["access_token"];
-        setAccessToken(at);
+        console.log("🔍 New access token obtained via refresh");
         const url = BASE_URL + "UpdateAccessToken/";
         await axios.post(url + customer_uid, {
           user_access_token: at,
         });
+        return at;
       }
     } catch (error) {
       console.error("Error in getAccessToken: " + error);
+      return null;
     }
   };
 
@@ -656,8 +689,8 @@ export default function AppointmentPage(props) {
   // };
   const onChange = async () => {
     if (servicesLoaded) {
-      console.log("here 803");
-      console.log(servicesLoaded, apiDateString, duration.current);
+      console.log("🔍 onChange() called - fetching time slots");
+      console.log("🔍 Services loaded:", servicesLoaded, "Date:", apiDateString, "Duration:", duration.current);
       setCalDisabled(true); // Disable calendar interactions while loading
       try {
         if (isFirstLoad.current) {
@@ -679,15 +712,13 @@ export default function AppointmentPage(props) {
       }
     }
   };
-  // useEffect(() => {
-  //     console.log("onchange");
-  //     onChange();
-  // }, [servicesLoaded, dateHasBeenChanged, attendMode]);
+  // Separate useEffect for date changes only
   useEffect(() => {
-    if (servicesLoaded && elementToBeRendered && accessToken && duration.current && apiDateString) {
+    if (servicesLoaded && elementToBeRendered && accessToken && duration.current && apiDateString && !isInitializing) {
+      console.log("🔍 Date changed, fetching new time slots");
       onChange();
     }
-  }, [servicesLoaded, elementToBeRendered, accessToken, duration, apiDateString, attendMode]);
+  }, [apiDateString]);
   return (
     <div className='HomeContainer'>
       <ScrollToTop />
