@@ -353,6 +353,7 @@ export default function Scheduler(props) {
   // }, [customerUidState]);
 
   async function bookAppt() {
+    setSubmitted(true);
     console.log(props);
     const price = props.cost.split(" ", 1);
 
@@ -508,7 +509,6 @@ export default function Scheduler(props) {
           setLoadingState(false);
         }
       });
-    setSubmitted(true);
   }
 
   const classes = useStyles();
@@ -564,7 +564,11 @@ export default function Scheduler(props) {
             justifyContent: "center",
           }}
         >
-          <button disabled={submitted} onClick={bookAppt} className={classes.payButton}>
+          <button
+            disabled={!props.infoSubmitted || submitted}
+            onClick={bookAppt}
+            className={classes.payButton}
+          >
             Pay Now
           </button>
         </div>
