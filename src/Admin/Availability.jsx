@@ -496,7 +496,7 @@ function Availability() {
   };
 
   function handleDelete(id) {
-    axios.post(`https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/deleteUnavailability/${id}`).then((response) => {
+    axios.post(`${BASE_URL}deleteUnavailability/${id}`).then((response) => {
       console.log("delete", response.data);
       setOpenDelete(!openDelete);
       getUnavailabilty();

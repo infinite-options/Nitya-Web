@@ -13,7 +13,7 @@ import mapImg from "../Assets/Images/Map.webp";
 import "../Home/Home.css";
 
 export default function Contact() {
-  const url = "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addContact";
+  const url = process.env.REACT_APP_SERVER_BASE_URI + "addContact";
   const [data, setData] = useState({
     name: "",
     email: "",

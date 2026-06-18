@@ -95,6 +95,8 @@ const useStyles = makeStyles({
 
 export const ApptContext = React.createContext();
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+const AUXP_URL = process.env.REACT_APP_SERVER_AUXP_URI;
 export default function Scheduler(props) {
   const elements = useElements();
   const stripe = useStripe();
@@ -202,7 +204,7 @@ export default function Scheduler(props) {
       purchase_date: dateFormat3(props.purchaseDate),
     });
     
-    const postURL = "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAppointment";
+    const postURL = BASE_URL + "createAppointment";
     
     return axios
       .post(postURL, {
@@ -330,7 +332,7 @@ export default function Scheduler(props) {
   //   // sendToDatabase();
   //   axios
   //     .post(
-  //       "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/findCustomer",
+  //       BASE_URL + "findCustomer",
   //       body
   //     )
   //     .then((response) => {
@@ -371,7 +373,7 @@ export default function Scheduler(props) {
       payment_summary: temp,
     };
     console.log(props.customerUid);
-    const postURL = "https://huo8rhh76i.execute-api.us-west-1.amazonaws.com/dev/api/v2/createPaymentIntent";
+    const postURL = AUXP_URL + "createPaymentIntent";
     axios
       .post(postURL, {
         customer_uid: props.customerUid,
@@ -419,7 +421,7 @@ export default function Scheduler(props) {
                       
                     };
                     // sendToDatabase();
-                    axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
+                    axios.post(BASE_URL + "SendEmailPaymentIntent", body).then((response) => {
                       console.log("response", response.data.result);
                     });
 
@@ -477,7 +479,7 @@ export default function Scheduler(props) {
                 jsonObject_sent: JSON.stringify(paymentJSON),
               };
               // sendToDatabase();
-              axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
+              axios.post(BASE_URL + "SendEmailPaymentIntent", body).then((response) => {
                 console.log("response");
               });
               console.log("error trying to pay: ", e);
@@ -499,7 +501,7 @@ export default function Scheduler(props) {
           jsonObject_sent: JSON.stringify(paymentJSON),
         };
         // sendToDatabase();
-        axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/SendEmailPaymentIntent", body).then((response) => {
+        axios.post(BASE_URL + "SendEmailPaymentIntent", body).then((response) => {
           console.log("response", response.data.result);
           setErrorMessage("Payment Error");
         });

@@ -28,6 +28,9 @@ import ScrollToTop from "./ScrollToTop";
 import "../Appointment/AppointmentPage.css";
 import "../Home/Home.css";
 import Cookies from "js-cookie";
+
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -235,7 +238,7 @@ function Blogpage(props) {
 
   const fetchData = async () => {
     const res = await fetch(
-      "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/truncatedBlog"
+      BASE_URL + "truncatedBlog"
     );
     const json = await res.json();
     return json.result;
@@ -320,7 +323,7 @@ function Blogpage(props) {
   function handleDelete(blog_id) {
     axios
       .post(
-        `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/deleteBlog/${blog_id}`
+        `${BASE_URL}deleteBlog/${blog_id}`
       )
       .then((response) => {
         console.log("delete", response.data);

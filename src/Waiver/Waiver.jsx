@@ -14,6 +14,8 @@ import { jsPDF } from "jspdf";
 import WaiverContext from './WaiverContext';
 import { Link, useHistory } from "react-router-dom";
 
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 // import FormLabel from '@mui/material/FormLabel';
 
 // import Pdf from 'react-to-pdf';
@@ -269,7 +271,7 @@ const Waiver = () => {
             formData.append("phone_no", formObj.cellTel);
             axios
             .post(
-                `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadDocument`,
+                `${BASE_URL}uploadDocument`,
                 formData
             )
             .then((response) => {

@@ -6,10 +6,12 @@ import { MyContext } from "../App";
 import ScrollToTop from "../Blog/ScrollToTop";
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 export default function ManageService() {
     const { serviceArr: data, setServiceArr } = useContext(MyContext);
     function addService() {
-        axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addTreatment",
+        axios.post(BASE_URL + "addTreatment",
             {
                 title: "Service Title",
                 category: "Consultation",

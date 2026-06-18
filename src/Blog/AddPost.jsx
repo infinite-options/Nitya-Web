@@ -14,6 +14,7 @@ import { useParams } from "react-router";
 import ScrollToTop from "./ScrollToTop";
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -104,7 +105,7 @@ function AddPost(props) {
     if (blog_uid) {
       axios
         .get(
-          `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/fullBlog/${blog_uid}`
+          `${BASE_URL}fullBlog/${blog_uid}`
         )
         .then((response) => {
           console.log("fullblog", response.data.result[0]);
@@ -128,7 +129,7 @@ function AddPost(props) {
     console.log('submitted file: ', file);
     axios
       .post(
-        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/addBlog",
+        BASE_URL + "addBlog",
         {
           blogTitle: textToDoubleApostrophes(blogTitle),
           blogText: textToDoubleApostrophes(blogText),
@@ -167,7 +168,7 @@ function AddPost(props) {
       formData.append("item_photo", image.file);
   
       return axios.post(
-        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadImage",
+        BASE_URL + "uploadImage",
         formData
       ).then((response) => {
         console.log("response/image", response.data);
@@ -191,7 +192,7 @@ function AddPost(props) {
       
       axios
         .post(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadVideo",
+          BASE_URL + "uploadVideo",
           formData
         )
         .then((response) => {

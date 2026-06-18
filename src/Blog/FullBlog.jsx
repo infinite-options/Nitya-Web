@@ -30,6 +30,7 @@ import { Markup } from "interweave";
 import "../Home/Home.css";
 // import Carousel from 'react-material-ui-carousel';
 
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -212,7 +213,7 @@ function FullBlog(props) {
 
   const getDataById = async () => {
     const res = await fetch(
-      `https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/fullBlog/${blog_uid}`
+      `${BASE_URL}fullBlog/${blog_uid}`
     );
     const json = await res.json();
     return json.result;

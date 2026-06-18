@@ -4,6 +4,8 @@ import { useState } from "react";
 import ImageUploading from "react-images-uploading";
 import axios from "axios";
 
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 export default function ManageService(props) {
     const [data, setServiceArr] = props.service;
     const [title, setTitle] = useState(data.title);
@@ -30,7 +32,7 @@ export default function ManageService(props) {
         formData.append("filename", images[0].file.name);
         formData.append("item_photo", images[0].file);
 
-        axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/uploadImage",
+        axios.post(BASE_URL + "uploadImage",
             formData
         ).then((response) => {
             console.log("image", response.data);
@@ -40,7 +42,7 @@ export default function ManageService(props) {
 
     function updateService() {
         console.log(addon_cost);
-        axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/updateTreatment",
+        axios.post(BASE_URL + "updateTreatment",
             {
                 title: textToDoubleApostrophes(title),
                 treatment_uid: data.treatment_uid,
@@ -63,7 +65,7 @@ export default function ManageService(props) {
     }
 
     function deleteService(uid) {
-        axios.post('https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/deleteTreatment', 
+        axios.post(BASE_URL + 'deleteTreatment', 
         {
             treatment_uid: uid,
         }
