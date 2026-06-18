@@ -62,8 +62,8 @@ function App() {
     setIsLoggedIn(false);
   };
 
-  const url =
-    "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/treatments";
+  const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+  const url = BASE_URL + "treatments";
   const [servicesLoaded, setServicesLoaded] = useState(false);
   const [serviceArr, setServiceArr] = useState([]);
 

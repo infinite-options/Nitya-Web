@@ -10,9 +10,7 @@ import StripeElement from "./StripeElement";
 import moment from "moment-timezone";
 import { MyContext } from "../App";
 import { Link, useHistory } from "react-router-dom";
-import {
-  Button,
-} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 import SimpleForm from "./simpleForm";
 import SimpleFormText from "./simpleFormText";
@@ -30,7 +28,7 @@ const YellowRadio = withStyles({
     },
   },
   checked: {},
-})((props) => <Radio color="default" {...props} />);
+})((props) => <Radio color='default' {...props} />);
 
 const useStyles = makeStyles({
   container: {
@@ -138,6 +136,8 @@ const useStyles = makeStyles({
   },
 });
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+const AUXP_URL = process.env.REACT_APP_SERVER_AUXP_URI;
 export default function AppointmentPage(props) {
   const classes = useStyles();
   const location = useLocation();
@@ -154,6 +154,7 @@ export default function AppointmentPage(props) {
   const { treatmentID } = useParams();
   const [stripePromise, setStripePromise] = useState(null);
   const [useTestKeys, setUseTestKeys] = useState(true);
+  const [stripeKeyLast4, setStripeKeyLast4] = useState(null);
 
   // form use states, Axios.Post
   const [purchaseDate, setPurchaseDate] = useState(new Date());
@@ -201,7 +202,7 @@ export default function AppointmentPage(props) {
   });
   const required =
     errorMessage === "Please fill out all fields" ? (
-      <span className="ms-1" style={{ color: "red", fontSize: "12px" }}>
+      <span className='ms-1' style={{ color: "red", fontSize: "12px" }}>
         *
       </span>
     ) : (
@@ -281,17 +282,18 @@ export default function AppointmentPage(props) {
 
   //for stripe
   async function toggleKeys() {
-    const tempFind = [];
     console.log(age);
+
+    // Force refresh of Stripe credentials from API on every "Book Appointment" click
+    console.log("🚀 Book Appointment clicked - Forcing fresh Stripe credentials from API...");
+
     if (age === "" || email === "" || firstName === "" || lastName === "" || phoneNum === "") {
       setErrorMessage("Please fill out all fields");
       return;
     }
 
     if (email !== 0) {
-      if (
-        !email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-      ) {
+      if (!email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
         setErrorMessage("Please enter a valid email.");
         return;
       }
@@ -307,7 +309,7 @@ export default function AppointmentPage(props) {
     };
     // sendToDatabase();
     try {
-      const resp = await axios.post("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/findCustomer", body);
+      const resp = await axios.post(BASE_URL + "findCustomer", body);
       if (resp.data.customer_uid) setCustomerUid(resp.data.customer_uid);
       if (resp.data.warning) {
         setDialogTitle("Warning");
@@ -324,11 +326,23 @@ export default function AppointmentPage(props) {
     console.log("response", customerUid);
     if (notes === "NITYATEST") {
       // Fetch public key
-      console.log("fetching public key");
+      console.log("🔄 Fetching fresh Stripe TEST credentials from API...");
       axios
-        .get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST")
+        .get(AUXP_URL + "stripe_key/NITYATEST")
         .then((result) => {
           console.log("(1 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
+          console.log("🔍 Full API Response:", result);
+          console.log("🔍 result.data:", result.data);
+          console.log("🔍 result.data.publicKey:", result.data.publicKey);
+          console.log("🔍 typeof result.data.publicKey:", typeof result.data.publicKey);
+          console.log("🔍 result.data.publicKey length:", result.data.publicKey ? result.data.publicKey.length : "N/A");
+
+          // Log last 4 digits of Stripe key for verification
+          const stripeKey = result.data.publicKey;
+          const last4Digits = stripeKey ? stripeKey.slice(-4) : "N/A";
+          setStripeKeyLast4(last4Digits);
+          console.log("🔑 Stripe TEST Key (last 4 digits):", last4Digits);
+          console.log("🔑 Full Stripe TEST Key:", stripeKey);
 
           let tempStripePromise = loadStripe(result.data.publicKey);
 
@@ -347,12 +361,23 @@ export default function AppointmentPage(props) {
         });
     } else {
       // Fetch public key live
-
-      console.log("fetching public key live");
+      console.log("🔄 Fetching fresh Stripe LIVE credentials from API...");
       axios
-        .get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYA")
+        .get(AUXP_URL + "stripe_key/NITYA")
         .then((result) => {
           console.log("(2 PaymentDetails) Stripe-key then result (1): " + JSON.stringify(result));
+          console.log("🔍 Full API Response:", result);
+          console.log("🔍 result.data:", result.data);
+          console.log("🔍 result.data.publicKey:", result.data.publicKey);
+          console.log("🔍 typeof result.data.publicKey:", typeof result.data.publicKey);
+          console.log("🔍 result.data.publicKey length:", result.data.publicKey ? result.data.publicKey.length : "N/A");
+
+          // Log last 4 digits of Stripe key for verification
+          const stripeKey = result.data.publicKey;
+          const last4Digits = stripeKey ? stripeKey.slice(-4) : "N/A";
+          setStripeKeyLast4(last4Digits);
+          console.log("🔑 Stripe LIVE Key (last 4 digits):", last4Digits);
+          console.log("🔑 Full Stripe LIVE Key:", stripeKey);
 
           let tempStripePromise = loadStripe(result.data.publicKey);
 
@@ -380,26 +405,26 @@ export default function AppointmentPage(props) {
     try {
       // Create a date object in Pacific Time
       const pacificTime = moment.tz(`${date} ${time}`, "America/Los_Angeles");
-      
+
       // Convert to user's local timezone
       const userTime = pacificTime.tz(Intl.DateTimeFormat().resolvedOptions().timeZone);
-      
+
       // Format as 12-hour time
       const formattedTime = userTime.format("h:mm A");
-      
+
       // Get timezone abbreviation
       const timezoneAbbr = userTime.format("z");
-      
+
       return {
         time: formattedTime,
-        timezone: timezoneAbbr
+        timezone: timezoneAbbr,
       };
     } catch (error) {
       console.error("Error converting timezone:", error);
       // Fallback to original format if conversion fails
       return {
         time: formatTime(date, time),
-        timezone: "PST"
+        timezone: "PST",
       };
     }
   };
@@ -432,17 +457,17 @@ export default function AppointmentPage(props) {
   };
 
   return (
-    <div className="HomeContainer">
+    <div className='HomeContainer'>
       <ScrollToTop />
       <Popup showDialog={showDialog} onClose={handleDialogClose} title={dialogTitle} text={dialogText} />
       <br />
       {bookNowClicked || location.state.signedin ? (
-        <div className="Card" style={{ alignItems: "center" }}>
+        <div className='Card' style={{ alignItems: "center" }}>
           <div className={classes.container}>
             <div>
               <div>
                 <div className={classes.selectTime2}>
-                  <div className="TitleFontAppt">Appointment scheduled for:</div>
+                  <div className='TitleFontAppt'>Appointment scheduled for:</div>
                 </div>
                 <br></br>
 
@@ -463,7 +488,7 @@ export default function AppointmentPage(props) {
               </div>
             </div>
             <br />
-            <div className="ApptConfirmContainer">
+            <div className='ApptConfirmContainer'>
               <div>
                 <p className={classes.content2} style={{ textAlign: "left" }}>
                   <span
@@ -476,10 +501,10 @@ export default function AppointmentPage(props) {
                   <br />
                   {durationText} | {totalCost}
                 </p>
-                <img src={elementToBeRendered.image_url} className={classes.img} style={{ objectFit: "cover", textAlign: "left" }} alt="" />
+                <img src={elementToBeRendered.image_url} className={classes.img} style={{ objectFit: "cover", textAlign: "left" }} alt='' />
                 <br />
                 <br />
-                
+
                 {/* Conditional content based on appointment mode */}
                 {location.state.mode === "In-Person" ? (
                   <div>
@@ -493,14 +518,14 @@ export default function AppointmentPage(props) {
                     </p>
                     <div style={{ marginTop: "20px", textAlign: "center" }}>
                       <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.4933191234104!2d-121.90686878683185!3d37.23600137200993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e36ab01586fa9%3A0xe80e7882881a56a0!2s1610%20Blossom%20Hill%20Rd%20%231%2C%20San%20Jose%2C%20CA%2095124!5e0!3m2!1sen!2sus!4v1714712803119!5m2!1sen!2sus"
-                        width="100%"
-                        height="300"
+                        src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3176.4933191234104!2d-121.90686878683185!3d37.23600137200993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808e36ab01586fa9%3A0xe80e7882881a56a0!2s1610%20Blossom%20Hill%20Rd%20%231%2C%20San%20Jose%2C%20CA%2095124!5e0!3m2!1sen!2sus!4v1714712803119!5m2!1sen!2sus'
+                        width='100%'
+                        height='300'
                         style={{ border: "0", borderRadius: "10px" }}
-                        allowFullScreen=""
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        title="Nitya Ayurveda Location"
+                        allowFullScreen=''
+                        loading='lazy'
+                        referrerPolicy='no-referrer-when-downgrade'
+                        title='Nitya Ayurveda Location'
                       ></iframe>
                     </div>
                   </div>
@@ -515,7 +540,7 @@ export default function AppointmentPage(props) {
                   </div>
                 )}
               </div>
-              <div className="ApptConfirmTextBox">
+              <div className='ApptConfirmTextBox'>
                 <div
                   style={{
                     marginBottom: "10px",
@@ -524,8 +549,8 @@ export default function AppointmentPage(props) {
                 >
                   {firstName === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Enter First Name"
+                    name='variable'
+                    placeholder='Enter First Name'
                     value={firstName}
                     onChange={handleFirstNameChange}
                     style={{
@@ -543,8 +568,8 @@ export default function AppointmentPage(props) {
                   {required ? "" : <span>&nbsp;</span>}
                   {lastName === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Enter Last Name"
+                    name='variable'
+                    placeholder='Enter Last Name'
                     value={lastName}
                     onChange={handleLastNameChange}
                     style={{
@@ -569,13 +594,13 @@ export default function AppointmentPage(props) {
                     marginBottom: "10px",
                   }}
                 >
-                  <FormControlLabel control={<YellowRadio checked={gender.female} onChange={(e) => handleGender(e)} name="female" />} label="Female" />
-                  <FormControlLabel control={<YellowRadio checked={gender.male} onChange={(e) => handleGender(e)} name="male" />} label="Male" />
+                  <FormControlLabel control={<YellowRadio checked={gender.female} onChange={(e) => handleGender(e)} name='female' />} label='Female' />
+                  <FormControlLabel control={<YellowRadio checked={gender.male} onChange={(e) => handleGender(e)} name='male' />} label='Male' />
                   {/* <SimpleForm field="Age" onHandleChange={handleAgeChange} /> */}
                   {age === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Age"
+                    name='variable'
+                    placeholder='Age'
                     value={age}
                     onChange={(e) => handleAgeChange(e)}
                     style={{
@@ -608,8 +633,8 @@ export default function AppointmentPage(props) {
                   /> */}
                   {email === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Email Address"
+                    name='variable'
+                    placeholder='Email Address'
                     value={email}
                     // pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                     onChange={(e) => handleEmailChange(e)}
@@ -639,10 +664,10 @@ export default function AppointmentPage(props) {
                   /> */}
                   {phoneNum === "" ? required : ""}
                   <input
-                    name="variable"
-                    placeholder="Phone Number - 10 digits only"
+                    name='variable'
+                    placeholder='Phone Number - 10 digits only'
                     value={phoneNum}
-                    maxLength="10"
+                    maxLength='10'
                     onChange={(e) => handlePhoneNumChange(e)}
                     style={{
                       padding: "10px",
@@ -668,10 +693,10 @@ export default function AppointmentPage(props) {
                     onHandleChange={handleNotesChange}
                   /> */}
                   <input
-                    name="variable"
-                    placeholder="Type your message here"
+                    name='variable'
+                    placeholder='Type your message here'
                     value={notes}
-                    maxLength="100"
+                    maxLength='100'
                     onChange={(e) => handleNotesChange(e)}
                     style={{
                       padding: "10px",
@@ -692,6 +717,21 @@ export default function AppointmentPage(props) {
                     background: "white",
                   }}
                 >
+                  {stripeKeyLast4 && (
+                    <div
+                      style={{
+                        textAlign: "center",
+                        marginBottom: "10px",
+                        padding: "8px",
+                        backgroundColor: "#f0f0f0",
+                        borderRadius: "5px",
+                        fontSize: "14px",
+                        color: "#666",
+                      }}
+                    >
+                      🔑 Using Stripe Key ending in: {stripeKeyLast4}
+                    </div>
+                  )}
                   <StripeElement
                     accessToken={access_token}
                     customerUid={customerUid}
@@ -717,7 +757,7 @@ export default function AppointmentPage(props) {
                     image_url={elementToBeRendered.image_url}
                   />
                 </div>
-                <div className="text-center" style={errorMessage === "" ? { visibility: "hidden" } : {}}>
+                <div className='text-center' style={errorMessage === "" ? { visibility: "hidden" } : {}}>
                   <p style={{ color: "red", fontSize: "12px" }}>{errorMessage || "error"}</p>
                 </div>
                 <div
@@ -727,11 +767,8 @@ export default function AppointmentPage(props) {
                     justifyContent: "center",
                   }}
                 >
-                  <Link
-                to={{ pathname: "/waiver"}}
-                className="nav-link"
-              >
-                {/* <button
+                  <Link to={{ pathname: "/waiver" }} className='nav-link'>
+                    {/* <button
                   className={classes.bookButton}
                   variant="contained"
                   component="span"
@@ -740,7 +777,7 @@ export default function AppointmentPage(props) {
                 >
                   Waiver
                 </button> */}
-              </Link>
+                  </Link>
                 </div>
                 <div
                   aria-label={"click button to book your appointment"}
@@ -749,9 +786,7 @@ export default function AppointmentPage(props) {
                     justifyContent: "center",
                   }}
                 >
-                  <button 
-                    className={classes.bookButton}
-                    hidden={infoSubmitted} onClick={toggleKeys}>
+                  <button className={classes.bookButton} hidden={infoSubmitted} onClick={toggleKeys}>
                     Book Appointment
                   </button>
                 </div>

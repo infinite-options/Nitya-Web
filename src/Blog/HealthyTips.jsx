@@ -23,6 +23,8 @@ import AddIcon from "@material-ui/icons/Add";
 import "../Home/Home.css";
 import { AuthContext } from "../auth/AuthContext";
 
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+
 const useStyles = makeStyles((theme) => ({
   blogpage: {
     marginLeft: "auto",
@@ -207,7 +209,7 @@ function Blogpage(props) {
   const history = useHistory();
   const fetchData = async () => {
     const res = await fetch(
-      "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/truncatedBlog"
+      BASE_URL + "truncatedBlog"
     );
     const json = await res.json();
     return json.result;

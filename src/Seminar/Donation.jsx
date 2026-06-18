@@ -13,6 +13,7 @@ import "../Home/Home.css";
 import { Typography } from "@material-ui/core";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+const AUXP_URL = process.env.REACT_APP_SERVER_AUXP_URI;
 
 export default function Donation(props) {
   console.log("in donation");
@@ -34,7 +35,7 @@ export default function Donation(props) {
     // sendToDatabase();
     axios
       .post(
-        "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/findSeminarUID",
+        BASE_URL + "findSeminarUID",
         body
       )
       .then((response) => {
@@ -99,7 +100,7 @@ export default function Donation(props) {
     const cardElement = await elements.getElement(CardElement);
 
     const postURL =
-      "https://huo8rhh76i.execute-api.us-west-1.amazonaws.com/dev/api/v2/createPaymentIntent";
+      AUXP_URL + "createPaymentIntent";
     axios
       .post(postURL, {
         customer_uid: "100-000001",

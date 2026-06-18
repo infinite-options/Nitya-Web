@@ -72,6 +72,7 @@ const useStyles = makeStyles({
   },
 });
 const API_KEY = process.env.REACT_APP_GOOGLE_API_KEY;
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 export default function AppointmentPage(props) {
   console.log("(AppointmentPage) props: ", props);
   const [accessToken, setAccessToken] = useState("");
@@ -138,7 +139,7 @@ export default function AppointmentPage(props) {
           console.log(`🔍 API CALL: Fetching available appointments for ${date}, duration: ${duration.current}, type: ${appointmentType}`);
           
           // Get available slots from backend with appointment type
-          const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
+          const res = await axios.get(BASE_URL + "availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
           
           // Store all slots for filtering by mode
           setAllAvailableSlots(res.data.result || []);
@@ -430,7 +431,7 @@ export default function AppointmentPage(props) {
       
       let date = apiDateString > moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD") ? apiDateString : moment(new Date(+new Date() + 86400000)).format("YYYY-MM-DD");
       setApiDateString(date);
-      const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
+      const res = await axios.get(BASE_URL + "availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
       let timeSlotsAA = [];
       if (JSON.stringify(res.data.result.length) > 0) {
         res.data.result.map((r) => {
@@ -557,7 +558,7 @@ export default function AppointmentPage(props) {
       console.log(`🔍 API CALL: Fetching available appointments for ${date}, duration: ${duration.current}, type: ${appointmentType}`);
       
       // Get available slots from backend with appointment type
-      const res = await axios.get("https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
+      const res = await axios.get(BASE_URL + "availableAppointments/" + date + "/" + duration.current + "/" + appointmentType);
       
       // Store all slots for filtering by mode
       setAllAvailableSlots(res.data.result || []);

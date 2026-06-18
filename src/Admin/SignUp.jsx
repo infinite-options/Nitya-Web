@@ -10,6 +10,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ScrollToTop from "../Blog/ScrollToTop";
 import GoogleSignUp from "../CustomerLogin/GoogleSignUp";
+
+const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
 const eye = ""; //<FontAwesomeIcon icon={faEye} />;
 
 const pageColor = "#b28d42";
@@ -132,7 +134,7 @@ export default function SignUp() {
     if (password === confirmPassword) {
       axios
         .post(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/createAccount",
+          BASE_URL + "createAccount",
           object
         )
         .then((res) => {

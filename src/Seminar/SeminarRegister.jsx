@@ -16,6 +16,7 @@ import DonationElement from "./DonationElement";
 import "../Home/Home.css";
 
 const BASE_URL = process.env.REACT_APP_SERVER_BASE_URI;
+const AUXP_URL = process.env.REACT_APP_SERVER_AUXP_URI;
 
 const YellowRadio = withStyles({
   root: {
@@ -118,13 +119,19 @@ export default function SeminarRegister() {
       console.log("fetching public key");
       axios
         .get(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYATEST"
+          AUXP_URL + "stripe_key/NITYATEST"
         )
         .then((result) => {
           console.log(
             "(1 PaymentDetails) Stripe-key then result (1): " +
             JSON.stringify(result)
           );
+          
+          // Log last 4 digits of Stripe key for verification
+          const stripeKey = result.data.publicKey;
+          const last4Digits = stripeKey ? stripeKey.slice(-4) : 'N/A';
+          console.log("🔑 Stripe Test Key (last 4 digits):", last4Digits);
+          console.log("🔑 Full Stripe Test Key:", stripeKey);
 
           let tempStripePromise = loadStripe(result.data.publicKey);
 
@@ -148,13 +155,19 @@ export default function SeminarRegister() {
       console.log("fetching public key live");
       axios
         .get(
-          "https://mfrbehiqnb.execute-api.us-west-1.amazonaws.com/dev/api/v2/stripe_key/NITYA"
+          AUXP_URL + "stripe_key/NITYA"
         )
         .then((result) => {
           console.log(
             "(2 PaymentDetails) Stripe-key then result (1): " +
             JSON.stringify(result)
           );
+          
+          // Log last 4 digits of Stripe key for verification
+          const stripeKey = result.data.publicKey;
+          const last4Digits = stripeKey ? stripeKey.slice(-4) : 'N/A';
+          console.log("🔑 Stripe Live Key (last 4 digits):", last4Digits);
+          console.log("🔑 Full Stripe Live Key:", stripeKey);
 
           let tempStripePromise = loadStripe(result.data.publicKey);
 
