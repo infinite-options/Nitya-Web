@@ -238,6 +238,18 @@ export default function AppointmentPage(props) {
   if (location.state !== undefined) {
     addons = location.state;
   }
+  const JANU_BASTI_UID = "330-000017";
+  const JANU_SECOND_KNEE_COST = "$135";
+
+  const isJanuSecondKneeAddon = (addon) =>
+    treatment_uid === JANU_BASTI_UID && addon.treatment_uid === JANU_BASTI_UID;
+
+  const getAddonDisplayTitle = (addon) =>
+    isJanuSecondKneeAddon(addon) ? "Add a Second Knee" : addon.title;
+
+  const getAddonCostValue = (addon) =>
+    isJanuSecondKneeAddon(addon) ? JANU_SECOND_KNEE_COST : addon.addon_cost;
+
   const addons_list = () => {
     const addon_list = [];
     for (let i = 0; i < addons.length; i++) {
@@ -262,7 +274,7 @@ export default function AppointmentPage(props) {
       }
     });
     addons_list().forEach((addon) => {
-      total += costToInt(addon.addon_cost);
+      total += costToInt(getAddonCostValue(addon));
     });
     return total;
   };
@@ -800,7 +812,7 @@ export default function AppointmentPage(props) {
               <div className='ApptPageText'>
                   {addons_list().map((addon) => (
                     <div>
-                      {"+ "} {addon.title} | {durationToString(secondsToHours(hoursToSeconds(addon.duration)))} | {addon.addon_cost}
+                      {"+ "} {getAddonDisplayTitle(addon)} | {durationToString(secondsToHours(hoursToSeconds(addon.duration)))} | {getAddonCostValue(addon)}
                   </div>
                 ))}
               </div>

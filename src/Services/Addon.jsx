@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import ToggleButton from '@mui/material/ToggleButton';
+
+export const JANU_BASTI_TITLE = "Janu Basti";
+export const JANU_SECOND_KNEE_COST = "$135";
+const JANU_BASTI_EXCLUDED_ADDONS = ["Pindaswedan - Specific Area"];
 
 export default function Addon(props) {
     const title = props.title;
@@ -11,16 +15,61 @@ export default function Addon(props) {
     function updateAddons() {
       update([]);
     }
-  
+
+    const isJanuBasti = title === JANU_BASTI_TITLE;
+
     return(
       <div style={{"margin" : "20px"}}>
         Enhance your Treatment by adding an additional Therapy
         {addons.map((addon, i) => {
           const therapy_contents = getContents(addon.therapy, data);
-          if(title !== therapy_contents.title) {
-              return <AddonChoice key={`${addon.therapy}-${i}`} data={[addon, therapy_contents]} state={[addons, setAddons, i]} refresh={updateAddons}/>;
+          if (!therapy_contents) {
+            return null;
           }
-          return null; // Explicit return for the else case
+
+          if (isJanuBasti) {
+            // Second knee: same therapy, custom cost, help text instead of What is link
+            if (therapy_contents.title === JANU_BASTI_TITLE) {
+              return (
+                <AddonChoice
+                  key={`${addon.therapy}-${i}`}
+                  data={[addon, therapy_contents]}
+                  state={[addons, setAddons, i]}
+                  refresh={updateAddons}
+                  cost={JANU_SECOND_KNEE_COST}
+                  showWhatIs={false}
+                  helpText="Add a Second Knee"
+                />
+              );
+            }
+
+            // Keep prior add-ons except Pindaswedan
+            if (JANU_BASTI_EXCLUDED_ADDONS.includes(therapy_contents.title)) {
+              return null;
+            }
+
+            return (
+              <AddonChoice
+                key={`${addon.therapy}-${i}`}
+                data={[addon, therapy_contents]}
+                state={[addons, setAddons, i]}
+                refresh={updateAddons}
+              />
+            );
+          }
+
+          // Other therapies: show other available add-ons (exclude current therapy)
+          if (title !== therapy_contents.title) {
+              return (
+                <AddonChoice
+                  key={`${addon.therapy}-${i}`}
+                  data={[addon, therapy_contents]}
+                  state={[addons, setAddons, i]}
+                  refresh={updateAddons}
+                />
+              );
+          }
+          return null;
         })}  
       </div>
     );
@@ -30,6 +79,10 @@ export default function Addon(props) {
     const [addon, therapy_contents] = props.data;
     const [addons, setAddons, i] = props.state;
     const updateAddons = props.refresh;
+    const label = props.label || therapy_contents.title;
+    const cost = props.cost || therapy_contents.addon_cost;
+    const showWhatIs = props.showWhatIs !== false;
+    const helpText = props.helpText;
 
     function selectOne(i, selected) {
       for (let i = 0; i < addons.length; i++) {
@@ -53,18 +106,23 @@ export default function Addon(props) {
               }}
               style={{"marginRight" : "20px"}}
             >
-              {therapy_contents.title} for {therapy_contents.addon_cost}
+              {label} for {cost}
         </ToggleButton>
-        <Link 
-            to={{
-                pathname: "/learnMore",
-                state: {
-                    apptID: therapy_contents.treatment_uid,
-                },
-            }}
-        >
-            What is {therapy_contents.title}?
-        </Link>
+        {helpText && (
+          <span>{helpText}</span>
+        )}
+        {showWhatIs && (
+          <Link 
+              to={{
+                  pathname: "/learnMore",
+                  state: {
+                      apptID: therapy_contents.treatment_uid,
+                  },
+              }}
+          >
+              What is {therapy_contents.title}?
+          </Link>
+        )}
       </div>
     );
   
@@ -78,3 +136,4 @@ export default function Addon(props) {
     }
     return null;
   }
+
